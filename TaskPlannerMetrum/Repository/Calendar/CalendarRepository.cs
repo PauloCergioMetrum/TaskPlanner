@@ -64,7 +64,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                 var listcoipia = taskuser.ToList();
                 foreach (var item in listcoipia)
                 {
-                    if(taskuser.Where(u=> u.userID == u.userID).Count() >=2)
+                    if(taskuser.Where(u=> u.userID == item.userID && u.start == item.start).Count() >=2)
                     {
                         taskuser.Remove(item);
                     }
@@ -95,7 +95,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                 var listcoipia = taskuser.ToList();
                 foreach (var item in listcoipia)
                 {
-                    if (taskuser.Where(u => u.userID == u.userID).Count() >=2)
+                    if (taskuser.Where(u => u.userID == item.userID && u.start == item.start).Count() >=2)
                     {
                         taskuser.Remove(item);
                     }
