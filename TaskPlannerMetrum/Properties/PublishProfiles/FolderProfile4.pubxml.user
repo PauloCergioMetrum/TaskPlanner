@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\NewTaskBack\task-planner-metrum\TaskPlannerMetrum\TaskPlannerMetrum\bin\Release\net7.0\publish\</_PublishTargetUrl>
+    <History>True|2023-07-24T18:38:49.6577372Z;True|2023-07-21T21:44:38.6100464-03:00;True|2023-07-21T21:44:33.5626290-03:00;True|2023-07-21T17:09:55.2189044-03:00;True|2023-07-21T16:21:37.5048043-03:00;False|2023-07-21T16:21:27.3892873-03:00;True|2023-07-21T15:45:09.3087182-03:00;True|2023-07-21T15:39:11.8428720-03:00;True|2023-07-21T15:31:20.6914966-03:00;True|2023-07-21T13:27:51.8273318-03:00;True|2023-07-21T11:06:27.6661273-03:00;True|2023-07-20T16:57:13.4293826-03:00;True|2023-07-20T15:40:56.7914662-03:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

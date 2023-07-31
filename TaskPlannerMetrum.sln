@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskPlannerMetrum", "TaskPlannerMetrum\TaskPlannerMetrum.csproj", "{19ECA52E-1ADB-4B45-880E-E086E95D0858}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logger", "Logger\Logger.csproj", "{D014B4FB-FE81-4816-984A-16AD0AE55F87}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19ECA52E-1ADB-4B45-880E-E086E95D0858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19ECA52E-1ADB-4B45-880E-E086E95D0858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19ECA52E-1ADB-4B45-880E-E086E95D0858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19ECA52E-1ADB-4B45-880E-E086E95D0858}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D014B4FB-FE81-4816-984A-16AD0AE55F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D014B4FB-FE81-4816-984A-16AD0AE55F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D014B4FB-FE81-4816-984A-16AD0AE55F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D014B4FB-FE81-4816-984A-16AD0AE55F87}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ADE85F49-1C53-4F8C-A53D-1053AB9A87E8}
+	EndGlobalSection
+EndGlobal

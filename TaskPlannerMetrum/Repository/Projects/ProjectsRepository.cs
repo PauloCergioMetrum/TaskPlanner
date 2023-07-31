@@ -1,0 +1,451 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using TaskPlannerMetrum.Model.Context;
+using TaskPlannerMetrum.Model.ModelViews;
+
+using System.Data;
+using System;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Security.Policy;
+using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Enums;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
+using TaskPlannerMetrum.Model.NewContract;
+using System.Diagnostics.Contracts;
+using System.Collections.Immutable;
+using System.Reflection.PortableExecutable;
+using Castle.Components.DictionaryAdapter;
+
+namespace TaskPlannerMetrum.Repository.Projects
+{
+
+
+
+    public class ProjectsRepository : IProjectsRepository
+    {
+        private MSSQLContext _context;
+
+
+        public ProjectsRepository(MSSQLContext context) { _context = context; }
+
+        public bool NewCreat(Model.NewContract.NewProject newproject)
+        {
+            try
+            {
+                foreach (var item in newproject.DepartmentContract)
+                {
+
+                    _context.DepartmentProjects.Add(new Model.DepartmentProjects
+                    {
+                       
+                        ContractID =newproject.ContractID,
+                        DepartmentID = item.DepartmentID,
+                        ExpectedHour=item.ExpectedHour,
+                        TechLeaderID= item.TechLeaderID
+                    });
+                    _context.SaveChanges();
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+
+
+        }
+
+        public bool Create(Model.Projects newProject)
+        {
+            try
+            {
+                _context.Add(newProject);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public List<vProjectList> GetAllProjectsContracts()
+        {
+
+            var listProjects = _context.vProjectList.ToList();
+            foreach (var project in listProjects)
+            {
+                var executedHour = _context.ActivityPlan.Where(p => p.ContractID == project.ProjectID).Select(h => h.ExecutedManHour).ToList();
+                project.ExecutedManHour = executedHour == null ? 0 : executedHour.Sum();
+                var plannedHour = _context.ActivityPlan.Where(p => p.ContractID == project.ProjectID).Select(h => h.PlannedManHour).ToList();
+                project.PlannedManHour = plannedHour == null ? 0 : plannedHour.Sum();
+                if (project.Status != "1" && project.Status != "6")
+                {
+                    project.Status = GetStatus(project.ProjectID);
+                }
+
+
+
+                //SetStatus(project.ProjectID, project.Status); 
+
+            }
+
+            return listProjects;
+        }
+
+        public List<vProjectList> GetAllProjects()
+
+        {
+            var listProjects = _context.vProjectList.Where(p => p.Status != "6").ToList();
+            foreach (var project in listProjects)
+            {
+
+                var executedHour = _context.ActivityPlan.Where(p => p.ContractID == project.ProjectID).Select(h => h.ExecutedManHour).ToList();
+                project.ExecutedManHour = executedHour == null ? 0 : executedHour.Sum();
+                var plannedHour = _context.ActivityPlan.Where(p => p.ContractID == project.ProjectID).Select(h => h.PlannedManHour).ToList();
+                project.PlannedManHour = plannedHour == null ? 0 : plannedHour.Sum();
+                if (project.Status != "1" && project.Status != "6")
+                {
+                    project.Status = GetStatus(project.ProjectID);
+
+                }
+                //SetStatus(project.ProjectID, project.Status); 
+
+            }
+
+            return listProjects;
+        }
+
+        private string GetStatus(int projectId)
+        {
+
+
+            var tasks = _context.ActivityPlan.Where(t => t.ContractID == projectId).Select(s => s.Status).ToList();
+            if (tasks.Count() <=0)
+            {
+                return "5";
+            }
+            if (tasks.Contains("2"))
+            {
+                return "2";
+            }
+
+            if (tasks.Contains("1"))
+            {
+                if (tasks.Contains("2"))
+                {
+                    return "2";
+                }
+                if (tasks.Contains("5"))
+                {
+                    return "2";
+                }
+
+                return "1";
+
+            }
+            if (tasks.Contains("5"))
+            {
+                if (tasks.Contains("1") || tasks.Contains("4"))
+                {
+                    return "2";
+                }
+                return "5";
+
+            }
+
+            return "2";
+
+
+        }
+
+        public bool SetStatus(TaskPlannerMetrum.Model.ProjectStauts newProject)
+        {
+            try
+            {
+                var project = _context.Projects.Where(e => e.ID == newProject.projectID).ToList().FirstOrDefault();
+                if (project != null)
+                {
+                    project.Status =newProject.status;
+                    project.StartDate =newProject.startDate;
+                    project.EndDate = newProject.endDate;
+                    project.ContractEndDate = newProject.contractDate;
+
+                    _context.Update(project);
+                    _context.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public List<User> FindAllUser()
+        {
+            List<User> users = new List<User>();
+            var ListUsers = _context.vUserList.Where(u => u.DepartmentID == 4).Select(u => new { u.PMTeamID, u.userName }).ToList();
+            foreach (var user in ListUsers)
+            {
+                users.Add(new User
+                {
+                    FullName = user.userName,
+                    Id = user.PMTeamID
+                });
+            }
+
+            return users;
+        }
+        public List<User> UserByDep(string departament)
+        {
+            List<User> retorno = new List<User>();
+            var dep = _context.Department.Where(d => d.Name == departament).Select(d => d.ID).FirstOrDefault();
+            var result = _context.Users.Where(d => d.DepartmentId == dep).ToList();
+            foreach (var user in result)
+            {
+                retorno.Add(new User
+                {
+                    UserName = user.UserName,
+                    Id = user.Id
+
+                });
+            }
+            return retorno;
+
+        }
+
+        public int getDep(string departament)
+        {
+            return _context.Department.Where(d => d.Name == departament).Select(d => d.ID).FirstOrDefault();
+
+
+        }
+
+        public List<Model.ProjectProgress> ProgressProject()
+        {
+            var allProject = _context.Projects.ToList();
+            List<Model.ProjectProgress> result = new List<Model.ProjectProgress>();
+            foreach (var item in allProject)
+            {
+                var allTask = _context.ActivityPlan.Where(p => p.ContractID == item.ID).ToList();
+                var allttaskCount = allTask.Count();
+                var task = allTask.Where(s => s.Status == "1"&& s.Status == "6").Count();
+               
+
+                if (allttaskCount != 0)
+                {
+                    result.Add(new Model.ProjectProgress
+                    {
+                        Project = item.ID,
+                        Progress = ((double)task / allttaskCount) * 100
+                    });
+                    
+                }
+                else
+                {
+                    result.Add(new Model.ProjectProgress
+                    {
+                        Project = item.ID,
+                        Progress = 0
+                    });
+                }
+            }
+            return result;
+        }
+
+        public dynamic GetDepFinances(int id)
+        {
+
+            List<dynamic> retorno = new List<dynamic>();
+
+            var buscadep = _context.vFinanceContract.Where(i => i.ContractID == id).ToList();
+
+
+            foreach (var item in buscadep)
+            {
+                bool existeValor = retorno.Any(objeto => objeto.DepartmentID == item.DepartmentID);
+                if (!existeValor)
+                {
+                    var user = _context.Users.Where(u => u.DepartmentId == item.DepartmentID).ToList();
+                    var result = new
+                    {
+                        DepartmentID = item.DepartmentID,
+                        DepartmentName = item.DepartmentName,
+                        users = user.Select(u => new { u.Id, u.FullName }).ToList()
+
+                    };
+                    retorno.Add(result);
+
+                }
+            }
+            return retorno;
+
+        }
+        public List<User> GetAllUsersDep(string depname)
+        {
+            List<User> newretorno = new List<User>();
+            var findIDDEP = _context.Department.Where(n => n.Name == depname).Select(i => i.ID).FirstOrDefault();
+            var retorno = _context.Users.Where(i => i.DepartmentId == findIDDEP).ToList();
+            foreach (var item in retorno)
+            {
+                newretorno.Add(new User
+                {
+                    FullName = item.FullName,
+                    Id = item.Id,
+                    IsActive= item.IsActive,
+                });
+
+            }
+            return newretorno;
+
+
+        }
+
+        public dynamic GetAllProjectDep(int  contractID)
+        {
+            var info =  _context.DepartmentProjects.Where(c => c.ContractID == contractID).ToList();
+            List<dynamic> retorno = new List<dynamic>();
+            foreach(var item in info)
+            {    
+                var users = _context.Users.Where(i => i.DepartmentId == item.DepartmentID).Select(u => new { u.Id, u.FullName }).ToList();
+                var departamentName = _context.Department.Where(i => i.ID == item.DepartmentID).Select(n => n.Name).FirstOrDefault().ToString();
+                var TechLeaderName = _context.Users.Where(i => i.Id == item.TechLeaderID).Select(n => n.FullName).FirstOrDefault();
+                var result = new
+                {
+                    DepartmentID = item.DepartmentID,
+                    DepartmentName = departamentName,
+                    users = users,
+                    expectedHour = item.ExpectedHour,
+                    TechLeaderID = item.TechLeaderID,
+                    TechLeaderName = TechLeaderName,
+                };
+                retorno.Add(result);
+                var count = retorno.Where(i => i.DepartmentID == item.DepartmentID).Count();
+                if (count > 1)
+                {
+                    retorno.Remove(result);
+                }
+            }
+            return retorno;
+        }
+
+        public bool UpdateProject(Model.DepartmentProjects newProject)
+        {
+            
+            
+                var updateproject = _context.DepartmentProjects.Where(i => i.ContractID == newProject.ContractID && i.DepartmentID == newProject.DepartmentID).FirstOrDefault();
+         
+                updateproject.TechLeaderID = newProject.TechLeaderID;
+                updateproject.ExpectedHour= newProject.ExpectedHour;   
+                updateproject.ID = updateproject.ID;
+                updateproject.FinancesID = updateproject.FinancesID;
+                _context.Update(updateproject);
+                _context.SaveChanges();
+                return true;
+            
+           
+        }
+
+        public bool ActiveProject(int id)
+        {
+
+           
+                var project = _context.Contracts.Where( i=> i.id == id).FirstOrDefault();  
+                project.EnableProject = true;
+                _context.Update(project);
+                _context.SaveChanges(); 
+                return true;
+            
+            
+        }
+
+        public dynamic getActiveProject()
+        {
+          
+            
+                var project = _context.vContractProject.Where(i => i.EnableProject == true).ToList();
+
+                return true;
+            
+        }
+        
+
+        public dynamic getInfoProject(int id)
+        {
+
+            var taskDep = _context.vPlannedHours.Where(i => i.ContractID == id).ToList();
+            return taskDep.Select(p => new
+            {
+                ProjectName = p.ProjectName,
+                ClientName = p.ClientName,
+    
+                Porcentagem = SerPercentege(p.ContractID),
+                executedHourFull = taskDep.Where(p => p.ContractID == id).Select(e=> e.ExecutedHour).Sum(),
+                plannedHourFull = taskDep.Where(p => p.ContractID == id).Select(e => e.PlannedHour).Sum(),
+                expectedHoursFull = taskDep.Where(p => p.ContractID == id).Select(e => e.ExpectedHour).Sum(),
+
+                ExpetedHours = taskDep.Where(c =>c.ContractID == p.ContractID).Select(t => new
+                {
+                    departamentName = t.DepartmentName,
+                    tecLeader = t.TechLeader ,
+                    expectedHours = t.ExpectedHour,
+                    plannedHour = t.PlannedHour,
+                    executedHour = t.ExecutedHour
+
+
+                }).ToList(),
+
+            }).FirstOrDefault(); 
+
+
+            //var project = _context.vContractList.Where(i => i.ContractID == id).FirstOrDefault(); 
+            //var activis = _context.ActivityPlan.Where(c=> c.ContractID == project.ContractID).ToList();
+            //var ExpectedHours = _context.DepartmentProjects.Where(c => c.ContractID == project.ContractID).ToList();
+            //List<dynamic> result = new List<dynamic>();
+            //foreach(var task in ExpectedHours)
+            //{
+            //    var teacleader = _context.Team.Where(i=> i.ID == task.TechLeaderID).Select(i => i.UserID).FirstOrDefault();
+            //    result.Add(new
+            //    {
+            //        departamentName = _context.Department.Where(d => d.Id == task.DepartmentID).Select(n=> n.Name).FirstOrDefault(),
+            //        tecLeader= _context.Users.Where(i => i.Id == teacleader).Select(f=> f.FullName).FirstOrDefault(),
+            //        expectedHours = task.ExpectedHour
+            //    });
+            //}
+            //var progress = _context.ActivityPlan.Where(c => c.ContractID==project.ContractID).Select(s => s.Status).Count();
+            //var progressConcluid = _context.ActivityPlan.Where(c => c.ContractID==project.ContractID && c.Status == "6" && c.Status == "1").Select(s => s.Status).Count();
+            //double totalProgrss = 0;
+            //if (progressConcluid != 0)
+            //{
+            //    totalProgrss = progressConcluid/ progress * 100;
+            //}
+            //var infoProject = new
+            //{
+            //    ProjectName = project.InternalCode,
+            //    ClientName = project.ClientName,
+            //    ExpetedHours = result,
+            //    Porcentagem = Convert.ToDouble(totalProgrss.ToString("F2")),
+            //    PlannedHours = _context.ActivityPlan.Where(i => i.ID == project.ContractID).Select(p => p.PlannedManHour).Sum(),
+            //};
+            //return infoProject;
+        }
+
+   
+        public string SerPercentege(int id)
+        {
+            var allstatus = _context.ActivityPlan.Where(i => i.ContractID == id && i.Status != "3" || i.Status != "4").ToList();
+            double finalyStatus = allstatus.Where(s => s.Status == "6" || s.Status =="1").Count();
+            double totalProgress = 0;
+            double allstatusCount = allstatus.Count();
+
+            if (finalyStatus != 0)
+            {
+                totalProgress = (finalyStatus/allstatusCount) * 100;
+            } 
+            return totalProgress.ToString("F2");
+        }
+    }
+}

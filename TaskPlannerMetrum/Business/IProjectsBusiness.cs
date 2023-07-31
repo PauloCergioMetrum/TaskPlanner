@@ -1,0 +1,47 @@
+﻿using System.Collections.Generic;
+using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model.NewContract;
+
+namespace TaskPlannerMetrum.Business
+{
+    public interface IProjectsBusiness
+    {
+        bool Create(ProjectDTO projects);
+
+        public bool NewCreat(Model.NewContract.NewProject newproject);
+
+        //UserVO FindByID(long id);
+        dynamic FindAll();
+        dynamic FindPlannerManager();
+        // dynamic FindAllProjects();
+
+        public dynamic GetAllProjects();
+
+        public dynamic GetAllContracts();
+
+        bool UpdateStatus(TaskPlannerMetrum.Model.ProjectStauts newProject);
+
+        public dynamic UserByDep(string departament);
+
+
+
+        public dynamic ProgressProject();
+
+        dynamic GetDepFinances(int id);
+
+        dynamic GetAllUsersDep(string depname);
+
+
+        public dynamic GetAllProjectDep(int contractID);
+
+        public bool UpdateProject(Model.DepartmentProjects newProject);
+
+        public bool ActiveProject(int id);
+
+        public dynamic getActiveProject();
+
+        public dynamic getInfoProject(int id);
+
+    }
+}
