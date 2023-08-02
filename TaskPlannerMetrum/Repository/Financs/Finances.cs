@@ -46,15 +46,18 @@ namespace TaskPlannerMetrum.Repository.Financs
             });
             _context.SaveChanges();
             int FinanceID = _context.Finances.Where(f => f.ContractID== newfinance.ContractID).OrderBy(i => i.id).Select(f => f.id).LastOrDefault();
-            CreateProject(new Model.DepartmentProjects
+
+            if(_context.DepartmentProjects.Where(d=> d.DepartmentID == newfinance.DepartmentID && d.ContractID == newfinance.ContractID).FirstOrDefault() == null)
             {
-                DepartmentID= newfinance.DepartmentID,
-                ContractID= newfinance.ContractID,
-
-                FinancesID = FinanceID,
-                ExpectedHour = 0,
-
-            });
+                CreateProject(new Model.DepartmentProjects
+                {
+                    DepartmentID= newfinance.DepartmentID,
+                    ContractID= newfinance.ContractID,
+                    FinancesID = FinanceID,
+                    ExpectedHour = 0,
+                });
+            }
+            
 
             return true;
 
@@ -188,6 +191,12 @@ namespace TaskPlannerMetrum.Repository.Financs
             updatefinances.StatusDpv = finances.StatusDpv;
             _context.Finances.Update(updatefinances);
             _context.SaveChanges();
+
+            var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == updatefinances.ContractID && updatefinances.DepartmentID == c.DepartmentID).FirstOrDefault();
+            updateDepartmentProjects.DepartmentID= finances.DepartmentID;
+            
+
+
             return true;
 
         }
