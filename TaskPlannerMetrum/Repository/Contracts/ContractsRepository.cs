@@ -278,8 +278,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
             var retorno = new
             {
-                goalachieved = monthgoal.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
-                totalbillable = billedmonth.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
+                goalachieved = billedmonth.ToString("N", new System.Globalization.CultureInfo("pt-BR")) ,
+                totalbillable = monthgoal.ToString("N", new System.Globalization.CultureInfo("pt-BR")) ,
                 goaltoinvoice = (monthgoal> billedmonth) ? (monthgoal-billedmonth).ToString("N", new System.Globalization.CultureInfo("pt-BR")): 0.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
                 balance = (monthgoal > billedmonth) ? 0.ToString("N", new System.Globalization.CultureInfo("pt-BR")) : (billedmonth - monthgoal).ToString("N", new System.Globalization.CultureInfo("pt-BR")),
 
