@@ -43,6 +43,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 updateCotract.Observation= contract.Observation;
                 updateCotract.ClientOrder= contract.ClientOrder;
 
+
                 _context.Contracts.Update(updateCotract);
                 _context.SaveChanges();
                 return true;
