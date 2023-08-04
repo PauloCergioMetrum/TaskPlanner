@@ -16,7 +16,7 @@ namespace TaskPlannerMetrum.Repository.ContractViewer
 
         public dynamic GetAllContractsView(string Date)
         {
-            return _context.vContractViewer.Where(d => d.MES_PREVISTO_FATURAMENTO == Date).ToList();
+            return _context.vContractViewer.Where(d => d.BillingMonth == Date).OrderBy(d=> d.BillingMonth).ToList();
         }
     }
 }

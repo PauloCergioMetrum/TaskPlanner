@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,79 +11,57 @@ namespace TaskPlannerMetrum.Model.ModelViews
     {
         [Key]
         public int financeid { get; set; }
+
         public int cID { get; set; }
-        public string RESPONSÁVEL { get; set; }
 
-        public string EMPRESA { get; set; }
+        public string Owner { get; set; }
 
-        public DateTime DATA { get; set; }
+        public string Company { get; set; }
 
-        public string SENIOR { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public string CLIENTE { get; set; }
+        public string SeniorCode { get; set; }
 
-        [Column("DESCRICAO DA VENDA")]
-        public string DESCRICAODAVENDA { get; set; }
+        public string ClientName { get; set; }
 
-        public string VENDEDOR { get; set; }
+        public string Description { get; set; }
 
+        public string Vendor { get; set; }
 
-        [Column("QNT.")]
+        [Column("Amount.")]
+        public string Amount { get; set; }
 
-        public string QNT { get; set; }
-
-        [Column("VALOR PV")]
-        public double VALORPV { get; set; }
-
-        [Column("VALOR FATURADO")]
-        public double VALOR_FATURADO { get; set; }
-
-        [Column("DATA BASE")]
-        public DateTime DATA_BASE { get; set; }
-
-        [Column("DATA REPROGRAMADA")]
-
-        public DateTime DATA_REPROGRAMADA { get; set; }
-
-        [Column("MES PREVISTO FATURAMENTO")]
-
-        public string MES_PREVISTO_FATURAMENTO { get; set; }
-
-        [Column("FORMA DE PAGAMENTO")]
-
-        public string FORMA_DE_PAGAMENTO { get; set; }
-
-        [Column("COND. PG")]
-
-        public string COND_PG { get; set; }
-
-        [Column("FATURADO DIA")]
-
-        public DateTime FATURADO_DIA { get; set; }
-
-        [Column("NOTA FISCAL")]
-
-        public string NOTA_FISCAL { get; set; }
+        public double TotalValue { get; set; }
 
 
-        [Column("SETOR RESPONSAVEL")]
+        public double InvoicedValue { get; set; }
 
-        public string SETOR_RESPONSAVEL { get; set; }
+        public DateTime BaseDate { get; set; }
 
-        public string TIPO { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public string BillingMonth { get; set; }
+
+        public string PaymentMethod { get; set; }
+
+        public string paymentCondition { get; set; }
+
+        public DateTime InvoicedDate { get; set; }
+
+        public string invoice { get; set; }
+
+        public string DepartmentName { get; set; }
+
+        public string FinanceType { get; set; }
+
+        public string PVStatus { get; set; }
+
+        public string PaymentStatus { get; set; }
 
 
-
-        [Column("STATUS PV")]
-
-        public string STATUS_PV { get; set; }
-
-
-        [Column("Status Faturamento")]
-
-        public string Status_Faturamento { get; set; }  
  
-     
+
+
 
     }
 }
