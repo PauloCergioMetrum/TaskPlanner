@@ -61,16 +61,16 @@ namespace TaskPlannerMetrum.Repository.Calendar
                         backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
 
                     }).Distinct().ToList();
-                var listcoipia = taskuser.ToList();
-                foreach (var item in listcoipia)
+                var taskUserList = taskuser.ToList();
+                foreach (var task in taskUserList)
                 {
-                    if(taskuser.Where(u=> u.userID == item.userID && u.start == item.start).Count() >=2)
+                    if (taskuser.Where(u => u.userID == task.userID && u.start == task.start).Count() >=2)
                     {
-                        taskuser.Remove(item);
+                        taskuser.Remove(task);
                     }
                 }
                 return taskuser;
-                
+
             }
             else
             {
@@ -92,12 +92,12 @@ namespace TaskPlannerMetrum.Repository.Calendar
                         backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
                     }).Distinct().ToList();
 
-                var listcoipia = taskuser.ToList();
-                foreach (var item in listcoipia)
+                var taskUserList = taskuser.ToList();
+                foreach (var task in taskUserList)
                 {
-                    if (taskuser.Where(u => u.userID == item.userID && u.start == item.start).Count() >=2)
+                    if (taskuser.Where(u => u.userID == task.userID && u.start == task.start).Count() >=2)
                     {
-                        taskuser.Remove(item);
+                        taskuser.Remove(task);
                     }
                 }
                 return taskuser;
@@ -112,13 +112,14 @@ namespace TaskPlannerMetrum.Repository.Calendar
 
             switch (valor)
             {
-                case  <= 4:
+
+                case  <= 5:
                     return "#629763";
                     break;
-                case <= 6:
+                case <= 7:
                     return "#efbf4d";
                     break;
-                case > 6:
+                case >= 8:
                     return "#a32638";
                     break;
                 default:
