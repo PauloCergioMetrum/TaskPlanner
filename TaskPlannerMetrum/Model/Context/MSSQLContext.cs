@@ -57,25 +57,10 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPlannedHours> vPlannedHours { get; set; }
 
 
+        public DbSet<vContractViewer> vContractViewer { get; set; }
+
+
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
