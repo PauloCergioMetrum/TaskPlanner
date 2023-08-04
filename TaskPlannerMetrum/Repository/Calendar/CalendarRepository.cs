@@ -112,6 +112,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
 
             switch (valor)
             {
+
                 case  <= 5:
                     return "#629763";
                     break;
