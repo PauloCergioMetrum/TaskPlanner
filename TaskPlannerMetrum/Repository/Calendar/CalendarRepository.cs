@@ -92,12 +92,12 @@ namespace TaskPlannerMetrum.Repository.Calendar
                         backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
                     }).Distinct().ToList();
 
-                var listcoipia = taskuser.ToList();
-                foreach (var item in listcoipia)
+                var Copyofthelist = taskuser.ToList();
+                foreach (var task in Copyofthelist)
                 {
-                    if (taskuser.Where(u => u.userID == item.userID && u.start == item.start).Count() >=2)
+                    if (taskuser.Where(u => u.userID == task.userID && u.start == task.start).Count() >=2)
                     {
-                        taskuser.Remove(item);
+                        taskuser.Remove(task);
                     }
                 }
                 return taskuser;
