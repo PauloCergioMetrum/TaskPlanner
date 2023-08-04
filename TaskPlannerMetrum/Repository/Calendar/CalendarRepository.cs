@@ -92,8 +92,8 @@ namespace TaskPlannerMetrum.Repository.Calendar
                         backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
                     }).Distinct().ToList();
 
-                var Copyofthelist = taskuser.ToList();
-                foreach (var task in Copyofthelist)
+                var Copyofthelisttaskuser = taskuser.ToList();
+                foreach (var task in Copyofthelisttaskuser)
                 {
                     if (taskuser.Where(u => u.userID == task.userID && u.start == task.start).Count() >=2)
                     {
