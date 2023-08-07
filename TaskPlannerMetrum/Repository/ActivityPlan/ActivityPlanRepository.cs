@@ -242,7 +242,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 newActivityPaln.NotesFromExecutor = activityPlan.NotesFromExecutor;
                 newActivityPaln.NotesFromPlanner = activityPlan.NotesFromPlanner;
                 newActivityPaln.PlannedManHour = activityPlan.PlannedManHour;
-            
+
+                newActivityPaln.ExecutorTeamID = activityPlan.ExecutorTeamID;
 
 
                 _context.ActivityPlan.Update(newActivityPaln);
