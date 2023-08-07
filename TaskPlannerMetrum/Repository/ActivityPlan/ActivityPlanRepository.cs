@@ -391,6 +391,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             
             var getrating = _context.UserTask.Where(i => i.ActivityPlanID == updatetask.ActivityPlanID).FirstOrDefault();
             getrating.Rating = updatetask.Rating;
+            getrating.Support = updatetask.Support;
             _context.Update(getrating);
             _context.SaveChanges(); 
             return true;
