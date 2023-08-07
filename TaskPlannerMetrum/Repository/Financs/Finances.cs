@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿using log4net.Util;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
+using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.Financs
@@ -204,6 +206,58 @@ namespace TaskPlannerMetrum.Repository.Financs
         public dynamic getAllServices(string type)
         {
             return _context.Service.Where(i => i.Type == type).ToList();
+        }
+
+        public dynamic DuplicateFinance(DuplicateFinanceDTO Finance)
+        {
+            try
+            {
+                //Dados do objeto Matriz que será utilizado para duplicar a Finança
+                var financeMatriz = _context.Finances.Where(i => i.id == Finance.id).FirstOrDefault();
+
+
+                var duplicateFinance =  new Model.Finances();
+
+                //Nao foi possivel fazer dessa forma por que o ID duplica 
+                // var duplicateFinance = financeMatriz;
+                // duplicateFinance.BusinessUnit = Finance.BusinessUnit;
+                // duplicateFinance.BaseDate = Finance.BaseDate;
+
+
+
+
+                //Solução
+                duplicateFinance.invoice = financeMatriz.invoice;
+                duplicateFinance.paymentCondition = financeMatriz.paymentCondition;
+                duplicateFinance.StatusDpv= financeMatriz.StatusDpv;
+                duplicateFinance.Amount = financeMatriz.Amount;
+                duplicateFinance.InvoicedDate = financeMatriz.InvoicedDate;
+                duplicateFinance.EndDate = financeMatriz.EndDate;
+                duplicateFinance.Billing = financeMatriz.Billing;
+                duplicateFinance.ContractID = financeMatriz.ContractID;
+                duplicateFinance.DepartmentID = financeMatriz.DepartmentID;
+                duplicateFinance.Description = financeMatriz.Description;
+                duplicateFinance.ExpectedInvoiceDate = financeMatriz.ExpectedInvoiceDate;
+                duplicateFinance.FinanceType = financeMatriz.FinanceType;
+                duplicateFinance.Value = financeMatriz.Value;
+                duplicateFinance.InvoicedValue = financeMatriz.InvoicedValue;
+                duplicateFinance.Status = financeMatriz.Status;
+                duplicateFinance.WorkSpaceID = financeMatriz.WorkSpaceID;
+
+
+                //Dados que o front enviou 
+                duplicateFinance.BusinessUnit = Finance.BusinessUnit;
+                duplicateFinance.BaseDate = Finance.BaseDate;
+
+
+                _context.Finances.Add(duplicateFinance);    
+                _context.SaveChanges();
+                return true;
+            }catch(Exception ex)
+            {
+                return ex.Message.ToString();
+            }
+
         }
     }
 }

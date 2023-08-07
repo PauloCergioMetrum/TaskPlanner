@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Business
 {
@@ -16,5 +17,7 @@ namespace TaskPlannerMetrum.Business
         public dynamic GetContractInfo(int id);
 
         public dynamic getAllServices(string type);
+
+        public dynamic DuplicateFinance(DuplicateFinanceDTO Finance);
     }
 }
