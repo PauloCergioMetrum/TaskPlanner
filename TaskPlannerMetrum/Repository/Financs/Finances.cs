@@ -212,47 +212,49 @@ namespace TaskPlannerMetrum.Repository.Financs
         {
             try
             {
-                //Dados do objeto Matriz que será utilizado para duplicar a Finança
-                var financeMatriz = _context.Finances.Where(i => i.id == Finance.id).FirstOrDefault();
-
-
-                var duplicateFinance =  new Model.Finances();
 
                 //Nao foi possivel fazer dessa forma por que o ID duplica 
                 // var duplicateFinance = financeMatriz;
                 // duplicateFinance.BusinessUnit = Finance.BusinessUnit;
                 // duplicateFinance.BaseDate = Finance.BaseDate;
 
+                //Dados do objeto Matriz que será utilizado para duplicar a Finança
+                Model.Finances financeMatriz = _context.Finances.Where(i => i.id == Finance.id).FirstOrDefault();
+                var duplicateFinance = new Model.Finances();
 
+                if (financeMatriz != null)
+                {
+                    duplicateFinance.invoice = financeMatriz.invoice;
+                    duplicateFinance.paymentCondition = financeMatriz.paymentCondition;
+                    duplicateFinance.StatusDpv= financeMatriz.StatusDpv;
+                    duplicateFinance.Amount = financeMatriz.Amount;
+                    duplicateFinance.InvoicedDate = financeMatriz.InvoicedDate;
+                    duplicateFinance.EndDate = financeMatriz.EndDate;
+                    duplicateFinance.Billing = financeMatriz.Billing;
+                    duplicateFinance.ContractID = financeMatriz.ContractID;
+                    duplicateFinance.DepartmentID = financeMatriz.DepartmentID;
+                    duplicateFinance.Description = financeMatriz.Description;
+                    duplicateFinance.ExpectedInvoiceDate = financeMatriz.ExpectedInvoiceDate;
+                    duplicateFinance.FinanceType = financeMatriz.FinanceType;
+                    duplicateFinance.Value = financeMatriz.Value;
+                    duplicateFinance.InvoicedValue = financeMatriz.InvoicedValue;
+                    duplicateFinance.Status = financeMatriz.Status;
+                    duplicateFinance.WorkSpaceID = financeMatriz.WorkSpaceID;
 
+                    //Dados que o front enviou 
+                    duplicateFinance.BusinessUnit = Finance.BusinessUnit;
+                    duplicateFinance.BaseDate = Finance.BaseDate;
+                    _context.Finances.Add(duplicateFinance);
+                    _context.SaveChanges();
+                    return true;
 
-                //Solução
-                duplicateFinance.invoice = financeMatriz.invoice;
-                duplicateFinance.paymentCondition = financeMatriz.paymentCondition;
-                duplicateFinance.StatusDpv= financeMatriz.StatusDpv;
-                duplicateFinance.Amount = financeMatriz.Amount;
-                duplicateFinance.InvoicedDate = financeMatriz.InvoicedDate;
-                duplicateFinance.EndDate = financeMatriz.EndDate;
-                duplicateFinance.Billing = financeMatriz.Billing;
-                duplicateFinance.ContractID = financeMatriz.ContractID;
-                duplicateFinance.DepartmentID = financeMatriz.DepartmentID;
-                duplicateFinance.Description = financeMatriz.Description;
-                duplicateFinance.ExpectedInvoiceDate = financeMatriz.ExpectedInvoiceDate;
-                duplicateFinance.FinanceType = financeMatriz.FinanceType;
-                duplicateFinance.Value = financeMatriz.Value;
-                duplicateFinance.InvoicedValue = financeMatriz.InvoicedValue;
-                duplicateFinance.Status = financeMatriz.Status;
-                duplicateFinance.WorkSpaceID = financeMatriz.WorkSpaceID;
+                }
+                else
+                {
+                    return false;
+                }
 
-
-                //Dados que o front enviou 
-                duplicateFinance.BusinessUnit = Finance.BusinessUnit;
-                duplicateFinance.BaseDate = Finance.BaseDate;
-
-
-                _context.Finances.Add(duplicateFinance);    
-                _context.SaveChanges();
-                return true;
+               
             }catch(Exception ex)
             {
                 return ex.Message.ToString();
