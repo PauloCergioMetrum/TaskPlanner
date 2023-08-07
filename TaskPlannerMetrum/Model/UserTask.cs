@@ -15,9 +15,11 @@ namespace TaskPlannerMetrum.Model
         public int ContractID { get; set; }
         public double Rating { get; set; }
 
-        public int ActivityPlanID { get; set; }        
+        public int ActivityPlanID { get; set; }
+
+        public bool? Support  { get; set; }
 
 
-     
+
     }
 }
