@@ -273,8 +273,6 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        
-
 
     }
 }

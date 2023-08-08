@@ -5,7 +5,6 @@ namespace TaskPlannerMetrum.Model.Context
 {
     public class MSSQLContext : DbContext
     {
-
         public MSSQLContext()
         {
 
@@ -56,8 +55,12 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vCalendar> vCalendar { get; set; }
         public DbSet<vPlannedHours> vPlannedHours { get; set; }
 
+        public DbSet<UserProjects> UserProjects { get; set; }
 
         
+
+
+
 
 
 

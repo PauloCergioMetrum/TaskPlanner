@@ -42,5 +42,9 @@ namespace TaskPlannerMetrum.Repository.Projects
         public dynamic getActiveProject();
 
         public dynamic getInfoProject(int id);
+
+        public void FavoriteProject(UserProjects userProjects);
+
+        public void DeletFavoritProject(UserProjects userProjects);
     }
 }

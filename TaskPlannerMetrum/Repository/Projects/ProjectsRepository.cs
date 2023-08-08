@@ -401,36 +401,7 @@ namespace TaskPlannerMetrum.Repository.Projects
             }).FirstOrDefault(); 
 
 
-            //var project = _context.vContractList.Where(i => i.ContractID == id).FirstOrDefault(); 
-            //var activis = _context.ActivityPlan.Where(c=> c.ContractID == project.ContractID).ToList();
-            //var ExpectedHours = _context.DepartmentProjects.Where(c => c.ContractID == project.ContractID).ToList();
-            //List<dynamic> result = new List<dynamic>();
-            //foreach(var task in ExpectedHours)
-            //{
-            //    var teacleader = _context.Team.Where(i=> i.ID == task.TechLeaderID).Select(i => i.UserID).FirstOrDefault();
-            //    result.Add(new
-            //    {
-            //        departamentName = _context.Department.Where(d => d.Id == task.DepartmentID).Select(n=> n.Name).FirstOrDefault(),
-            //        tecLeader= _context.Users.Where(i => i.Id == teacleader).Select(f=> f.FullName).FirstOrDefault(),
-            //        expectedHours = task.ExpectedHour
-            //    });
-            //}
-            //var progress = _context.ActivityPlan.Where(c => c.ContractID==project.ContractID).Select(s => s.Status).Count();
-            //var progressConcluid = _context.ActivityPlan.Where(c => c.ContractID==project.ContractID && c.Status == "6" && c.Status == "1").Select(s => s.Status).Count();
-            //double totalProgrss = 0;
-            //if (progressConcluid != 0)
-            //{
-            //    totalProgrss = progressConcluid/ progress * 100;
-            //}
-            //var infoProject = new
-            //{
-            //    ProjectName = project.InternalCode,
-            //    ClientName = project.ClientName,
-            //    ExpetedHours = result,
-            //    Porcentagem = Convert.ToDouble(totalProgrss.ToString("F2")),
-            //    PlannedHours = _context.ActivityPlan.Where(i => i.ID == project.ContractID).Select(p => p.PlannedManHour).Sum(),
-            //};
-            //return infoProject;
+           
         }
 
    
@@ -446,6 +417,26 @@ namespace TaskPlannerMetrum.Repository.Projects
                 totalProgress = (finalyStatus/allstatusCount) * 100;
             } 
             return totalProgress.ToString("F2");
+        }
+
+        public void FavoriteProject(UserProjects userProjects)
+        {
+          
+                _context.UserProjects.Add(userProjects);
+                _context.SaveChanges();
+               
+
+
+            
+        }
+
+        public void DeletFavoritProject(UserProjects userProjects)
+        {
+
+            var userfavorite = _context.UserProjects.Where(u => u.UserID == userProjects.UserID && u.ContractID == userProjects.ContractID).FirstOrDefault();
+            _context.Remove(userfavorite);
+            _context.SaveChanges(); 
+
         }
     }
 }
