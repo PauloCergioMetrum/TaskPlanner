@@ -8,6 +8,11 @@ namespace TaskPlannerMetrum.Business
         public dynamic UsersCalender(string depID);
 
         public dynamic TaskforUsers(AllUserCalendar userID);
+
+        public dynamic UsersForProjects(int contractID);
+
+        public dynamic GetAllContracts();
+
     }
 
 

@@ -19,5 +19,7 @@ namespace TaskPlannerMetrum.Repository.Financs
 
         public dynamic getAllServices(string type);
 
+        public dynamic DuplicateFinance(Model.DTO.DuplicateFinanceDTO Finance);
+
     }
 }

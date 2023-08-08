@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Repository.Contracts;
 using TaskPlannerMetrum.Repository.Financs;
@@ -58,6 +59,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         public dynamic getAllServices(string type)
         {
             return _financestRepository.getAllServices(type);
+        }
+
+        public dynamic DuplicateFinance(DuplicateFinanceDTO Finance)
+        {
+            return _financestRepository.DuplicateFinance(Finance);
         }
     }
 }

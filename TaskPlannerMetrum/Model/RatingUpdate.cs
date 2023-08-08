@@ -7,6 +7,8 @@
 
         public float Rating { get; set; }
 
+        public bool? Support  { get; set; }
+
 
     }
 }

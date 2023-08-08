@@ -146,5 +146,26 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest( ex.Message);
             }
         }
+
+
+
+        [HttpPost("DuplicateFinance")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DuplicateFinance(DuplicateFinanceDTO Finance)
+        {
+            try
+            {
+                return Ok(_financestBusiness.DuplicateFinance(Finance));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
