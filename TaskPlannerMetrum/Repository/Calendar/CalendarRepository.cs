@@ -43,7 +43,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
             List<vCalendar> tasksUsers = _context.vCalendar.ToList();
             if (AllUserCalendar.userID != 0)
             {
-                var  taskuser = tasksUsers.Where(u => u.UserID == AllUserCalendar.userID &&  u.UserDepartment == AllUserCalendar.DepName)
+                var taskuser = tasksUsers.Where(u => u.UserID == AllUserCalendar.userID &&  u.UserDepartment == AllUserCalendar.DepName)
                     .Select(u => new
                     {
                         userID = u.UserID,
@@ -74,23 +74,23 @@ namespace TaskPlannerMetrum.Repository.Calendar
             }
             else
             {
-                  var taskuser = tasksUsers.Where(u => u.UserDepartment == AllUserCalendar.DepName)
-                    .Select(u => new
-                    {
-                        userID = u.UserID,
-                        titleUser = u.UserName,
-                        title = u.UserName,
-                        contractName = u.InternalCode,
-                        Taskstart = u.ScheduledDate.ToString("yyyy-MM-dd") + "T08:00:00",
-                        start = u.ScheduledDate.ToString("yyyy-MM-dd"),
-                        end = u.ScheduledDate.ToString("yyyy-MM-dd"),
-                        depNameUSER = u.UserDepartment,
-                        task = tasksUsers
-                            .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
-                            .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour,s.InternalCode })
-                            .Distinct(),
-                        backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
-                    }).Distinct().ToList();
+                var taskuser = tasksUsers.Where(u => u.UserDepartment == AllUserCalendar.DepName)
+                  .Select(u => new
+                  {
+                      userID = u.UserID,
+                      titleUser = u.UserName,
+                      title = u.UserName,
+                      contractName = u.InternalCode,
+                      Taskstart = u.ScheduledDate.ToString("yyyy-MM-dd") + "T08:00:00",
+                      start = u.ScheduledDate.ToString("yyyy-MM-dd"),
+                      end = u.ScheduledDate.ToString("yyyy-MM-dd"),
+                      depNameUSER = u.UserDepartment,
+                      task = tasksUsers
+                          .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
+                          .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode })
+                          .Distinct(),
+                      backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
+                  }).Distinct().ToList();
 
                 var taskUserList = taskuser.ToList();
                 foreach (var task in taskUserList)
@@ -103,10 +103,56 @@ namespace TaskPlannerMetrum.Repository.Calendar
                 return taskuser;
 
             }
-            
+
 
 
         }
+
+        public dynamic UsersForProjects(int contractID)
+        {
+            //Lista com todos os Contratos Recebidos do Front
+            List<vCalendar> contractsUsers = _context.vCalendar.Where(i => i.contractID == contractID).ToList();
+            try
+            {
+                //Lista de tasks de Usuarios 
+                var tasksUsers = contractsUsers.Select(u => new
+                {
+                    userID = u.UserID,
+                    titleUser = u.UserName,
+                    title = u.UserName,
+                    contractName = u.InternalCode,
+                    Taskstart = u.ScheduledDate.ToString("yyyy-MM-dd") + "T08:00:00",
+                    start = u.ScheduledDate.ToString("yyyy-MM-dd"),
+                    end = u.ScheduledDate.ToString("yyyy-MM-dd"),
+                    depNameUSER = u.UserDepartment,
+                    task = contractsUsers
+                           .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
+                           .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode })
+                           .Distinct(),
+                    backgroundColor = setColor(contractsUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
+                }).Distinct().ToList();
+
+                //Verificando se existe User Duplicado
+                //Nao foi possivel setar List<dynamic> ou <vCalendar> 
+                //Lista copia para evitar erro de AsEnumerable 
+                var userDuplicate = tasksUsers.ToList();
+                foreach (var user in userDuplicate)
+                {
+                    //Remove User Duplicado 
+                    if (tasksUsers.Where(u => u.userID == user.userID && u.start == user.start).Count() >=2)
+                    {
+                        tasksUsers.Remove(user);
+                    }
+                }
+                return tasksUsers;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message.ToString();
+            }
+
+        }
+
         public string setColor(double valor)
         {
 
@@ -126,6 +172,16 @@ namespace TaskPlannerMetrum.Repository.Calendar
                     return "#a32638";
             }
 
+        }
+
+        public dynamic GetAllContracts()
+        {
+            return _context.Contracts.Where(e => e.EnableProject == true).Select(c => new
+            {
+                contractID = c.id,
+                internalCode = c.InternalCode,
+
+            }).ToList();
         }
     }
 }
