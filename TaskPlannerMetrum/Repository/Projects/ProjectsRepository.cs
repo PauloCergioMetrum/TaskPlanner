@@ -382,7 +382,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                 ProjectName = p.ProjectName,
                 ClientName = p.ClientName,
 
-                percentage = SerPercentege(p.ContractID),
+                percentage = SetPercentege(p.ContractID),
                 executedHourFull = taskDep.Where(p => p.ContractID == id).Select(e=> e.ExecutedHour).Sum(),
                 plannedHourFull = taskDep.Where(p => p.ContractID == id).Select(e => e.PlannedHour).Sum(),
                 expectedHoursFull = taskDep.Where(p => p.ContractID == id).Select(e => e.ExpectedHour).Sum(),
@@ -405,7 +405,7 @@ namespace TaskPlannerMetrum.Repository.Projects
         }
 
    
-        public string SerPercentege(int id)
+        public string SetPercentege(int id)
         {
             var allstatus = _context.ActivityPlan.Where(i => i.ContractID == id && i.Status != "3" && i.Status != "4").ToList();
             double finalyStatus = allstatus.Where(s => s.Status == "6" || s.Status =="1").Count();
