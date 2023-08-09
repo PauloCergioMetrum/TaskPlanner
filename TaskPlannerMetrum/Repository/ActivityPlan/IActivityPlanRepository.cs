@@ -33,6 +33,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public dynamic GetUserforTask(int id);
 
-        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identificador);
+        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier);
     }
 }

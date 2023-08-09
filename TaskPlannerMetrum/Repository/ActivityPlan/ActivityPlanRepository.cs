@@ -438,9 +438,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
 
         }
-        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identificador)
+        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
         {
-            if( identificador == "Executor")
+            if(identifier == "E")
             {
                 var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
                 updateNotes.NotesFromExecutor = notesExecut;
@@ -449,7 +449,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 return true;
 
             }
-            if(identificador == "Planejador")
+            if(identifier == "P")
             {
                 var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
                 updateNotes.NotesFromPlanner = notesPlanned;
