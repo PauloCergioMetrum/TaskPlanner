@@ -438,17 +438,18 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
 
         }
-        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned)
+        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
         {
-            if(notesExecut != null)
+            if(identifier == "E")
             {
-                var updateNotes = _context.ActivityPlan.Where( i=> i.ID == taskID).FirstOrDefault();
+                var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
                 updateNotes.NotesFromExecutor = notesExecut;
                 _context.Update(updateNotes);
                 _context.SaveChanges();
                 return true;
+
             }
-            if(notesPlanned != null)
+            if(identifier == "P")
             {
                 var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
                 updateNotes.NotesFromPlanner = notesPlanned;
@@ -456,6 +457,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 _context.SaveChanges();
                 return true;
             }
+            
+            
             else
             {
                 return false;
