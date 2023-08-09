@@ -278,11 +278,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult UpdateNotes(int taskID, string notesExecut, string notesPlanned)
+        public IActionResult UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
         {
             try
             {
-                return Ok(_activityPlanBusiness.UpdateNotes(taskID, notesExecut, notesPlanned));
+                return Ok(_activityPlanBusiness.UpdateNotes(taskID, notesExecut, notesPlanned, identifier));
 
             }catch(Exception ex)
             {

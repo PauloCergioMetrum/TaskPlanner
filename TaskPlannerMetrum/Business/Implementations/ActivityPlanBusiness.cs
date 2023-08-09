@@ -197,9 +197,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetUserforTask(id);
         }
 
-        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned)
+        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned,  string identifier)
         {
-            return _activiesRepository.UpdateNotes(taskID, notesExecut, notesPlanned);
+            return _activiesRepository.UpdateNotes(taskID, notesExecut, notesPlanned, identifier);
         }
 
 
