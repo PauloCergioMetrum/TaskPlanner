@@ -169,7 +169,9 @@ namespace TaskPlannerMetrum.Repository.Contracts
         public dynamic GetAllProjectsContracts()
         {
 
-            var contractsProjects = _context.vContractProject.Select(c => new
+            var contractsProjects = _context.vContractProject.ToList();
+
+            return contractsProjects.Select(c => new
             {
                 id = c.id,
                 InternalCode = c.InternalCode,
@@ -180,8 +182,10 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 InspectorName = c.InspectorName,
                 Progress = c.Progress,
                 StartDate = c.StartDate,
+                latesActivities = CountLateActivities(c.id)
+            }).OrderByDescending(s => s.StartDate);
 
-            }).OrderByDescending(s=> s.StartDate);
+
 
             return contractsProjects; 
             //var allContracts = _context.vContractProject.Where(e => e.EnableProject == true).OrderBy(n=> n.InternalCode).ToList();
@@ -216,6 +220,12 @@ namespace TaskPlannerMetrum.Repository.Contracts
             //}
             //return contractlist;
 
+        }
+
+        public int CountLateActivities (int contractID)
+        {
+            return  _context.ActivityPlan.Where(c => c.ContractID ==  contractID && c.ScheduledDate > DateTime.Now).Count();
+          
         }
 
         public bool DesableProject(int id)
