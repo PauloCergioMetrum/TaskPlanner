@@ -211,6 +211,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                     status =  "Concluida";
                     break;
             }
+
             return status;
 
         }
