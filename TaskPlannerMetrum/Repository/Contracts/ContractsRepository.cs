@@ -169,7 +169,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
         public dynamic GetAllProjectsContracts()
         {
 
-            var contractsProjects = _context.vContractProject.ToList();
+            var contractsProjects = _context.vContractProject.Where(a=> a.EnableProject == true).ToList();
 
             return contractsProjects.Select(c => new
             {
@@ -224,7 +224,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         public int CountLateActivities (int contractID)
         {
-            return  _context.ActivityPlan.Where(c => c.ContractID ==  contractID && c.ScheduledDate > DateTime.Now).Count();
+            return  _context.ActivityPlan.Where(c => c.ContractID ==  contractID && c.ScheduledDate < DateTime.Now && c.Status !="6" && c.Status !="1").Count();
           
         }
 
