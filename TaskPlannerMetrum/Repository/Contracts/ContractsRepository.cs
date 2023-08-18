@@ -185,8 +185,6 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 latesActivities = CountLateActivities(c.id)
             }).OrderByDescending(s => s.StartDate);
 
-
-
             return contractsProjects; 
             //var allContracts = _context.vContractProject.Where(e => e.EnableProject == true).OrderBy(n=> n.InternalCode).ToList();
             //List<dynamic> contractlist = new List<dynamic>();
@@ -223,8 +221,12 @@ namespace TaskPlannerMetrum.Repository.Contracts
         }
 
         public int CountLateActivities (int contractID)
-        {
-            return  _context.ActivityPlan.Where(c => c.ContractID ==  contractID && c.ScheduledDate < DateTime.Now && c.Status !="6" && c.Status !="1").Count();
+        {                                                                                 
+            var teste =  _context.ActivityPlan.Where(c => c.ContractID ==  contractID && c.ScheduledDate < DateTime.Now  && c.Status != "1" && c.Status !="3" && c.Status != "4" &&  c.Status !="6"  && c.ScheduledDate.Date != DateTime.Now.Date).ToList();
+
+
+            return teste.Count;
+           
           
         }
 
