@@ -26,5 +26,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string ActivityDepartment { get; set; }
 
+        public string Status { get; set; }
+
     }
 }

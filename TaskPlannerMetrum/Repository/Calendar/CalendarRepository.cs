@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using TaskPlannerMetrum.Model;
@@ -57,7 +58,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                         depNameUSER = u.UserDepartment,
                         task = tasksUsers
                             .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
-                            .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.contractID) })
+                            .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.Status) })
                             .Distinct(),
                         backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
 
@@ -88,7 +89,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                       depNameUSER = u.UserDepartment,
                       task = tasksUsers
                           .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
-                          .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode , status = SetStatus(s.contractID) })
+                          .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode , status = SetStatus(s.Status)})
                           .Distinct(),
                       backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
                   }).Distinct().ToList();
@@ -104,8 +105,6 @@ namespace TaskPlannerMetrum.Repository.Calendar
                 return taskuser;
 
             }
-
-
 
         }
 
@@ -128,7 +127,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                     depNameUSER = u.UserDepartment,
                     task = contractsUsers
                            .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
-                           .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.contractID) })
+                           .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.Status)})
                            .Distinct(),
                     backgroundColor = setColor(contractsUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
                 }).Distinct().ToList();
@@ -186,10 +185,9 @@ namespace TaskPlannerMetrum.Repository.Calendar
         }
 
 
-        public string SetStatus(int contractID)
+        public string SetStatus(string status)
         {
-
-            var status = _context.ActivityPlan.Where(c => c.ContractID == contractID).Select(s => s.Status).FirstOrDefault();
+           
             switch (status)
             {
                 case "5":
@@ -208,7 +206,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                      status =  "Em Progresso";
                     break;
                 case "1":
-                    status =  "Concluida";
+                    status =  "Concluído";
                     break;
             }
 
