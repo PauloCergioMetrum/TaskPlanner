@@ -172,6 +172,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                     return "#a32638";
             }
 
+
         }
 
         public dynamic GetAllContracts()
