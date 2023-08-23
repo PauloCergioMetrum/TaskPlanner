@@ -160,7 +160,12 @@ namespace TaskPlannerMetrum.Repository.Financs
 
         public  string setStatusDate(int id)
         {
-            var finance = _context.Finances.Where(i => i.id ==id).FirstOrDefault(); 
+            var finance = _context.Finances.Where(i => i.id ==id).FirstOrDefault();
+
+            if(finance.Status == "CANCELADO" || finance.Status == "CANCELADO")
+            {
+                return finance.Status;
+            }
 
             if(Convert.ToString(finance.EndDate.Date) != "01/01/0001 00:00:00")
             {
