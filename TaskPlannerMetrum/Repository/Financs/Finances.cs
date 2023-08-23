@@ -143,7 +143,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                     f.DepartmentName,
                     f.DepartmentID,
                     f.Description,
-                    f.Status,
+                    Status =  setStatusDate(f.id),
                     f.EndDate,
                     f.ExpectedInvoiceDate,
                     f.FinanceType,
@@ -157,6 +157,37 @@ namespace TaskPlannerMetrum.Repository.Financs
 
 
         }
+
+        public  string setStatusDate(int id)
+        {
+            var finance = _context.Finances.Where(i => i.id ==id).FirstOrDefault(); 
+
+            if(Convert.ToString(finance.EndDate.Date) != "01/01/0001 00:00:00")
+            {
+                if(finance.EndDate.Date <  DateTime.Now.Date)
+                {
+                    return "NO PRAZO";
+                }
+                else
+                {
+                    return "ATRASADO";
+                }
+            }
+            else
+            {
+                if (finance.BaseDate.Date < DateTime.Now.Date)
+                {
+                    return "NO PRAZO";
+                }
+                else
+                {
+                    return "ATRASADO";
+                }
+            }
+            
+            
+        }
+
         public dynamic GetContractInfo(int id)
         {
             //var query = _context.Contracts.Where(i => i.id == id).FirstOrDefault();
