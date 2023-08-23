@@ -238,7 +238,6 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 _context.Update(project);
                 _context.SaveChanges();
                 return true;
-            
         }
 
         public dynamic ContractDashboard(string year, float value)
