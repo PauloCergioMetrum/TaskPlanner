@@ -29,7 +29,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
         {
             try
             {
-                Model.Contracts newContract = new Model.Contracts();
+                
                 var updateCotract = _context.Contracts.Where(i => i.id == contract.id).FirstOrDefault();
                 updateCotract.StartDate = contract.StartDate;
                 updateCotract.VendorID = contract.VendorID;
@@ -41,7 +41,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 updateCotract.inspectorID= contract.inspectorID;
                 updateCotract.id= contract.id;
                 updateCotract.Observation= contract.Observation;
-                updateCotract.ClientOrder= contract.ClientOrder;
+                updateCotract.ClientOrder = contract.ClientOrder;
 
 
                 _context.Contracts.Update(updateCotract);
