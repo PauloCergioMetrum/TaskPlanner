@@ -211,6 +211,7 @@ namespace TaskPlannerMetrum.Repository.Financs
         {
 
             var updatefinances = _context.Finances.Where(i => i.id == finances.id).FirstOrDefault();
+            var departamentID = updatefinances.DepartmentID;
             updatefinances.InvoicedValue = finances.InvoicedValue;
             updatefinances.Value = finances.Value;
             updatefinances.Status = finances.Status;
@@ -230,10 +231,11 @@ namespace TaskPlannerMetrum.Repository.Financs
             _context.Finances.Update(updatefinances);
             _context.SaveChanges();
 
-            var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == updatefinances.ContractID && updatefinances.DepartmentID == c.DepartmentID).FirstOrDefault();
-            updateDepartmentProjects.DepartmentID= finances.DepartmentID;
+            var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == updatefinances.ContractID && c.FinancesID == finances.id).FirstOrDefault();
+            updateDepartmentProjects.DepartmentID = finances.DepartmentID;
+            _context.DepartmentProjects.Update(updateDepartmentProjects);
+            _context.SaveChanges();
             
-
 
             return true;
 
