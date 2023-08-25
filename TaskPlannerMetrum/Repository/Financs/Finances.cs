@@ -169,7 +169,7 @@ namespace TaskPlannerMetrum.Repository.Financs
 
             if(Convert.ToString(finance.EndDate.Date) != "01/01/0001 00:00:00")
             {
-                if(finance.EndDate.Date >  DateTime.Now.Date)
+                if(finance.EndDate.Date >=  DateTime.Now.Date)
                 {
                     return "NO PRAZO";
                 }
@@ -180,7 +180,7 @@ namespace TaskPlannerMetrum.Repository.Financs
             }
             else
             {
-                if (finance.BaseDate.Date > DateTime.Now.Date)
+                if (finance.BaseDate.Date >= DateTime.Now.Date)
                 {
                     return "NO PRAZO";
                 }
@@ -211,6 +211,7 @@ namespace TaskPlannerMetrum.Repository.Financs
         {
 
             var updatefinances = _context.Finances.Where(i => i.id == finances.id).FirstOrDefault();
+            var departamentID = updatefinances.DepartmentID;
             updatefinances.InvoicedValue = finances.InvoicedValue;
             updatefinances.Value = finances.Value;
             updatefinances.Status = finances.Status;
@@ -230,10 +231,11 @@ namespace TaskPlannerMetrum.Repository.Financs
             _context.Finances.Update(updatefinances);
             _context.SaveChanges();
 
-            var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == updatefinances.ContractID && updatefinances.DepartmentID == c.DepartmentID).FirstOrDefault();
-            updateDepartmentProjects.DepartmentID= finances.DepartmentID;
+            var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == updatefinances.ContractID && c.FinancesID == finances.id).FirstOrDefault();
+            updateDepartmentProjects.DepartmentID = finances.DepartmentID;
+            _context.DepartmentProjects.Update(updateDepartmentProjects);
+            _context.SaveChanges();
             
-
 
             return true;
 
@@ -276,7 +278,6 @@ namespace TaskPlannerMetrum.Repository.Financs
                     duplicateFinance.InvoicedValue = financeMatriz.InvoicedValue;
                     duplicateFinance.Status = financeMatriz.Status;
                     duplicateFinance.WorkSpaceID = financeMatriz.WorkSpaceID;
-
                     //Dados que o front enviou 
                     duplicateFinance.BusinessUnit = Finance.BusinessUnit;
                     duplicateFinance.BaseDate = Finance.BaseDate;
