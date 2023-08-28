@@ -8,5 +8,11 @@ namespace TaskPlannerMetrum.Repository.Calendar
 
         public dynamic TaskforUsers(AllUserCalendar AllUserCalendar);
 
+        public dynamic UsersForProjects(int contractID);
+
+        public dynamic GetAllContracts();
+
+
+
     }
 }

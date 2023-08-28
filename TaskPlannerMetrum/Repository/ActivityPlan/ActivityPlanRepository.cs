@@ -242,7 +242,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 newActivityPaln.NotesFromExecutor = activityPlan.NotesFromExecutor;
                 newActivityPaln.NotesFromPlanner = activityPlan.NotesFromPlanner;
                 newActivityPaln.PlannedManHour = activityPlan.PlannedManHour;
-            
+
+                newActivityPaln.ExecutorTeamID = activityPlan.ExecutorTeamID;
 
 
                 _context.ActivityPlan.Update(newActivityPaln);
@@ -391,6 +392,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             
             var getrating = _context.UserTask.Where(i => i.ActivityPlanID == updatetask.ActivityPlanID).FirstOrDefault();
             getrating.Rating = updatetask.Rating;
+            getrating.Support = updatetask.Support;
             _context.Update(getrating);
             _context.SaveChanges(); 
             return true;
@@ -436,17 +438,18 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
 
         }
-        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned)
+        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
         {
-            if(notesExecut != null)
+            if(identifier == "E")
             {
-                var updateNotes = _context.ActivityPlan.Where( i=> i.ID == taskID).FirstOrDefault();
+                var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
                 updateNotes.NotesFromExecutor = notesExecut;
                 _context.Update(updateNotes);
                 _context.SaveChanges();
                 return true;
+
             }
-            if(notesPlanned != null)
+            if(identifier == "P")
             {
                 var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
                 updateNotes.NotesFromPlanner = notesPlanned;
@@ -454,6 +457,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 _context.SaveChanges();
                 return true;
             }
+            
+            
             else
             {
                 return false;

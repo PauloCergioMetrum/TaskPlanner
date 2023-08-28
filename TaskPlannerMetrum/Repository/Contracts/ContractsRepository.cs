@@ -29,7 +29,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
         {
             try
             {
-                Model.Contracts newContract = new Model.Contracts();
+                
                 var updateCotract = _context.Contracts.Where(i => i.id == contract.id).FirstOrDefault();
                 updateCotract.StartDate = contract.StartDate;
                 updateCotract.VendorID = contract.VendorID;
@@ -41,6 +41,9 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 updateCotract.inspectorID= contract.inspectorID;
                 updateCotract.id= contract.id;
                 updateCotract.Observation= contract.Observation;
+                updateCotract.ClientOrder = contract.ClientOrder;
+
+
                 _context.Contracts.Update(updateCotract);
                 _context.SaveChanges();
                 return true;
@@ -166,7 +169,9 @@ namespace TaskPlannerMetrum.Repository.Contracts
         public dynamic GetAllProjectsContracts()
         {
 
-            var contractsProjects = _context.vContractProject.Select(c => new
+            var contractsProjects = _context.vContractProject.Where(a=> a.EnableProject == true).ToList();
+
+            return contractsProjects.Select(c => new
             {
                 id = c.id,
                 InternalCode = c.InternalCode,
@@ -177,8 +182,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 InspectorName = c.InspectorName,
                 Progress = c.Progress,
                 StartDate = c.StartDate,
-
-            }).OrderByDescending(s=> s.StartDate);
+                latesActivities = CountLateActivities(c.id)
+            }).OrderByDescending(s => s.StartDate);
 
             return contractsProjects; 
             //var allContracts = _context.vContractProject.Where(e => e.EnableProject == true).OrderBy(n=> n.InternalCode).ToList();
@@ -215,6 +220,16 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         }
 
+        public int CountLateActivities (int contractID)
+        {                                                                                 
+            var teste =  _context.ActivityPlan.Where(c => c.ContractID ==  contractID && c.ScheduledDate < DateTime.Now  && c.Status != "1" && c.Status !="3" && c.Status != "4" &&  c.Status !="6"  && c.ScheduledDate.Date != DateTime.Now.Date).ToList();
+
+
+            return teste.Count;
+           
+          
+        }
+
         public bool DesableProject(int id)
         {
             var project = _context.Contracts.Where(i => i.id== id).FirstOrDefault();
@@ -223,7 +238,6 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 _context.Update(project);
                 _context.SaveChanges();
                 return true;
-            
         }
 
         public dynamic ContractDashboard(string year, float value)
@@ -278,8 +292,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
             var retorno = new
             {
-                goalachieved = monthgoal.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
-                totalbillable = billedmonth.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
+                goalachieved = billedmonth.ToString("N", new System.Globalization.CultureInfo("pt-BR")) ,
+                totalbillable = monthgoal.ToString("N", new System.Globalization.CultureInfo("pt-BR")) ,
                 goaltoinvoice = (monthgoal> billedmonth) ? (monthgoal-billedmonth).ToString("N", new System.Globalization.CultureInfo("pt-BR")): 0.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
                 balance = (monthgoal > billedmonth) ? 0.ToString("N", new System.Globalization.CultureInfo("pt-BR")) : (billedmonth - monthgoal).ToString("N", new System.Globalization.CultureInfo("pt-BR")),
 

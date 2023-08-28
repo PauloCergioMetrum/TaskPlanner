@@ -198,5 +198,24 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectRepository.getInfoProject(id);
         }
+
+        public void FavoriteProject(int ContractID, int UserID)
+        {
+            
+            _projectRepository.FavoriteProject( new UserProjects
+            {
+                UserID = UserID,
+                ContractID = ContractID,
+            } );
+        }
+
+        public void DeletFavoritProject(int ContractID, int UserID)
+        {
+            _projectRepository.DeletFavoritProject(new UserProjects
+            {
+                UserID = UserID,
+                ContractID = ContractID,
+            });
+        }
     }
 }

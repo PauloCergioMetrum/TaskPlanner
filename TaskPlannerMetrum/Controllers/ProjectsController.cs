@@ -343,12 +343,51 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
+        [HttpGet("FavoriteProject")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult FavoriteProject(int ContractID, int UserID)
+        {
+            try
+            {
+                _projectBusiness.FavoriteProject(ContractID, UserID);
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+
+            }
+
+        }
 
 
+        [HttpDelete("DeletFavoritProject")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeletFavoritProject(int ContractID, int UserID)
+        {
+            try
+            {
+                _projectBusiness.DeletFavoritProject(ContractID, UserID);
+                return Ok();
 
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
 
+                return BadRequest(ex.Message);
 
+            }
 
-
+        }
     }
 }
