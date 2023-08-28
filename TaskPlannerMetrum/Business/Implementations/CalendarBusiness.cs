@@ -24,6 +24,14 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _repository.TaskforUsers(userID);
         }
 
+        public dynamic UsersForProjects(int contractID)
+        {
+            return _repository.UsersForProjects(contractID);
+        }
 
+        public dynamic GetAllContracts()
+        {
+           return  _repository.GetAllContracts();
+        }
     }
 }

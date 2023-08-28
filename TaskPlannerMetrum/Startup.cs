@@ -37,6 +37,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using TaskPlannerMetrum.Repository.Contracts;
 using TaskPlannerMetrum.Repository.Financs;
 using TaskPlannerMetrum.Repository.Calendar;
+using TaskPlannerMetrum.Repository.ContractViewer;
 
 namespace TaskPlannerMetrum
 {
@@ -152,6 +153,10 @@ namespace TaskPlannerMetrum
             services.AddScoped<IContratosRepository, ContractsRepository>();
             services.AddScoped<ICalendarRepository, CalendarRepository>();
             services.AddScoped<IFinances, Finances>();
+
+            services.AddScoped<IContractViewerBusiness,ContractViewerBusiness>();
+
+            services.AddScoped<IContractViewerRepository, ContractViewerRepository>();  
 
 
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿using log4net.Util;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
+using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.Financs
@@ -46,15 +48,18 @@ namespace TaskPlannerMetrum.Repository.Financs
             });
             _context.SaveChanges();
             int FinanceID = _context.Finances.Where(f => f.ContractID== newfinance.ContractID).OrderBy(i => i.id).Select(f => f.id).LastOrDefault();
-            CreateProject(new Model.DepartmentProjects
+
+            if(_context.DepartmentProjects.Where(d=> d.DepartmentID == newfinance.DepartmentID && d.ContractID == newfinance.ContractID).FirstOrDefault() == null)
             {
-                DepartmentID= newfinance.DepartmentID,
-                ContractID= newfinance.ContractID,
-
-                FinancesID = FinanceID,
-                ExpectedHour = 0,
-
-            });
+                CreateProject(new Model.DepartmentProjects
+                {
+                    DepartmentID= newfinance.DepartmentID,
+                    ContractID= newfinance.ContractID,
+                    FinancesID = FinanceID,
+                    ExpectedHour = 0,
+                });
+            }
+            
 
             return true;
 
@@ -138,7 +143,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                     f.DepartmentName,
                     f.DepartmentID,
                     f.Description,
-                    f.Status,
+                    Status =  setStatusDate(f.id),
                     f.EndDate,
                     f.ExpectedInvoiceDate,
                     f.FinanceType,
@@ -152,6 +157,42 @@ namespace TaskPlannerMetrum.Repository.Financs
 
 
         }
+
+        public  string setStatusDate(int id)
+        {
+            var finance = _context.Finances.Where(i => i.id ==id).FirstOrDefault();
+
+            if(finance.Status == "CANCELADO" || finance.Status == "CANCELADO")
+            {
+                return finance.Status;
+            }
+
+            if(Convert.ToString(finance.EndDate.Date) != "01/01/0001 00:00:00")
+            {
+                if(finance.EndDate.Date >=  DateTime.Now.Date)
+                {
+                    return "NO PRAZO";
+                }
+                else
+                {
+                    return "ATRASADO";
+                }
+            }
+            else
+            {
+                if (finance.BaseDate.Date >= DateTime.Now.Date)
+                {
+                    return "NO PRAZO";
+                }
+                else
+                {
+                    return "ATRASADO";
+                }
+            }
+            
+            
+        }
+
         public dynamic GetContractInfo(int id)
         {
             //var query = _context.Contracts.Where(i => i.id == id).FirstOrDefault();
@@ -170,6 +211,7 @@ namespace TaskPlannerMetrum.Repository.Financs
         {
 
             var updatefinances = _context.Finances.Where(i => i.id == finances.id).FirstOrDefault();
+            var departamentID = updatefinances.DepartmentID;
             updatefinances.InvoicedValue = finances.InvoicedValue;
             updatefinances.Value = finances.Value;
             updatefinances.Status = finances.Status;
@@ -188,6 +230,13 @@ namespace TaskPlannerMetrum.Repository.Financs
             updatefinances.StatusDpv = finances.StatusDpv;
             _context.Finances.Update(updatefinances);
             _context.SaveChanges();
+
+            var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == updatefinances.ContractID && c.FinancesID == finances.id).FirstOrDefault();
+            updateDepartmentProjects.DepartmentID = finances.DepartmentID;
+            _context.DepartmentProjects.Update(updateDepartmentProjects);
+            _context.SaveChanges();
+            
+
             return true;
 
         }
@@ -195,6 +244,59 @@ namespace TaskPlannerMetrum.Repository.Financs
         public dynamic getAllServices(string type)
         {
             return _context.Service.Where(i => i.Type == type).ToList();
+        }
+
+        public dynamic DuplicateFinance(DuplicateFinanceDTO Finance)
+        {
+            try
+            {
+
+                //Nao foi possivel fazer dessa forma por que o ID duplica 
+                // var duplicateFinance = financeMatriz;
+                // duplicateFinance.BusinessUnit = Finance.BusinessUnit;
+                // duplicateFinance.BaseDate = Finance.BaseDate;
+
+                //Dados do objeto Matriz que será utilizado para duplicar a Finança
+                Model.Finances financeMatriz = _context.Finances.Where(i => i.id == Finance.id).FirstOrDefault();
+                var duplicateFinance = new Model.Finances();
+
+                if (financeMatriz != null)
+                {
+                    duplicateFinance.invoice = financeMatriz.invoice;
+                    duplicateFinance.paymentCondition = financeMatriz.paymentCondition;
+                    duplicateFinance.StatusDpv= financeMatriz.StatusDpv;
+                    duplicateFinance.Amount = financeMatriz.Amount;
+                    duplicateFinance.InvoicedDate = financeMatriz.InvoicedDate;
+                    duplicateFinance.EndDate = financeMatriz.EndDate;
+                    duplicateFinance.Billing = financeMatriz.Billing;
+                    duplicateFinance.ContractID = financeMatriz.ContractID;
+                    duplicateFinance.DepartmentID = financeMatriz.DepartmentID;
+                    duplicateFinance.Description = financeMatriz.Description;
+                    duplicateFinance.ExpectedInvoiceDate = financeMatriz.ExpectedInvoiceDate;
+                    duplicateFinance.FinanceType = financeMatriz.FinanceType;
+                    duplicateFinance.Value = financeMatriz.Value;
+                    duplicateFinance.InvoicedValue = financeMatriz.InvoicedValue;
+                    duplicateFinance.Status = financeMatriz.Status;
+                    duplicateFinance.WorkSpaceID = financeMatriz.WorkSpaceID;
+                    //Dados que o front enviou 
+                    duplicateFinance.BusinessUnit = Finance.BusinessUnit;
+                    duplicateFinance.BaseDate = Finance.BaseDate;
+                    _context.Finances.Add(duplicateFinance);
+                    _context.SaveChanges();
+                    return true;
+
+                }
+                else
+                {
+                    return false;
+                }
+
+               
+            }catch(Exception ex)
+            {
+                return ex.Message.ToString();
+            }
+
         }
     }
 }

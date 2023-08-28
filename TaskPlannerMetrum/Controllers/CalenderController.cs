@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using TaskPlannerMetrum.Business;
 
 using TaskPlannerMetrum.Model;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskPlannerMetrum.Controllers
 {
@@ -72,8 +73,57 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        [HttpGet("UsersForProjects")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
 
+
+        public IActionResult UsersForProjects(int contractID)
+        {
+            try
+            {
+                
+                return Ok(_calenderBusiness.UsersForProjects(contractID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("GetAllContracts")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
     
+
+        public IActionResult GetAllContracts()
+        {
+            try
+            {
+                return Ok(_calenderBusiness.GetAllContracts());
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
+
+
 
 
     }
