@@ -32,5 +32,8 @@ namespace TaskPlannerMetrum.Repository.Users
         public bool IsActiveDarkMode(int id);
 
 
+        public dynamic GetAllUsers();
+
+
     }
 }
