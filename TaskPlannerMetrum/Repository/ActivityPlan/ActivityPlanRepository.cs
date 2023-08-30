@@ -361,7 +361,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     ScheduledDate = activityPlan.ScheduledDate,
                     WorkspaceID = taskforduplicate.WorkspaceID,
                     ActivitiesScopeListID = taskforduplicate.ActivitiesScopeListID,
-                    Status = taskforduplicate.Status,
+                    Status = "5",
                     ContractID = taskforduplicate.ContractID,
                     DepartamentID = taskforduplicate.DepartamentID,
                     PlannerTeamID = taskforduplicate.PlannerTeamID,

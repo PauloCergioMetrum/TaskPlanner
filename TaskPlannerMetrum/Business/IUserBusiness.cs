@@ -19,5 +19,8 @@ namespace TaskPlannerMetrum.Business
 
         public bool IsActiveDarkMode(int id);
 
+        public dynamic GetAllUsers();
+
+
     }
 }

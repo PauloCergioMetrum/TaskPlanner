@@ -159,5 +159,23 @@ namespace TaskPlannerMetrum.Repository.Users
         {
             return _context.Users.Where(i => i.Id == id).Select(i => i.IsDarkMode).FirstOrDefault();
         }
+
+
+        public dynamic GetAllUsers ()
+        {
+            var users = _context.Users.ToList();
+            return users.Select(u => new
+            {
+                u.UserName,
+                Id = _context.Team.Where(i => i.UserID == u.Id).Select(i => i.ID).FirstOrDefault(),
+                u.PhoneNumber,
+                u.UserEmail,
+                u.WorkspaceID,
+                u.DepartmentId,
+                u.FullName,
+                u.CreationDate,
+            }).ToList();
+
+        }
     }
 }
