@@ -196,6 +196,32 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetAllUsers")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult GetAllUsers()
+        {
+            try
+            {
+                return Ok(_userBusiness.GetAllUsers());
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
+        
+
+
 
 
 
