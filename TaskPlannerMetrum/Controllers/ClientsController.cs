@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Intrinsics.X86;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskPlannerMetrum.Controllers
 {
@@ -39,12 +41,56 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return Ok(_clientsBusiness.FindAll());
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Logger.Log(ex.Message, ELoggerType.Debug);
 
-                return BadRequest(ex.Message);  
+                return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult CreateClients(Model.Clients clients)
+        {
+            try
+            {
+                if (_clientsBusiness.ExistCnpj(clients))
+                {
+                    return BadRequest("Cliente já cadastrado.");
+                }
+                else
+                {
+                    return Ok(_clientsBusiness.CreateClients(clients));
+                }
+
+            
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
     }
+
+
 }
