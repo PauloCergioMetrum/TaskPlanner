@@ -40,18 +40,24 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     Status = activityPlan.Status,
                     WorkspaceID = activityPlan.WorkspaceID,
                     IsRework = activityPlan.IsRework,
-                    DepartamentID= activityPlan.DepartamentID,
+                    DepartamentID = activityPlan.DepartamentID,
                 });
                 _context.SaveChanges();
 
 
                 createTaskRating(new UserTask
                 {
-                    ContractID= activityPlan.ContractID,
-                    ActivitiesScopeListID=activityPlan.ActivitiesScopeListID,
-                    UserID= activityPlan.ExecutorTeamID,
-                    Rating=0,
-                    ActivityPlanID = _context.ActivityPlan.OrderBy(i => i.ID).Select( i => i.ID).LastOrDefault()
+                    ContractID = activityPlan.ContractID,
+                    ActivitiesScopeListID = activityPlan.ActivitiesScopeListID,
+                    UserID = activityPlan.ExecutorTeamID,
+                    Rating = 0,
+                    ActivityPlanID = _context.ActivityPlan.OrderBy(i => i.ID).Select(i => i.ID).LastOrDefault()
+                });
+
+                createRatingProjects(new RatingProject
+                {
+                    ProjectID = activityPlan.ContractID, 
+                    UserID= _context.Team.Where(i => i.UserID == activityPlan.ExecutorTeamID).Select(i => i.ID).FirstOrDefault(),
                 });
 
 
@@ -61,6 +67,23 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             {
                 return false;
             }
+        }
+
+        public bool createRatingProjects(Model.RatingProject ratingProject)
+        {
+            var projectExist = _context.RatingProject.Where(r => r.UserID == ratingProject.UserID && r.ProjectID == ratingProject.UserID).FirstOrDefault();
+
+            if (projectExist == null)
+            {
+                _context.RatingProject.Add(ratingProject);
+                    _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         public bool createTaskRating(UserTask task)
@@ -113,7 +136,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         {
             List<Model.Projects> activityPlan = new List<Model.Projects>();
 
-            var getRow = _context.Projects.FirstOrDefault(i => i.ID==id);
+            var getRow = _context.Projects.FirstOrDefault(i => i.ID == id);
 
             return getRow.Name;
         }
@@ -234,23 +257,23 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public bool UpdateActivityPlan(vActivityPlan activityPlan)
         {
-            
-                var newActivityPaln = _context.ActivityPlan.Where(a => a.ID == activityPlan.ID).FirstOrDefault();
-                newActivityPaln.Status = activityPlan.Status;
-                newActivityPaln.ExecutedManHour = activityPlan.ExecutedManHour;
-                newActivityPaln.ScheduledDate = activityPlan.ScheduledDate;
-                newActivityPaln.NotesFromExecutor = activityPlan.NotesFromExecutor;
-                newActivityPaln.NotesFromPlanner = activityPlan.NotesFromPlanner;
-                newActivityPaln.PlannedManHour = activityPlan.PlannedManHour;
 
-                newActivityPaln.ExecutorTeamID = activityPlan.ExecutorTeamID;
+            var newActivityPaln = _context.ActivityPlan.Where(a => a.ID == activityPlan.ID).FirstOrDefault();
+            newActivityPaln.Status = activityPlan.Status;
+            newActivityPaln.ExecutedManHour = activityPlan.ExecutedManHour;
+            newActivityPaln.ScheduledDate = activityPlan.ScheduledDate;
+            newActivityPaln.NotesFromExecutor = activityPlan.NotesFromExecutor;
+            newActivityPaln.NotesFromPlanner = activityPlan.NotesFromPlanner;
+            newActivityPaln.PlannedManHour = activityPlan.PlannedManHour;
+
+            newActivityPaln.ExecutorTeamID = activityPlan.ExecutorTeamID;
 
 
-                _context.ActivityPlan.Update(newActivityPaln);
-                _context.SaveChanges();
-                return true;
-            
-            
+            _context.ActivityPlan.Update(newActivityPaln);
+            _context.SaveChanges();
+            return true;
+
+
         }
 
         public bool DeleteId(int id)
@@ -259,15 +282,15 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             var deleteUserTask = _context.UserTask.FirstOrDefault(i => i.ActivityPlanID == id);
             if (deleteActivyplan != null)
             {
-                
-                    _context.UserTask.Remove(deleteUserTask);
-                    _context.SaveChanges();
-                    _context.ActivityPlan.Remove(deleteActivyplan);
-                    _context.SaveChanges();
-                    return true;
-                
-               
-                
+
+                _context.UserTask.Remove(deleteUserTask);
+                _context.SaveChanges();
+                _context.ActivityPlan.Remove(deleteActivyplan);
+                _context.SaveChanges();
+                return true;
+
+
+
             }
             return false;
         }
@@ -302,7 +325,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 usersdep.Add(allusers);
             }
             List<dynamic> tasks = new List<dynamic>();
-            var task = _context.ActivitiesScopeList.Where(d => d.GroupTaskID== GroupTaskID).ToList();
+            var task = _context.ActivitiesScopeList.Where(d => d.GroupTaskID == GroupTaskID).ToList();
             foreach (var t in task)
             {
                 var alltask = new
@@ -325,13 +348,13 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public dynamic GetDepTask(UserDepForTask deptask)
         {
             List<dynamic> Users = new List<dynamic>();
-            var userid = _context.Users.Where(a => a.IsActive == true).OrderBy(i=> i.FullName).ToList();
+            var userid = _context.Users.Where(a => a.IsActive == true).OrderBy(i => i.FullName).ToList();
             foreach (var user in userid)
             {
                 var raiting = _context.UserTask.Where(i => i.ActivitiesScopeListID == deptask.taskID && i.UserID == user.Id).Select(r => r.Rating).Sum();
                 double allTask = _context.UserTask.Where(a => a.ActivitiesScopeListID == deptask.taskID && user.Id == a.UserID).Count();
-                double media = raiting/allTask;
-                if( raiting == 0 && allTask == 0)
+                double media = raiting / allTask;
+                if (raiting == 0 && allTask == 0)
                 {
                     media = 0;
                 }
@@ -346,42 +369,42 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 Users.Add(users);
 
             }
-            return Users;   
+            return Users;
         }
 
         public bool DuplicateTask(Model.DuplicatTask activityPlan)
         {
             var taskforduplicate = _context.ActivityPlan.Where(i => i.ID == activityPlan.ID).FirstOrDefault();
-            
-                _context.Add(new Model.ActivityPlan
-                {
-                    ExecutorTeamID = taskforduplicate.ExecutorTeamID,
-                    PlannedManHour = activityPlan.PlannedManHour,
-                    ExecutedManHour = 0,
-                    ScheduledDate = activityPlan.ScheduledDate,
-                    WorkspaceID = taskforduplicate.WorkspaceID,
-                    ActivitiesScopeListID = taskforduplicate.ActivitiesScopeListID,
-                    Status = "5",
-                    ContractID = taskforduplicate.ContractID,
-                    DepartamentID = taskforduplicate.DepartamentID,
-                    PlannerTeamID = taskforduplicate.PlannerTeamID,
-                    NotesFromPlanner = taskforduplicate.NotesFromPlanner,
-                    IsRework = taskforduplicate.IsRework,
-                    NotesFromExecutor = taskforduplicate.NotesFromExecutor
-                });
-                _context.SaveChanges();
+
+            _context.Add(new Model.ActivityPlan
+            {
+                ExecutorTeamID = taskforduplicate.ExecutorTeamID,
+                PlannedManHour = activityPlan.PlannedManHour,
+                ExecutedManHour = 0,
+                ScheduledDate = activityPlan.ScheduledDate,
+                WorkspaceID = taskforduplicate.WorkspaceID,
+                ActivitiesScopeListID = taskforduplicate.ActivitiesScopeListID,
+                Status = "5",
+                ContractID = taskforduplicate.ContractID,
+                DepartamentID = taskforduplicate.DepartamentID,
+                PlannerTeamID = taskforduplicate.PlannerTeamID,
+                NotesFromPlanner = taskforduplicate.NotesFromPlanner,
+                IsRework = taskforduplicate.IsRework,
+                NotesFromExecutor = taskforduplicate.NotesFromExecutor
+            });
+            _context.SaveChanges();
 
 
-                createTaskRating(new UserTask
-                {
-                    ContractID = taskforduplicate.ContractID,
-                    ActivitiesScopeListID = taskforduplicate.ActivitiesScopeListID,
-                    UserID = _context.Team.Where(i => i.ID ==taskforduplicate.ExecutorTeamID).Select(u => u.UserID).FirstOrDefault(),
-                    ActivityPlanID = _context.ActivityPlan.OrderBy(i => i.ID).Select(i => i.ID).LastOrDefault(),
-                    Rating = 0
-                });
-                return true;
-            
+            createTaskRating(new UserTask
+            {
+                ContractID = taskforduplicate.ContractID,
+                ActivitiesScopeListID = taskforduplicate.ActivitiesScopeListID,
+                UserID = _context.Team.Where(i => i.ID == taskforduplicate.ExecutorTeamID).Select(u => u.UserID).FirstOrDefault(),
+                ActivityPlanID = _context.ActivityPlan.OrderBy(i => i.ID).Select(i => i.ID).LastOrDefault(),
+                Rating = 0
+            });
+            return true;
+
 
 
 
@@ -389,12 +412,12 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public bool UpdateRating(RatingUpdate updatetask)
         {
-            
+
             var getrating = _context.UserTask.Where(i => i.ActivityPlanID == updatetask.ActivityPlanID).FirstOrDefault();
             getrating.Rating = updatetask.Rating;
             getrating.Support = updatetask.Support;
             _context.Update(getrating);
-            _context.SaveChanges(); 
+            _context.SaveChanges();
             return true;
 
         }
@@ -404,43 +427,43 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             List<dynamic> retorno = new List<dynamic>();
             id = _context.Team.Where(i => i.UserID == id).Select(u => u.ID).FirstOrDefault();
             var alltasks = _context.ActivityPlan.Where(i => i.ExecutorTeamID == id).ToList();
-            
-                foreach (var task in alltasks)
+
+            foreach (var task in alltasks)
+            {
+                var Task = new
                 {
-                    var Task = new
-                    {
-                        id = task.ID,
-                        contractID = task.ContractID,
-                        projectName = _context.Contracts.Where(i => i.id == task.ContractID).Select(i => i.InternalCode).FirstOrDefault(),
-                        description = _context.ActivitiesScopeList.Where(i => i.ID == task.ActivitiesScopeListID).Select(d => d.Description).FirstOrDefault(),
-                        activitiesScopeListID = task.ActivitiesScopeListID,
-                        scheduledDate = task.ScheduledDate,
-                        plannedManHour = task.PlannedManHour,
-                        plannerTeamID = task.PlannerTeamID,
-                        notesFromPlanner = task.NotesFromPlanner,
-                        executorTeamID = task.ExecutorTeamID,
-                        status = task.Status,
-                        executedManHour = task.ExecutedManHour,
-                        notesFromExecutor = task.NotesFromExecutor,
-                        userID = task.ExecutorTeamID,
-                        executorName = _context.Users.Where( i=> i.Id == _context.Team.Where(i => i.ID == id).Select(i => i.UserID).FirstOrDefault()).Select(n=> n.FullName).FirstOrDefault(),
-                        isRework = task.IsRework,
-                        
-                    };
-                    retorno.Add(Task);
+                    id = task.ID,
+                    contractID = task.ContractID,
+                    projectName = _context.Contracts.Where(i => i.id == task.ContractID).Select(i => i.InternalCode).FirstOrDefault(),
+                    description = _context.ActivitiesScopeList.Where(i => i.ID == task.ActivitiesScopeListID).Select(d => d.Description).FirstOrDefault(),
+                    activitiesScopeListID = task.ActivitiesScopeListID,
+                    scheduledDate = task.ScheduledDate,
+                    plannedManHour = task.PlannedManHour,
+                    plannerTeamID = task.PlannerTeamID,
+                    notesFromPlanner = task.NotesFromPlanner,
+                    executorTeamID = task.ExecutorTeamID,
+                    status = task.Status,
+                    executedManHour = task.ExecutedManHour,
+                    notesFromExecutor = task.NotesFromExecutor,
+                    userID = task.ExecutorTeamID,
+                    executorName = _context.Users.Where(i => i.Id == _context.Team.Where(i => i.ID == id).Select(i => i.UserID).FirstOrDefault()).Select(n => n.FullName).FirstOrDefault(),
+                    isRework = task.IsRework,
+
+                };
+                retorno.Add(Task);
 
 
 
-                }
-                return retorno;
-          
+            }
+            return retorno;
+
 
 
 
         }
         public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
         {
-            if(identifier == "E")
+            if (identifier == "E")
             {
                 var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
                 updateNotes.NotesFromExecutor = notesExecut;
@@ -449,7 +472,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 return true;
 
             }
-            if(identifier == "P")
+            if (identifier == "P")
             {
                 var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
                 updateNotes.NotesFromPlanner = notesPlanned;
@@ -457,8 +480,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 _context.SaveChanges();
                 return true;
             }
-            
-            
+
+
             else
             {
                 return false;
