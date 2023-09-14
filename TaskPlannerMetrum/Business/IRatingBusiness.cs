@@ -2,5 +2,7 @@
 {
     public interface IRatingBusiness
     {
+
+        public dynamic GetAllRatingforUser(int projectID);
     }
 }

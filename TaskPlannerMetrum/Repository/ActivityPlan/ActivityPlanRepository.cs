@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -45,20 +46,22 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 _context.SaveChanges();
 
 
-                createTaskRating(new UserTask
+                CreateAllRatings(new UserTask
                 {
                     ContractID = activityPlan.ContractID,
                     ActivitiesScopeListID = activityPlan.ActivitiesScopeListID,
                     UserID = activityPlan.ExecutorTeamID,
                     Rating = 0,
                     ActivityPlanID = _context.ActivityPlan.OrderBy(i => i.ID).Select(i => i.ID).LastOrDefault()
-                });
-
-                createRatingProjects(new RatingProject
+                },
+                (new RatingProject
                 {
-                    ProjectID = activityPlan.ContractID, 
+                    ProjectID = activityPlan.ContractID,
                     UserID= _context.Team.Where(i => i.UserID == activityPlan.ExecutorTeamID).Select(i => i.ID).FirstOrDefault(),
-                });
+                }
+                ));
+
+           
 
 
                 return true;
@@ -69,14 +72,21 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
         }
 
+        public bool CreateAllRatings(UserTask RatingforTasks, RatingProject ratingProjects)
+        {
+            if(createTaskRating(RatingforTasks) == true && createRatingProjects(ratingProjects)== true) return true; return false;
+        
+        }
+
         public bool createRatingProjects(Model.RatingProject ratingProject)
         {
-            var projectExist = _context.RatingProject.Where(r => r.UserID == ratingProject.UserID && r.ProjectID == ratingProject.UserID).FirstOrDefault();
+            var projectExist = _context.RatingProject.Where(r => r.UserID == ratingProject.UserID && r.ProjectID == ratingProject.ProjectID).FirstOrDefault();
 
             if (projectExist == null)
             {
                 _context.RatingProject.Add(ratingProject);
-                    _context.SaveChanges();
+                _context.SaveChanges();
+                creatDescriptionExecuter(ratingProject);
                 return true;
             }
             else
@@ -85,6 +95,60 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
 
         }
+
+        public bool creatDescriptionExecuter(RatingProject userRating)
+        {
+            var leader = _context.ActivityPlan.Where(t => t.PlannerTeamID == userRating.UserID && t.ContractID == userRating.ProjectID).FirstOrDefault();
+            List<RatingDescription> descriptions = _context.RatingDescription.ToList();
+            var ratingProjects = _context.RatingProject.Where(p => p.ProjectID == userRating.ProjectID && p.UserID == userRating.UserID).Select( i=> i.ID).FirstOrDefault();
+            try
+            {
+                if (leader != null)
+                {
+                    descriptions = descriptions.Where(t => t.Type == "L").ToList();
+                    foreach (RatingDescription description in descriptions)
+                    {
+                        _context.Rating.Add(new Model.Rating
+                        {
+                            ExecutorTeamID = userRating.UserID,
+                            RatingProjectID = ratingProjects,
+                            RatingDescriptionID = description.ID,
+                            Value = 0
+
+                        });
+                        _context.SaveChanges();
+
+                    }
+                  
+                }
+                else
+                {
+                    descriptions = descriptions.Where(t => t.Type == "E").ToList();
+                    foreach (RatingDescription description in descriptions)
+                    {
+                        _context.Rating.Add(new Model.Rating
+                        {
+                            ExecutorTeamID = userRating.UserID,
+                            RatingProjectID = ratingProjects,
+                            RatingDescriptionID = description.ID,
+                            Value = 0
+
+                        });
+                        _context.SaveChanges();
+
+                    }
+                 
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+
 
         public bool createTaskRating(UserTask task)
         {

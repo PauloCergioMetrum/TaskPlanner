@@ -2,6 +2,6 @@
 {
     public interface IRatingRepository 
     {
-
+        public dynamic GetAllRatingforUser(int projectID);
     }
 }

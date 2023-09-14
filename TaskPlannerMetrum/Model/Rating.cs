@@ -6,11 +6,15 @@ namespace TaskPlannerMetrum.Model
     {
         [Key]
         public int ID { get; set; }
-        public string RatingProjectID { get; set; }    
+        public int RatingProjectID { get; set; }    
 
         public int RatingDescriptionID { get; set; }
-        public string Value { get; set;}
-   
+        public int Value { get; set;}
+
+
+        public int ExecutorTeamID { get; set; }
+
+
 
     }
 }
