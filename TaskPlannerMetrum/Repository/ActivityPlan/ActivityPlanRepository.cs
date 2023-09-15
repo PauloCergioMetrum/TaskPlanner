@@ -98,7 +98,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public bool creatDescriptionExecuter(RatingProject userRating)
         {
-            var leader = _context.ActivityPlan.Where(t => t.PlannerTeamID == userRating.UserID && t.ContractID == userRating.ProjectID).FirstOrDefault();
+            var leader = _context.DepartmentProjects.Where(t => t.ContractID == userRating.ProjectID && t.TechLeaderID == userRating.UserID).FirstOrDefault();
             List<RatingDescription> descriptions = _context.RatingDescription.ToList();
             var ratingProjects = _context.RatingProject.Where(p => p.ProjectID == userRating.ProjectID && p.UserID == userRating.UserID).Select( i=> i.ID).FirstOrDefault();
             try
@@ -146,8 +146,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 return false;
             }
         }
-
-
 
 
         public bool createTaskRating(UserTask task)

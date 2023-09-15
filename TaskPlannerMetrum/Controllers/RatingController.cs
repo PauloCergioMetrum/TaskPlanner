@@ -21,7 +21,7 @@ namespace TaskPlannerMetrum.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetAllUsersForProject")]
+        [HttpGet("GetAllRatingProject")]
         [ProducesResponseType((200), Type = typeof(List<UserVO>))]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
