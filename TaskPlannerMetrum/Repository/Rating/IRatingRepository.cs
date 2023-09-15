@@ -2,6 +2,9 @@
 {
     public interface IRatingRepository 
     {
-        public dynamic GetAllRatingforUser(int projectID);
+
+        public dynamic GetAllRatingProject(int projectID);
+
+
     }
 }

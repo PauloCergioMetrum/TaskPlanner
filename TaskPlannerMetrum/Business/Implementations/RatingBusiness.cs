@@ -12,9 +12,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             _repository = repository;   
         }
 
-        public dynamic GetAllRatingforUser(int projectID)
+
+        public dynamic GetAllRatingProject(int projectID)
         {
-            return _repository.GetAllRatingforUser(projectID);  
+            return _repository.GetAllRatingProject(projectID);  
         }
+
+
     }
 }

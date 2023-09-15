@@ -13,9 +13,9 @@ namespace TaskPlannerMetrum.Controllers
     public class RatingController : ControllerBase
     {
         private readonly IRatingBusiness _ratingBusiness;
-        private readonly ILogger<RatingController> _logger; 
+        private readonly ILogger<RatingController> _logger;
 
-        public RatingController(IRatingBusiness ratingBusiness , ILogger<RatingController> logger)
+        public RatingController(IRatingBusiness ratingBusiness, ILogger<RatingController> logger)
         {
             _ratingBusiness=ratingBusiness;
             _logger = logger;
@@ -27,11 +27,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         //[TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult GetAllUsersForProject( int projectID)
+        public IActionResult GetAllRatingProject(int projectID)
         {
             try
             {
-                return Ok(_ratingBusiness.GetAllRatingforUser(projectID));
+                return Ok(_ratingBusiness.GetAllRatingProject(projectID));
             }
             catch (Exception ex)
             {
@@ -42,4 +42,6 @@ namespace TaskPlannerMetrum.Controllers
         }
 
     }
+
 }
+

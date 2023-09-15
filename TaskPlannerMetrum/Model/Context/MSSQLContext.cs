@@ -65,13 +65,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<Rating> Rating { get; set; }
 
 
-
-
-
-
-
-
-
+        public DbSet<vRating> vRating { get; set; }
 
     }
 }

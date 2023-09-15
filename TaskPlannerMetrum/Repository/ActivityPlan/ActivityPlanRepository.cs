@@ -110,7 +110,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     {
                         _context.Rating.Add(new Model.Rating
                         {
-                            ExecutorTeamID = userRating.UserID,
+                           
                             RatingProjectID = ratingProjects,
                             RatingDescriptionID = description.ID,
                             Value = 0
@@ -128,7 +128,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     {
                         _context.Rating.Add(new Model.Rating
                         {
-                            ExecutorTeamID = userRating.UserID,
+                            
                             RatingProjectID = ratingProjects,
                             RatingDescriptionID = description.ID,
                             Value = 0
