@@ -59,13 +59,13 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<vContractViewer> vContractViewer { get; set; }
 
+        public DbSet<RatingProject> RatingProject { get; set; }
 
-        
+        public DbSet<RatingDescription> RatingDescription { get; set; }
+        public DbSet<Rating> Rating { get; set; }
 
 
-
-
-
+        public DbSet<vRating> vRating { get; set; }
 
     }
 }
