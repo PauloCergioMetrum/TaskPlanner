@@ -39,6 +39,7 @@ using TaskPlannerMetrum.Repository.Financs;
 using TaskPlannerMetrum.Repository.Calendar;
 using TaskPlannerMetrum.Repository.ContractViewer;
 using TaskPlannerMetrum.Repository.Clients;
+using TaskPlannerMetrum.Repository.Rating;
 
 namespace TaskPlannerMetrum
 {
@@ -136,7 +137,9 @@ namespace TaskPlannerMetrum
             services.AddScoped<IContractBusiness, ContractBusinessImplementation>();
             services.AddScoped<IFinancesBusiness, FinancesBusiness>();
             services.AddScoped<ICalendarBusiness, CalendarBusiness>();
-            
+            services.AddScoped<IRatingBusiness, RatingBusiness>();
+
+
 
 
 
@@ -160,6 +163,8 @@ namespace TaskPlannerMetrum
 
             services.AddScoped<IContractViewerRepository, ContractViewerRepository>();
             services.AddScoped<IClientsRepository, ClientsRepository>();
+            services.AddScoped<IRatingRepository, RatingRepository>();
+            
 
 
 
