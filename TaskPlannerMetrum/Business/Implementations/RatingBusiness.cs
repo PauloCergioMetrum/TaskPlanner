@@ -1,4 +1,5 @@
-﻿using TaskPlannerMetrum.Repository.Rating;
+﻿using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Repository.Rating;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -17,6 +18,13 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _repository.GetAllRatingProject(projectID);  
         }
+
+
+        public object UpdateRating(RatingDTOAll ratings)
+        {
+            return _repository.UpdateRating(ratings);
+        }
+
 
 
     }

@@ -17,7 +17,7 @@ namespace TaskPlannerMetrum.Controllers
 
         public RatingController(IRatingBusiness ratingBusiness, ILogger<RatingController> logger)
         {
-            _ratingBusiness=ratingBusiness;
+            _ratingBusiness = ratingBusiness;
             _logger = logger;
         }
 
@@ -32,6 +32,33 @@ namespace TaskPlannerMetrum.Controllers
             try
             {
                 return Ok(_ratingBusiness.GetAllRatingProject(projectID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
+
+
+
+
+        [HttpPut("UpdateRating")]
+        [ProducesResponseType((200), Type = typeof(List<UserVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult UpdateRating(Model.RatingDTOAll ratings)
+        {
+            try
+            {
+                return Ok(_ratingBusiness.UpdateRating(ratings));
             }
             catch (Exception ex)
             {

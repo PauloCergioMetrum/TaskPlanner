@@ -2,6 +2,7 @@
 using Microsoft.Identity.Client;
 using Microsoft.VisualBasic;
 using MySqlConnector;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -25,30 +26,60 @@ namespace TaskPlannerMetrum.Repository.Rating
         public dynamic GetAllRatingProject(int projectID)
         {
             List<Model.ModelViews.vRating> vRating = _context.vRating.Where(i => i.ProjectID ==projectID).ToList();
-            List<RatingDTO> retorno = new List<RatingDTO>();            
+            List<RatingDTO> ratingDTOList = new List<RatingDTO>();            
             foreach (var executor in vRating)
             {
-                if (!retorno.Any(s => s.UserID == executor.UserID) )
+                if (!ratingDTOList.Any(s => s.UserID == executor.UserID) )
                 {
-                    retorno.Add(new RatingDTO
+                    ratingDTOList.Add(new RatingDTO
                     {
                         UserID = executor.UserID,
                         UserName = executor.UserName,
                         ProjectID = executor.ProjectID,
                         TeckLeader = executor.Type == "L" ? true : false,
-                        Rating = vRating.Where(u => u.UserID == executor.UserID).Select(r => new Model.DTO.Rating
+                        
+
+                        Rating = vRating.Where(u => u.UserID == executor.UserID).Select(r => new Model.DTO.RatingModel
                         {
-                            RatingName=r.RatingName,
-                            UserName = r.UserName,
-                            RatingValue = r.RatingValue
+                            RatingID = r.RatingID,
+                           RatingName =r.RatingName,
+                            RatingValue = r.RatingValue,
+                            RatingDescriptionID = r.RatingDescriptionID,
                         }).ToList(),
                     }); 
                 }
 
             }
-            return retorno;
+            return ratingDTOList;
 
         }
+
+       
+        public bool UpdateRating(RatingDTOAll reatings) 
+
+        {
+            try
+            {
+                var rating = _context.Rating.Where(r => r.ID == reatings.RatingID).FirstOrDefault();
+                if (rating != null)
+                {
+                    rating.Value = reatings.RatingValue;
+                    _context.Rating.Update(rating);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            } catch (Exception ex)
+            {
+                return false; 
+            }
+        }
+        
+           
+        
     }
 }
 
