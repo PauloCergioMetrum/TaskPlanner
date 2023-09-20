@@ -37,12 +37,14 @@ namespace TaskPlannerMetrum.Repository.Rating
                         UserName = executor.UserName,
                         ProjectID = executor.ProjectID,
                         TeckLeader = executor.Type == "L" ? true : false,
+                        RatingID =executor.RatingID,
+
                         Rating = vRating.Where(u => u.UserID == executor.UserID).Select(r => new Model.DTO.RatingModel
                         {
-                            RatingName = r.RatingName,
-                            UserName = r.UserName,
+                            
+                           
                             RatingValue = r.RatingValue,
-                            RatingID = r.RatingID,
+                            RatingDescriptionID = r.RatingDescriptionID,
                         }).ToList(),
                     }); 
                 }
