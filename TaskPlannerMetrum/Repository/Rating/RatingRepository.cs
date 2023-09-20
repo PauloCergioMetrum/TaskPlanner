@@ -26,23 +26,23 @@ namespace TaskPlannerMetrum.Repository.Rating
         public dynamic GetAllRatingProject(int projectID)
         {
             List<Model.ModelViews.vRating> vRating = _context.vRating.Where(i => i.ProjectID ==projectID).ToList();
-            List<RatingDTO> retorno = new List<RatingDTO>();            
+            List<RatingDTO> ratingDTOList = new List<RatingDTO>();            
             foreach (var executor in vRating)
             {
-                if (!retorno.Any(s => s.UserID == executor.UserID) )
+                if (!ratingDTOList.Any(s => s.UserID == executor.UserID) )
                 {
-                    retorno.Add(new RatingDTO
+                    ratingDTOList.Add(new RatingDTO
                     {
                         UserID = executor.UserID,
                         UserName = executor.UserName,
                         ProjectID = executor.ProjectID,
                         TeckLeader = executor.Type == "L" ? true : false,
-                        RatingID =executor.RatingID,
+                        
 
                         Rating = vRating.Where(u => u.UserID == executor.UserID).Select(r => new Model.DTO.RatingModel
                         {
-                            
-                           
+                            RatingID = r.RatingID,
+                           RatingName =r.RatingName,
                             RatingValue = r.RatingValue,
                             RatingDescriptionID = r.RatingDescriptionID,
                         }).ToList(),
@@ -50,7 +50,7 @@ namespace TaskPlannerMetrum.Repository.Rating
                 }
 
             }
-            return retorno;
+            return ratingDTOList;
 
         }
 
@@ -60,13 +60,7 @@ namespace TaskPlannerMetrum.Repository.Rating
         {
             try
             {
-                // IDENTIFICAR QUAL O RATING ESTOU  ALTERANDO 
-                var ratingID = _context.RatingProject.Where(r => r.ProjectID == reatings.ProjectID && r.UserID == reatings.UserId).Select(d => d.ID).FirstOrDefault();
-                var  rating = _context.Rating.Where(r => r.RatingProjectID == ratingID &&  r.RatingDescriptionID== reatings.RatingDescriptioID).FirstOrDefault();
-
-
-
-
+                var rating = _context.Rating.Where(r => r.ID == reatings.RatingID).FirstOrDefault();
                 if (rating != null)
                 {
                     rating.Value = reatings.RatingValue;
