@@ -2,6 +2,7 @@
 using Microsoft.Identity.Client;
 using Microsoft.VisualBasic;
 using MySqlConnector;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -36,11 +37,12 @@ namespace TaskPlannerMetrum.Repository.Rating
                         UserName = executor.UserName,
                         ProjectID = executor.ProjectID,
                         TeckLeader = executor.Type == "L" ? true : false,
-                        Rating = vRating.Where(u => u.UserID == executor.UserID).Select(r => new Model.DTO.Rating
+                        Rating = vRating.Where(u => u.UserID == executor.UserID).Select(r => new Model.DTO.RatingModel
                         {
-                            RatingName=r.RatingName,
+                            RatingName = r.RatingName,
                             UserName = r.UserName,
-                            RatingValue = r.RatingValue
+                            RatingValue = r.RatingValue,
+                            RatingID = r.RatingID,
                         }).ToList(),
                     }); 
                 }
@@ -49,6 +51,39 @@ namespace TaskPlannerMetrum.Repository.Rating
             return retorno;
 
         }
+
+       
+        public dynamic UpdateRating(RatingDTOAll reatings)
+
+        {
+            try
+            {
+                // IDENTIFICAR QUAL O RATING ESTOU  ALTERANDO 
+                var ratingID = _context.RatingProject.Where(r => r.ProjectID == reatings.ProjectID && r.UserID == reatings.UserId).Select(d => d.ID).FirstOrDefault();
+                var  rating = _context.Rating.Where(r => r.RatingProjectID == ratingID &&  r.RatingDescriptionID== reatings.RatingDescriptioID).FirstOrDefault();
+
+
+
+
+                if (rating != null)
+                {
+                    rating.Value = reatings.RatingValue;
+                    _context.Rating.Update(rating);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            } catch (Exception ex)
+            {
+                return false; 
+            }
+        }
+        
+           
+        
     }
 }
 
