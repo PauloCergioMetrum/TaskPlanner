@@ -55,7 +55,7 @@ namespace TaskPlannerMetrum.Repository.Rating
         }
 
        
-        public dynamic UpdateRating(RatingDTOAll reatings)
+        public bool UpdateRating(RatingDTOAll reatings) 
 
         {
             try
