@@ -57,7 +57,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 (new RatingProject
                 {
                     ProjectID = activityPlan.ContractID,
-                    UserID= _context.Team.Where(i => i.UserID == activityPlan.ExecutorTeamID).Select(i => i.ID).FirstOrDefault(),
+                    UserID= activityPlan.ExecutorTeamID,
                 }
                 ));
 
@@ -98,6 +98,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public bool creatDescriptionExecuter(RatingProject userRating)
         {
+            
             var leader = _context.DepartmentProjects.Where(t => t.ContractID == userRating.ProjectID && t.TechLeaderID == userRating.UserID).FirstOrDefault();
             List<RatingDescription> descriptions = _context.RatingDescription.ToList();
             var ratingProjects = _context.RatingProject.Where(p => p.ProjectID == userRating.ProjectID && p.UserID == userRating.UserID).Select( i=> i.ID).FirstOrDefault();
