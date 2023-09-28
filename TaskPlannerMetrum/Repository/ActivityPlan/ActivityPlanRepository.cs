@@ -57,11 +57,13 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 (new RatingProject
                 {
                     ProjectID = activityPlan.ContractID,
+
                     UserID= activityPlan.ExecutorTeamID,
+
                 }
                 ));
 
-           
+
 
 
                 return true;
@@ -74,8 +76,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public bool CreateAllRatings(UserTask RatingforTasks, RatingProject ratingProjects)
         {
-            if(createTaskRating(RatingforTasks) == true && createRatingProjects(ratingProjects)== true) return true; return false;
-        
+            if (createTaskRating(RatingforTasks) == true && createRatingProjects(ratingProjects) == true) return true; return false;
+
         }
 
         public bool createRatingProjects(Model.RatingProject ratingProject)
@@ -101,7 +103,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             
             var leader = _context.DepartmentProjects.Where(t => t.ContractID == userRating.ProjectID && t.TechLeaderID == userRating.UserID).FirstOrDefault();
             List<RatingDescription> descriptions = _context.RatingDescription.ToList();
-            var ratingProjects = _context.RatingProject.Where(p => p.ProjectID == userRating.ProjectID && p.UserID == userRating.UserID).Select( i=> i.ID).FirstOrDefault();
+            var ratingProjects = _context.RatingProject.Where(p => p.ProjectID == userRating.ProjectID && p.UserID == userRating.UserID).Select(i => i.ID).FirstOrDefault();
             try
             {
                 if (leader != null)
@@ -111,7 +113,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     {
                         _context.Rating.Add(new Model.Rating
                         {
-                           
+
                             RatingProjectID = ratingProjects,
                             RatingDescriptionID = description.ID,
                             Value = 0
@@ -120,7 +122,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                         _context.SaveChanges();
 
                     }
-                  
+
                 }
                 else
                 {
@@ -129,7 +131,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     {
                         _context.Rating.Add(new Model.Rating
                         {
-                            
+
                             RatingProjectID = ratingProjects,
                             RatingDescriptionID = description.ID,
                             Value = 0
@@ -138,7 +140,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                         _context.SaveChanges();
 
                     }
-                 
+
                 }
                 return true;
             }
@@ -185,7 +187,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     ScheduledDate = taskPlan.ScheduledDate,
                     Status = taskPlan.Status,
                     ID = taskPlan.ID,
-                    statusName = GetStatusName(taskPlan.Status.ToString()),
+                    statusName = GetStatusName(taskPlan.Status.ToString(), taskPlan.ScheduledDate),
                     IsRework = taskPlan.IsRework,
                     ProjectName = _context.Projects.Where(p => p.ID == taskPlan.ContractID).Select(p => p.Name).FirstOrDefault(),
 
@@ -225,7 +227,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     ScheduledDate = taskPlan.ScheduledDate,
                     Status = taskPlan.Status,
                     ID = taskPlan.ID,
-                    statusName = GetStatusName(taskPlan.Status.ToString()),
+                    statusName = GetStatusName(taskPlan.Status.ToString(), taskPlan.ScheduledDate),
                     ProjectName = _context.Projects.Where(p => p.ID == taskPlan.ContractID).Select(p => p.Name).FirstOrDefault(),
                     IsRework = taskPlan.IsRework,
 
@@ -234,6 +236,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
             return _activityPlans;
         }
+
+
 
         public static int SetId(List<int> id)
         {
@@ -247,8 +251,14 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             return retorno;
 
         }
-        public static string GetStatusName(string status)
+
+        public static string GetStatusName(string status, DateTime ScheduledDate)
         {
+            if (IsAtrasada(status, ScheduledDate))
+            {
+                return "Atrasada";
+            }
+
             switch (status)
             {
                 case "5":
@@ -261,10 +271,34 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     return "Bloqueada";
                 case "4":
                     return "Cancelada";
-
+                default:
+                    return "Não iniciada";
             }
-            return "Não iniciada";
         }
+
+        private static bool IsAtrasada(string status, DateTime ScheduledDate)
+        {
+
+
+
+            if (status == "5" || status == "2")
+            {
+
+                DateTime currentDate = DateTime.Now;
+
+                if (currentDate > ScheduledDate)
+                {
+
+                    return true;
+                }
+                return false;
+            }
+
+            return false;
+        }
+
+
+
 
         public dynamic GetExecutorPlan(string projectId)
         {
@@ -306,7 +340,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 ID = Convert.ToInt32(activityPlanId),
                 ExecutedManHour = actvity.ExecutedManHour,
                 NotesFromExecutor = actvity.NotesFromExecutor,
-                statusName = GetStatusName(actvity.Status.ToString()),
+                statusName = GetStatusName(actvity.Status.ToString(), actvity.ScheduledDate),
                 Status = actvity.Status,
                 ScheduledDate = actvity.ScheduledDate,
                 ProjectName = _context.Projects.Where(p => p.ID == actvity.ContractID).Select(p => p.Name).FirstOrDefault(),

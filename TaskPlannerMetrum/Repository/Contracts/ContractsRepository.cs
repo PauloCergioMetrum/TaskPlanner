@@ -311,6 +311,24 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 return true;
             
         }
+
+
+        public bool CompareDate(int ContractID)
+        {
+            var dateCompare = _context.Contracts.Where(c => c.id == ContractID).Select(c => c.DateRetroactive).FirstOrDefault();
+
+            if (dateCompare > DateTime.Now)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+
     }
 
     
