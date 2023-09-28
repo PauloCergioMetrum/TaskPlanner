@@ -12,7 +12,6 @@ namespace TaskPlannerMetrum.Model
         public int Value { get; set;}
 
 
-        public int ExecutorTeamID { get; set; }
 
 
 

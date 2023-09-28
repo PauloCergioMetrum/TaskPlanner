@@ -6,5 +6,9 @@
         public dynamic GetAllRatingProject(int projectID);
 
 
+        public bool UpdateRating(Model.RatingDTOAll reatings);
+
+
+
     }
 }
