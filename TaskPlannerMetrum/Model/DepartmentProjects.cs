@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.VisualBasic;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TaskPlannerMetrum.Model
 {
@@ -11,5 +13,8 @@ namespace TaskPlannerMetrum.Model
         public int TechLeaderID { get; set; }
         public double ExpectedHour { get; set; }
         public int ContractID { get; set; }
+
+
+        public DateTime RetroactiveDate { get; set; }
     }
 }

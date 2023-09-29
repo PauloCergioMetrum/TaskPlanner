@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace TaskPlannerMetrum.Model.NewContract
 {
     public class NewProject
     {
-    
+        internal DateTime RetroactiveDate;
+
         public int ContractID { get; set; }
 
         public List<DepContracts> DepartmentContract { get; set; }
+     
     }
     
     public class DepContracts
@@ -18,5 +21,7 @@ namespace TaskPlannerMetrum.Model.NewContract
         public int TechLeaderID { get; set; }
 
         public int ExpectedHour { get; set; }
+
+        public DateTime RetroactiveDate { get; set; }
     }
 }
