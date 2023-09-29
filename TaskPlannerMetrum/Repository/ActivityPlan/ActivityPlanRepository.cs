@@ -539,7 +539,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     plannerTeamID = task.PlannerTeamID,
                     notesFromPlanner = task.NotesFromPlanner,
                     executorTeamID = task.ExecutorTeamID,
-                    status = task.Status,
+                    status = GetStatus(task),
                     executedManHour = task.ExecutedManHour,
                     notesFromExecutor = task.NotesFromExecutor,
                     userID = task.ExecutorTeamID,
@@ -585,6 +585,17 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
 
         }
+
+        private string GetStatus(Model.ActivityPlan task)
+        {
+            if (task.ExecutedManHour > 0 && (task.Status != "1" || task.Status != "6"))
+            {
+                return "2";
+            }
+            return task.Status;
+        }
+
+
 
 
     }

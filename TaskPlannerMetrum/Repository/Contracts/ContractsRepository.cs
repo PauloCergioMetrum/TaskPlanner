@@ -185,7 +185,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 latesActivities = CountLateActivities(c.id)
             }).OrderByDescending(s => s.StartDate);
 
-            return contractsProjects; 
+            //return contractsProjects; 
             //var allContracts = _context.vContractProject.Where(e => e.EnableProject == true).OrderBy(n=> n.InternalCode).ToList();
             //List<dynamic> contractlist = new List<dynamic>();
             //foreach (var contract in allContracts)
@@ -317,7 +317,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
         {
             var dateCompare = _context.Contracts.Where(c => c.id == ContractID).Select(c => c.DateRetroactive).FirstOrDefault();
 
-            if (dateCompare > DateTime.Now)
+            if (dateCompare >= DateTime.Now)
             {
                 return true;
             }
