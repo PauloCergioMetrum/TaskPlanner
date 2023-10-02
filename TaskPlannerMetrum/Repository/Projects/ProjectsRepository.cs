@@ -46,9 +46,9 @@ namespace TaskPlannerMetrum.Repository.Projects
                         TechLeaderID = item.TechLeaderID,
                     });
 
-                     var contract=_context.Contracts.Where ( c => c.id ==newproject.ContractID).FirstOrDefault();  // aqui eu conecto no banco 
-                    contract.DateRetroactive = newproject.DateRetroactive; // aqui eu atualizo 
-                    _context.Contracts.Update(contract); // aqui ei salvo 
+                     var contract=_context.Contracts.Where ( c => c.id ==newproject.ContractID).FirstOrDefault(); 
+                    contract.DateRetroactive = newproject.DateRetroactive; 
+                    _context.Contracts.Update(contract); 
 
                     _context.SaveChanges();
                 }
