@@ -44,12 +44,12 @@ namespace TaskPlannerMetrum.Repository.Projects
                         DepartmentID = item.DepartmentID,
                         ExpectedHour = item.ExpectedHour,
                         TechLeaderID = item.TechLeaderID,
-                        RetroactiveDate = item.RetroactiveDate
-
-
-
-
                     });
+
+                     var contract=_context.Contracts.Where ( c => c.id ==newproject.ContractID).FirstOrDefault();  // aqui eu conecto no banco 
+                    contract.DateRetroactive = newproject.DateRetroactive; // aqui eu atualizo 
+                    _context.Contracts.Update(contract); // aqui ei salvo 
+
                     _context.SaveChanges();
                 }
 
@@ -327,6 +327,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                     expectedHour = item.ExpectedHour,
                     TechLeaderID = item.TechLeaderID,
                     TechLeaderName = TechLeaderName,
+
                 };
                 retorno.Add(result);
                 var count = retorno.Where(i => i.DepartmentID == item.DepartmentID).Count();

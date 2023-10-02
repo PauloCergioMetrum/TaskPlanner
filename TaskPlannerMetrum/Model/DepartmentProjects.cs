@@ -15,6 +15,6 @@ namespace TaskPlannerMetrum.Model
         public int ContractID { get; set; }
 
 
-        public DateTime RetroactiveDate { get; set; }
+        public DateTime DateRetroactive { get; set; }
     }
 }
