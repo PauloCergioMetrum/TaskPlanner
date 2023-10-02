@@ -166,7 +166,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         {
 
             List<vActivityPlan> _activityPlans = new List<vActivityPlan>();
-            var taskPlans = _context.ActivityPlan.Where(a => a.ContractID == Convert.ToInt32(projectId)).ToList().OrderBy(d => d.ScheduledDate);
+            var taskPlans = _context.ActivityPlan.Where(a => a.ContractID == Convert.ToInt32(projectId) && a.Status  != "1").ToList().OrderBy(d => d.ScheduledDate);
 
             foreach (var taskPlan in taskPlans)
             {
@@ -196,6 +196,10 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
             return _activityPlans;
         }
+
+
+
+   
 
         public string GetNameProject(int id)
         {

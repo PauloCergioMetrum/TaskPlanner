@@ -6,8 +6,8 @@ namespace TaskPlannerMetrum.Model.NewContract
 {
     public class NewProject
     {
-        internal DateTime RetroactiveDate;
 
+        public DateTime DateRetroactive { get; set; }
         public int ContractID { get; set; }
 
         public List<DepContracts> DepartmentContract { get; set; }
@@ -15,6 +15,7 @@ namespace TaskPlannerMetrum.Model.NewContract
     }
     
     public class DepContracts
+
     {
         public int DepartmentID { get; set; }
 
@@ -22,6 +23,9 @@ namespace TaskPlannerMetrum.Model.NewContract
 
         public int ExpectedHour { get; set; }
 
-        public DateTime RetroactiveDate { get; set; }
+      
+
+
+
     }
 }
