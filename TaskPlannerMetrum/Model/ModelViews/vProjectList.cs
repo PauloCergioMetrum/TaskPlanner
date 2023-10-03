@@ -28,7 +28,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public int TechLeaderID { get; set; }
 
         public string TechLeaderName { get; set; }
-        public  DateTime? DateRetroactive { get; set; }  
+
 
 
 
