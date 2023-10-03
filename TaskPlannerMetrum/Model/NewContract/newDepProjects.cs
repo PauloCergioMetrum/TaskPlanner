@@ -11,7 +11,7 @@ namespace TaskPlannerMetrum.Model.NewContract
         public int ContractID { get; set; }
 
         public List<DepContracts> DepartmentContract { get; set; }
-     
+       
     }
     
     public class DepContracts

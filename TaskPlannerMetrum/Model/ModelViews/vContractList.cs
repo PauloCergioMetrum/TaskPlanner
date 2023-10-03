@@ -30,6 +30,9 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string Observation { get; set; }
 
+        public DateTime? DateRetroactive {  get; set; }  
+
+
 
     }
 }

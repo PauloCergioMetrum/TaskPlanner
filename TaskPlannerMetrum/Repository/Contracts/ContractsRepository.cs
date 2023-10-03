@@ -163,7 +163,11 @@ namespace TaskPlannerMetrum.Repository.Contracts
             var query = _context.vContractList.Where(c => c.EnableProject == false).Select(c => c);
             return query.ToList();
 
+
         }
+
+
+     
 
 
         public dynamic GetAllProjectsContracts()
@@ -296,7 +300,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         }
 
-
+        
     }
 
 

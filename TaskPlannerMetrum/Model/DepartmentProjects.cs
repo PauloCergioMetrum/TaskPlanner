@@ -14,7 +14,13 @@ namespace TaskPlannerMetrum.Model
         public double ExpectedHour { get; set; }
         public int ContractID { get; set; }
 
+     
 
-        public DateTime DateRetroactive { get; set; }
+
+
+
+
+
+        
     }
 }
