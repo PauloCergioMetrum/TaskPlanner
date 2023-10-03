@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Model.Context
@@ -66,6 +67,8 @@ namespace TaskPlannerMetrum.Model.Context
 
 
         public DbSet<vRating> vRating { get; set; }
+
+      
 
     }
 }

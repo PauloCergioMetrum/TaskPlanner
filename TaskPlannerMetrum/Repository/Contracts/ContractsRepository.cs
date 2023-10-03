@@ -186,6 +186,11 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 InspectorName = c.InspectorName,
                 Progress = c.Progress,
                 StartDate = c.StartDate,
+                DateRetroactive =c.DateRetroactive,
+
+
+
+
                 latesActivities = CountLateActivities(c.id)
             }).OrderByDescending(s => s.StartDate);
 
