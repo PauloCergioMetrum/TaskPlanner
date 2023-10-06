@@ -11,7 +11,7 @@ namespace TaskPlannerMetrum.Model.DTO
         public int ProjectID { get; set; }
         public bool TeckLeader { get; set; }
 
-       
+      
 
         public List<RatingModel> Rating { get; set; }
     }
@@ -26,6 +26,8 @@ namespace TaskPlannerMetrum.Model.DTO
         
                              
     }
+
+
 
    
 }

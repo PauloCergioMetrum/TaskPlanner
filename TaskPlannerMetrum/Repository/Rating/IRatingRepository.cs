@@ -1,4 +1,7 @@
-﻿namespace TaskPlannerMetrum.Repository.Rating
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Collections.Generic;
+
+namespace TaskPlannerMetrum.Repository.Rating
 {
     public interface IRatingRepository 
     {
@@ -7,6 +10,21 @@
 
 
         public bool UpdateRating(Model.RatingDTOAll reatings);
+
+        public bool IsTechLeader(int userID , int contractId   );
+
+        public void CreateRatings(bool techLeader, int userID, int contractID);
+
+        public void CreateRatingProjects(int userId, int contractId );
+
+        public bool ExistRating(int userID, int contractIdeaderID);
+
+        public bool ExistLeaderID(int contractID);
+
+        
+
+
+
 
 
 
