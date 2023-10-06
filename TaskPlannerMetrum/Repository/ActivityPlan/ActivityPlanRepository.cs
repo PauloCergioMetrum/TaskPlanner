@@ -87,6 +87,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 _context.RatingProject.Add(ratingProject);
                 _context.SaveChanges();
                 creatDescriptionExecuter(ratingProject);
+                
+
+
                 return true;
             }
             else
@@ -188,8 +191,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     statusName = GetStatusName(taskPlan.Status.ToString()),
                     IsRework = taskPlan.IsRework,
                     ProjectName = _context.Projects.Where(p => p.ID == taskPlan.ContractID).Select(p => p.Name).FirstOrDefault(),
+                    UserID = _context.Team.Where(u => u.ID == taskPlan.ExecutorTeamID).Select(u => u.UserID).FirstOrDefault()
 
-                });
+                }); ;
             }
 
             return _activityPlans;

@@ -42,10 +42,26 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpPut("RatingRetroactive")]
+        [ProducesResponseType((200), Type = typeof(List<UserVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult RatingRetroactive(int ContractId)
+        {
+            try
+            {
+                _ratingBusiness.RatingRetroactive(ContractId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
 
-
-
-
+                return BadRequest(ex.Message);
+            }
+        }
 
 
         [HttpPut("UpdateRating")]
