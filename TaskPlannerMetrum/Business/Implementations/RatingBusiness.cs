@@ -21,10 +21,36 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public dynamic GetAllRatingProject(int projectID)
+        public dynamic GetAllRatingProjectExecutor(int projectID, int UserID)
         {
-            return _repository.GetAllRatingProject(projectID);
+            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(projectID.ToString()).ToList();
+            foreach (var user in UsersTasks)
+            {
+                bool isTechLeader = _repository.IsTechLeader(user.UserID, projectID);
+                _repository.CreateRatingProjects(user.UserID, projectID);
+                _repository.CreateRatings(isTechLeader, user.UserID, projectID);
+            }
+            return _repository.GetAllRatingProject(projectID, UserID);
         }
+
+        public dynamic GetAllRatingProjectLeader(int projectID, int userID)
+        {
+
+            _repository.ExistLeaderID(projectID);
+
+            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(projectID.ToString()).ToList();
+
+
+            foreach (var user in UsersTasks)
+            {
+                bool isTechLeader = _repository.IsTechLeader(user.UserID, projectID);
+                _repository.CreateRatingProjects(user.UserID, projectID);
+                _repository.CreateRatings(isTechLeader, user.UserID, projectID);
+            }
+            return _repository.GetAllRatingProject(projectID, userID);
+        }
+
+
 
         public void RatingRetroactive(int ContractID)
         {
@@ -51,6 +77,9 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _repository.UpdateRating(ratings);
         }
+
+
+
 
 
 
