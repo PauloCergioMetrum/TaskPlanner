@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
 
-namespace TaskPlannerMetrum.Model
+namespace TaskPlannerMetrum.Model.DTO
 {
-    public class DepartmentProjects
+    public class CreateProjectRetroactiveDate
     {
-        [Key]
+
         public int ID { get; set; }
         public int DepartmentID { get; set; }
         public int FinancesID { get; set; }
@@ -12,6 +12,6 @@ namespace TaskPlannerMetrum.Model
         public double ExpectedHour { get; set; }
         public int ContractID { get; set; }
 
-
+        public DateTime RetroactiveDate{ get; set; }
     }
 }

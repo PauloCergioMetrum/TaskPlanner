@@ -337,13 +337,15 @@ namespace TaskPlannerMetrum.Repository.Projects
             
             
                 var updateproject = _context.DepartmentProjects.Where(i => i.ContractID == newProject.ContractID && i.DepartmentID == newProject.DepartmentID).FirstOrDefault();
-         
+                
                 updateproject.TechLeaderID = newProject.TechLeaderID;
                 updateproject.ExpectedHour= newProject.ExpectedHour;   
                 updateproject.ID = updateproject.ID;
                 updateproject.FinancesID = updateproject.FinancesID;
+                updateproject.DepartmentID = newProject.DepartmentID;
                 _context.Update(updateproject);
                 _context.SaveChanges();
+               
                 return true;
             
            
@@ -437,6 +439,15 @@ namespace TaskPlannerMetrum.Repository.Projects
             _context.Remove(userfavorite);
             _context.SaveChanges(); 
 
+        }
+
+
+        public void CreateRetroactiveDate(int contractID, DateTime retroactiveDate)
+        {
+            var createRetroactiveDate = _context.Contracts.Where(c => c.id == contractID).FirstOrDefault();
+            createRetroactiveDate.DateRetroactive =  retroactiveDate; 
+            _context.Update(createRetroactiveDate);
+            _context.SaveChanges();
         }
     }
 }

@@ -262,7 +262,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult UpdateProject(Model.DepartmentProjects newProject )
+        public IActionResult UpdateProject(CreateProjectRetroactiveDate newProject )
         {
             try
             {

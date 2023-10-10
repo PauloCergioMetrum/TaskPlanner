@@ -35,7 +35,7 @@ namespace TaskPlannerMetrum.Business
 
         public dynamic GetAllProjectDep(int contractID);
 
-        public bool UpdateProject(Model.DepartmentProjects newProject);
+        public bool UpdateProject(CreateProjectRetroactiveDate newProject);
 
         public bool ActiveProject(int id);
 
