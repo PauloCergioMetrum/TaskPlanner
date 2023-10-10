@@ -27,9 +27,9 @@ namespace TaskPlannerMetrum.Repository.Rating
         public RatingRepository(MSSQLContext context) { _context = context; }
 
 
-        public dynamic GetAllRatingProject(int projectID)
+        public dynamic GetAllRatingProject(int projectID, int? userID)
         {
-            List<Model.ModelViews.vRating> vRating = _context.vRating.Where(i => i.ProjectID == projectID).ToList();
+            List<Model.ModelViews.vRating> vRating = _context.vRating.Where(i => i.ProjectID == projectID && i.UserID != userID).ToList();
             List<RatingDTO> ratingDTOList = new List<RatingDTO>();
             foreach (var executor in vRating)
             {
@@ -57,8 +57,6 @@ namespace TaskPlannerMetrum.Repository.Rating
             return ratingDTOList;
 
         }
-
-
 
         public bool UpdateRating(RatingDTOAll reatings)
 
@@ -96,9 +94,9 @@ namespace TaskPlannerMetrum.Repository.Rating
 
                 if (user != null)
                 {
-                    return false;
+                    return true;
                 }
-                return true;
+                return false;
             }
             catch (Exception ex)
             {
@@ -116,17 +114,31 @@ namespace TaskPlannerMetrum.Repository.Rating
                 if (techLeader)
                 {
                     ratingList = ratingList.Where(r => r.Type == "L").ToList();
+                    int ratingProjectID = _context.RatingProject.Where(r => r.ProjectID == contractID && r.UserID == userID).Select(s => s.ID).FirstOrDefault();
+                    foreach (var rating in ratingList)
+                    {
+                        if (_context.Rating.Where(r => r.RatingDescriptionID == rating.ID  && r.RatingProjectID == ratingProjectID).FirstOrDefault() == null)
+                        {
+                            _context.Rating.Add(new Model.Rating { RatingDescriptionID = rating.ID, RatingProjectID = ratingProjectID, Value = 0 });
+
+                        }
+
+                    }
                 }
                 else
                 {
                     ratingList = ratingList.Where(r => r.Type == "E").ToList();
-                }
-                int ratingProjectID = _context.RatingProject.Where(r => r.ProjectID == contractID && r.UserID == userID).Select(s => s.ID).FirstOrDefault();
-                foreach (var rating in ratingList)
-                {
-                    _context.Rating.Add(new Model.Rating { RatingDescriptionID = rating.ID, RatingProjectID = ratingProjectID, Value = 0 });
+                    int ratingProjectID = _context.RatingProject.Where(r => r.ProjectID == contractID && r.UserID == userID).Select(s => s.ID).FirstOrDefault();
+                    foreach (var rating in ratingList)
+                    {
+                        if (_context.Rating.Where(r => r.RatingDescriptionID == rating.ID  && r.RatingProjectID == ratingProjectID).FirstOrDefault() == null)
+                        {
+                            _context.Rating.Add(new Model.Rating { RatingDescriptionID = rating.ID, RatingProjectID = ratingProjectID, Value = 0 });
 
+                        }
+                    }
                 }
+
                 _context.SaveChanges();
 
             }
@@ -140,8 +152,12 @@ namespace TaskPlannerMetrum.Repository.Rating
         {
             try
             {
-                _context.RatingProject.Add(new RatingProject { UserID = userId, ProjectID = contractId });
-                _context.SaveChanges();
+                if (_context.RatingProject.Where(p => p.ProjectID == contractId && p.UserID == userId).FirstOrDefault() == null)
+                {
+                    _context.RatingProject.Add(new RatingProject { UserID = userId, ProjectID = contractId });
+                    _context.SaveChanges();
+                }
+
             }
             catch (Exception ex)
             {
@@ -216,6 +232,92 @@ namespace TaskPlannerMetrum.Repository.Rating
 
 
             }
+
+
+
+        }
+
+        public void UpdateTechLeader(int contractID)
+        {
+            var techLeaderes = _context.DepartmentProjects.Where(c => c.ContractID == contractID).ToList();
+
+            foreach (var leader in techLeaderes)
+            {
+                var teanList = _context.Team.Where(t => t.ID == leader.TechLeaderID).Select(i => i.UserID).FirstOrDefault();
+
+                if (_context.RatingProject.Where(p => p.ProjectID == contractID && p.UserID ==teanList) == null)
+                {
+
+                    _context.RatingProject.Add(new Model.RatingProject
+                    {
+                        ProjectID =contractID,
+                        UserID = teanList,
+
+                    });
+                    _context.SaveChanges();
+
+                }
+            }
+        }
+
+
+        public void UpdateManager(int contractID)
+        {
+            var getManager = _context.Contracts.Where(c=> c.id == contractID).FirstOrDefault();
+            var getDescriptions = _context.RatingDescription.Where(t => t.Type == "M").ToList();
+            if(_context.RatingProject.Where(p=> p.ProjectID == contractID && p.UserID == getManager.inspectorID).FirstOrDefault() == null)
+            {
+                _context.RatingProject.Add(new RatingProject
+                {
+                    ProjectID=contractID,
+                    UserID=getManager.inspectorID,
+                });
+                _context.SaveChanges(); 
+            }
+            var getManegarRatingProjectID = _context.RatingProject.Where(r => r.ProjectID == contractID && r.UserID == getManager.inspectorID).FirstOrDefault();
+            foreach (var description in getDescriptions)
+            {
+                if (_context.Rating.Where(r => r.RatingDescriptionID == description.ID  && r.RatingProjectID == getManegarRatingProjectID.ID).FirstOrDefault() == null)
+                {
+                    _context.Add(new Model.Rating
+                    {
+                        RatingProjectID = getManegarRatingProjectID.ID,
+                        RatingDescriptionID = description.ID,
+                    }) ;
+                    _context.SaveChanges(); 
+                }
+            }
+
+
+        }
+
+        public dynamic GetRatingManager(int contractID)
+        {
+            List<Model.ModelViews.vRating> vRating = _context.vRating.Where(i => i.ProjectID == contractID && i.Type == "M").ToList();
+            List<RatingDTO> ratingDTOList = new List<RatingDTO>();
+            foreach (var executor in vRating)
+            {
+                if (!ratingDTOList.Any(s => s.UserID == executor.UserID))
+                {
+                    ratingDTOList.Add(new RatingDTO
+                    {
+                        UserID = executor.UserID,
+                        UserName = executor.UserName,
+                        ProjectID = executor.ProjectID,
+                        TeckLeader = executor.Type == "L" ? true : false,
+                    
+                        Rating = vRating.Where(u => u.UserID == executor.UserID).Select(r => new Model.DTO.RatingModel
+                        {
+                            RatingID = r.RatingID,
+                            RatingName = r.RatingName,
+                            RatingValue = r.RatingValue,
+                            RatingDescriptionID = r.RatingDescriptionID,
+                        }).ToList(),
+                    });
+                }
+
+            }
+            return ratingDTOList;
         }
     }
 }

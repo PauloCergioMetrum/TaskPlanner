@@ -21,17 +21,17 @@ namespace TaskPlannerMetrum.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetAllRatingProject")]
+        [HttpGet("GetAllRatingProjectExecutors")]
         [ProducesResponseType((200), Type = typeof(List<UserVO>))]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         //[TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult GetAllRatingProject(int projectID)
+        public IActionResult GetAllRatingProjectExecutors(int projectID, int UserID)
         {
             try
             {
-                return Ok(_ratingBusiness.GetAllRatingProject(projectID));
+                return Ok(_ratingBusiness.GetAllRatingProjectExecutor(projectID, UserID));
             }
             catch (Exception ex)
             {
@@ -40,6 +40,51 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpGet("GetAllRatingProjectLeader")]
+        [ProducesResponseType((200), Type = typeof(List<UserVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult GetAllRatingProjectLeader(int projectID, int UserID)
+        {
+            try
+            {
+                return Ok(_ratingBusiness.GetAllRatingProjectLeader(projectID, UserID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("GetFiscalRatingProject")]
+        [ProducesResponseType((200), Type = typeof(List<UserVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult GetFiscalRatingProject(int projectID)
+        {
+            try
+            {
+                return Ok(_ratingBusiness.GetFiscalRatingProject(projectID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
 
 
         [HttpPut("RatingRetroactive")]
