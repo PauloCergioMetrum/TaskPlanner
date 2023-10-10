@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using TaskPlannerMetrum.Model.Base;
+using Castle.Components.DictionaryAdapter;
 
 namespace TaskPlannerMetrum.Model
 {

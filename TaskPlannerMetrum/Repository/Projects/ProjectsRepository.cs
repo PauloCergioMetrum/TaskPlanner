@@ -16,6 +16,7 @@ using System.Diagnostics.Contracts;
 using System.Collections.Immutable;
 using System.Reflection.PortableExecutable;
 using Castle.Components.DictionaryAdapter;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskPlannerMetrum.Repository.Projects
 {
@@ -38,12 +39,17 @@ namespace TaskPlannerMetrum.Repository.Projects
 
                     _context.DepartmentProjects.Add(new Model.DepartmentProjects
                     {
-                       
-                        ContractID =newproject.ContractID,
+
+                        ContractID = newproject.ContractID,
                         DepartmentID = item.DepartmentID,
-                        ExpectedHour=item.ExpectedHour,
-                        TechLeaderID= item.TechLeaderID
+                        ExpectedHour = item.ExpectedHour,
+                        TechLeaderID = item.TechLeaderID,
                     });
+
+                    var contract = _context.Contracts.Where(c => c.id == newproject.ContractID).FirstOrDefault();
+                    contract.DateRetroactive = newproject.DateRetroactive;
+                    _context.Contracts.Update(contract);
+
                     _context.SaveChanges();
                 }
 
@@ -124,7 +130,7 @@ namespace TaskPlannerMetrum.Repository.Projects
 
 
             var tasks = _context.ActivityPlan.Where(t => t.ContractID == projectId).Select(s => s.Status).ToList();
-            if (tasks.Count() <=0)
+            if (tasks.Count() <= 0)
             {
                 return "5";
             }
@@ -169,8 +175,8 @@ namespace TaskPlannerMetrum.Repository.Projects
                 var project = _context.Projects.Where(e => e.ID == newProject.projectID).ToList().FirstOrDefault();
                 if (project != null)
                 {
-                    project.Status =newProject.status;
-                    project.StartDate =newProject.startDate;
+                    project.Status = newProject.status;
+                    project.StartDate = newProject.startDate;
                     project.EndDate = newProject.endDate;
                     project.ContractEndDate = newProject.contractDate;
 
@@ -232,8 +238,8 @@ namespace TaskPlannerMetrum.Repository.Projects
             {
                 var allTask = _context.ActivityPlan.Where(p => p.ContractID == item.ID).ToList();
                 var allttaskCount = allTask.Count();
-                var task = allTask.Where(s => s.Status == "1"&& s.Status == "6").Count();
-               
+                var task = allTask.Where(s => s.Status == "1" && s.Status == "6").Count();
+
 
                 if (allttaskCount != 0)
                 {
@@ -242,7 +248,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                         Project = item.ID,
                         Progress = ((double)task / allttaskCount) * 100
                     });
-                    
+
                 }
                 else
                 {
@@ -295,7 +301,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                 {
                     FullName = item.FullName,
                     Id = item.Id,
-                    IsActive= item.IsActive,
+                    IsActive = item.IsActive,
                 });
 
             }
@@ -304,12 +310,12 @@ namespace TaskPlannerMetrum.Repository.Projects
 
         }
 
-        public dynamic GetAllProjectDep(int  contractID)
+        public dynamic GetAllProjectDep(int contractID)
         {
-            var info =  _context.DepartmentProjects.Where(c => c.ContractID == contractID).ToList();
+            var info = _context.DepartmentProjects.Where(c => c.ContractID == contractID).ToList();
             List<dynamic> retorno = new List<dynamic>();
-            foreach(var item in info)
-            {    
+            foreach (var item in info)
+            {
                 var users = _context.Users.Where(i => i.DepartmentId == item.DepartmentID).Select(u => new { u.Id, u.FullName }).ToList();
                 var departamentName = _context.Department.Where(i => i.ID == item.DepartmentID).Select(n => n.Name).FirstOrDefault().ToString();
                 var TechLeaderName = _context.Users.Where(i => i.Id == item.TechLeaderID).Select(n => n.FullName).FirstOrDefault();
@@ -321,6 +327,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                     expectedHour = item.ExpectedHour,
                     TechLeaderID = item.TechLeaderID,
                     TechLeaderName = TechLeaderName,
+
                 };
                 retorno.Add(result);
                 var count = retorno.Where(i => i.DepartmentID == item.DepartmentID).Count();
@@ -334,46 +341,46 @@ namespace TaskPlannerMetrum.Repository.Projects
 
         public bool UpdateProject(Model.DepartmentProjects newProject)
         {
-            
-            
-                var updateproject = _context.DepartmentProjects.Where(i => i.ContractID == newProject.ContractID && i.DepartmentID == newProject.DepartmentID).FirstOrDefault();
-                
-                updateproject.TechLeaderID = newProject.TechLeaderID;
-                updateproject.ExpectedHour= newProject.ExpectedHour;   
-                updateproject.ID = updateproject.ID;
-                updateproject.FinancesID = updateproject.FinancesID;
-                updateproject.DepartmentID = newProject.DepartmentID;
-                _context.Update(updateproject);
-                _context.SaveChanges();
-               
-                return true;
-            
-           
+
+
+
+            var updateproject = _context.DepartmentProjects.Where(i => i.ContractID == newProject.ContractID && i.DepartmentID == newProject.DepartmentID).FirstOrDefault();
+
+            updateproject.TechLeaderID = newProject.TechLeaderID;
+            updateproject.ExpectedHour = newProject.ExpectedHour;
+            updateproject.ID = updateproject.ID;
+            updateproject.FinancesID = updateproject.FinancesID;
+            _context.Update(updateproject);
+            _context.SaveChanges();
+            return true;
+
+
+
         }
 
         public bool ActiveProject(int id)
         {
 
-           
-                var project = _context.Contracts.Where( i=> i.id == id).FirstOrDefault();  
-                project.EnableProject = true;
-                _context.Update(project);
-                _context.SaveChanges(); 
-                return true;
-            
-            
+
+            var project = _context.Contracts.Where(i => i.id == id).FirstOrDefault();
+            project.EnableProject = true;
+            _context.Update(project);
+            _context.SaveChanges();
+            return true;
+
+
         }
 
         public dynamic getActiveProject()
         {
-          
-            
-                var project = _context.vContractProject.Where(i => i.EnableProject == true).ToList();
 
-                return true;
-            
+
+            var project = _context.vContractProject.Where(i => i.EnableProject == true).ToList();
+
+            return true;
+
         }
-        
+
 
         public dynamic getInfoProject(int id)
         {
@@ -383,16 +390,16 @@ namespace TaskPlannerMetrum.Repository.Projects
             {
                 ProjectName = p.ProjectName,
                 ClientName = p.ClientName,
-    
-                Porcentagem = SerPercentege(p.ContractID),
-                executedHourFull = taskDep.Where(p => p.ContractID == id).Select(e=> e.ExecutedHour).Sum(),
+
+                percentage = SetPercentege(p.ContractID),
+                executedHourFull = taskDep.Where(p => p.ContractID == id).Select(e => e.ExecutedHour).Sum(),
                 plannedHourFull = taskDep.Where(p => p.ContractID == id).Select(e => e.PlannedHour).Sum(),
                 expectedHoursFull = taskDep.Where(p => p.ContractID == id).Select(e => e.ExpectedHour).Sum(),
 
-                ExpetedHours = taskDep.Where(c =>c.ContractID == p.ContractID).Select(t => new
+                ExpetedHours = taskDep.Where(c => c.ContractID == p.ContractID).Select(t => new
                 {
                     departamentName = t.DepartmentName,
-                    tecLeader = t.TechLeader ,
+                    tecLeader = t.TechLeader,
                     expectedHours = t.ExpectedHour,
                     plannedHour = t.PlannedHour,
                     executedHour = t.ExecutedHour
@@ -400,36 +407,37 @@ namespace TaskPlannerMetrum.Repository.Projects
 
                 }).ToList(),
 
-            }).FirstOrDefault(); 
+            }).FirstOrDefault();
 
 
-           
+
         }
 
-   
-        public string SerPercentege(int id)
+
+        public string SetPercentege(int id)
         {
-            var allstatus = _context.ActivityPlan.Where(i => i.ContractID == id && i.Status != "3" || i.Status != "4").ToList();
-            double finalyStatus = allstatus.Where(s => s.Status == "6" || s.Status =="1").Count();
+            var allstatus = _context.ActivityPlan.Where(i => i.ContractID == id && i.Status != "3" && i.Status != "4").ToList();
+            double finalyStatus = allstatus.Where(s => s.Status == "6" || s.Status == "1").Count();
             double totalProgress = 0;
             double allstatusCount = allstatus.Count();
 
             if (finalyStatus != 0)
             {
-                totalProgress = (finalyStatus/allstatusCount) * 100;
-            } 
-            return totalProgress.ToString("F2");
+                totalProgress = (finalyStatus / allstatusCount) * 100;
+            }
+
+            return totalProgress.ToString();
         }
 
         public void FavoriteProject(UserProjects userProjects)
         {
-          
-                _context.UserProjects.Add(userProjects);
-                _context.SaveChanges();
-               
+
+            _context.UserProjects.Add(userProjects);
+            _context.SaveChanges();
 
 
-            
+
+
         }
 
         public void DeletFavoritProject(UserProjects userProjects)
@@ -437,7 +445,7 @@ namespace TaskPlannerMetrum.Repository.Projects
 
             var userfavorite = _context.UserProjects.Where(u => u.UserID == userProjects.UserID && u.ContractID == userProjects.ContractID).FirstOrDefault();
             _context.Remove(userfavorite);
-            _context.SaveChanges(); 
+            _context.SaveChanges();
 
         }
 

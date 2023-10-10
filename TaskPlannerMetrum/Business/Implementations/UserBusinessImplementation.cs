@@ -134,5 +134,10 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _userRepository.IsActiveDarkMode(id);    
         }
+
+        public dynamic GetAllUsers()
+        {
+            return _userRepository.GetAllUsers();
+        }
     }
 }

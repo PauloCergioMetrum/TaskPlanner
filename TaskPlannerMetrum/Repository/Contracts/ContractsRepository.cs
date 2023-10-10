@@ -19,7 +19,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
         private MSSQLContext _context;
 
         public ContractsRepository(MSSQLContext context) { _context = context; }
-        
+
         public dynamic GetAllContracts()
         {
             return _context.vContractList.Select(s => new { s.ContractID, s.EnableProject, s.PaymentMethod, s.InspectorName, s.ClientName, s.InternalCode, s.VendorName, s.StartDate, ValueTotal = s.ValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.ClientOrder, InvoicedValueTotal = s.InvoicedValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.Condition, s.BusinessUnit, s.Observation }).OrderBy(s => s.StartDate).ToList();
@@ -29,7 +29,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
         {
             try
             {
-                
+
                 var updateCotract = _context.Contracts.Where(i => i.id == contract.id).FirstOrDefault();
                 updateCotract.StartDate = contract.StartDate;
                 updateCotract.VendorID = contract.VendorID;
@@ -38,9 +38,9 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 updateCotract.Condition = contract.Condition;
                 updateCotract.TagID = contract.TagID;
                 updateCotract.InternalCode = contract.InternalCode;
-                updateCotract.inspectorID= contract.inspectorID;
-                updateCotract.id= contract.id;
-                updateCotract.Observation= contract.Observation;
+                updateCotract.inspectorID = contract.inspectorID;
+                updateCotract.id = contract.id;
+                updateCotract.Observation = contract.Observation;
                 updateCotract.ClientOrder = contract.ClientOrder;
 
 
@@ -62,13 +62,13 @@ namespace TaskPlannerMetrum.Repository.Contracts
             var pmo = _context.Department.Where(n => n.Name == "PMO").Select(i => i.Id).FirstOrDefault();
             var cnt = _context.Department.Where(n => n.Name == "DEPCNT").Select(i => i.Id).FirstOrDefault();
             List<Model.User> retorno = new List<Model.User>();
-            var result = _context.Users.Where(d => d.DepartmentId == pmo || d.DepartmentId == cnt).OrderBy(i=> i.UserName).ToList();
+            var result = _context.Users.Where(d => d.DepartmentId == pmo || d.DepartmentId == cnt).OrderBy(i => i.UserName).ToList();
             foreach (var item in result)
             {
                 retorno.Add(new Model.User()
                 {
                     FullName = item.FullName,
-                    Id= item.Id,
+                    Id = item.Id,
                     DepartmentId = item.DepartmentId,
                 });
             }
@@ -79,13 +79,13 @@ namespace TaskPlannerMetrum.Repository.Contracts
         {
             var id = _context.Department.Where(n => n.Name == "GERCOM").Select(i => i.Id).FirstOrDefault();
             List<Model.User> retorno = new List<Model.User>();
-            var result = _context.Users.Where(d => d.DepartmentId == id).OrderBy(i=> i.UserName).ToList();
+            var result = _context.Users.Where(d => d.DepartmentId == id).OrderBy(i => i.UserName).ToList();
             foreach (var item in result)
             {
                 retorno.Add(new Model.User()
                 {
                     FullName = item.FullName,
-                    Id= item.Id,
+                    Id = item.Id,
                     DepartmentId = item.DepartmentId,
                 });
             }
@@ -95,7 +95,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         public bool Create(Model.DTO.ContractDTO newcontract)
         {
- 
+
             try
             {
                 _context.Contracts.Add(new Model.Contracts
@@ -114,28 +114,28 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 });
                 _context.SaveChanges();
                 var contractID = _context.Contracts.Select(i => i.id).Max();
-                var pmoID = _context.Department.Where(n=> n.Name == "PMO").Select(i=> i.ID).FirstOrDefault();   
-                if(newcontract.HoursPMO == true)
+                var pmoID = _context.Department.Where(n => n.Name == "PMO").Select(i => i.ID).FirstOrDefault();
+                if (newcontract.HoursPMO == true)
                 {
                     _context.DepartmentProjects.Add(new Model.DepartmentProjects
                     {
                         ContractID = contractID,
                         DepartmentID = pmoID,
-                       
-                        
+
+
                     });
                     _context.SaveChanges();
                 }
-           
-                return true ;
+
+                return true;
             }
             catch
             {
                 return false;
             }
-           
-            
-            
+
+
+
         }
         public bool CreateProject(Model.Contracts newProject)
         {
@@ -146,10 +146,10 @@ namespace TaskPlannerMetrum.Repository.Contracts
             project.ExpectedManHor = 0;
             project.Status = "1";
 
-                _context.Add(project);
-                _context.SaveChanges();
-                return true;
-            
+            _context.Add(project);
+            _context.SaveChanges();
+            return true;
+
 
         }
         public List<Workspace> GetAllWorkSpace()
@@ -160,16 +160,20 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         public List<Model.ModelViews.vContractList> GetContractForProject()
         {
-            var query = _context.vContractList.Where( c => c.EnableProject == false).Select(c => c);
+            var query = _context.vContractList.Where(c => c.EnableProject == false).Select(c => c);
             return query.ToList();
 
+
         }
+
+
+     
 
 
         public dynamic GetAllProjectsContracts()
         {
 
-            var contractsProjects = _context.vContractProject.Where(a=> a.EnableProject == true).ToList();
+            var contractsProjects = _context.vContractProject.Where(a => a.EnableProject == true).ToList();
 
             return contractsProjects.Select(c => new
             {
@@ -182,67 +186,41 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 InspectorName = c.InspectorName,
                 Progress = c.Progress,
                 StartDate = c.StartDate,
+                DateRetroactive =c.DateRetroactive,
+
+
+
+
                 latesActivities = CountLateActivities(c.id)
             }).OrderByDescending(s => s.StartDate);
 
-            return contractsProjects; 
-            //var allContracts = _context.vContractProject.Where(e => e.EnableProject == true).OrderBy(n=> n.InternalCode).ToList();
-            //List<dynamic> contractlist = new List<dynamic>();
-            //foreach (var contract in allContracts)
-            //{
-            //    var expectedHour = _context.DepartmentProjects.Where(i => i.ContractID == contract.id).Select(h => h.ExpectedHour).Sum();
-            //    var plannedhours = _context.ActivityPlan.Where(c => c.ContractID == contract.id).Select(p => p.PlannedManHour).Sum();
-            //    var executedManHour = _context.ActivityPlan.Where(c => c.ContractID == contract.id).Select(p => p.ExecutedManHour).Sum();
-            //    var taskcompleted = _context.ActivityPlan.Where(p => p.ContractID == contract.id &&( p.Status =="1"  || p.Status =="6")).Select(p => p.Status).ToList().Count();
-            //    double allTask = _context.ActivityPlan.Where(p => p.ContractID == contract.id ).Select(p => p.Status).ToList().Count();
-            //    double progress = (taskcompleted / allTask) * 100;
-                
-            //    if (taskcompleted == 0)
-            //    {
-            //        progress = 0;
-            //    }
 
-            //    var project = new
-            //    {
-            //        id = contract.id,
-            //        InternalCode = contract.InternalCode,
-            //        ClientName = contract.ClientName,
-            //        Expectedhours = contract.Expectedhours,
-            //        PlannedManHour = contract.PlannedManHour,
-            //        ExecutedManHour = contract.ExecutedManHour,
-            //        InspectorName = contract.InspectorName,
-            //        Progress = contract.progresss Convert.ToDouble(progress.ToString("0.00")),
-            //        StartDate = contract.StartDate,
-            //    };
-            //    contractlist.Add(project);
-            //}
-            //return contractlist;
 
         }
 
-        public int CountLateActivities (int contractID)
-        {                                                                                 
-            var teste =  _context.ActivityPlan.Where(c => c.ContractID ==  contractID && c.ScheduledDate < DateTime.Now  && c.Status != "1" && c.Status !="3" && c.Status != "4" &&  c.Status !="6"  && c.ScheduledDate.Date != DateTime.Now.Date).ToList();
+        public int CountLateActivities(int contractID)
+        {
+            var teste = _context.ActivityPlan.Where(c => c.ContractID == contractID && c.ScheduledDate < DateTime.Now && c.Status != "1" && c.Status != "3" && c.Status != "4" && c.Status != "6" && c.ScheduledDate.Date != DateTime.Now.Date).ToList();
 
 
             return teste.Count;
-           
-          
+
+
         }
 
         public bool DesableProject(int id)
         {
-            var project = _context.Contracts.Where(i => i.id== id).FirstOrDefault();
-            project.EnableProject=false;
-           
-                _context.Update(project);
-                _context.SaveChanges();
-                return true;
+            var project = _context.Contracts.Where(i => i.id == id).FirstOrDefault();
+            project.EnableProject = false;
+
+            _context.Update(project);
+            _context.SaveChanges();
+            return true;
         }
 
         public dynamic ContractDashboard(string year, float value)
         {
-            bool yearExist  = _context.Goals.Where(y => y.Year== year).Any();
+            bool yearExist = _context.Goals.Where(y => y.Year == year).Any();
             if (!yearExist)
             {
                 _context.Add(new Goals
@@ -252,9 +230,9 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 });
                 _context.SaveChanges();
             }
-            if(yearExist && value != 0) 
+            if (yearExist && value != 0)
             {
-                var UpdateValue = _context.Goals.Where(y => y.Year == year).FirstOrDefault();   
+                var UpdateValue = _context.Goals.Where(y => y.Year == year).FirstOrDefault();
                 UpdateValue.Value = value;
                 _context.Update(UpdateValue);
                 _context.SaveChanges();
@@ -265,7 +243,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
             double totalbillable = _context.Goals.Where(y => y.Year == year).Select(v => v.Value).FirstOrDefault();
             double goaltoinvoice = (_context.Goals.Where(y => y.Year == year).Select(v => v.Value).FirstOrDefault() - allfinanes);
 
-            if(allfinanes >=totalbillable)
+            if (allfinanes >= totalbillable)
             {
                 balance = allfinanes - totalbillable;
                 goaltoinvoice = 0;
@@ -286,33 +264,50 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         public dynamic ContractDasboardDate(DateTime date)
         {
-            var annualgoal = _context.Goals.Where(y => y.Year == date.Year.ToString()).Select(v=> v.Value).FirstOrDefault();
-            double monthgoal = (annualgoal/12);
-            var billedmonth = _context.Finances.Where(i=>  i.InvoicedDate.Month == date.Month && i.InvoicedDate.Year == date.Year).Select(i=> i.InvoicedValue).Sum();
+            var annualgoal = _context.Goals.Where(y => y.Year == date.Year.ToString()).Select(v => v.Value).FirstOrDefault();
+            double monthgoal = (annualgoal / 12);
+            var billedmonth = _context.Finances.Where(i => i.InvoicedDate.Month == date.Month && i.InvoicedDate.Year == date.Year).Select(i => i.InvoicedValue).Sum();
 
             var retorno = new
             {
-                goalachieved = billedmonth.ToString("N", new System.Globalization.CultureInfo("pt-BR")) ,
-                totalbillable = monthgoal.ToString("N", new System.Globalization.CultureInfo("pt-BR")) ,
-                goaltoinvoice = (monthgoal> billedmonth) ? (monthgoal-billedmonth).ToString("N", new System.Globalization.CultureInfo("pt-BR")): 0.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
+                goalachieved = billedmonth.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
+                totalbillable = monthgoal.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
+                goaltoinvoice = (monthgoal > billedmonth) ? (monthgoal - billedmonth).ToString("N", new System.Globalization.CultureInfo("pt-BR")) : 0.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
                 balance = (monthgoal > billedmonth) ? 0.ToString("N", new System.Globalization.CultureInfo("pt-BR")) : (billedmonth - monthgoal).ToString("N", new System.Globalization.CultureInfo("pt-BR")),
 
             };
             return retorno;
         }
 
-        public bool UpdateObservation (int ID, string Observation)
+        public bool UpdateObservation(int ID, string Observation)
         {
-           
-                var updateContract = _context.Contracts.Where(i => i.id == ID).FirstOrDefault();
-                updateContract.Observation = Observation;
-                _context.Update(updateContract);
-                _context.SaveChanges();
-                return true;
-            
+
+            var updateContract = _context.Contracts.Where(i => i.id == ID).FirstOrDefault();
+            updateContract.Observation = Observation;
+            _context.Update(updateContract);
+            _context.SaveChanges();
+            return true;
+
         }
+
+        public bool CompareDate(int ContractID)
+        {
+            var dateCompare = _context.Contracts.Where(c => c.id == ContractID).Select(c => c.DateRetroactive).FirstOrDefault();
+
+            if (dateCompare >= DateTime.Now)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        
     }
 
-    
+
 
 }
