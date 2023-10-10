@@ -231,7 +231,7 @@ namespace TaskPlannerMetrum.Repository.Financs
             _context.Finances.Update(updatefinances);
             _context.SaveChanges();
 
-            var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == updatefinances.ContractID && c.FinancesID == finances.id).FirstOrDefault();
+            var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == updatefinances.ContractID && c.DepartmentID == finances.DepartmentID).FirstOrDefault();
             updateDepartmentProjects.DepartmentID = finances.DepartmentID;
             _context.DepartmentProjects.Update(updateDepartmentProjects);
             _context.SaveChanges();
