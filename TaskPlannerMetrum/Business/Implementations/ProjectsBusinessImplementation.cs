@@ -120,9 +120,18 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectRepository.GetAllProjectDep(contractID); 
         }
 
-        public bool UpdateProject(DepartmentProjects newProject)
+        public bool UpdateProject(CreateProjectRetroactiveDate newProject)
         {
-            return _projectRepository.UpdateProject(newProject);
+
+            _projectRepository.CreateRetroactiveDate(newProject.ContractID, newProject.RetroactiveDate);
+            return _projectRepository.UpdateProject(new DepartmentProjects 
+            { 
+            ContractID = newProject.ContractID,
+            DepartmentID = newProject.DepartmentID,
+            ExpectedHour = newProject.ExpectedHour,
+            TechLeaderID = newProject.TechLeaderID, 
+            FinancesID = newProject.FinancesID,
+            });
         }
 
         public dynamic GetAllProjects()
