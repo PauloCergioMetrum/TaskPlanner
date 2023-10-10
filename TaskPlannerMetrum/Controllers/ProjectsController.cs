@@ -392,7 +392,7 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
-        [HttpDelete("UpdateRetroactiveDate")]
+        [HttpPut("UpdateRetroactiveDate")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
