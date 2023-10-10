@@ -345,13 +345,15 @@ namespace TaskPlannerMetrum.Repository.Projects
 
 
             var updateproject = _context.DepartmentProjects.Where(i => i.ContractID == newProject.ContractID && i.DepartmentID == newProject.DepartmentID).FirstOrDefault();
-
+            
             updateproject.TechLeaderID = newProject.TechLeaderID;
             updateproject.ExpectedHour = newProject.ExpectedHour;
             updateproject.ID = updateproject.ID;
             updateproject.FinancesID = updateproject.FinancesID;
             _context.Update(updateproject);
             _context.SaveChanges();
+
+           
             return true;
 
 
@@ -456,6 +458,22 @@ namespace TaskPlannerMetrum.Repository.Projects
             createRetroactiveDate.DateRetroactive =  retroactiveDate; 
             _context.Update(createRetroactiveDate);
             _context.SaveChanges();
+        }
+
+        public bool UpdateRetroactiveDate(int contractID, DateTime retroactiveDate)
+        {
+            try
+            {
+                var contract = _context.Contracts.Where(i => i.id == contractID).FirstOrDefault();
+                contract.DateRetroactive = retroactiveDate;
+                _context.Update(contract);
+                _context.SaveChanges();
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+
         }
     }
 }
