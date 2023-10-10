@@ -6,7 +6,7 @@ namespace TaskPlannerMetrum.Repository.Rating
     public interface IRatingRepository 
     {
 
-        public dynamic GetAllRatingProject(int projectID, int userID);
+        public dynamic GetAllRatingProject(int projectID, int? userID);
 
 
         public bool UpdateRating(Model.RatingDTOAll reatings);
@@ -22,8 +22,14 @@ namespace TaskPlannerMetrum.Repository.Rating
         public bool ExistLeaderID(int contractID);
 
 
-        public void  UpdateTechLeader(int contractID); 
-        
+        public void  UpdateTechLeader(int contractID);
+
+
+        public void UpdateManager(int contractID);
+
+
+        public dynamic GetRatingManager( int contractID);
+
 
 
 

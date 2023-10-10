@@ -27,7 +27,7 @@ namespace TaskPlannerMetrum.Repository.Rating
         public RatingRepository(MSSQLContext context) { _context = context; }
 
 
-        public dynamic GetAllRatingProject(int projectID, int userID)
+        public dynamic GetAllRatingProject(int projectID, int? userID)
         {
             List<Model.ModelViews.vRating> vRating = _context.vRating.Where(i => i.ProjectID == projectID && i.UserID != userID).ToList();
             List<RatingDTO> ratingDTOList = new List<RatingDTO>();
@@ -261,7 +261,64 @@ namespace TaskPlannerMetrum.Repository.Rating
         }
 
 
-    
+        public void UpdateManager(int contractID)
+        {
+            var getManager = _context.Contracts.Where(c=> c.id == contractID).FirstOrDefault();
+            var getDescriptions = _context.RatingDescription.Where(t => t.Type == "M").ToList();
+            if(_context.RatingProject.Where(p=> p.ProjectID == contractID && p.UserID == getManager.inspectorID).FirstOrDefault() == null)
+            {
+                _context.RatingProject.Add(new RatingProject
+                {
+                    ProjectID=contractID,
+                    UserID=getManager.inspectorID,
+                });
+                _context.SaveChanges(); 
+            }
+            var getManegarRatingProjectID = _context.RatingProject.Where(r => r.ProjectID == contractID && r.UserID == getManager.inspectorID).FirstOrDefault();
+            foreach (var description in getDescriptions)
+            {
+                if (_context.Rating.Where(r => r.RatingDescriptionID == description.ID  && r.RatingProjectID == getManegarRatingProjectID.ID).FirstOrDefault() == null)
+                {
+                    _context.Add(new Model.Rating
+                    {
+                        RatingProjectID = getManegarRatingProjectID.ID,
+                        RatingDescriptionID = description.ID,
+                    }) ;
+                    _context.SaveChanges(); 
+                }
+            }
+
+
+        }
+
+        public dynamic GetRatingManager(int contractID)
+        {
+            List<Model.ModelViews.vRating> vRating = _context.vRating.Where(i => i.ProjectID == contractID && i.Type == "M").ToList();
+            List<RatingDTO> ratingDTOList = new List<RatingDTO>();
+            foreach (var executor in vRating)
+            {
+                if (!ratingDTOList.Any(s => s.UserID == executor.UserID))
+                {
+                    ratingDTOList.Add(new RatingDTO
+                    {
+                        UserID = executor.UserID,
+                        UserName = executor.UserName,
+                        ProjectID = executor.ProjectID,
+                        TeckLeader = executor.Type == "L" ? true : false,
+                    
+                        Rating = vRating.Where(u => u.UserID == executor.UserID).Select(r => new Model.DTO.RatingModel
+                        {
+                            RatingID = r.RatingID,
+                            RatingName = r.RatingName,
+                            RatingValue = r.RatingValue,
+                            RatingDescriptionID = r.RatingDescriptionID,
+                        }).ToList(),
+                    });
+                }
+
+            }
+            return ratingDTOList;
+        }
     }
 }
 

@@ -10,6 +10,10 @@
         public dynamic UpdateRating(Model.RatingDTOAll ratings);
 
         public void RatingRetroactive(int ContractID);
+
+
+        public dynamic GetFiscalRatingProject(int ContractID);
+        
     }
 
 

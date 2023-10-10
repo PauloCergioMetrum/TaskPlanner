@@ -63,6 +63,27 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetFiscalRatingProject")]
+        [ProducesResponseType((200), Type = typeof(List<UserVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult GetFiscalRatingProject(int projectID)
+        {
+            try
+            {
+                return Ok(_ratingBusiness.GetFiscalRatingProject(projectID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
 
 

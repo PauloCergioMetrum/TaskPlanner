@@ -50,7 +50,11 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _repository.GetAllRatingProject(projectID, userID);
         }
 
-
+        public dynamic GetFiscalRatingProject(int contractID)
+        {
+            _repository.UpdateManager(contractID);
+            return _repository.GetRatingManager(contractID);
+        }
 
         public void RatingRetroactive(int ContractID)
         {
