@@ -296,11 +296,11 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
             if (dateCompare >= DateTime.Now)
             {
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
 
         }
