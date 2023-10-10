@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.NewContract;
@@ -45,7 +46,10 @@ namespace TaskPlannerMetrum.Business
 
         public void FavoriteProject(int ContractID, int UserID);
 
-        public void DeletFavoritProject(int ContractID, int UserID); 
+        public void DeletFavoritProject(int ContractID, int UserID);
+
+
+        public bool UpdateRetroactiveDate(int contractID, DateTime retroactiveDate);
 
     }
 }

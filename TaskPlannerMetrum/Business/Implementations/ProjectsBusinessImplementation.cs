@@ -226,5 +226,10 @@ namespace TaskPlannerMetrum.Business.Implementations
                 ContractID = ContractID,
             });
         }
+
+        public bool UpdateRetroactiveDate(int contractID, DateTime retroactiveDate)
+        {
+            return _projectRepository.UpdateRetroactiveDate(contractID, retroactiveDate);
+        }
     }
 }
