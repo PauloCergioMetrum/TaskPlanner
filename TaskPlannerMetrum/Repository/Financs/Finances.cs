@@ -199,11 +199,11 @@ namespace TaskPlannerMetrum.Repository.Financs
                 if (finance.BaseDate != Convert.ToDateTime("01/01/0001"))
                     if (finance.InvoicedDate > finance.BaseDate)
                     {
-                        return "ATRASADA";
+                        return "ATRASADO";
                     }
                     else
                     {
-                        return " NO PRAZO";
+                        return "NO PRAZO";
                     }
                 else
                 {
