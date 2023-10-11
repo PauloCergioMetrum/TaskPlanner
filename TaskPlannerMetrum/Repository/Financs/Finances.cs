@@ -173,11 +173,11 @@ namespace TaskPlannerMetrum.Repository.Financs
                 {
                     if (finance.InvoicedDate > finance.EndDate)
                     {
-                        return "ATRASADA";
+                        return "ATRASADO";
                     }
                     else
                     {
-                        return " NO PRAZO";
+                        return "NO PRAZO";
                     }
                 }
 
