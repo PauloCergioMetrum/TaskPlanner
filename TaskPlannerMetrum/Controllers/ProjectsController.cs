@@ -262,7 +262,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult UpdateProject(Model.DepartmentProjects newProject )
+        public IActionResult UpdateProject(CreateProjectRetroactiveDate newProject )
         {
             try
             {
@@ -389,5 +389,33 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
+
+
+
+        [HttpPut("UpdateRetroactiveDate")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult UpdateRetroactiveDate(int contractID, DateTime retroactiveDate)
+        {
+            try
+            {
+                _projectBusiness.UpdateRetroactiveDate(contractID, retroactiveDate);
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+
+            }
+
+        }
+
+
+        
     }
 }

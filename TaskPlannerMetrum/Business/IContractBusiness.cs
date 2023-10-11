@@ -30,5 +30,7 @@ namespace TaskPlannerMetrum.Business
 
         public dynamic ContractDasboardDate(DateTime date);
 
+        public bool CompareDate(int ContractID);
+
     }
 }

@@ -32,5 +32,9 @@ namespace TaskPlannerMetrum.Repository.Contracts
         public bool UpdateObservation(int ID, string Observation);
 
         public dynamic ContractDasboardDate(DateTime date);
+
+        public bool CompareDate(int ContractID);
+
+        //public DateTime DateRetroactive (DateTime date );
     }
 }
