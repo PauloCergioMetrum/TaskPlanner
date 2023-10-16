@@ -29,7 +29,7 @@ namespace TaskPlannerMetrum.Repository.Rating
 
         public dynamic GetAllRatingProject(int projectID, int? userID)
         {
-            List<Model.ModelViews.vRating> vRating = _context.vRating.Where(i => i.ProjectID == projectID && i.UserID != userID).ToList();
+            List<Model.ModelViews.vRating> vRating = _context.vRating.Where(i => i.ProjectID == projectID && i.UserID != userID && i.Type != "M").ToList();
             List<RatingDTO> ratingDTOList = new List<RatingDTO>();
             foreach (var executor in vRating)
             {
