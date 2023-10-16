@@ -58,7 +58,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string PaymentStatus { get; set; }
 
-        public DateTime CompareDate { get; set; }
+    
 
 
 
