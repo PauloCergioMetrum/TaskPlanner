@@ -166,19 +166,15 @@ namespace TaskPlannerMetrum.Repository.Financs
             {
                 return finance.Status;
             }
-
-            if (finance.EndDate != Convert.ToDateTime("01/01/0001"))
+            //SE DATAREPROGRAMDA É DIFERENTE DE NULO
+            if (finance.EndDate.Date != Convert.ToDateTime("01/01/0001"))
             {
-                if (finance.InvoicedDate != Convert.ToDateTime("01/01/0001"))
+                //SE DATA FATURADA É DIFERENTE DE NULA
+                if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/0001"))
                 {
-                    if (finance.InvoicedDate > finance.EndDate)
-                    {
-                        return "ATRASADO";
-                    }
-                    else
-                    {
-                        return "NO PRAZO";
-                    }
+                                    
+                     return "NO PRAZO";
+                    
                 }
 
                 else
@@ -196,26 +192,37 @@ namespace TaskPlannerMetrum.Repository.Financs
 
             else
             {
-                if (finance.BaseDate != Convert.ToDateTime("01/01/0001"))
-                    if (finance.InvoicedDate > finance.BaseDate)
+
+                    //SE A DATA FATURADA  NÃO É NULA
+                    if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/0001"))
                     {
-                        return "ATRASADA";
+                        //SE A DATA FATURADA É MAIOR QUE DATA BASE
+                        if (finance.InvoicedDate > finance.BaseDate)
+                        {
+                            return "ATRASADO";
+                        }
+                        else
+                        {
+                            return "NO PRAZO";
+                        }
+
                     }
                     else
                     {
-                        return " NO PRAZO";
+                        //SE A DATA BASE É MAIOR QUE A DATA DE AGORA
+                        if (finance.BaseDate.Date >= DateTime.Now.Date)
+                        {
+                            return "NO PRAZO";
+                        }
+                        else
+                        {
+                            return "ATRASADO";
+                        }
                     }
-                else
-                {
-                    if (finance.BaseDate.Date >= DateTime.Now.Date)
-                    {
-                        return "NO PRAZO";
-                    }
-                    else
-                    {
-                        return "ATRASADO";
-                    }
-                }
+
+
+                
+
             }
 
 

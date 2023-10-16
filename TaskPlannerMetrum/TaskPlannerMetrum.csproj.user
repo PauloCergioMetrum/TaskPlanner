@@ -3,7 +3,9 @@
   <PropertyGroup>
 
     <NameOfLastUsedPublishProfile>C:\Users\carlos.nunes\Desktop\task\develop\TaskPlanner-api\TaskPlannerMetrum\Properties\PublishProfiles\FolderProfile1.pubxml</NameOfLastUsedPublishProfile>
+
     <ActiveDebugProfile>TaskPlannerMetrum</ActiveDebugProfile>
+
 
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
