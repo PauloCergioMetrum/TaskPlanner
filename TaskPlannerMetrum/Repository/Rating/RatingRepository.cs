@@ -193,7 +193,7 @@ namespace TaskPlannerMetrum.Repository.Rating
         {
             try
             {   // consulta onde  retorna a lista de TeacLeaders , da DepartmentProjects baseada  no contractID
-                var techLeaders = _context.DepartmentProjects.Where(d => d.ContractID == contractID).ToList();
+                var techLeaders = _context.DepartmentProjects.Where(d => d.ContractID == contractID  && d.TechLeaderID  !=0).ToList();
 
                 var ratingDescription = _context.RatingDescription.Where(t => t.Type == "L").ToList();
 

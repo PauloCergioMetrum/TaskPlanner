@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
@@ -364,14 +365,19 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         {
 
             var newActivityPaln = _context.ActivityPlan.Where(a => a.ID == activityPlan.ID).FirstOrDefault();
+            if(newActivityPaln.ExecutorTeamID != activityPlan.ExecutorTeamID)
+            {
+                updateRatingExecutor(activityPlan.ExecutorTeamID, newActivityPaln.ExecutorTeamID, newActivityPaln.ContractID);
+            }
             newActivityPaln.Status = activityPlan.Status;
             newActivityPaln.ExecutedManHour = activityPlan.ExecutedManHour;
             newActivityPaln.ScheduledDate = activityPlan.ScheduledDate;
             newActivityPaln.NotesFromExecutor = activityPlan.NotesFromExecutor;
             newActivityPaln.NotesFromPlanner = activityPlan.NotesFromPlanner;
             newActivityPaln.PlannedManHour = activityPlan.PlannedManHour;
-
             newActivityPaln.ExecutorTeamID = activityPlan.ExecutorTeamID;
+
+           
 
 
             _context.ActivityPlan.Update(newActivityPaln);
@@ -379,6 +385,66 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             return true;
 
 
+        }
+
+
+        public void updateRatingExecutor(int newUserID, int oldUserID, int contractID)
+        {
+            var userIDNew = _context.Team.Where(i=> i.ID == newUserID).Select(u => u.UserID).FirstOrDefault();
+            var userIDOld = _context.Team.Where(i => i.ID == oldUserID).Select(u => u.UserID).FirstOrDefault();
+
+            var taskOldUserID = _context.ActivityPlan.Where(c=> c.ContractID == contractID && c.ExecutorTeamID == oldUserID).ToList();
+            if(taskOldUserID.Count() <= 1)
+            {
+                deleteProjectRating(contractID, userIDOld);
+                var getUserRatingProject = _context.RatingProject.Where(c=> c.ProjectID == contractID && c.UserID == userIDOld).FirstOrDefault();
+                if(getUserRatingProject == null)
+                {
+                    createRatingProjects(new RatingProject
+                    {
+                        ProjectID = contractID,
+                        UserID = userIDNew,
+                    });
+                }
+                else
+                {
+                    getUserRatingProject.UserID = userIDNew;
+                    _context.Update(getUserRatingProject);
+                    _context.SaveChanges();
+                }
+            
+            }
+            else
+            {
+                _context.RatingProject.Add(new RatingProject
+                {
+                    ProjectID = contractID,
+                    UserID = userIDNew,
+                });
+                _context.SaveChanges();
+                creatDescriptionExecuter(new RatingProject
+                {
+                    ProjectID = contractID,
+                    UserID = userIDNew,
+                });
+            }
+        }
+
+        
+        public void deleteProjectRating(int contractID, int UserID)
+        {
+            var getRatingProjectID = _context.RatingProject.Where(c=> c.ProjectID == contractID && c.UserID ==UserID).FirstOrDefault();
+            if(getRatingProjectID == null)
+            {
+                var getRating = _context.Rating.Where(r => r.RatingProjectID == getRatingProjectID.ID).ToList();
+                foreach(var rating in getRating)
+                {
+                    _context.Rating.Remove(rating);
+                    _context.SaveChanges();
+                }
+                _context.RatingProject.Remove(getRatingProjectID);
+                _context.SaveChanges();
+            }
         }
 
         public bool DeleteId(int id)
