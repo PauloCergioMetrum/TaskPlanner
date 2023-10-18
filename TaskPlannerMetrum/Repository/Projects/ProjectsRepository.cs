@@ -350,18 +350,28 @@ namespace TaskPlannerMetrum.Repository.Projects
 
             var removeRatings = _context.RatingProject.Where(r => r.ProjectID == updateproject.ContractID && r.UserID == updateproject.TechLeaderID).FirstOrDefault();
 
-            var rating = _context.Rating.Where(i => i.RatingProjectID == removeRatings.ID).ToList();
-            foreach (var leader in rating)
+
+
+            if (removeRatings != null)
             {
-                _context.Rating.Remove(leader);
+                var rating = _context.Rating.Where(i => i.RatingProjectID == removeRatings.ID).ToList();
+                foreach (var leader in rating)
+                {
+                    _context.Rating.Remove(leader);
+                    _context.SaveChanges();
+                }
+            }
+
+
+
+            var updateprojectTechLeader = _context.RatingProject.Where(t => t.ProjectID == newProject.ContractID && t.UserID == updateproject.TechLeaderID).FirstOrDefault();
+            if (updateprojectTechLeader != null)
+            {
+                _context.RatingProject.Remove(updateprojectTechLeader);
                 _context.SaveChanges();
             }
 
 
-            var updateprojectTechLeader = _context.RatingProject.Where(t => t.ProjectID == newProject.ContractID && t.UserID == updateproject.TechLeaderID).FirstOrDefault();
-
-            _context.RatingProject.Remove(updateprojectTechLeader);
-            _context.SaveChanges();
             _context.RatingProject.Add(new RatingProject
             {
                 ProjectID = newProject.ContractID,
@@ -525,3 +535,4 @@ namespace TaskPlannerMetrum.Repository.Projects
         }
     }
 }
+
