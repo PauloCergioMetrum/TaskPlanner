@@ -294,7 +294,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
         {
             var dateCompare = _context.Contracts.Where(c => c.id == ContractID).Select(c => c.DateRetroactive).FirstOrDefault();
 
-            if (dateCompare >= DateTime.Now)
+            if (dateCompare > DateTime.Now)
             {
                 return false;
             }
