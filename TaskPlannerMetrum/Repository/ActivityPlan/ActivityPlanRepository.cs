@@ -376,10 +376,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPaln.NotesFromPlanner = activityPlan.NotesFromPlanner;
             newActivityPaln.PlannedManHour = activityPlan.PlannedManHour;
             newActivityPaln.ExecutorTeamID = activityPlan.ExecutorTeamID;
-
-           
-
-
             _context.ActivityPlan.Update(newActivityPaln);
             _context.SaveChanges();
             return true;
@@ -408,9 +404,12 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 }
                 else
                 {
+                    
                     getUserRatingProject.UserID = userIDNew;
                     _context.Update(getUserRatingProject);
                     _context.SaveChanges();
+                    ResetRating(getUserRatingProject.ID);
+
                 }
             
             }
@@ -429,6 +428,18 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 });
             }
         }
+
+        public void ResetRating( int ratingProjectID )
+        {
+            var getRatings = _context.Rating.Where(i => i.RatingProjectID == ratingProjectID).ToList();
+            foreach(var rating in getRatings)
+            {
+                rating.Value = 0;
+                _context.Update(rating);
+                _context.SaveChanges();
+            }
+        }
+        
 
         
         public void deleteProjectRating(int contractID, int UserID)
