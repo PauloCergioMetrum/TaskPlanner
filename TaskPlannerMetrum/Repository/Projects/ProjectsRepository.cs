@@ -351,6 +351,7 @@ namespace TaskPlannerMetrum.Repository.Projects
             var removeRatings = _context.RatingProject.Where(r => r.ProjectID == updateproject.ContractID && r.UserID == updateproject.TechLeaderID).FirstOrDefault();
 
 
+
             if (removeRatings != null)
             {
                 var rating = _context.Rating.Where(i => i.RatingProjectID == removeRatings.ID).ToList();
@@ -369,6 +370,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                 _context.RatingProject.Remove(updateprojectTechLeader);
                 _context.SaveChanges();
             }
+
 
             _context.RatingProject.Add(new RatingProject
             {
