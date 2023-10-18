@@ -17,6 +17,7 @@ using System.Collections.Immutable;
 using System.Reflection.PortableExecutable;
 using Castle.Components.DictionaryAdapter;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace TaskPlannerMetrum.Repository.Projects
 {
@@ -262,6 +263,7 @@ namespace TaskPlannerMetrum.Repository.Projects
             return result;
         }
 
+
         public dynamic GetDepFinances(int id)
         {
 
@@ -345,7 +347,39 @@ namespace TaskPlannerMetrum.Repository.Projects
 
 
             var updateproject = _context.DepartmentProjects.Where(i => i.ContractID == newProject.ContractID && i.DepartmentID == newProject.DepartmentID).FirstOrDefault();
-            
+
+            var removeRatings = _context.RatingProject.Where(r => r.ProjectID == updateproject.ContractID && r.UserID == updateproject.TechLeaderID).FirstOrDefault();
+
+
+            if (removeRatings != null)
+            {
+                var rating = _context.Rating.Where(i => i.RatingProjectID == removeRatings.ID).ToList();
+                foreach (var leader in rating)
+                {
+                    _context.Rating.Remove(leader);
+                    _context.SaveChanges();
+                }
+            }
+
+
+
+            var updateprojectTechLeader = _context.RatingProject.Where(t => t.ProjectID == newProject.ContractID && t.UserID == updateproject.TechLeaderID).FirstOrDefault();
+            if (updateprojectTechLeader != null)
+            {
+                _context.RatingProject.Remove(updateprojectTechLeader);
+                _context.SaveChanges();
+            }
+
+            _context.RatingProject.Add(new RatingProject
+            {
+                ProjectID = newProject.ContractID,
+                UserID = newProject.TechLeaderID,
+
+            });
+            _context.SaveChanges();
+
+            UpdateRatingLeader(newProject.TechLeaderID, newProject.ContractID);
+
             updateproject.TechLeaderID = newProject.TechLeaderID;
             updateproject.ExpectedHour = newProject.ExpectedHour;
             updateproject.ID = updateproject.ID;
@@ -353,12 +387,33 @@ namespace TaskPlannerMetrum.Repository.Projects
             _context.Update(updateproject);
             _context.SaveChanges();
 
-           
+
             return true;
 
+        }
+
+
+        public void UpdateRatingLeader(int userID, int contractID)
+        {
+            var ratingProjectID = _context.RatingProject.Where(r => r.ProjectID == contractID && r.UserID == userID).Select(r => r.ID).FirstOrDefault();
+            var descriptionLeader = _context.RatingDescription.Where(t => t.Type == "L").ToList();
+
+            foreach (var description in descriptionLeader)
+            {
+                _context.Rating.Add(new Model.Rating
+                {
+                    RatingDescriptionID = description.ID,
+                    RatingProjectID = ratingProjectID,
+                    Value = 0
+
+                });
+
+                _context.SaveChanges();
+            }
 
 
         }
+
 
         public bool ActiveProject(int id)
         {
@@ -455,7 +510,7 @@ namespace TaskPlannerMetrum.Repository.Projects
         public void CreateRetroactiveDate(int contractID, DateTime retroactiveDate)
         {
             var createRetroactiveDate = _context.Contracts.Where(c => c.id == contractID).FirstOrDefault();
-            createRetroactiveDate.DateRetroactive =  retroactiveDate; 
+            createRetroactiveDate.DateRetroactive = retroactiveDate;
             _context.Update(createRetroactiveDate);
             _context.SaveChanges();
         }
@@ -469,7 +524,8 @@ namespace TaskPlannerMetrum.Repository.Projects
                 _context.Update(contract);
                 _context.SaveChanges();
                 return true;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
@@ -477,3 +533,4 @@ namespace TaskPlannerMetrum.Repository.Projects
         }
     }
 }
+
