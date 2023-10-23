@@ -343,9 +343,6 @@ namespace TaskPlannerMetrum.Repository.Projects
 
         public bool UpdateProject(Model.DepartmentProjects newProject)
         {
-
-
-
             var updateproject = _context.DepartmentProjects.Where(i => i.ContractID == newProject.ContractID && i.DepartmentID == newProject.DepartmentID).FirstOrDefault();
 
             var removeRatings = _context.RatingProject.Where(r => r.ProjectID == updateproject.ContractID && r.UserID == updateproject.TechLeaderID).FirstOrDefault();
