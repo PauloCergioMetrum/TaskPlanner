@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿
+
+
+
+
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using MySqlConnector;
 using System;
@@ -428,38 +433,16 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     });
                 }
             }
-           
+
         }
 
-        public void DeleteRatingsLeader(int contractID, int leaderID)
-        {
-            var getLeader = _context.DepartmentProjects.Where(c => c.ContractID == contractID && c.TechLeaderID == leaderID).FirstOrDefault();
-            var ratingDescription = _context.RatingDescription.ToList();
-            if (getLeader != null)
-            {
-                var getRatingProjectID = _context.RatingProject.Where(i => i.ProjectID == contractID && i.UserID == leaderID).FirstOrDefault();
-                var rating = _context.Rating.Where(r => r.RatingProjectID == getRatingProjectID.ID).ToList();
-                var descriptionsExecuters = ratingDescription.Where(t => t.Type == "E" || t.Type == "M").ToList();
-                foreach (var description in descriptionsExecuters)
-                {
-
-                    var getRatingdescriptionExecutor = _context.Rating.Where(r => r.RatingProjectID == getRatingProjectID.ID && r.RatingDescriptionID == description.ID).FirstOrDefault();
-
-                    _context.Rating.Remove(getRatingdescriptionExecutor);
-                    _context.SaveChanges();
-
-
-
-                }
-            }
-        }
 
 
 
         public void deleteProjectRating(int contractID, int UserID)
         {
             var getRatingProjectID = _context.RatingProject.Where(c => c.ProjectID == contractID && c.UserID == UserID).FirstOrDefault();
-            if (getRatingProjectID == null)
+            if (getRatingProjectID != null)
             {
                 var getRating = _context.Rating.Where(r => r.RatingProjectID == getRatingProjectID.ID).ToList();
                 foreach (var rating in getRating)
