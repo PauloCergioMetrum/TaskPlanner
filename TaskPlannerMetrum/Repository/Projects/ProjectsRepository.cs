@@ -343,9 +343,6 @@ namespace TaskPlannerMetrum.Repository.Projects
 
         public bool UpdateProject(Model.DepartmentProjects newProject)
         {
-
-
-
             var updateproject = _context.DepartmentProjects.Where(i => i.ContractID == newProject.ContractID && i.DepartmentID == newProject.DepartmentID).FirstOrDefault();
 
             var removeRatings = _context.RatingProject.Where(r => r.ProjectID == updateproject.ContractID && r.UserID == updateproject.TechLeaderID).FirstOrDefault();
@@ -354,12 +351,18 @@ namespace TaskPlannerMetrum.Repository.Projects
 
             if (removeRatings != null)
             {
+                
                 var rating = _context.Rating.Where(i => i.RatingProjectID == removeRatings.ID).ToList();
                 foreach (var leader in rating)
                 {
                     _context.Rating.Remove(leader);
                     _context.SaveChanges();
                 }
+
+                var deleteRatingProject = _context.RatingProject.Where(r => r.ProjectID == updateproject.ContractID && r.UserID == updateproject.TechLeaderID).FirstOrDefault();
+                _context.RatingProject.Remove(deleteRatingProject);
+                _context.SaveChanges();
+
             }
 
 

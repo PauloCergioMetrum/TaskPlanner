@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿
+
+
+
+
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using MySqlConnector;
 using System;
@@ -59,7 +64,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 {
                     ProjectID = activityPlan.ContractID,
 
-                    UserID= activityPlan.ExecutorTeamID,
+                    UserID = activityPlan.ExecutorTeamID,
 
                 }
                 ));
@@ -90,7 +95,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 _context.RatingProject.Add(ratingProject);
                 _context.SaveChanges();
                 creatDescriptionExecuter(ratingProject);
-                
+
 
 
                 return true;
@@ -104,7 +109,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public bool creatDescriptionExecuter(RatingProject userRating)
         {
-            
+
             var leader = _context.DepartmentProjects.Where(t => t.ContractID == userRating.ProjectID && t.TechLeaderID == userRating.UserID).FirstOrDefault();
             List<RatingDescription> descriptions = _context.RatingDescription.ToList();
             var ratingProjects = _context.RatingProject.Where(p => p.ProjectID == userRating.ProjectID && p.UserID == userRating.UserID).Select(i => i.ID).FirstOrDefault();
@@ -204,7 +209,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
 
 
-   
+
 
         public string GetNameProject(int id)
         {
@@ -365,7 +370,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         {
 
             var newActivityPaln = _context.ActivityPlan.Where(a => a.ID == activityPlan.ID).FirstOrDefault();
-            if(newActivityPaln.ExecutorTeamID != activityPlan.ExecutorTeamID)
+            if (newActivityPaln.ExecutorTeamID != activityPlan.ExecutorTeamID)
             {
                 updateRatingExecutor(activityPlan.ExecutorTeamID, newActivityPaln.ExecutorTeamID, newActivityPaln.ContractID);
             }
@@ -386,15 +391,15 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public void updateRatingExecutor(int newUserID, int oldUserID, int contractID)
         {
-            var userIDNew = _context.Team.Where(i=> i.ID == newUserID).Select(u => u.UserID).FirstOrDefault();
+            var userIDNew = _context.Team.Where(i => i.ID == newUserID).Select(u => u.UserID).FirstOrDefault();
             var userIDOld = _context.Team.Where(i => i.ID == oldUserID).Select(u => u.UserID).FirstOrDefault();
 
-            var taskOldUserID = _context.ActivityPlan.Where(c=> c.ContractID == contractID && c.ExecutorTeamID == oldUserID).ToList();
-            if(taskOldUserID.Count() <= 1)
+            var taskOldUserID = _context.ActivityPlan.Where(c => c.ContractID == contractID && c.ExecutorTeamID == oldUserID).ToList();
+            if (taskOldUserID.Count() <= 1)
             {
                 deleteProjectRating(contractID, userIDOld);
-                var getUserRatingProject = _context.RatingProject.Where(c=> c.ProjectID == contractID && c.UserID == userIDOld).FirstOrDefault();
-                if(getUserRatingProject == null)
+                var getUserRatingProject = _context.RatingProject.Where(c => c.ProjectID == contractID && c.UserID == userIDNew).FirstOrDefault();
+                if (getUserRatingProject == null)
                 {
                     createRatingProjects(new RatingProject
                     {
@@ -411,44 +416,37 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     ResetRating(getUserRatingProject.ID);
 
                 }
-            
+
             }
             else
             {
-                _context.RatingProject.Add(new RatingProject
+                var getUserRatingProject = _context.RatingProject.Where(c => c.ProjectID == contractID && c.UserID == userIDNew).FirstOrDefault();
+                if (getUserRatingProject == null)
                 {
-                    ProjectID = contractID,
-                    UserID = userIDNew,
-                });
-                _context.SaveChanges();
-                creatDescriptionExecuter(new RatingProject
-                {
-                    ProjectID = contractID,
-                    UserID = userIDNew,
-                });
+                    _context.RatingProject.Add(new RatingProject
+                    {
+                        ProjectID = contractID,
+                        UserID = userIDNew,
+                    });
+                    _context.SaveChanges();
+                    creatDescriptionExecuter(new RatingProject
+                    {
+                        ProjectID = contractID,
+                        UserID = userIDNew,
+                    });
+                }
             }
+
         }
 
-        public void ResetRating( int ratingProjectID )
-        {
-            var getRatings = _context.Rating.Where(i => i.RatingProjectID == ratingProjectID).ToList();
-            foreach(var rating in getRatings)
-            {
-                rating.Value = 0;
-                _context.Update(rating);
-                _context.SaveChanges();
-            }
-        }
-        
 
-        
         public void deleteProjectRating(int contractID, int UserID)
         {
-            var getRatingProjectID = _context.RatingProject.Where(c=> c.ProjectID == contractID && c.UserID ==UserID).FirstOrDefault();
-            if(getRatingProjectID == null)
+            var getRatingProjectID = _context.RatingProject.Where(c => c.ProjectID == contractID && c.UserID == UserID).FirstOrDefault();
+            if (getRatingProjectID != null)
             {
                 var getRating = _context.Rating.Where(r => r.RatingProjectID == getRatingProjectID.ID).ToList();
-                foreach(var rating in getRating)
+                foreach (var rating in getRating)
                 {
                     _context.Rating.Remove(rating);
                     _context.SaveChanges();
