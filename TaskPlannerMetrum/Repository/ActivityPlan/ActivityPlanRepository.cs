@@ -409,9 +409,12 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 }
                 else
                 {
+                    
                     getUserRatingProject.UserID = userIDNew;
                     _context.Update(getUserRatingProject);
                     _context.SaveChanges();
+                    ResetRating(getUserRatingProject.ID);
+
                 }
 
             }
@@ -435,8 +438,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
 
         }
-
-
 
 
         public void deleteProjectRating(int contractID, int UserID)
