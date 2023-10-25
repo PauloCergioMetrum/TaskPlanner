@@ -409,11 +409,11 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 }
                 else
                 {
-                    
+
                     getUserRatingProject.UserID = userIDNew;
                     _context.Update(getUserRatingProject);
                     _context.SaveChanges();
-                    ResetRating(getUserRatingProject.ID);
+                    //ResetRating(getUserRatingProject.ID);
 
                 }
 
@@ -440,6 +440,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         }
 
 
+
+
         public void deleteProjectRating(int contractID, int UserID)
         {
             var getRatingProjectID = _context.RatingProject.Where(c => c.ProjectID == contractID && c.UserID == UserID).FirstOrDefault();
@@ -455,6 +457,14 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 _context.SaveChanges();
             }
         }
+
+
+
+
+
+
+
+
 
         public bool DeleteId(int id)
         {
@@ -678,6 +688,26 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             return task.Status;
         }
 
+        // Ao cadastrar outro fiscal, o fiscal já cadastrado será removido
+        public void managerRemover(int ContractID, int UserID)
+        {
+            var removerManager = _context.RatingProject.Where(f => f.UserID == UserID && f.ID == ContractID).FirstOrDefault();
+            if (removerManager != null)
+            {
+                var ratingGet = _context.Rating.Where(r => r.RatingProjectID == removerManager.ID).ToList();
+
+                foreach (var rating in ratingGet)
+                {
+                    _context.Rating.Remove(rating);
+                    _context.SaveChanges();
+
+
+                }
+                _context.SaveChanges();
+                _context.RatingProject.Remove(removerManager);
+            }
+
+        }
 
 
 
