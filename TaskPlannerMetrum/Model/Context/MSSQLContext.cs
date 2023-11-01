@@ -25,6 +25,9 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<Clients> Clients { get; set; }
 
         public DbSet<Team> Team { get; set; }
+
+        public DbSet<UserHourCosts> UserHourCosts { get; set; }   
+
         //Views
         public DbSet<vProjectList> vProjectList { get; set; }
         public DbSet<vUserList> vUserList { get; set; }
