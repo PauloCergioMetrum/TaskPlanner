@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repository\Clients\" />
     <Folder Include="Repository\Team\" />
   </ItemGroup>
 
