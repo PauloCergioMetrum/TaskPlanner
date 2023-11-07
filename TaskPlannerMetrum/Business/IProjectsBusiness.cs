@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.NewContract;
@@ -35,7 +36,7 @@ namespace TaskPlannerMetrum.Business
 
         public dynamic GetAllProjectDep(int contractID);
 
-        public bool UpdateProject(Model.DepartmentProjects newProject);
+        public bool UpdateProject(CreateProjectRetroactiveDate newProject);
 
         public bool ActiveProject(int id);
 
@@ -45,7 +46,10 @@ namespace TaskPlannerMetrum.Business
 
         public void FavoriteProject(int ContractID, int UserID);
 
-        public void DeletFavoritProject(int ContractID, int UserID); 
+        public void DeletFavoritProject(int ContractID, int UserID);
+
+
+        public bool UpdateRetroactiveDate(int contractID, DateTime retroactiveDate);
 
     }
 }

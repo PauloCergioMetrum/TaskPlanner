@@ -87,5 +87,10 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _contractRepository.ContractDasboardDate(date);
         }
+
+        public bool CompareDate(int ContractID)
+        {
+           return _contractRepository.CompareDate(ContractID);  
+        }
     }
 }

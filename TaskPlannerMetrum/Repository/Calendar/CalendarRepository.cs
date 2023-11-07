@@ -177,12 +177,15 @@ namespace TaskPlannerMetrum.Repository.Calendar
 
         public dynamic GetAllContracts()
         {
-            return _context.Contracts.Where(e => e.EnableProject == true).Select(c => new
+            var contracts = _context.Contracts.Where(e => e.EnableProject == true && e.DateRetroactive > DateTime.Now).Select(c => new
             {
                 contractID = c.id,
                 internalCode = c.InternalCode,
 
-            }).ToList();
+
+            })
+                .ToList();
+            return contracts;
         }
 
 

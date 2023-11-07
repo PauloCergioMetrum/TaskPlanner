@@ -1,0 +1,111 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using TaskPlannerMetrum.Business;
+using TaskPlannerMetrum.Data.VO;
+using TaskPlannerMetrum.Model;
+using Memt.Logger;
+using System.Collections.Generic;
+using TaskPlannerMetrum.Model.DTO;
+
+namespace TaskPlannerMetrum.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]/v{version:apiVersion}")]
+    public class UserHourCostController : ControllerBase
+    {
+        private readonly ILogger<UserHourCostController> _logger;
+        private IUserHourCostBusiness _userHourCost;
+
+        public UserHourCostController(ILogger<UserHourCostController> logger, IUserHourCostBusiness userHourCostBusiness)
+        {
+            _logger = logger;
+            _userHourCost = userHourCostBusiness;
+        }
+
+        [HttpPost("CreateUserHourCost")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult Post(UserHourCosts userHourCost)
+        {
+            try
+            {
+                return Ok(_userHourCost.CreateHourCost(userHourCost));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("DeleteUserHourCost/{ID}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult Delete(string ID)
+        {
+            try
+            {
+                return Ok(_userHourCost.DeleteHourCost(ID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("UpdateUserHourCost")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult Put(UserHourCosts userHourCost)
+        {
+            try
+            {
+                return Ok(_userHourCost.UpdateHourCost(userHourCost));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //Type = typeof(List<UserVO>))]
+        [HttpGet("ListUserHourCost/{userID}")]
+        [ProducesResponseType(200, Type = typeof(List<UserHourCosts>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult ListUserHoursCost(int userID)
+        {
+            try
+            {
+                var userHourCostList = _userHourCost.ListUserHoursCost(userID);
+                return Ok(userHourCostList);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
+
+    }
+
+}
+
+
+
+
+

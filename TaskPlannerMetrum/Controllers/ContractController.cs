@@ -273,6 +273,28 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        [HttpGet("CompareDate")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+
+        public IActionResult CompareDate(int ContractID)
+        {
+            try
+            {
+                return Ok(_contractBusiness.CompareDate(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
 
 
     }

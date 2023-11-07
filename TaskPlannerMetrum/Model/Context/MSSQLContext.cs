@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Model.Context
@@ -24,6 +25,9 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<Clients> Clients { get; set; }
 
         public DbSet<Team> Team { get; set; }
+
+        public DbSet<UserHourCosts> UserHourCosts { get; set; }   
+
         //Views
         public DbSet<vProjectList> vProjectList { get; set; }
         public DbSet<vUserList> vUserList { get; set; }
@@ -59,13 +63,15 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<vContractViewer> vContractViewer { get; set; }
 
+        public DbSet<RatingProject> RatingProject { get; set; }
 
-        
+        public DbSet<RatingDescription> RatingDescription { get; set; }
+        public DbSet<Rating> Rating { get; set; }
 
 
+        public DbSet<vRating> vRating { get; set; }
 
-
-
+      
 
     }
 }

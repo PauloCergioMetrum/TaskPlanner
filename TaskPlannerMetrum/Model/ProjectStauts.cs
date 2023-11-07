@@ -23,5 +23,6 @@ namespace TaskPlannerMetrum.Model
         public DateTime endDate { get; set; }
 
         public string status { get; set; }
+        public string   GetStatusProjects {get; set; }  
     }
 }

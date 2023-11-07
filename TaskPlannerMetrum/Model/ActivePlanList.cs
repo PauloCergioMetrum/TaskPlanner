@@ -35,5 +35,8 @@ using System.ComponentModel.DataAnnotations;
         public bool? IsRework { get; set; }
 
         public int DepartamentID { get; set; }
+
+
     }
+
 }

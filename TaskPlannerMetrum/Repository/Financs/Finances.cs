@@ -158,39 +158,74 @@ namespace TaskPlannerMetrum.Repository.Financs
 
         }
 
-        public  string setStatusDate(int id)
+        public string setStatusDate(int id)
         {
-            var finance = _context.Finances.Where(i => i.id ==id).FirstOrDefault();
+            var finance = _context.Finances.Where(i => i.id == id).FirstOrDefault();
 
-            if(finance.Status == "CANCELADO" || finance.Status == "CANCELADO")
+            if (finance.Status == "CANCELADO" || finance.Status == "CANCELADO")
             {
                 return finance.Status;
             }
-
-            if(Convert.ToString(finance.EndDate.Date) != "01/01/0001 00:00:00")
+            //SE DATAREPROGRAMDA É DIFERENTE DE NULO
+            if (finance.EndDate.Date != Convert.ToDateTime("01/01/0001"))
             {
-                if(finance.EndDate.Date >=  DateTime.Now.Date)
+                //SE DATA FATURADA É DIFERENTE DE NULA
+                if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/0001"))
                 {
-                    return "NO PRAZO";
+                                    
+                     return "NO PRAZO";
+                    
                 }
+
                 else
                 {
-                    return "ATRASADO";
+                    if (finance.EndDate.Date >= DateTime.Now.Date)
+                    {
+                        return "NO PRAZO";
+                    }
+                    else
+                    {
+                        return "ATRASADO";
+                    }
                 }
             }
+
             else
             {
-                if (finance.BaseDate.Date >= DateTime.Now.Date)
-                {
-                    return "NO PRAZO";
-                }
-                else
-                {
-                    return "ATRASADO";
-                }
+
+                    //SE A DATA FATURADA  NÃO É NULA
+                    if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/0001"))
+                    {
+                        //SE A DATA FATURADA É MAIOR QUE DATA BASE
+                        if (finance.InvoicedDate > finance.BaseDate)
+                        {
+                            return "ATRASADO";
+                        }
+                        else
+                        {
+                            return "NO PRAZO";
+                        }
+
+                    }
+                    else
+                    {
+                        //SE A DATA BASE É MAIOR QUE A DATA DE AGORA
+                        if (finance.BaseDate.Date >= DateTime.Now.Date)
+                        {
+                            return "NO PRAZO";
+                        }
+                        else
+                        {
+                            return "ATRASADO";
+                        }
+                    }
+
+
+                
+
             }
-            
-            
+
+
         }
 
         public dynamic GetContractInfo(int id)
@@ -231,7 +266,7 @@ namespace TaskPlannerMetrum.Repository.Financs
             _context.Finances.Update(updatefinances);
             _context.SaveChanges();
 
-            var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == updatefinances.ContractID && c.FinancesID == finances.id).FirstOrDefault();
+            var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == updatefinances.ContractID && c.DepartmentID == finances.DepartmentID).FirstOrDefault();
             updateDepartmentProjects.DepartmentID = finances.DepartmentID;
             _context.DepartmentProjects.Update(updateDepartmentProjects);
             _context.SaveChanges();

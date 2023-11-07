@@ -22,7 +22,11 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string ExecutedMenHour { get; set; }    
 
-        public string Progress { get; set; }   
+        public string Progress { get; set; }  
+
+        public DateTime? DateRetroactive { get; set; }   
+
+
 
     }
 }
