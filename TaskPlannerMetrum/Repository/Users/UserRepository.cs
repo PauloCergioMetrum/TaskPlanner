@@ -110,7 +110,11 @@ namespace TaskPlannerMetrum.Repository.Users
             _context.Users.Add(user);
             _context.SaveChanges();
 
+           
+            
+
             return _context.Users.Where(u => u.UserEmail == user.UserEmail).Select(u => u.Id).FirstOrDefault();
+
         }
 
         public bool CreateTeam(Team team)

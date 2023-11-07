@@ -14,21 +14,13 @@ namespace TaskPlannerMetrum.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
-
-        // Declaration of the service used
         private IUserBusiness _userBusiness;
-
-        // Injection of an instance of IPersonService
-        // when creating an instance of PersonController
         public UserController(ILogger<UserController> logger, IUserBusiness userBusiness)
         {
             _logger = logger;
             _userBusiness = userBusiness;
 
         }
-
-        // Maps GET requests to https://localhost:{port}/api/person
-        // Get no parameters for FindAll -> Search All
         [HttpGet]
         [ProducesResponseType((200), Type = typeof(List<UserVO>))]
         [ProducesResponseType(204)]
@@ -48,9 +40,8 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        // Maps GET requests to https://localhost:{port}/api/person/{id}
-        // receiving an ID as in the Request Path
-        // Get with parameters for FindById -> Search by ID
+
+
         [HttpGet("{id}")]
         [ProducesResponseType((200), Type = typeof(UserVO))]
         [ProducesResponseType(204)]

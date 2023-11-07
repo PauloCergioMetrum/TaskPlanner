@@ -31,6 +31,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(400)]
 
         [ProducesResponseType(401)]
+
         //[TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult GetExecutorPlanner(string projectId)
         {
