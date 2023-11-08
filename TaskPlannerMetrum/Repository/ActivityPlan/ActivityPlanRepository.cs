@@ -681,7 +681,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         private string GetStatus(Model.ActivityPlan task)
         {
-            if (task.ExecutedManHour > 0 && (task.Status != "1" || task.Status != "6"))
+            if (task.ExecutedManHour > 0 && (task.Status != "1" &&  task.Status != "6" && task.Status !="4" &&  task.Status !="3"))
             {
                 return "2";
             }
