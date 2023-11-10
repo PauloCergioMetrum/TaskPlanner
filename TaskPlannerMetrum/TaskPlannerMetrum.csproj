@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repository\NovaPasta1\**" />
+    <Compile Remove="Repository\NovaPasta\**" />
+    <Content Remove="Repository\NovaPasta1\**" />
+    <Content Remove="Repository\NovaPasta\**" />
+    <EmbeddedResource Remove="Repository\NovaPasta1\**" />
+    <EmbeddedResource Remove="Repository\NovaPasta\**" />
+    <None Remove="Repository\NovaPasta1\**" />
+    <None Remove="Repository\NovaPasta\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Logger.csproj.vspscc" />
   </ItemGroup>
 
