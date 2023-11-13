@@ -12,21 +12,26 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
     {
         private readonly MSSQLContext _context;
 
-        public ReportsPlannedExecutedViewerRepository (MSSQLContext context)
+        public ReportsPlannedExecutedViewerRepository(MSSQLContext context)
         {
-            _context = context; 
+            _context = context;
         }
-
-
 
         public dynamic ReportsPlannedExecuted()
-
         {
+            try
+            {
+             
+                return _context.vReports_PlannedExecuted.OrderBy(d => d.inspectorID).ToList();
+            }
+            catch (Exception ex)
+            {
 
-
-            return _context.vReports_PlannedExecuted.OrderBy(d => d.inspectorID).ToList();
+                return false; 
+            }
         }
     }
+
 }
 
 
