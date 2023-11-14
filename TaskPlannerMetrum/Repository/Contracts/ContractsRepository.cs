@@ -103,7 +103,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     inspectorID = newcontract.inspectorID,
                     VendorID = newcontract.VendorID,
                     ClientID = newcontract.ClientID,
-                    ClientOrder = newcontract.ClientOrder,
+                   // ClientOrder = newcontract.ClientOrder,
+                   ClientOrder=0,
                     Condition = newcontract.Condition,
                     EnableProject = false,
                     InternalCode = newcontract.InternalCode,
@@ -111,7 +112,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     PaymentMethod = newcontract.PaymentMethod,
                     StartDate = newcontract.StartDate,
                     TagID = newcontract.TagID,
-                });
+                });;
                 _context.SaveChanges();
                 var contractID = _context.Contracts.Select(i => i.id).Max();
                 var pmoID = _context.Department.Where(n => n.Name == "PMO").Select(i => i.ID).FirstOrDefault();
