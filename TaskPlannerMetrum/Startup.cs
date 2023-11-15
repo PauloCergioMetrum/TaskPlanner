@@ -168,6 +168,9 @@ namespace TaskPlannerMetrum
             services.AddScoped<IReportsPlannedExecutedViewerRepository, ReportsPlannedExecutedViewerRepository>();
             services.AddScoped<IReportsPlannedExecutedViewewBussines, ReportsPlannedExecutedViewerBusiness>();
 
+            services.AddScoped<IContractViewerBusiness, ContractViewerBusiness>();
+
+
 
 
 

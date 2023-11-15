@@ -2,8 +2,10 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TaskPlannerMetrum.Model.Context;
+using TaskPlannerMetrum.Model.ModelViews;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskPlannerMetrum.Repository.ReportsViewer
@@ -17,17 +19,18 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             _context = context;
         }
 
-        public dynamic ReportsPlannedExecuted()
+        public IEnumerable<vReports_PlannedExecuted> ReportsPlannedExecuted(DateTime startDate, DateTime endDate)
         {
             try
             {
-             
-                return _context.vReports_PlannedExecuted.OrderBy(d => d.inspectorID).ToList();
+                return _context.vReports_PlannedExecuted
+                    .Where(e => e.ScheduledDate.Date >= startDate.Date && e.ScheduledDate.Date <= endDate.Date)
+                    .OrderBy(d => d.inspectorID)
+                    .ToList();
             }
             catch (Exception ex)
             {
-
-                return false; 
+                return null; 
             }
         }
     }

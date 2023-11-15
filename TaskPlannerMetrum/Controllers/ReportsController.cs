@@ -28,22 +28,23 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-
-
-        public IActionResult ReportsPlannedExecuted()
+        public IActionResult ReportsPlannedExecuted(DateTime startDate, DateTime endDate)
         {
             try
             {
-                return Ok(_reportsPlannedExecutedViewerBusiness.ReportsPlannedExecuted());
+                
 
+                return Ok(_reportsPlannedExecutedViewerBusiness.ReportsPlannedExecuted(startDate, endDate));
             }
             catch (Exception ex)
             {
                 Logger.Log(ex.Message, ELoggerType.Debug);
-
                 return BadRequest(ex.Message);
             }
         }
+
+
+
 
 
 
