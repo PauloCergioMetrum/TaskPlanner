@@ -524,7 +524,7 @@ namespace TaskPlannerMetrum.Repository.Projects
         {
             try
             {
-                var contract = _context.Contracts.Where(i => i.id == contractID).FirstOrDefault();
+                var contract = _context.Contracts.Where(i => i.id == contractID  && i.DateRetroactive == retroactiveDate) .FirstOrDefault();
                 contract.DateRetroactive = retroactiveDate;
                 _context.Update(contract);
                 _context.SaveChanges();

@@ -26,7 +26,7 @@ namespace TaskPlannerMetrum.Model
         public int VendorID { get; set;   }
 
         public bool EnableProject { get; set; }
-        public Int64 ClientOrder { get; set; }
+        public Int64? ClientOrder { get; set; }
 
         public string Observation { get; set; }
 
