@@ -19,18 +19,23 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             _context = context;
         }
 
-        public IEnumerable<vReports_PlannedExecuted> ReportsPlannedExecuted(DateTime startDate, DateTime endDate)
+        public List<vReports_PlannedExecuted> ReportsPlannedExecuted(DateTime startDate, DateTime endDate)
         {
             try
             {
-                return _context.vReports_PlannedExecuted
-                    .Where(e => e.ScheduledDate.Date >= startDate.Date && e.ScheduledDate.Date <= endDate.Date)
-                    .OrderBy(d => d.inspectorID)
-                    .ToList();
+               
+                var list = _context.vReports_PlannedExecuted.Where(e => e.ScheduledDate.Date >= startDate.Date && e.ScheduledDate.Date <= endDate.Date).OrderByDescending( e => e.ScheduledDate).ToList();
+
+                //list.Sort((d1, d2) => d1.ScheduledDate.CompareTo(d2.ScheduledDate));
+
+
+
+                return list;
+
             }
             catch (Exception ex)
             {
-                return null; 
+                return null;
             }
         }
     }

@@ -34,7 +34,7 @@ namespace TaskPlannerMetrum.Controllers
             {
                 
 
-                return Ok(_reportsPlannedExecutedViewerBusiness.ReportsPlannedExecuted(startDate, endDate));
+                return Ok(_reportsPlannedExecutedViewerBusiness.GetPlannedExecuted(startDate, endDate));
             }
             catch (Exception ex)
             {

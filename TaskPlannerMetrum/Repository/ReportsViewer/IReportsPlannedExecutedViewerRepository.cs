@@ -6,6 +6,6 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 {
     public interface IReportsPlannedExecutedViewerRepository
     {
-        public IEnumerable<vReports_PlannedExecuted> ReportsPlannedExecuted(DateTime startDate, DateTime endDate);
+        public List<vReports_PlannedExecuted> ReportsPlannedExecuted(DateTime startDate, DateTime endDate );
     }
 }
