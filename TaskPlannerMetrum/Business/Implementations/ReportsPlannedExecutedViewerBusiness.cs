@@ -28,7 +28,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             {
                 listPlannedExecuted = listPlannedExecuted,
                 totalPlanned = Math.Round(listPlannedExecuted.Sum(s => s.PlannedManHour),2),
-                totalExecuted = Math.Round(listPlannedExecuted.Sum(s => s.ExecutedManHour) ,2 )
+                totalExecuted = Math.Round(listPlannedExecuted.Sum(s => s.ExecutedManHour) ,2 ),
+                totalHours=Math.Round(_repository.GetHourCost(startDate, endDate),2),
+
+                //totalHours =_repository.GetHourCost(startDate, endDate),
+
+
 
             };
 
