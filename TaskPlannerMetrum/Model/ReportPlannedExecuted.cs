@@ -8,6 +8,6 @@ namespace TaskPlannerMetrum.Model
         public List<vReports_PlannedExecuted> listPlannedExecuted { get; set; }
         public double totalPlanned { get; set; }
         public double totalExecuted { get; set; }
-        public double totalHours {  get; set; }
+        public double totalCost {  get; set; }
     }
 }

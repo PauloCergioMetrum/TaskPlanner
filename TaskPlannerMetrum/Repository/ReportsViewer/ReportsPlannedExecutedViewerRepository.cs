@@ -1,6 +1,7 @@
 ﻿
 
 
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,15 +22,14 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         public double GetHourCost(DateTime startDate, DateTime endDate)
         {
-            var listID = _context.vReports_PlannedExecuted.Where(e => e.ScheduledDate.Date >= startDate.Date && e.ScheduledDate.Date <= endDate.Date).Select(i=> i.ExecutorID).ToList();
+            var listExecutorID = _context.vReports_PlannedExecuted.Where(e => e.ScheduledDate.Date >= startDate.Date && e.ScheduledDate.Date <= endDate.Date).Select(i=> i.ExecutorID).Distinct().ToList();
 
-            double values = 0;
 
-            foreach (var item in listID) 
-            {
-                values += _context.UserHourCosts.Where(u => u.UserID == item).Select(h => h.HourCost).FirstOrDefault();
-            }
-            return values;
+            var listCost = _context.UserHourCosts.Where(e => e.StartDate >= startDate && e.EndDate <= endDate && listExecutorID.ToString().Contains(e.UserID.ToString())).Select(h => h.HourCost).ToList();
+
+            var resulHourCost = Math.Round(listCost.Sum(),2) ;
+
+            return resulHourCost;
         }
 
         public List<vReports_PlannedExecuted> ReportsPlannedExecuted(DateTime startDate, DateTime endDate)
