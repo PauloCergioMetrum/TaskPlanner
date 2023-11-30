@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.DTO;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskPlannerMetrum.Controllers
@@ -23,18 +24,18 @@ namespace TaskPlannerMetrum.Controllers
             _reportsPlannedExecutedViewerBusiness = reportsViewerBusiness;
         }
 
-        [HttpGet("ReportsPlannedExecuted")]
+        [HttpPost("ReportsPlannedExecuted")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult ReportsPlannedExecuted(DateTime startDate, DateTime endDate)
+        public IActionResult ReportsPlannedExecuted(ReportPlannedExecutedDTO reportPlannedExecuted)
         {
             try
             {
-                
 
-                return Ok(_reportsPlannedExecutedViewerBusiness.GetPlannedExecuted(startDate, endDate));
+
+                return Ok(_reportsPlannedExecutedViewerBusiness.GetPlannedExecuted(reportPlannedExecuted));
             }
             catch (Exception ex)
             {

@@ -11,6 +11,8 @@ namespace TaskPlannerMetrum.Model.ModelViews
     public class vReports_PlannedExecuted
     {
         [Key]
+        public int ActivityPlanID { get; set; }
+
         public int ActivitiesScopeListID { get; set; }
         public string Description { get; set; }
         public int inspectorID { get; set; }
@@ -23,7 +25,9 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string ExecutorName { get; set; }
 
         public int ExecutorID { get; set; }
-        
+
+        public int ContractID { get; set; }
+
         public int TechLeaderID { get; set; }
 
         public string TechLeaderName { get; set; }
