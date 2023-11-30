@@ -3,6 +3,7 @@
 
 
 
+using log4net.Util;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using MySqlConnector;
@@ -612,14 +613,22 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         }
 
+
+
         public dynamic GetUserforTask(int id)
         {
             List<dynamic> retorno = new List<dynamic>();
             id = _context.Team.Where(i => i.UserID == id).Select(u => u.ID).FirstOrDefault();
             var alltasks = _context.ActivityPlan.Where(i => i.ExecutorTeamID == id).ToList();
 
+          
+
+
+
+
             foreach (var task in alltasks)
             {
+               
                 var Task = new
                 {
                     id = task.ID,
@@ -636,8 +645,14 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     executedManHour = task.ExecutedManHour,
                     notesFromExecutor = task.NotesFromExecutor,
                     userID = task.ExecutorTeamID,
+
+                    clientName = _context.Clients.Where(i => i.Id == _context.Contracts.Where(a => a.id == task.ContractID).Select(c => c.ClientID).FirstOrDefault()).Select(n => n.Name).FirstOrDefault(),
+
                     executorName = _context.Users.Where(i => i.Id == _context.Team.Where(i => i.ID == id).Select(i => i.UserID).FirstOrDefault()).Select(n => n.FullName).FirstOrDefault(),
                     isRework = task.IsRework,
+
+
+                  
 
                 };
                 retorno.Add(Task);
@@ -651,6 +666,12 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
 
         }
+
+        public string getClientName(int id)
+        {
+            return _context.Clients.Where(i=> i.Id == _context.Contracts.Where(a => a.id == id).Select(c => c.ClientID).FirstOrDefault()).Select(n=> n.Name).FirstOrDefault();
+        }
+
         public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
         {
             if (identifier == "E")
@@ -681,7 +702,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         private string GetStatus(Model.ActivityPlan task)
         {
-            if (task.ExecutedManHour > 0 && (task.Status != "1" &&  task.Status != "6" && task.Status !="4" &&  task.Status !="3"))
+            if (task.ExecutedManHour > 0 && (task.Status != "1" && task.Status != "6" && task.Status != "4" && task.Status != "3"))
             {
                 return "2";
             }

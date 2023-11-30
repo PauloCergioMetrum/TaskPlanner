@@ -25,11 +25,14 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             var listExecutorID = _context.vReports_PlannedExecuted.Where(e => e.ScheduledDate.Date >= startDate.Date && e.ScheduledDate.Date <= endDate.Date).Select(i=> i.ExecutorID).Distinct().ToList();
 
 
-            var listCost = _context.UserHourCosts.Where(e => e.StartDate >= startDate && e.EndDate <= endDate && listExecutorID.ToString().Contains(e.UserID.ToString())).Select(h => h.HourCost).ToList();
+            var listCost = _context.UserHourCosts.Where(e => e.StartDate <= startDate && e.EndDate >= endDate && listExecutorID.Contains(e.UserID)).Select(h => h.HourCost).ToList();
+
 
             var resulHourCost = Math.Round(listCost.Sum(),2) ;
 
             return resulHourCost;
+
+           
         }
 
         public List<vReports_PlannedExecuted> ReportsPlannedExecuted(DateTime startDate, DateTime endDate)
@@ -38,10 +41,6 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             {
                
                 var list = _context.vReports_PlannedExecuted.Where(e => e.ScheduledDate.Date >= startDate.Date && e.ScheduledDate.Date <= endDate.Date).OrderByDescending( e => e.ScheduledDate).ToList();
-
-                //list.Sort((d1, d2) => d1.ScheduledDate.CompareTo(d2.ScheduledDate));
-
-
 
                 return list;
 

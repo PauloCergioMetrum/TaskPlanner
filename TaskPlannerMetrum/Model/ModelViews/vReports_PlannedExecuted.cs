@@ -23,6 +23,10 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string ExecutorName { get; set; }
 
         public int ExecutorID { get; set; }
+        
+        public int TechLeaderID { get; set; }
+
+        public string TechLeaderName { get; set; }
 
 
 
