@@ -26,23 +26,23 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             var listPlannedExecuted = _repository.ReportsPlannedExecuted(reportPlannedExecuted.startDate, reportPlannedExecuted.endDate).AsQueryable();
 
-            if (reportPlannedExecuted.lExecutedID.Count() !=0)
+            if (reportPlannedExecuted.lExecutedID.Count() != 0)
             {
                 listPlannedExecuted = listPlannedExecuted.Where(c => reportPlannedExecuted.lExecutedID.Any(u => u == c.ExecutorID)).AsQueryable();
             }
 
-            if (reportPlannedExecuted.lContractID.Count() !=0)
+            if (reportPlannedExecuted.lContractID.Count() != 0)
             {
 
                 listPlannedExecuted = listPlannedExecuted.Where(c => reportPlannedExecuted.lContractID.Any(u => u == c.ContractID)).AsQueryable();
             }
 
-            if (reportPlannedExecuted.lInspectorID.Count() !=0)
+            if (reportPlannedExecuted.lInspectorID.Count() != 0)
             {
                 listPlannedExecuted = listPlannedExecuted.Where(c => reportPlannedExecuted.lInspectorID.Any(u => u == c.inspectorID)).AsQueryable();
             }
 
-            if (reportPlannedExecuted.lTechLeaderID.Count() !=0)
+            if (reportPlannedExecuted.lTechLeaderID.Count() != 0)
             {
                 listPlannedExecuted = listPlannedExecuted.Where(c => reportPlannedExecuted.lTechLeaderID.Any(u => u == c.TechLeaderID)).AsQueryable();
             }
@@ -82,7 +82,8 @@ namespace TaskPlannerMetrum.Business.Implementations
                 listPlannedExecuted = listPlannedExecuted,
                 totalPlanned = Math.Round(listPlannedExecuted.Sum(s => s.PlannedManHour), 2),
                 totalExecuted = Math.Round(listPlannedExecuted.Sum(s => s.ExecutedManHour), 2),
-                totalCost = HoursCostSearch(listPlannedExecuted)
+                totalCost = HoursCostSearch(listPlannedExecuted),
+                totalExpectedHour = Math.Round(_repository.GetHourExpectedHour(reportPlannedExecuted.startDate,reportPlannedExecuted.endDate),2)
 
             };
 

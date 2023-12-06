@@ -9,5 +9,6 @@ namespace TaskPlannerMetrum.Model
         public double totalPlanned { get; set; }
         public double totalExecuted { get; set; }
         public double totalCost {  get; set; }
+        public double totalExpectedHour { get; set; }
     }
 }

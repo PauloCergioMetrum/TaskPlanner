@@ -23,7 +23,46 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         {
             _context = context;
         }
+        public double GetHourExpectedHour(DateTime startDate, DateTime endDate)
+        {
+            double hourResult = 0;
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "EXECUTE [dbo].[ExpectedHour] @Start,@End,@ContractID ";
+                //command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Start", startDate));
+                command.Parameters.Add(new SqlParameter("@End", endDate));
+                command.Parameters.Add(new SqlParameter("@ContractID", Convert.ToInt64(0)));
+                _context.Database.OpenConnection();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (!reader.HasRows)
+                    {
+                        hourResult = 0;
 
+                    }
+                    else
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.IsDBNull(0))
+                            {
+                                hourResult = 0;
+                            }
+                            else
+                            {
+                                hourResult = Convert.ToDouble(reader.GetValue(0));
+                            }
+                          
+
+                        }
+
+                    }
+                    
+                }
+                return hourResult;
+            }
+        }
         public List<HoursCostModel> GetHourCost(DateTime startDate, DateTime endDate)
         {
 
