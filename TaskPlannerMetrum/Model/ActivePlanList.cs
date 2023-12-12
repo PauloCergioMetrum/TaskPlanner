@@ -18,7 +18,7 @@ using System.ComponentModel.DataAnnotations;
 
         public DateTime ScheduledDate { get; set; }
 
-        public int PlannedManHour { get; set; }
+        public double PlannedManHour { get; set; }
 
         public int PlannerTeamID { get; set; }
 
