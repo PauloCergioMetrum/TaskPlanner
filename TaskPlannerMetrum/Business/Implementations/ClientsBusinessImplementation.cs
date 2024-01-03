@@ -18,22 +18,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             _repositoryClients = repositoryClients;
         }
 
-        public bool CheckCnpjExistence(string cnpj)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Clients Create(Clients department)
-        {
-            throw new System.NotImplementedException();
-        }
 
 
 
-        public object Create(object clients)
-        {
-            throw new System.NotImplementedException();
-        }
+
+
+       
 
         public bool CreateClients(Clients clients)
         {

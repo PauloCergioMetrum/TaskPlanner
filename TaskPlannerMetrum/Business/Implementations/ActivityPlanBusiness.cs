@@ -21,7 +21,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             _activiesRepository = activiesRepository;
         }
 
-        public bool  Create(ActivePlanList activityPlan)
+        public bool Create(ActivePlanList activityPlan)
         {
 
             ActivityPlan task = new ActivityPlan();
@@ -44,26 +44,26 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.ExecutedManHour = activityPlan.ExecutedManHour;
                     task.NotesFromExecutor = activityPlan.NotesFromExecutor;
                     task.IsRework = activityPlan.IsRework;
-                    task.DepartamentID = activityPlan.DepartamentID;    
+                    task.DepartamentID = activityPlan.DepartamentID;
                     _activiesRepository.Create(task);
 
                 }
-                return true ;
+                return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                return  false ;
+                return false;
             }
 
         }
 
-        
+
 
         public bool DeleteId(int id)
         {
-            if(_activiesRepository.DeleteId(id) == true)
+            if (_activiesRepository.DeleteId(id) == true)
             {
-                return true ;   
+                return true;
             }
             return false;
         }
@@ -184,12 +184,12 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool DuplicateTask(Model.DuplicatTask activityPlan)
         {
-            return _activiesRepository.DuplicateTask(activityPlan); 
+            return _activiesRepository.DuplicateTask(activityPlan);
         }
 
         public bool UpdateRating(RatingUpdate updatRating)
         {
-            return _activiesRepository.UpdateRating(updatRating);    
+            return _activiesRepository.UpdateRating(updatRating);
         }
 
         public dynamic GetUserforTask(int id)
@@ -197,9 +197,14 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetUserforTask(id);
         }
 
-        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned,  string identifier)
+        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
         {
             return _activiesRepository.UpdateNotes(taskID, notesExecut, notesPlanned, identifier);
+        }
+
+        public string UpdateTaskDescription(int taskID, string taskDescription)
+        {
+            return _activiesRepository.UpdateTaskDescription(taskID, taskDescription);
         }
 
 

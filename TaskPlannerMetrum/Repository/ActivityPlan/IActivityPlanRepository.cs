@@ -35,6 +35,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier);
 
-       
+        public string UpdateTaskDescription(int taskID, string taskDescription);
+
+
     }
 }
