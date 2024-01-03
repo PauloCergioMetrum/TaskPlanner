@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 
         public int ContractID { get; set; }
 
-       
+
         public int ActivitiesScopeListID { get; set; }
 
         public DateTime ScheduledDate { get; set; }
@@ -28,13 +28,15 @@ using System.ComponentModel.DataAnnotations;
 
         public char Status { get; set; }
 
-        public int  ExecutedManHour { get; set; }
+        public int ExecutedManHour { get; set; }
 
         public string NotesFromExecutor { get; set; }
 
         public bool? IsRework { get; set; }
 
         public int DepartamentID { get; set; }
+
+        public string TaskDescription { get; set; }
 
 
     }

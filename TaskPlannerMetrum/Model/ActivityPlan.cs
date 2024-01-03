@@ -6,10 +6,10 @@ namespace TaskPlannerMetrum.Model
 {
     public class ActivityPlan
     {
-        [Key] 
+        [Key]
         public int ID { get; set; }
 
-        public int WorkspaceID {get;set;}
+        public int WorkspaceID { get; set; }
 
         public int ContractID { get; set; }
 
@@ -25,7 +25,7 @@ namespace TaskPlannerMetrum.Model
 
         public int ExecutorTeamID { get; set; }
 
-        public string Status { get; set; }    
+        public string Status { get; set; }
 
         public double ExecutedManHour { get; set; }
 
@@ -35,7 +35,9 @@ namespace TaskPlannerMetrum.Model
 
         public int DepartamentID { get; set; }
 
-      
+        public string TaskDescription { get; set; }
+
+
 
     }
 }

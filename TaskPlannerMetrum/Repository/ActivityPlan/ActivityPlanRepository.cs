@@ -42,6 +42,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     NotesFromPlanner = activityPlan.NotesFromPlanner,
                     PlannedManHour = activityPlan.PlannedManHour,
                     PlannerTeamID = pmtemaID,
+                    TaskDescription = activityPlan.TaskDescription,
                     ContractID = activityPlan.ContractID,
                     ScheduledDate = activityPlan.ScheduledDate,
                     Status = activityPlan.Status,
@@ -190,6 +191,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     ExecutorTeamID = taskPlan.ExecutorTeamID,
                     NotesFromExecutor = taskPlan.NotesFromExecutor,
                     NotesFromPlanner = taskPlan.NotesFromPlanner,
+                    TaskDescription = taskPlan.TaskDescription,
                     PlannedManHour = taskPlan.PlannedManHour,
                     PlannerTeamID = taskPlan.PlannerTeamID,
                     ContractID = taskPlan.ContractID,
@@ -235,6 +237,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     ExecutorTeamID = taskPlan.ExecutorTeamID,
                     NotesFromExecutor = taskPlan.NotesFromExecutor,
                     NotesFromPlanner = taskPlan.NotesFromPlanner,
+                    TaskDescription = taskPlan.TaskDescription,
                     PlannedManHour = taskPlan.PlannedManHour,
                     PlannerTeamID = taskPlan.PlannerTeamID,
                     ContractID = taskPlan.ContractID,
@@ -356,6 +359,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 NotesFromExecutor = actvity.NotesFromExecutor,
                 statusName = GetStatusName(actvity.Status.ToString(), actvity.ScheduledDate),
                 Status = actvity.Status,
+                TaskDescription = actvity.TaskDescription,
                 ScheduledDate = actvity.ScheduledDate,
                 ProjectName = _context.Projects.Where(p => p.ID == actvity.ContractID).Select(p => p.Name).FirstOrDefault(),
 
@@ -379,6 +383,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPaln.ScheduledDate = activityPlan.ScheduledDate;
             newActivityPaln.NotesFromExecutor = activityPlan.NotesFromExecutor;
             newActivityPaln.NotesFromPlanner = activityPlan.NotesFromPlanner;
+            newActivityPaln.TaskDescription = activityPlan.TaskDescription;
             newActivityPaln.PlannedManHour = activityPlan.PlannedManHour;
             newActivityPaln.ExecutorTeamID = activityPlan.ExecutorTeamID;
             _context.ActivityPlan.Update(newActivityPaln);
@@ -579,6 +584,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 DepartamentID = taskforduplicate.DepartamentID,
                 PlannerTeamID = taskforduplicate.PlannerTeamID,
                 NotesFromPlanner = taskforduplicate.NotesFromPlanner,
+                TaskDescription = taskforduplicate.TaskDescription,
                 IsRework = taskforduplicate.IsRework,
                 NotesFromExecutor = taskforduplicate.NotesFromExecutor
             });
@@ -634,6 +640,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     executorTeamID = task.ExecutorTeamID,
                     status = GetStatus(task),
                     executedManHour = task.ExecutedManHour,
+                    taskDescription = task.TaskDescription,
                     notesFromExecutor = task.NotesFromExecutor,
                     userID = task.ExecutorTeamID,
                     executorName = _context.Users.Where(i => i.Id == _context.Team.Where(i => i.ID == id).Select(i => i.UserID).FirstOrDefault()).Select(n => n.FullName).FirstOrDefault(),
@@ -688,6 +695,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             return task.Status;
         }
 
+
+
         // Ao cadastrar outro fiscal, o fiscal já cadastrado será removido
         public void managerRemover(int ContractID, int UserID)
         {
@@ -709,7 +718,14 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         }
 
-
+        public string UpdateTaskDescription(int taskID, string taskDescription)
+        {
+            var updateDescription = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
+            updateDescription.TaskDescription = taskDescription;
+            _context.Update(updateDescription);
+            _context.SaveChanges();
+            return taskDescription;
+        }
 
     }
 }
