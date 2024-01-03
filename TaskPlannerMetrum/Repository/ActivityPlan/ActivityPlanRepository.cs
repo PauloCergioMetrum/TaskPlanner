@@ -698,7 +698,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
 
         // Ao cadastrar outro fiscal, o fiscal já cadastrado será removido
-        public void managerRemover(int ContractID, int UserID)
+
+        /* public void managerRemover(int ContractID, int UserID)
         {
             var removerManager = _context.RatingProject.Where(f => f.UserID == UserID && f.ID == ContractID).FirstOrDefault();
             if (removerManager != null)
@@ -717,6 +718,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
 
         }
+        */
 
         public string UpdateTaskDescription(int taskID, string taskDescription)
         {
