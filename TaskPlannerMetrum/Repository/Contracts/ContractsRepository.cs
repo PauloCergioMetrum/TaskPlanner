@@ -138,7 +138,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
 
         }
-        public bool CreateProject(Model.Contracts newProject)
+       /* public bool CreateProject(Model.Contracts newProject)
         {
             Model.ProjectsNew project = new Model.ProjectsNew();
             project.ContractID = _context.Contracts.Where(i => i.InternalCode == newProject.InternalCode).Select(i => i.id).FirstOrDefault();
@@ -153,6 +153,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
 
         }
+       */
         public List<Workspace> GetAllWorkSpace()
         {
             return _context.Workspace.OrderBy(n => n.Name).ToList();

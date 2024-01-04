@@ -34,9 +34,6 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetTaskByGrup();
         }
 
-        public dynamic GetUserforTask(int id)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

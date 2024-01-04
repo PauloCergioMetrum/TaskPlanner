@@ -39,5 +39,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string statusName { get; set; }
 
         public bool? IsRework{ get; set; }
+
+        public string TaskDescription { get; set; }
     }
 }
