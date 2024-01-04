@@ -23,7 +23,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         {
             _context = context;
         }
-        public double GetHourExpectedHour(DateTime startDate, DateTime endDate)
+        public double GetHourExpectedHour(DateTime startDate, DateTime endDate, int contractID)
         {
             double hourResult = 0;
             using (var command = _context.Database.GetDbConnection().CreateCommand())
@@ -32,7 +32,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 //command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@Start", startDate));
                 command.Parameters.Add(new SqlParameter("@End", endDate));
-                command.Parameters.Add(new SqlParameter("@ContractID", Convert.ToInt64(0)));
+                command.Parameters.Add(new SqlParameter("@ContractID", contractID));
                 _context.Database.OpenConnection();
                 using (var reader = command.ExecuteReader())
                 {
