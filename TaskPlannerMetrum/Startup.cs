@@ -41,17 +41,18 @@ using TaskPlannerMetrum.Repository.ContractViewer;
 using TaskPlannerMetrum.Repository.Clients;
 using TaskPlannerMetrum.Repository.Rating;
 using TaskPlannerMetrum.Repository.UserHourCostRepository;
+using TaskPlannerMetrum.Repository.ReportsViewer;
 
 namespace TaskPlannerMetrum
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-           
+
         }
 
 
@@ -101,7 +102,7 @@ namespace TaskPlannerMetrum
             }));
             services.AddControllers();
             //var connection = Configuration["MySQLConnection:MySQLConnectionString"];
-           // services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
+            // services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
 
             var connection = Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"];
             services.AddDbContext<MSSQLContext>(options => options.UseSqlServer(connection));
@@ -115,7 +116,8 @@ namespace TaskPlannerMetrum
             })
             .AddXmlSerializerFormatters();
             services.AddApiVersioning();
-            services.AddSwaggerGen(c => {
+            services.AddSwaggerGen(c =>
+            {
                 c.SwaggerDoc("v1",
                     new OpenApiInfo
                     {
@@ -160,9 +162,17 @@ namespace TaskPlannerMetrum
             services.AddScoped<IContratosRepository, ContractsRepository>();
             services.AddScoped<ICalendarRepository, CalendarRepository>();
             services.AddScoped<IFinances, Finances>();
-       
 
-            services.AddScoped<IContractViewerBusiness,ContractViewerBusiness>();
+
+          
+            services.AddScoped<IReportsPlannedExecutedViewerRepository, ReportsPlannedExecutedViewerRepository>();
+            services.AddScoped<IReportsPlannedExecutedViewewBussines, ReportsPlannedExecutedViewerBusiness>();
+
+            services.AddScoped<IContractViewerBusiness, ContractViewerBusiness>();
+
+
+
+
 
             services.AddScoped<IContractViewerRepository, ContractViewerRepository>();
             services.AddScoped<IClientsRepository, ClientsRepository>();
@@ -201,12 +211,13 @@ namespace TaskPlannerMetrum
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(c => {
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json",
                     "API RESTful developed for Task Planner Metrum - v1");
             });
 
-            
+
 
             app.UseAuthorization();
 
