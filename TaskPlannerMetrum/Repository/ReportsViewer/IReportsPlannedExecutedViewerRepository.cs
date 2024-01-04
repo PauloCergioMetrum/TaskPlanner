@@ -9,7 +9,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
     {
         public List<vReports_PlannedExecuted> ReportsPlannedExecuted(DateTime startDate, DateTime endDate );
         public List<HoursCostModel> GetHourCost(DateTime startDate, DateTime endDate);
-        public double GetHourExpectedHour(DateTime startDate, DateTime endDate);
+        public double GetHourExpectedHour(DateTime startDate, DateTime endDate, int contractID);
 
 
     }
