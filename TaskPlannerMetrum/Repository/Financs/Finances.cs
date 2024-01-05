@@ -266,14 +266,33 @@ namespace TaskPlannerMetrum.Repository.Financs
             _context.Finances.Update(updatefinances);
             _context.SaveChanges();
 
-            var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == updatefinances.ContractID && c.DepartmentID == finances.DepartmentID).FirstOrDefault();
-            updateDepartmentProjects.DepartmentID = finances.DepartmentID;
-            _context.DepartmentProjects.Update(updateDepartmentProjects);
-            _context.SaveChanges();
-            
 
-            return true;
+            if (F_UpdateDepartamentID(updatefinances.ContractID, finances.id, finances.DepartmentID))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
+
+        }
+
+        public bool F_UpdateDepartamentID(int contractID, int finanaceID, int financeDepartamentID)
+        {
+            try
+            {
+                var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == contractID && c.FinancesID == finanaceID).FirstOrDefault();
+                updateDepartmentProjects.DepartmentID = financeDepartamentID;
+                _context.DepartmentProjects.Update(updateDepartmentProjects);
+                _context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public dynamic getAllServices(string type)
