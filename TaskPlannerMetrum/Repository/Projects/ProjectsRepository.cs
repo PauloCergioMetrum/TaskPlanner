@@ -316,11 +316,30 @@ namespace TaskPlannerMetrum.Repository.Projects
         {
             var info = _context.DepartmentProjects.Where(c => c.ContractID == contractID).ToList();
             List<dynamic> retorno = new List<dynamic>();
+
             foreach (var item in info)
             {
-                var users = _context.Users.Where(i => i.DepartmentId == item.DepartmentID).Select(u => new { u.Id, u.FullName }).ToList();
-                var departamentName = _context.Department.Where(i => i.ID == item.DepartmentID).Select(n => n.Name).FirstOrDefault().ToString();
-                var TechLeaderName = _context.Users.Where(i => i.Id == item.TechLeaderID).Select(n => n.FullName).FirstOrDefault();
+                var users = _context.Users
+                    .Where(i => i.DepartmentId == item.DepartmentID)
+                    .Select(u => new
+                    {
+                        u.Id,
+                        u.FullName,
+                        u.IsActive
+                    })
+                    .ToList();
+
+                var departamentName = _context.Department
+                    .Where(i => i.ID == item.DepartmentID)
+                    .Select(n => n.Name)
+                    .FirstOrDefault()
+                    .ToString();
+
+                var TechLeaderName = _context.Users
+                    .Where(i => i.Id == item.TechLeaderID)
+                    .Select(n => n.FullName)
+                    .FirstOrDefault();
+
                 var result = new
                 {
                     DepartmentID = item.DepartmentID,
@@ -329,17 +348,21 @@ namespace TaskPlannerMetrum.Repository.Projects
                     expectedHour = item.ExpectedHour,
                     TechLeaderID = item.TechLeaderID,
                     TechLeaderName = TechLeaderName,
-
                 };
+
                 retorno.Add(result);
+
                 var count = retorno.Where(i => i.DepartmentID == item.DepartmentID).Count();
+
                 if (count > 1)
                 {
                     retorno.Remove(result);
                 }
             }
+
             return retorno;
         }
+
 
         public bool UpdateProject(Model.DepartmentProjects newProject)
         {

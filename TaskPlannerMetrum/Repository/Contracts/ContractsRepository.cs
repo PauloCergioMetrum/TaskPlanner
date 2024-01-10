@@ -70,6 +70,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     FullName = item.FullName,
                     Id = item.Id,
                     DepartmentId = item.DepartmentId,
+                    IsActive = item.IsActive
                 });
             }
             return retorno;
@@ -77,21 +78,26 @@ namespace TaskPlannerMetrum.Repository.Contracts
         }
         public List<Model.User> GetSeller()
         {
-            var id = _context.Department.Where(n => n.Name == "GERCOM").Select(i => i.Id).FirstOrDefault();
-            List<Model.User> retorno = new List<Model.User>();
-            var result = _context.Users.Where(d => d.DepartmentId == id).OrderBy(i => i.UserName).ToList();
-            foreach (var item in result)
-            {
-                retorno.Add(new Model.User()
-                {
-                    FullName = item.FullName,
-                    Id = item.Id,
-                    DepartmentId = item.DepartmentId,
-                });
-            }
-            return retorno;
+            var departmentId = _context.Department
+                .Where(d => d.Name == "GERCOM")
+                .Select(d => d.Id)
+                .FirstOrDefault();
 
+            var users = _context.Users
+                .Where(u => u.DepartmentId == departmentId)
+                .OrderBy(u => u.UserName)
+                .Select(u => new Model.User
+                {
+                    FullName = u.FullName,
+                    Id = u.Id,
+                    DepartmentId = u.DepartmentId,
+                    IsActive = u.IsActive,
+                })
+                .ToList();
+
+            return users;
         }
+
 
         public bool Create(Model.DTO.ContractDTO newcontract)
         {
@@ -292,20 +298,26 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         }
 
-        public bool CompareDate(int ContractID)
+        public bool CompareDate(int contractID)
         {
-            var dateCompare = _context.Contracts.Where(c => c.id == ContractID).FirstOrDefault();
+            var contract = _context.Contracts.FirstOrDefault(c => c.id == contractID);
 
-
-            if (DateTime.Parse(dateCompare.DateRetroactive.ToString()).Date >= DateTime.Now.Date)
+            if (contract != null && contract.DateRetroactive != null)
             {
-                return false;
-            }
-            else
-            {
-                return true;
+                if (DateTime.TryParse(contract.DateRetroactive.ToString(), out DateTime dateRetroactive))
+                {
+                    if (dateRetroactive.Date >= DateTime.Now.Date)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
             }
 
+            return false;
         }
 
 

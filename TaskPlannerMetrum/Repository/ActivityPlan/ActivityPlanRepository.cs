@@ -351,22 +351,35 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public vActivityPlan GetActivityPlanById(string activityPlanId)
         {
-            var actvity = _context.ActivityPlan.Where(a => a.ID == Convert.ToInt32(activityPlanId)).FirstOrDefault();
-            var activityPaln = new vActivityPlan
+            
+            var activity = _context.ActivityPlan.FirstOrDefault(a => a.ID == Convert.ToInt32(activityPlanId));
+
+            if (activity == null)
             {
+   
+                return null;
+            }
+
+            var activityPlan = new vActivityPlan
+            {
+
                 ID = Convert.ToInt32(activityPlanId),
-                ExecutedManHour = actvity.ExecutedManHour,
-                NotesFromExecutor = actvity.NotesFromExecutor,
-                statusName = GetStatusName(actvity.Status.ToString(), actvity.ScheduledDate),
-                Status = actvity.Status,
-                TaskDescription = actvity.TaskDescription,
-                ScheduledDate = actvity.ScheduledDate,
-                ProjectName = _context.Projects.Where(p => p.ID == actvity.ContractID).Select(p => p.Name).FirstOrDefault(),
-
-
+                ExecutedManHour = activity.ExecutedManHour,
+                NotesFromExecutor = activity.NotesFromExecutor,
+                statusName = GetStatusName(activity.Status.ToString(), activity.ScheduledDate),
+                Status = activity.Status,
+                TaskDescription = activity.TaskDescription,
+                ScheduledDate = activity.ScheduledDate,
+                ProjectName = _context.Projects
+                    .Where(p => p.ID == activity.ContractID)
+                    .Select(p => p.Name)
+                    .FirstOrDefault(),
+               
             };
-            return activityPaln;
+
+            return activityPlan;
         }
+
 
 
 
@@ -559,7 +572,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     UserName = user.FullName,
                     UserID = user.Id,
                     Rating = Convert.ToDouble(media.ToString("0.0")),
-                    ContractID = deptask.ContractID
+                    ContractID = deptask.ContractID,
+                    IsActive = user.IsActive
+
                 };
                 Users.Add(users);
 
