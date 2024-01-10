@@ -359,7 +359,6 @@ namespace TaskPlannerMetrum.Repository.Projects
                     allProjectDes.Remove(result);
                 }
             }
-
             return allProjectDes;
         }
        
