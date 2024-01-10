@@ -113,8 +113,8 @@ namespace TaskPlannerMetrum.Repository.Financs
             {
                 invoicevalues = invoicevalues + invoicevalue.InvoicedValue;
             }
-            double totalpercents = invoicevalues/value * 100;
-            if (Convert.ToString(totalpercents) =="NaN")
+            double totalpercents = invoicevalues / value * 100;
+            if (Convert.ToString(totalpercents) == "NaN")
             {
                 totalpercents = 0;
             }
@@ -123,7 +123,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                 ContractName = Contract.InternalCode,
                 TotalValue = value.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
                 percents = totalpercents.ToString("0.00").Replace(",", "."),
-                ClientName = _context.Clients.Where(i => i.Id==ClientId).Select(n => n.Name).FirstOrDefault().ToString(),
+                ClientName = _context.Clients.Where(i => i.Id == ClientId).Select(n => n.Name).FirstOrDefault().ToString(),
                 totalbilled = invoicevalues.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
                 WorkSpace = WorkSpace,
                 Finances = financas.Select(f => new
@@ -143,12 +143,12 @@ namespace TaskPlannerMetrum.Repository.Financs
                     f.DepartmentName,
                     f.DepartmentID,
                     f.Description,
-                    Status =  setStatusDate(f.id),
+                    Status = setStatusDate(f.id),
+                    StatusDpv = setOnGoingDate(f.id),
                     f.EndDate,
                     f.ExpectedInvoiceDate,
                     f.FinanceType,
 
-                    StatusDpv = f.InvoicedDate > Convert.ToDateTime("0001-01-01 00:00:00.0000000") ? "FATURADO" : f.StatusDpv
                 })
 
 
@@ -158,6 +158,36 @@ namespace TaskPlannerMetrum.Repository.Financs
 
         }
 
+        public string setOnGoingDate(int id)
+        {
+            var finance = _context.Finances.Where(i => i.id == id).FirstOrDefault();
+
+            if (finance.InvoicedDate > Convert.ToDateTime("1901-01-01 00:00:00.0000000"))
+            {
+                return "FATURADO";
+            }
+            if (finance.StatusDpv == "CANCELADO" || finance.StatusDpv == "CANCELADO")
+            {
+                return finance.StatusDpv;
+            }
+            if (finance.StatusDpv == "ENCERRADO" || finance.StatusDpv == "ENCERRADO")
+            {
+                return finance.StatusDpv;
+            }
+            if (finance.StatusDpv == "PARALISADO" || finance.StatusDpv == "PARALISADO")
+            {
+                return finance.StatusDpv;
+            }
+            else
+            {
+                return "EM ANDAMENTO";
+
+            }
+
+
+        }
+
+
         public string setStatusDate(int id)
         {
             var finance = _context.Finances.Where(i => i.id == id).FirstOrDefault();
@@ -166,15 +196,19 @@ namespace TaskPlannerMetrum.Repository.Financs
             {
                 return finance.Status;
             }
+            if (finance.Status == "BLOQUEADO" || finance.Status == "BLOQUEADO")
+            {
+                return finance.Status;
+            }
             //SE DATAREPROGRAMDA É DIFERENTE DE NULO
-            if (finance.EndDate.Date != Convert.ToDateTime("01/01/0001"))
+            if (finance.EndDate.Date != Convert.ToDateTime("01/01/1901"))
             {
                 //SE DATA FATURADA É DIFERENTE DE NULA
-                if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/0001"))
+                if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/1901"))
                 {
-                                    
-                     return "NO PRAZO";
-                    
+
+                    return "NO PRAZO";
+
                 }
 
                 else
@@ -193,35 +227,35 @@ namespace TaskPlannerMetrum.Repository.Financs
             else
             {
 
-                    //SE A DATA FATURADA  NÃO É NULA
-                    if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/0001"))
+                //SE A DATA FATURADA  NÃO É NULA
+                if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/1901"))
+                {
+                    //SE A DATA FATURADA É MAIOR QUE DATA BASE
+                    if (finance.InvoicedDate > finance.BaseDate)
                     {
-                        //SE A DATA FATURADA É MAIOR QUE DATA BASE
-                        if (finance.InvoicedDate > finance.BaseDate)
-                        {
-                            return "ATRASADO";
-                        }
-                        else
-                        {
-                            return "NO PRAZO";
-                        }
-
+                        return "ATRASADO";
                     }
                     else
                     {
-                        //SE A DATA BASE É MAIOR QUE A DATA DE AGORA
-                        if (finance.BaseDate.Date >= DateTime.Now.Date)
-                        {
-                            return "NO PRAZO";
-                        }
-                        else
-                        {
-                            return "ATRASADO";
-                        }
+                        return "NO PRAZO";
                     }
 
+                }
+                else
+                {
+                    //SE A DATA BASE É MAIOR QUE A DATA DE AGORA
+                    if (finance.BaseDate.Date >= DateTime.Now.Date)
+                    {
+                        return "NO PRAZO";
+                    }
+                    else
+                    {
+                        return "ATRASADO";
+                    }
+                }
 
-                
+
+
 
             }
 
