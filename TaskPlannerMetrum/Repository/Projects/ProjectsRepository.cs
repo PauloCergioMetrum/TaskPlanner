@@ -534,7 +534,7 @@ namespace TaskPlannerMetrum.Repository.Projects
         }
 
 
-        public void CreateRetroactiveDate(int contractID, DateTime retroactiveDate)
+        public void CreateRetroactiveDate(int contractID, DateTime? retroactiveDate)
         {
             var createRetroactiveDate = _context.Contracts.Where(c => c.id == contractID).FirstOrDefault();
             createRetroactiveDate.DateRetroactive = retroactiveDate;
