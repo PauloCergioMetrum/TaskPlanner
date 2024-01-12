@@ -48,7 +48,7 @@ namespace TaskPlannerMetrum.Repository.Projects
         public void DeletFavoritProject(UserProjects userProjects);
 
 
-        public void CreateRetroactiveDate(int contractID, DateTime retroactiveDate);
+        public void CreateRetroactiveDate(int contractID, DateTime? retroactiveDate);
         
 
         public bool UpdateRetroactiveDate(int contractID, DateTime retroactiveDate);    
