@@ -32,9 +32,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string TechLeaderName { get; set; }
 
-        public bool IsActive_UserName { get; set; }
-        public bool IsActive_TechLeader { get; set; }
-        public bool IsActive_Inspector { get; set; }
+
 
 
 
