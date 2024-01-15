@@ -208,19 +208,19 @@ namespace TaskPlannerMetrum.Repository.Projects
         }
         public List<User> UserByDep(string departament)
         {
-            List<User> retorno = new List<User>();
+            List<User> usersByDepartments = new List<User>();
             var dep = _context.Department.Where(d => d.Name == departament).Select(d => d.ID).FirstOrDefault();
             var result = _context.Users.Where(d => d.DepartmentId == dep).ToList();
             foreach (var user in result)
             {
-                retorno.Add(new User
+                usersByDepartments.Add(new User
                 {
                     UserName = user.UserName,
                     Id = user.Id
 
                 });
             }
-            return retorno;
+            return usersByDepartments;
 
         }
 
@@ -267,14 +267,14 @@ namespace TaskPlannerMetrum.Repository.Projects
         public dynamic GetDepFinances(int id)
         {
 
-            List<dynamic> retorno = new List<dynamic>();
+            List<dynamic> depFinance = new List<dynamic>();
 
             var buscadep = _context.vFinanceContract.Where(i => i.ContractID == id).ToList();
 
 
             foreach (var item in buscadep)
             {
-                bool existeValor = retorno.Any(objeto => objeto.DepartmentID == item.DepartmentID);
+                bool existeValor = depFinance.Any(objeto => objeto.DepartmentID == item.DepartmentID);
                 if (!existeValor)
                 {
                     var user = _context.Users.Where(u => u.DepartmentId == item.DepartmentID).ToList();
@@ -285,21 +285,21 @@ namespace TaskPlannerMetrum.Repository.Projects
                         users = user.Select(u => new { u.Id, u.FullName }).ToList()
 
                     };
-                    retorno.Add(result);
+                    depFinance.Add(result);
 
                 }
             }
-            return retorno;
+            return depFinance;
 
         }
         public List<User> GetAllUsersDep(string depname)
         {
-            List<User> newretorno = new List<User>();
+            List<User> allUsersDeps = new List<User>();
             var findIDDEP = _context.Department.Where(n => n.Name == depname).Select(i => i.ID).FirstOrDefault();
-            var retorno = _context.Users.Where(i => i.DepartmentId == findIDDEP).ToList();
-            foreach (var item in retorno)
+            var allUsersDep = _context.Users.Where(i => i.DepartmentId == findIDDEP).ToList();
+            foreach (var item in allUsersDep)
             {
-                newretorno.Add(new User
+                allUsersDeps.Add(new User
                 {
                     FullName = item.FullName,
                     Id = item.Id,
@@ -307,7 +307,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                 });
 
             }
-            return newretorno;
+            return allUsersDeps;
 
 
         }
@@ -315,12 +315,31 @@ namespace TaskPlannerMetrum.Repository.Projects
         public dynamic GetAllProjectDep(int contractID)
         {
             var info = _context.DepartmentProjects.Where(c => c.ContractID == contractID).ToList();
-            List<dynamic> retorno = new List<dynamic>();
+            List<dynamic> allProjectDes = new List<dynamic>();
+
             foreach (var item in info)
             {
-                var users = _context.Users.Where(i => i.DepartmentId == item.DepartmentID).Select(u => new { u.Id, u.FullName }).ToList();
-                var departamentName = _context.Department.Where(i => i.ID == item.DepartmentID).Select(n => n.Name).FirstOrDefault().ToString();
-                var TechLeaderName = _context.Users.Where(i => i.Id == item.TechLeaderID).Select(n => n.FullName).FirstOrDefault();
+                var users = _context.Users
+                    .Where(i => i.DepartmentId == item.DepartmentID)
+                    .Select(u => new
+                    {
+                        u.Id,
+                        u.FullName,
+                        u.IsActive
+                    })
+                    .ToList();
+
+                var departamentName = _context.Department
+                    .Where(i => i.ID == item.DepartmentID)
+                    .Select(n => n.Name)
+                    .FirstOrDefault()
+                    .ToString();
+
+                var TechLeaderName = _context.Users
+                    .Where(i => i.Id == item.TechLeaderID)
+                    .Select(n => n.FullName)
+                    .FirstOrDefault();
+
                 var result = new
                 {
                     DepartmentID = item.DepartmentID,
@@ -329,17 +348,20 @@ namespace TaskPlannerMetrum.Repository.Projects
                     expectedHour = item.ExpectedHour,
                     TechLeaderID = item.TechLeaderID,
                     TechLeaderName = TechLeaderName,
-
                 };
-                retorno.Add(result);
-                var count = retorno.Where(i => i.DepartmentID == item.DepartmentID).Count();
+
+                allProjectDes.Add(result);
+
+                var count = allProjectDes.Where(i => i.DepartmentID == item.DepartmentID).Count();
+
                 if (count > 1)
                 {
-                    retorno.Remove(result);
+                    allProjectDes.Remove(result);
                 }
             }
-            return retorno;
+            return allProjectDes;
         }
+       
 
         public bool UpdateProject(Model.DepartmentProjects newProject)
         {
@@ -512,7 +534,7 @@ namespace TaskPlannerMetrum.Repository.Projects
         }
 
 
-        public void CreateRetroactiveDate(int contractID, DateTime retroactiveDate)
+        public void CreateRetroactiveDate(int contractID, DateTime? retroactiveDate)
         {
             var createRetroactiveDate = _context.Contracts.Where(c => c.id == contractID).FirstOrDefault();
             createRetroactiveDate.DateRetroactive = retroactiveDate;

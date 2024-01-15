@@ -45,6 +45,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.NotesFromExecutor = activityPlan.NotesFromExecutor;
                     task.IsRework = activityPlan.IsRework;
                     task.DepartamentID = activityPlan.DepartamentID;
+                    task.TaskDescription = activityPlan.TaskDescription;
                     _activiesRepository.Create(task);
 
                 }
