@@ -30,7 +30,15 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string Observation { get; set; }
 
-        public DateTime? DateRetroactive {  get; set; }  
+        public DateTime? DateRetroactive {  get; set; }
+
+        public double PredictedSavings { get; set; }
+
+        public double PredictedMarkup { get; set; }
+
+        public DateTime? ValidityStartDate { get; set; }
+
+        public DateTime? ValidityEndDate { get; set; }
 
 
 

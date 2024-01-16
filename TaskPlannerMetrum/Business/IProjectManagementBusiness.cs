@@ -12,6 +12,13 @@ namespace TaskPlannerMetrum.Business
         public bool UpdateForecast(ProjectManagementDTO forecast);
 
 
+        public OrderInformationDTO GetOrderInformation(int id);
+
+
+
+
+
+
 
 
 

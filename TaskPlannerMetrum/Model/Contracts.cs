@@ -35,9 +35,9 @@ namespace TaskPlannerMetrum.Model
 
 
 
-        public double PredictedSavings { get; set; }
+        public double? PredictedSavings { get; set; }
 
-        public double PredictedMarkup { get; set; }
+        public double? PredictedMarkup { get; set; }
 
         public DateTime? ValidityStartDate { get; set; }
 
