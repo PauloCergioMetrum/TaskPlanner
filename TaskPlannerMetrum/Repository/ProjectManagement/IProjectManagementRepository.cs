@@ -6,7 +6,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
     public interface IProjectManagementRepository
     {
 
-        public Model.Contracts GetForecastID(int id);
+        public Model.Contracts GetForecastByID(int id);
 
         public bool UpdateForecast(Model.Contracts forecast);
 

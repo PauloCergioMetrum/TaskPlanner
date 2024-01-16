@@ -17,12 +17,21 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             try
             {
-                var UpdateForecast = _projectmanagementRepository.GetForecastID(forecast.id);
-                UpdateForecast.ValidityEndDate = forecast.ValidityEndDate;
-                UpdateForecast.ValidityStartDate = forecast.ValidityEndDate;
-                UpdateForecast.PredictedMarkup = forecast.PredictedMarkup;
-                UpdateForecast.PredictedSavings = forecast.PredictedSavings;
-                return _projectmanagementRepository.UpdateForecast(UpdateForecast);
+                var UpdateForecast = _projectmanagementRepository.GetForecastByID(forecast.id);
+                if(UpdateForecast.id != null)
+                {
+                    UpdateForecast.ValidityEndDate = forecast.ValidityEndDate;
+                    UpdateForecast.ValidityStartDate = forecast.ValidityEndDate;
+                    UpdateForecast.PredictedMarkup = forecast.PredictedMarkup;
+                    UpdateForecast.PredictedSavings = forecast.PredictedSavings;
+                    return _projectmanagementRepository.UpdateForecast(UpdateForecast);
+                    
+                }
+                else
+                {
+                    return false;
+                }
+                
             }
             catch
             {

@@ -16,8 +16,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             _context=context;
         }
 
-        public Model.Contracts GetForecastID(int id)
+        public Model.Contracts GetForecastByID(int id)
         {
+
             return _context.Contracts.Where(i => i.id == id).FirstOrDefault();
         }
 
