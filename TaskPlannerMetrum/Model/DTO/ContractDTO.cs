@@ -25,10 +25,18 @@ namespace TaskPlannerMetrum.Model.DTO
         public int VendorID { get; set; }
 
         public bool EnableProject { get; set; }
-        public Int64? ClientOrder { get; set; }
+        public Int64 ClientOrder { get; set; }
 
         public string Observation { get; set; }
 
         public bool HoursPMO { get; set; }
+
+        public double PredictedSavings { get; set; }
+
+        public double PredictedMarkup { get; set; }
+
+        public DateTime ValidityStartDate { get; set; }
+
+        public DateTime ValidityEndDate { get; set; }
     }
 }
