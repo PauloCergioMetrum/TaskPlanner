@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.ProjectManagement
 {
@@ -22,8 +23,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.Contracts.Where(i => i.id == id).FirstOrDefault();
         }
 
-  
-        
+        public vContractList GetForecastByIDView(int id)
+        {
+            return _context.vContractList.Where(i => i.ContractID == id).FirstOrDefault();  
+        }
 
         public bool UpdateForecast(Model.Contracts forecast)
         {
@@ -40,5 +43,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return false;
             }
         }
+
+       
     }
 }

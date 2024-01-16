@@ -1,37 +1,38 @@
-﻿using TaskPlannerMetrum.Model;
+﻿using System;
+using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.ProjectManagement;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
-    public class ProjectManagementBusiness: IProjectManagementBusiness
+    public class ProjectManagementBusiness : IProjectManagementBusiness
     {
         private readonly IProjectManagementRepository _projectmanagementRepository;
 
-        public ProjectManagementBusiness (IProjectManagementRepository projectmanagementBusiness)
+        public ProjectManagementBusiness(IProjectManagementRepository projectmanagementBusiness)
         {
             _projectmanagementRepository = projectmanagementBusiness;
         }
-   
+
         public bool UpdateForecast(ProjectManagementDTO forecast)
         {
             try
             {
                 var UpdateForecast = _projectmanagementRepository.GetForecastByID(forecast.id);
-                if(UpdateForecast.id != null)
+                if (UpdateForecast.id != null)
                 {
                     UpdateForecast.ValidityEndDate = forecast.ValidityEndDate;
-                    UpdateForecast.ValidityStartDate = forecast.ValidityEndDate;
+                    UpdateForecast.ValidityStartDate = forecast.ValidityStartDate;
                     UpdateForecast.PredictedMarkup = forecast.PredictedMarkup;
                     UpdateForecast.PredictedSavings = forecast.PredictedSavings;
                     return _projectmanagementRepository.UpdateForecast(UpdateForecast);
-                    
+
                 }
                 else
                 {
                     return false;
                 }
-                
+
             }
             catch
             {
@@ -41,6 +42,40 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         }
 
-        
+        public OrderInformationDTO GetOrderInformation(int id)
+        {
+            try
+            {
+                var OrderInformationByID = _projectmanagementRepository.GetForecastByIDView(id);
+                
+
+                if (OrderInformationByID != null)
+                {
+                    DateTime? validityStartDate = OrderInformationByID.ValidityStartDate;
+                    DateTime? validityEndtDate = OrderInformationByID.ValidityEndDate;
+
+                    OrderInformationDTO orderInformation = new OrderInformationDTO
+                    {
+                        Client = OrderInformationByID.ClientName,
+                        SalesOrder = OrderInformationByID.InternalCode,
+                        Validity = validityStartDate.Value.Date.ToString("dd/MM/yyyy") +" -- " + validityEndtDate.Value.Date.ToString("dd/MM/yyyy"),
+                        BusinessUnit = OrderInformationByID.BusinessUnit,
+                    };
+                   
+                    return orderInformation;
+                }
+                else
+                {
+                    return null;
+                }
+                
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
     }
 }
