@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 
@@ -13,7 +14,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool UpdateForecast(Model.Contracts forecast);
 
-       
+
+        public int CreateMilestonesItem(MilestonesItem milestones);
+
+        public bool CreateMilestonesValue(MilestonesValue milestones);
+
 
     }
 }

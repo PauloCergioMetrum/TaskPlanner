@@ -47,7 +47,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             try
             {
                 var OrderInformationByID = _projectmanagementRepository.GetForecastByIDView(id);
-                
+
 
                 if (OrderInformationByID != null)
                 {
@@ -61,14 +61,14 @@ namespace TaskPlannerMetrum.Business.Implementations
                         Validity = validityStartDate.Value.Date.ToString("dd/MM/yyyy") +" -- " + validityEndtDate.Value.Date.ToString("dd/MM/yyyy"),
                         BusinessUnit = OrderInformationByID.BusinessUnit,
                     };
-                   
+
                     return orderInformation;
                 }
                 else
                 {
                     return null;
                 }
-                
+
             }
             catch
             {
@@ -76,6 +76,44 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
         }
 
+        public bool CreateMilesTones(MilesTonesDTO milesTonesDTO)
+        {
 
+            try
+            {
+                var CreateMilesTonesItem = _projectmanagementRepository.CreateMilestonesItem(new MilestonesItem
+                {
+                    ContractID = milesTonesDTO.ContractID,
+                    Name = milesTonesDTO.March
+                });
+
+                if (CreateMilesTonesItem != 0)
+                {
+                    _projectmanagementRepository.CreateMilestonesValue(new MilestonesValue
+                    {
+                        MilestonesID = CreateMilesTonesItem,
+                        Baseline = milesTonesDTO.Baseline,
+                        Description = milesTonesDTO.Detail,
+                        ExecutedDate = milesTonesDTO.DatePerformed,
+                        RescheduledDate = milesTonesDTO.ReplannedDate,
+                        ScheduledDate = milesTonesDTO.PlannedDate,
+
+                    });
+                    return true;
+
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+            catch
+            {
+                return false;   
+            }
+
+            
+        }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -15,6 +16,43 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public ProjectManagementRepository (MSSQLContext context)
         {
             _context=context;
+        }
+
+        public int CreateMilestonesItem(MilestonesItem milestones)
+        {
+            try
+            {
+                var existMilesTones = _context.MilestonesItem.Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID).FirstOrDefault();
+                if(existMilesTones == null)
+                {
+                    _context.MilestonesItem.Add(milestones);
+                    _context.SaveChanges();
+                    return _context.MilestonesItem.Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID).Select(i => i.ID).FirstOrDefault();
+                }
+                else
+                {
+                    return 0; 
+                }
+                
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public bool CreateMilestonesValue(MilestonesValue milestones)
+        {
+            try
+            {
+                _context.MilestonesValue.Add(milestones);
+                _context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;   
+            }
         }
 
         public Model.Contracts GetForecastByID(int id)
