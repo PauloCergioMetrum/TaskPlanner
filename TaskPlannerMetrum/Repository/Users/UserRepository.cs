@@ -168,6 +168,7 @@ namespace TaskPlannerMetrum.Repository.Users
         public dynamic GetAllUsers ()
         {
             var users = _context.Users.ToList();
+
             return users.Select(u => new
             {
                 u.UserName,
@@ -178,8 +179,11 @@ namespace TaskPlannerMetrum.Repository.Users
                 u.DepartmentId,
                 u.FullName,
                 u.CreationDate,
+                u.IsActive,
             }).ToList();
 
+
+            
         }
     }
 }

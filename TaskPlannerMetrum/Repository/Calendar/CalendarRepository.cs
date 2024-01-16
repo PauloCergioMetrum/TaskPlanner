@@ -32,7 +32,9 @@ namespace TaskPlannerMetrum.Repository.Calendar
                 var users = new
                 {
                     id = user.Id,
-                    name = user.FullName
+                    name = user.FullName,
+                    isActive = user.IsActive
+
                 };
                 retorno.Add(users);
 
@@ -43,6 +45,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
         public dynamic TaskforUsers(AllUserCalendar AllUserCalendar)
         {
             List<vCalendar> tasksUsers = _context.vCalendar.ToList();
+            //var userRemove= _context.Users.Where(u => u.IsActive== true).ToList();
             if (AllUserCalendar.userID != 0)
             {
                 var taskuser = tasksUsers.Where(u => u.UserID == AllUserCalendar.userID &&  u.UserDepartment == AllUserCalendar.DepName)
@@ -175,19 +178,20 @@ namespace TaskPlannerMetrum.Repository.Calendar
 
         }
 
+
         public dynamic GetAllContracts()
         {
-            var contracts = _context.Contracts.Where(e => e.EnableProject == true && e.DateRetroactive > DateTime.Now).Select(c => new
-            {
-                contractID = c.id,
-                internalCode = c.InternalCode,
-
-
-            })
+            var contracts = _context.Contracts
+                .Where(e => true)
+                .Select(c => new
+                {
+                    contractID = c.id,
+                    internalCode = c.InternalCode,
+                })
                 .ToList();
+
             return contracts;
         }
-
 
         public string SetStatus(string status)
         {

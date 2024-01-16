@@ -116,10 +116,6 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
                 var list = _context.vReports_PlannedExecuted.Where(e => e.ScheduledDate.Date >= startDate.Date && e.ScheduledDate.Date <= endDate.Date).OrderByDescending(e => e.ScheduledDate).ToList();
 
-                //list.Sort((d1, d2) => d1.ScheduledDate.CompareTo(d2.ScheduledDate));
-
-
-
                 return list;
 
             }
@@ -131,6 +127,8 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
     }
 
 }
+
+
 
 
 

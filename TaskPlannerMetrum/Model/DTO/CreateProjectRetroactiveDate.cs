@@ -12,6 +12,6 @@ namespace TaskPlannerMetrum.Model.DTO
         public double ExpectedHour { get; set; }
         public int ContractID { get; set; }
 
-        public DateTime RetroactiveDate{ get; set; }
+        public DateTime? RetroactiveDate{ get; set; }
     }
 }
