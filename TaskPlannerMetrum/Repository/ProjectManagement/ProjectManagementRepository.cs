@@ -20,8 +20,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public int CreateMilestonesItem(MilestonesItem milestones)
         {
-            try
-            {
+            
                 var existMilesTones = _context.MilestonesItem.Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID).FirstOrDefault();
                 if(existMilesTones == null)
                 {
@@ -31,14 +30,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 }
                 else
                 {
-                    return 0; 
+                    return existMilesTones.ID;
                 }
                 
-            }
-            catch
-            {
-                return 0;
-            }
+            
+           
         }
 
         public bool CreateMilestonesValue(MilestonesValue milestones)

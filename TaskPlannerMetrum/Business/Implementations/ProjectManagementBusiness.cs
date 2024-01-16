@@ -87,33 +87,29 @@ namespace TaskPlannerMetrum.Business.Implementations
                     Name = milesTonesDTO.March
                 });
 
-                if (CreateMilesTonesItem != 0)
-                {
-                    _projectmanagementRepository.CreateMilestonesValue(new MilestonesValue
-                    {
-                        MilestonesID = CreateMilesTonesItem,
-                        Baseline = milesTonesDTO.Baseline,
-                        Description = milesTonesDTO.Detail,
-                        ExecutedDate = milesTonesDTO.DatePerformed,
-                        RescheduledDate = milesTonesDTO.ReplannedDate,
-                        ScheduledDate = milesTonesDTO.PlannedDate,
 
-                    });
-                    return true;
-
-                }
-                else
+                _projectmanagementRepository.CreateMilestonesValue(new MilestonesValue
                 {
-                    return false;
-                }
-                
+                    MilestonesID = CreateMilesTonesItem,
+                    Baseline = milesTonesDTO.Baseline,
+                    Description = milesTonesDTO.Detail,
+                    ExecutedDate = milesTonesDTO.DatePerformed,
+                    RescheduledDate = milesTonesDTO.ReplannedDate,
+                    ScheduledDate = milesTonesDTO.PlannedDate,
+
+                });
+                return true;
+
+
+
+
             }
             catch
             {
-                return false;   
+                return false;
             }
 
-            
+
         }
     }
 }
