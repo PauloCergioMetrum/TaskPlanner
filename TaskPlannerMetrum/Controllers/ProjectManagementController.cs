@@ -26,6 +26,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(401)]
         public IActionResult UpdateForCast(Model.DTO.ProjectManagementDTO forcast)
         {
+
             try
             {
                 return Ok(_projectManagementBusiness.UpdateForecast(forcast));
