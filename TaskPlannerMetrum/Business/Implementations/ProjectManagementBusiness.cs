@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.WebEncoders.Testing;
+using System;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.ProjectManagement;
@@ -26,6 +27,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     UpdateForecast.PredictedMarkup = forecast.PredictedMarkup;
                     UpdateForecast.PredictedSavings = forecast.PredictedSavings;
                     return _projectmanagementRepository.UpdateForecast(UpdateForecast);
+                    
 
                 }
                 else
@@ -47,19 +49,20 @@ namespace TaskPlannerMetrum.Business.Implementations
             try
             {
                 var OrderInformationByID = _projectmanagementRepository.GetForecastByIDView(id);
-
-
                 if (OrderInformationByID != null)
                 {
                     DateTime? validityStartDate = OrderInformationByID.ValidityStartDate;
-                    DateTime? validityEndtDate = OrderInformationByID.ValidityEndDate;
-
+                    DateTime? validityEndDate = OrderInformationByID.ValidityEndDate;
                     OrderInformationDTO orderInformation = new OrderInformationDTO
                     {
                         Client = OrderInformationByID.ClientName,
                         SalesOrder = OrderInformationByID.InternalCode,
-                        Validity = validityStartDate.Value.Date.ToString("dd/MM/yyyy") +" -- " + validityEndtDate.Value.Date.ToString("dd/MM/yyyy"),
+                        Validity = validityStartDate.Value.Date.ToString("dd/MM/yyyy") + " -- " + validityEndDate.Value.Date.ToString("dd/MM/yyyy"),
                         BusinessUnit = OrderInformationByID.BusinessUnit,
+                        PredictedSavings = OrderInformationByID.PredictedSavings.ToString(),
+                        PredictedMarkup = OrderInformationByID.PredictedMarkup.ToString(),
+                        ValidityStartDate = validityStartDate,
+                        ValidityEndDate = validityEndDate,
                     };
 
                     return orderInformation;
@@ -68,13 +71,13 @@ namespace TaskPlannerMetrum.Business.Implementations
                 {
                     return null;
                 }
-
             }
             catch
             {
                 return null;
             }
         }
+
 
         public bool CreateMilesTones(MilesTonesDTO milesTonesDTO)
         {
