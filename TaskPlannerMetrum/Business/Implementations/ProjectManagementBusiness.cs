@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.WebEncoders.Testing;
+using System;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.ProjectManagement;
@@ -26,6 +27,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     UpdateForecast.PredictedMarkup = forecast.PredictedMarkup;
                     UpdateForecast.PredictedSavings = forecast.PredictedSavings;
                     return _projectmanagementRepository.UpdateForecast(UpdateForecast);
+                    
 
                 }
                 else
@@ -47,28 +49,28 @@ namespace TaskPlannerMetrum.Business.Implementations
             try
             {
                 var OrderInformationByID = _projectmanagementRepository.GetForecastByIDView(id);
-                
-
                 if (OrderInformationByID != null)
                 {
                     DateTime? validityStartDate = OrderInformationByID.ValidityStartDate;
-                    DateTime? validityEndtDate = OrderInformationByID.ValidityEndDate;
-
+                    DateTime? validityEndDate = OrderInformationByID.ValidityEndDate;
                     OrderInformationDTO orderInformation = new OrderInformationDTO
                     {
                         Client = OrderInformationByID.ClientName,
                         SalesOrder = OrderInformationByID.InternalCode,
-                        Validity = validityStartDate.Value.Date.ToString("dd/MM/yyyy") +" -- " + validityEndtDate.Value.Date.ToString("dd/MM/yyyy"),
+                        Validity = validityStartDate.Value.Date.ToString("dd/MM/yyyy") + " -- " + validityEndDate.Value.Date.ToString("dd/MM/yyyy"),
                         BusinessUnit = OrderInformationByID.BusinessUnit,
+                        PredictedSavings = OrderInformationByID.PredictedSavings.ToString(),
+                        PredictedMarkup = OrderInformationByID.PredictedMarkup.ToString(),
+                        ValidityStartDate = validityStartDate,
+                        ValidityEndDate = validityEndDate,
                     };
-                   
+
                     return orderInformation;
                 }
                 else
                 {
                     return null;
                 }
-                
             }
             catch
             {
@@ -77,5 +79,40 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
+        public bool CreateMilesTones(MilesTonesDTO milesTonesDTO)
+        {
+
+            try
+            {
+                var CreateMilesTonesItem = _projectmanagementRepository.CreateMilestonesItem(new MilestonesItem
+                {
+                    ContractID = milesTonesDTO.ContractID,
+                    Name = milesTonesDTO.March
+                });
+
+
+                _projectmanagementRepository.CreateMilestonesValue(new MilestonesValue
+                {
+                    MilestonesID = CreateMilesTonesItem,
+                    Baseline = milesTonesDTO.Baseline,
+                    Description = milesTonesDTO.Detail,
+                    ExecutedDate = milesTonesDTO.DatePerformed,
+                    RescheduledDate = milesTonesDTO.ReplannedDate,
+                    ScheduledDate = milesTonesDTO.PlannedDate,
+
+                });
+                return true;
+
+
+
+
+            }
+            catch
+            {
+                return false;
+            }
+
+
+        }
     }
 }

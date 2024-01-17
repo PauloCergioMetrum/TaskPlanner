@@ -15,6 +15,9 @@ namespace TaskPlannerMetrum.Business
         public OrderInformationDTO GetOrderInformation(int id);
 
 
+        public bool CreateMilesTones(MilesTonesDTO milesTones);
+
+
 
 
 

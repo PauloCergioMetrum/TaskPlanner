@@ -2,6 +2,7 @@
 using System;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Business.Implementations;
+using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Controllers
 {
@@ -59,6 +60,28 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+
+
+        [HttpPost("CreateMilesTones")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateMilesTones(MilesTonesDTO milesTones)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.CreateMilesTones(milesTones));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
     }
