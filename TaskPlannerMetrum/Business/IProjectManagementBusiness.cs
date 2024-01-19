@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 
@@ -16,6 +17,8 @@ namespace TaskPlannerMetrum.Business
 
 
         public bool CreateMilesTones(MilesTonesDTO milesTones);
+
+        List<string> GetMilestonesNames(int contractID);
 
 
 
