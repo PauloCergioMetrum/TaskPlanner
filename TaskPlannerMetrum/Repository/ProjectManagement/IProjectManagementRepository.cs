@@ -19,6 +19,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool CreateMilestonesValue(MilestonesValue milestones);
 
+        List<string> GetMilestonesNames(int contractID);
+
+
+
+
 
     }
 }

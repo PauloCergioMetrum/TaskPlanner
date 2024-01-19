@@ -62,6 +62,19 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.vContractList.Where(i => i.ContractID == id).FirstOrDefault();  
         }
 
+
+
+
+
+        public List<string> GetMilestonesNames(int contractID)
+        {
+            return _context.MilestonesItem.Where(c => c.ContractID == contractID).OrderBy(c => c.Name).Select(c => c.Name).ToList();
+        }
+
+
+
+
+
         public bool UpdateForecast(Model.Contracts forecast)
         {
             try
