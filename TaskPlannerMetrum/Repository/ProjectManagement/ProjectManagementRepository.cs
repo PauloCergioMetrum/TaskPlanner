@@ -51,6 +51,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
+        public void DeleteMilestones(int contractID)
+        {
+            
+        }
+
         public Model.Contracts GetForecastByID(int id)
         {
 
