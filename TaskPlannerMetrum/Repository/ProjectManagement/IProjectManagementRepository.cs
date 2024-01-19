@@ -21,6 +21,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         List<string> GetMilestonesNames(int contractID);
 
+        public void DeleteMilestones(int contractID);
+
 
 
 
