@@ -85,7 +85,26 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
- 
+        [HttpPut("UpdateMilesTones")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult UpdateMilesTones(MilesTonesDTO milesTones)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.UpdateMilesTones(milesTones));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
 
 
 

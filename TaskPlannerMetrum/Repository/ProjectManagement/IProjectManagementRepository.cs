@@ -25,6 +25,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
+        public MilestonesValue GetMilestonesValueByID(int milestonesID);
+
+        public bool UpdateMilesTones(MilestonesValue milestonesValue);
+
 
 
     }

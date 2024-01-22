@@ -22,7 +22,7 @@ namespace TaskPlannerMetrum.Business
 
 
 
-
+        public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO);
 
 
 

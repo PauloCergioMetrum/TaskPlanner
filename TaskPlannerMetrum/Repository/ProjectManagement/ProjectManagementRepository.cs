@@ -96,6 +96,17 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-       
+        public MilestonesValue GetMilestonesValueByID(int milestonesID)
+        {
+            return _context.MilestonesValue.Where(i => i.MilestonesID == milestonesID).FirstOrDefault();
+        }
+
+        public bool UpdateMilesTones(MilestonesValue milestonesValue)
+        {
+            _context.MilestonesValue.Update(milestonesValue);
+            _context.SaveChanges(); 
+            return true;   
+        }
+
     }
 }

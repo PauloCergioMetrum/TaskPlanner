@@ -6,6 +6,7 @@ namespace TaskPlannerMetrum.Model.DTO
 {
     public class MilesTonesDTO
     {
+        public int ID { get; set; }
         public int ContractID { get; set; }     
         public string March { get; set; }
 
