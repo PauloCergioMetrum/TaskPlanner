@@ -120,6 +120,28 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         }
 
+
+        public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO)
+        {
+            var MalesTonesValues = _projectmanagementRepository.GetMilestonesValueByID(milesTonesDTO.ID);
+            if(milesTonesDTO.ReplannedDate.Date != MalesTonesValues.RescheduledDate.Value.Date || milesTonesDTO.DatePerformed.Date != MalesTonesValues.ExecutedDate.Value.Date)
+            {
+                MalesTonesValues.RescheduledDate = milesTonesDTO.ReplannedDate;
+                MalesTonesValues.ExecutedDate = milesTonesDTO.DatePerformed;  
+                MalesTonesValues.Description = milesTonesDTO.Detail;
+                MalesTonesValues.Baseline =  MalesTonesValues.Baseline + 1;
+               return _projectmanagementRepository.UpdateMilesTones(MalesTonesValues);
+            }
+            else
+            {
+                MalesTonesValues.RescheduledDate = milesTonesDTO.ReplannedDate;
+                MalesTonesValues.ExecutedDate = milesTonesDTO.DatePerformed;
+                MalesTonesValues.Description = milesTonesDTO.Detail;
+                MalesTonesValues.Baseline =  MalesTonesValues.Baseline;
+                return _projectmanagementRepository.UpdateMilesTones(MalesTonesValues);
+            }
+        }
+
         public List<string> GetMilestonesNames(int contractID)
         {
             return _projectmanagementRepository.GetMilestonesNames(contractID);
