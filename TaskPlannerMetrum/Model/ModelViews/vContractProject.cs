@@ -24,7 +24,9 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string Progress { get; set; }  
 
-        public DateTime? DateRetroactive { get; set; }   
+        public DateTime? DateRetroactive { get; set; }
+
+        public int Delayed { get; set; }
 
 
 

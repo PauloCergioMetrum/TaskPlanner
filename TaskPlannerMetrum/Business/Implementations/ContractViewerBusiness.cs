@@ -1,4 +1,5 @@
 ﻿using System;
+using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.ContractViewer;
 
 namespace TaskPlannerMetrum.Business.Implementations
@@ -17,5 +18,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
          return _repository.GetAllContractsView(Date);  
         }
+
+        
     }
 }
