@@ -195,11 +195,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 Progress = c.Progress,
                 StartDate = c.StartDate,
                 DateRetroactive =c.DateRetroactive,
-
-
-
-
-                latesActivities = CountLateActivities(c.id)
+                latesActivities = c.Delayed,
             }).OrderByDescending(s => s.StartDate);
 
 
