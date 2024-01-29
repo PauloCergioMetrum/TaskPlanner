@@ -173,41 +173,44 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             catch { return false; }
         }
 
-        public List<vActivityPlan> FindAllTaskByProject(string projectId)
+        public List<vActivePlans> FindAllTaskByProject(string projectId)
         {
+            return _context.vActivePlans.Where(c => c.ContractID == Convert.ToInt32(projectId)).OrderBy(d => d.ScheduledDate).ToList();
 
-            List<vActivityPlan> _activityPlans = new List<vActivityPlan>();
-            var taskPlans = _context.ActivityPlan.Where(a => a.ContractID == Convert.ToInt32(projectId)).ToList().OrderBy(d => d.ScheduledDate);
+            //List<vActivityPlan> _activityPlans = new List<vActivityPlan>();
+            //var taskPlans = _context.ActivityPlan.Where(a => a.ContractID == Convert.ToInt32(projectId)).ToList().OrderBy(d => d.ScheduledDate);
 
-            foreach (var taskPlan in taskPlans)
-            {
+            
 
-                var userid = _context.Team.Where(t => t.ID == taskPlan.ExecutorTeamID).Select(s => s.UserID).FirstOrDefault();
-                _activityPlans.Add(new vActivityPlan
-                {
-                    ActivitiesScopeListID = taskPlan.ActivitiesScopeListID,
-                    Description = _context.ActivitiesScopeList.Where(d => d.ID == Convert.ToInt32(taskPlan.ActivitiesScopeListID)).Select(s => s.Description).FirstOrDefault(),
-                    ExecutedManHour = taskPlan.ExecutedManHour,
-                    ExecutorName = _context.Users.Where(u => u.Id == userid).Select(s => s.FullName).FirstOrDefault(),
-                    ExecutorTeamID = taskPlan.ExecutorTeamID,
-                    NotesFromExecutor = taskPlan.NotesFromExecutor,
-                    NotesFromPlanner = taskPlan.NotesFromPlanner,
-                    TaskDescription = taskPlan.TaskDescription,
-                    PlannedManHour = taskPlan.PlannedManHour,
-                    PlannerTeamID = taskPlan.PlannerTeamID,
-                    ContractID = taskPlan.ContractID,
-                    ScheduledDate = taskPlan.ScheduledDate,
-                    Status = taskPlan.Status,
-                    ID = taskPlan.ID,
-                    statusName = GetStatusName(taskPlan.Status.ToString(), taskPlan.ScheduledDate),
-                    IsRework = taskPlan.IsRework,
-                    ProjectName = _context.Projects.Where(p => p.ID == taskPlan.ContractID).Select(p => p.Name).FirstOrDefault(),
-                    UserID = _context.Team.Where(u => u.ID == taskPlan.ExecutorTeamID).Select(u => u.UserID).FirstOrDefault()
+            //foreach (var taskPlan in taskPlans)
+            //{
 
-                }); ;
-            }
+            //    var userid = _context.Team.Where(t => t.ID == taskPlan.ExecutorTeamID).Select(s => s.UserID).FirstOrDefault();
+            //    _activityPlans.Add(new vActivityPlan
+            //    {
+            //        ActivitiesScopeListID = taskPlan.ActivitiesScopeListID,
+            //        Description = _context.ActivitiesScopeList.Where(d => d.ID == Convert.ToInt32(taskPlan.ActivitiesScopeListID)).Select(s => s.Description).FirstOrDefault(),
+            //        ExecutedManHour = taskPlan.ExecutedManHour,
+            //        ExecutorName = _context.Users.Where(u => u.Id == userid).Select(s => s.FullName).FirstOrDefault(),
+            //        ExecutorTeamID = taskPlan.ExecutorTeamID,
+            //        NotesFromExecutor = taskPlan.NotesFromExecutor,
+            //        NotesFromPlanner = taskPlan.NotesFromPlanner,
+            //        TaskDescription = taskPlan.TaskDescription,
+            //        PlannedManHour = taskPlan.PlannedManHour,
+            //        PlannerTeamID = taskPlan.PlannerTeamID,
+            //        ContractID = taskPlan.ContractID,
+            //        ScheduledDate = taskPlan.ScheduledDate,
+            //        Status = taskPlan.Status,
+            //        ID = taskPlan.ID,
+            //        statusName = GetStatusName(taskPlan.Status.ToString(), taskPlan.ScheduledDate),
+            //        IsRework = taskPlan.IsRework,
+            //        ProjectName = _context.Projects.Where(p => p.ID == taskPlan.ContractID).Select(p => p.Name).FirstOrDefault(),
+            //        UserID = _context.Team.Where(u => u.ID == taskPlan.ExecutorTeamID).Select(u => u.UserID).FirstOrDefault()
 
-            return _activityPlans;
+            //    }); ;
+            //}
+
+            //return _activityPlans;
         }
 
 
@@ -223,36 +226,39 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             return getRow.Name;
         }
 
-        public List<vActivityPlan> FindAllTaskByUser(string userId)
+        public List<vActivePlans> FindAllTaskByUser(string userId)
         {
-            List<vActivityPlan> _activityPlans = new List<vActivityPlan>();
-            var pmTeamId = _context.Team.Where(t => t.UserID == Convert.ToInt32(userId)).Select(s => s.ID).FirstOrDefault();
-            foreach (var taskPlan in _context.ActivityPlan.Where(t => t.ExecutorTeamID == pmTeamId).ToList())
-            {
-                _activityPlans.Add(new vActivityPlan
-                {
-                    ActivitiesScopeListID = taskPlan.ActivitiesScopeListID,
-                    Description = _context.ActivitiesScopeList.Where(d => d.ID == Convert.ToInt32(taskPlan.ActivitiesScopeListID)).Select(s => s.Description).FirstOrDefault(),
-                    ExecutedManHour = taskPlan.ExecutedManHour,
-                    ExecutorName = _context.Users.Where(u => u.Id == Convert.ToInt32(userId)).Select(s => s.FullName).FirstOrDefault(),
-                    ExecutorTeamID = taskPlan.ExecutorTeamID,
-                    NotesFromExecutor = taskPlan.NotesFromExecutor,
-                    NotesFromPlanner = taskPlan.NotesFromPlanner,
-                    TaskDescription = taskPlan.TaskDescription,
-                    PlannedManHour = taskPlan.PlannedManHour,
-                    PlannerTeamID = taskPlan.PlannerTeamID,
-                    ContractID = taskPlan.ContractID,
-                    ScheduledDate = taskPlan.ScheduledDate,
-                    Status = taskPlan.Status,
-                    ID = taskPlan.ID,
-                    statusName = GetStatusName(taskPlan.Status.ToString(), taskPlan.ScheduledDate),
-                    ProjectName = _context.Projects.Where(p => p.ID == taskPlan.ContractID).Select(p => p.Name).FirstOrDefault(),
-                    IsRework = taskPlan.IsRework,
+            return _context.vActivePlans.Where(u => u.ExecutorTeamID == Convert.ToInt32(userId)).ToList();
+            //List<vActivityPlan> _activityPlans = new List<vActivityPlan>();
+            //var pmTeamId = _context.Team.Where(t => t.UserID == Convert.ToInt32(userId)).Select(s => s.ID).FirstOrDefault();
+            
+
+            //foreach (var taskPlan in _context.ActivityPlan.Where(t => t.ExecutorTeamID == pmTeamId).ToList())
+            //{
+            //    _activityPlans.Add(new vActivityPlan
+            //    {
+            //        ActivitiesScopeListID = taskPlan.ActivitiesScopeListID,
+            //        Description = _context.ActivitiesScopeList.Where(d => d.ID == Convert.ToInt32(taskPlan.ActivitiesScopeListID)).Select(s => s.Description).FirstOrDefault(),
+            //        ExecutedManHour = taskPlan.ExecutedManHour,
+            //        ExecutorName = _context.Users.Where(u => u.Id == Convert.ToInt32(userId)).Select(s => s.FullName).FirstOrDefault(),
+            //        ExecutorTeamID = taskPlan.ExecutorTeamID,
+            //        NotesFromExecutor = taskPlan.NotesFromExecutor,
+            //        NotesFromPlanner = taskPlan.NotesFromPlanner,
+            //        TaskDescription = taskPlan.TaskDescription,
+            //        PlannedManHour = taskPlan.PlannedManHour,
+            //        PlannerTeamID = taskPlan.PlannerTeamID,
+            //        ContractID = taskPlan.ContractID,
+            //        ScheduledDate = taskPlan.ScheduledDate,
+            //        Status = taskPlan.Status,
+            //        ID = taskPlan.ID,
+            //        statusName = GetStatusName(taskPlan.Status.ToString(), taskPlan.ScheduledDate),
+            //        ProjectName = _context.Projects.Where(p => p.ID == taskPlan.ContractID).Select(p => p.Name).FirstOrDefault(),
+            //        IsRework = taskPlan.IsRework,
 
 
-                });
-            }
-            return _activityPlans;
+            //    });
+            //}
+            //return _activityPlans;
         }
 
 
