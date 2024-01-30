@@ -109,8 +109,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     inspectorID = newcontract.inspectorID,
                     VendorID = newcontract.VendorID,
                     ClientID = newcontract.ClientID,
-                   // ClientOrder = newcontract.ClientOrder,
-                   ClientOrder=0,
+                    // ClientOrder = newcontract.ClientOrder,
+                    ClientOrder = 0,
                     Condition = newcontract.Condition,
                     EnableProject = false,
                     InternalCode = newcontract.InternalCode,
@@ -118,7 +118,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     PaymentMethod = newcontract.PaymentMethod,
                     StartDate = newcontract.StartDate,
                     TagID = newcontract.TagID,
-                });;
+                }); ;
                 _context.SaveChanges();
                 var contractID = _context.Contracts.Select(i => i.id).Max();
                 var pmoID = _context.Department.Where(n => n.Name == "PMO").Select(i => i.ID).FirstOrDefault();
@@ -144,22 +144,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
 
         }
-       /* public bool CreateProject(Model.Contracts newProject)
-        {
-            Model.ProjectsNew project = new Model.ProjectsNew();
-            project.ContractID = _context.Contracts.Where(i => i.InternalCode == newProject.InternalCode).Select(i => i.id).FirstOrDefault();
-            project.PlannedManHour = 0;
-            project.ExecutedManHour = 0;
-            project.ExpectedManHor = 0;
-            project.Status = "1";
-
-            _context.Add(project);
-            _context.SaveChanges();
-            return true;
-
-
-        }
-       */
+      
         public List<Workspace> GetAllWorkSpace()
         {
             return _context.Workspace.OrderBy(n => n.Name).ToList();
@@ -175,7 +160,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
         }
 
 
-     
+
 
 
         public dynamic GetAllProjectsContracts()
@@ -194,7 +179,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 InspectorName = c.InspectorName,
                 Progress = c.Progress,
                 StartDate = c.StartDate,
-                DateRetroactive =c.DateRetroactive,
+                DateRetroactive = c.DateRetroactive,
                 latesActivities = c.Delayed,
             }).OrderByDescending(s => s.StartDate);
 
@@ -316,9 +301,46 @@ namespace TaskPlannerMetrum.Repository.Contracts
             return false;
         }
 
+     
 
+        public bool DeleteObservation(int ContractID)
+        {
+
+            var removeObservation = _context.Observation.Where(o => o.ContractID == ContractID).FirstOrDefault();
+            _context.Observation.Remove(removeObservation);
+            _context.SaveChanges();
+            return true;
+        }
+
+
+        public List<Observation> AllObservation()
+        {
+            return _context.Observation.ToList();
+
+        }
+
+        public bool ObservationUpdate(int ContractID, string Datails, DateTime Date)
+        {
+            var updateContract = _context.Observation.Where(i => i.ContractID == ContractID).FirstOrDefault();
+
+            updateContract.ContractID = ContractID;
+            updateContract.Date = Date;
+            updateContract.Datails = Datails;
+            _context.Observation.Update(updateContract);
+            _context.SaveChanges();
+            return true;
+
+
+        }
+
+        public bool ObservationCreate(Observation observation)
+        {
+           _context.Observation.Add(observation);
+            _context.SaveChanges(); return true;    
+        }
     }
 
 
 
 }
+

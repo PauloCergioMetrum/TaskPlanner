@@ -31,6 +31,15 @@ namespace TaskPlannerMetrum.Business
         public dynamic ContractDasboardDate(DateTime date);
 
         public bool CompareDate(int ContractID);
+        public bool ObservationCreate(Observation observation);
 
+        public dynamic DeleteObservation(int ContractID);
+
+
+
+        public List<Observation> AllObservation();
+
+
+        public bool ObservationUpdate(int ContractID, string Datails, DateTime Date);
     }
 }

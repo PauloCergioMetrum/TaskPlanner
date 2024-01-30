@@ -76,6 +76,7 @@ namespace TaskPlannerMetrum.Model.Context
 
 
         public DbSet<vActivePlans> vActivePlans { get; set; }
+        public DbSet<Observation> Observation { get; set; } 
 
 
 
