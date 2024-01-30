@@ -94,10 +94,7 @@ namespace TaskPlannerMetrum.Business.Implementations
            return _contractRepository.CompareDate(ContractID);  
         }
 
-        public bool CreateObservation(Observation observation)
-        {
-           return _contractRepository.CreateObservation(observation); 
-        }
+     
 
         public dynamic DeleteObservation(int ContractID)
         {
@@ -114,14 +111,15 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public bool ObservationUpdate(int ContractID, string Datalies, DateTime Date)
+        public bool ObservationUpdate(int ContractID, string Datails, DateTime Date)
         {
-          return _contractRepository.ObservationUpdate(ContractID , Datalies , Date);
+          return _contractRepository.ObservationUpdate(ContractID , Datails, Date);
         }
 
-      
+        public bool ObservationCreate(Observation observation)
+        {
+          return _contractRepository.ObservationCreate(observation); 
+        }
     }
 }
 
-
-//public bool ObservationUpdate(int ContractID, string observation)

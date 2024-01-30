@@ -144,22 +144,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
 
         }
-        /* public bool CreateProject(Model.Contracts newProject)
-         {
-             Model.ProjectsNew project = new Model.ProjectsNew();
-             project.ContractID = _context.Contracts.Where(i => i.InternalCode == newProject.InternalCode).Select(i => i.id).FirstOrDefault();
-             project.PlannedManHour = 0;
-             project.ExecutedManHour = 0;
-             project.ExpectedManHor = 0;
-             project.Status = "1";
-
-             _context.Add(project);
-             _context.SaveChanges();
-             return true;
-
-
-         }
-        */
+      
         public List<Workspace> GetAllWorkSpace()
         {
             return _context.Workspace.OrderBy(n => n.Name).ToList();
@@ -316,12 +301,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
             return false;
         }
 
-        public bool CreateObservation(Model.Observation observation)
-        {
-            _context.Observation.Add(observation);
-            _context.SaveChanges();
-            return true;
-        }
+     
 
         public bool DeleteObservation(int ContractID)
         {
@@ -339,13 +319,13 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         }
 
-        public bool ObservationUpdate(int ContractID, string Datalies, DateTime Date)
+        public bool ObservationUpdate(int ContractID, string Datails, DateTime Date)
         {
             var updateContract = _context.Observation.Where(i => i.ContractID == ContractID).FirstOrDefault();
 
             updateContract.ContractID = ContractID;
             updateContract.Date = Date;
-            updateContract.Datails = Datalies;
+            updateContract.Datails = Datails;
             _context.Observation.Update(updateContract);
             _context.SaveChanges();
             return true;
@@ -353,9 +333,14 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         }
 
-
+        public bool ObservationCreate(Observation observation)
+        {
+           _context.Observation.Add(observation);
+            _context.SaveChanges(); return true;    
+        }
     }
 
 
 
 }
+

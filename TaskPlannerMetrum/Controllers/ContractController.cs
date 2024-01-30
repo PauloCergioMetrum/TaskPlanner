@@ -297,27 +297,6 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
-        [HttpPost("CreateObservation")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-
-     
-        public IActionResult CreateObservation(Model.Observation observation)
-        {
-            try
-            {
-                return Ok(_contractBusiness.CreateObservation(observation));
-
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(ex.Message, ELoggerType.Debug);
-
-                return BadRequest(ex.InnerException?.Message ?? ex.Message);
-            }
-        }
 
         [HttpDelete("DeleteObservation")]
         [ProducesResponseType(200)]
@@ -343,9 +322,31 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
+        [HttpPost("ObservationCreate")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
 
 
-      
+        public IActionResult ObservationCreate(Model .Observation observation)
+        {
+            try
+            {
+                return Ok(_contractBusiness.ObservationCreate(observation));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.InnerException?.Message ?? ex.Message);
+            }
+        }
+
+
+
+
 
         [HttpGet("AllObservation")]
         [ProducesResponseType(200)]
@@ -377,11 +378,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(401)]
         //[TypeFilter(typeof(HyperMediaFilter))]
 
-        public IActionResult ObservationUpdate(int ContractID, string Datalies, DateTime Date)
+        public IActionResult ObservationUpdate(int ContractID, string Datails, DateTime Date)
         {
             try
             {
-                return Ok(_contractBusiness.ObservationUpdate(ContractID, Datalies , Date));
+                return Ok(_contractBusiness.ObservationUpdate(ContractID, Datails, Date));
 
             }
             catch (Exception ex)

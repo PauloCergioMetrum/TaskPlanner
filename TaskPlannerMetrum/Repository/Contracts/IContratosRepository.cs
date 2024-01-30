@@ -34,18 +34,16 @@ namespace TaskPlannerMetrum.Repository.Contracts
         public dynamic ContractDasboardDate(DateTime date);
 
         public bool CompareDate(int ContractID);
-        public bool CreateObservation(Model.Observation observation);
 
-
-
-
+      
+        public bool ObservationCreate(Model.Observation observation);
 
         public bool DeleteObservation(int ContractID);
 
 
         public List<Model.Observation> AllObservation();
 
-        public bool ObservationUpdate(int ContractID , string Datalies , DateTime Date) ;
+        public bool ObservationUpdate(int ContractID, string Datails, DateTime Date);
 
 
 
