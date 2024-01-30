@@ -297,5 +297,103 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
+        [HttpPost("CreateObservation")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+     
+        public IActionResult CreateObservation(Model.Observation observation)
+        {
+            try
+            {
+                return Ok(_contractBusiness.CreateObservation(observation));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.InnerException?.Message ?? ex.Message);
+            }
+        }
+
+        [HttpDelete("DeleteObservation")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+
+        public IActionResult DeleteObservation(int ContractID)
+        {
+            try
+            {
+                return Ok(_contractBusiness.DeleteObservation(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.InnerException?.Message ?? ex.Message);
+            }
+        }
+
+
+
+
+
+      
+
+        [HttpGet("AllObservation")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+
+        public IActionResult AllObservation()
+        {
+            try
+            {
+                return Ok(_contractBusiness.AllObservation());
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.InnerException?.Message ?? ex.Message);
+            }
+        }
+
+
+        [HttpPut("ObservationUpdate")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+
+        public IActionResult ObservationUpdate(int ContractID, string Datalies, DateTime Date)
+        {
+            try
+            {
+                return Ok(_contractBusiness.ObservationUpdate(ContractID, Datalies , Date));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
     }
 }
