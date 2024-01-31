@@ -22,7 +22,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         public dynamic GetAllContracts()
         {
-            return _context.vContractList.Select(s => new { s.ContractID, s.EnableProject, s.PaymentMethod, s.InspectorName, s.ClientName, s.InternalCode, s.VendorName, s.StartDate, ValueTotal = s.ValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.ClientOrder, InvoicedValueTotal = s.InvoicedValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.Condition, s.BusinessUnit, s.Observation }).OrderBy(s => s.StartDate).ToList();
+            return _context.vContractList.Select(s => new { s.ContractID, s.EnableProject, s.PaymentMethod, s.InspectorName, s.ClientName, s.InternalCode, s.VendorName, s.StartDate, ValueTotal  = s.ValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.ClientOrder, InvoicedValueTotal = s.InvoicedValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.Condition, s.BusinessUnit, s.Observation,  s.Status , s.StatusID }).OrderBy(s => s.StartDate).ToList();
+
         }
 
         public bool UpdateContract(Model.Contracts contract)
