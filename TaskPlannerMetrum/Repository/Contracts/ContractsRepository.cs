@@ -22,7 +22,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         public dynamic GetAllContracts()
         {
-            return _context.vContractList.Select(s => new { s.ContractID, s.EnableProject, s.PaymentMethod, s.InspectorName, s.ClientName, s.InternalCode, s.VendorName, s.StartDate, ValueTotal = s.ValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.ClientOrder, InvoicedValueTotal = s.InvoicedValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.Condition, s.BusinessUnit, s.Observation }).OrderBy(s => s.StartDate).ToList();
+            return _context.vContractList.Select(s => new { s.ContractID, s.EnableProject, s.PaymentMethod, s.InspectorName, s.ClientName, s.InternalCode, s.VendorName, s.StartDate, ValueTotal  = s.ValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.ClientOrder, InvoicedValueTotal = s.InvoicedValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.Condition, s.BusinessUnit, s.Observation,  s.Status , s.StatusID }).OrderBy(s => s.StartDate).ToList();
+
         }
 
         public bool UpdateContract(Model.Contracts contract)
@@ -118,6 +119,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     PaymentMethod = newcontract.PaymentMethod,
                     StartDate = newcontract.StartDate,
                     TagID = newcontract.TagID,
+                    StatusID =1,
                 }); ;
                 _context.SaveChanges();
                 var contractID = _context.Contracts.Select(i => i.id).Max();
@@ -303,12 +305,15 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
      
 
-        public bool DeleteObservation(int ContractID)
+        public bool DeleteObservation( string id)
         {
 
-            var removeObservation = _context.Observation.Where(o => o.ContractID == ContractID).FirstOrDefault();
-            _context.Observation.Remove(removeObservation);
-            _context.SaveChanges();
+            var removeObservation = _context.Observation.Where(o => o.ID == id ) .FirstOrDefault();
+           if(removeObservation != null) {
+                _context.Observation.Remove(removeObservation);
+                _context.SaveChanges();
+               
+            }
             return true;
         }
 
@@ -344,7 +349,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
             _context.SaveChanges(); return true;    
         }
 
-       
+        
     }
 
 
