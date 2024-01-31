@@ -305,11 +305,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(401)]
 
 
-        public IActionResult DeleteObservation(int ContractID)
+        public IActionResult DeleteObservation(int id)
         {
             try
             {
-                return Ok(_contractBusiness.DeleteObservation(ContractID));
+                return Ok(_contractBusiness.DeleteObservation(id));
 
             }
             catch (Exception ex)
