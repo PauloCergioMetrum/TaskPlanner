@@ -103,9 +103,9 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public List<Observation> AllObservation()
+        public List<Observation> AllObservation(int ContractID)
         {
-          return _contractRepository.AllObservation();
+          return _contractRepository.AllObservation(ContractID);
         }
 
 

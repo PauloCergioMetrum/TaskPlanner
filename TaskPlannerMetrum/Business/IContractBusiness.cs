@@ -37,7 +37,7 @@ namespace TaskPlannerMetrum.Business
 
 
 
-        public List<Observation> AllObservation();
+        public List<Observation> AllObservation(int ContractID);
 
 
         public bool ObservationUpdate(int ContractID, string Datails, DateTime Date);
