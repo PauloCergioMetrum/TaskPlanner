@@ -41,7 +41,10 @@ namespace TaskPlannerMetrum.Repository.Contracts
         public bool DeleteObservation(int ContractID);
 
 
-        public List<Model.Observation> AllObservation();
+        //public List<Model.Observation> AllObservation( int ContractID);
+
+        public dynamic AllObservation (int  contractID);
+
 
         public bool ObservationUpdate(int ContractID, string Datails, DateTime Date);
 

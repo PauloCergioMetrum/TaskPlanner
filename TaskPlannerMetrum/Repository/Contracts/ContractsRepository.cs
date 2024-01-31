@@ -313,11 +313,16 @@ namespace TaskPlannerMetrum.Repository.Contracts
         }
 
 
-        public List<Observation> AllObservation()
-        {
-            return _context.Observation.ToList();
+  
 
+        public dynamic AllObservation(int contractID)
+        {
+           List<Observation> observations = _context.Observation.Where( i => i.ContractID == contractID).ToList();  
+            return observations;    
         }
+
+      
+
 
         public bool ObservationUpdate(int ContractID, string Datails, DateTime Date)
         {
@@ -338,6 +343,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
            _context.Observation.Add(observation);
             _context.SaveChanges(); return true;    
         }
+
+       
     }
 
 

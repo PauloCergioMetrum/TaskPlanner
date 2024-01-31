@@ -355,11 +355,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(401)]
 
 
-        public IActionResult AllObservation()
+        public IActionResult AllObservation(int ContractID)
         {
             try
             {
-                return Ok(_contractBusiness.AllObservation());
+                return Ok(_contractBusiness.AllObservation(ContractID));
 
             }
             catch (Exception ex)
