@@ -305,7 +305,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
      
 
-        public bool DeleteObservation( int id)
+        public bool DeleteObservation( string id)
         {
 
             var removeObservation = _context.Observation.Where(o => o.ID == id ) .FirstOrDefault();
@@ -349,7 +349,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
             _context.SaveChanges(); return true;    
         }
 
-       
+        
     }
 
 

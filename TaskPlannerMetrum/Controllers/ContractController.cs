@@ -305,7 +305,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(401)]
 
 
-        public IActionResult DeleteObservation(int id)
+        public IActionResult DeleteObservation(string id)
         {
             try
             {

@@ -4,7 +4,7 @@ namespace TaskPlannerMetrum.Model
 {
     public class Observation
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
         public DateTime Date { get; set; }
 
         public string Datails { get; set; }

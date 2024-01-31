@@ -96,7 +96,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
      
 
-        public dynamic DeleteObservation(int id)
+        public dynamic DeleteObservation(string id)
         {
             return _contractRepository.DeleteObservation( id);
         }

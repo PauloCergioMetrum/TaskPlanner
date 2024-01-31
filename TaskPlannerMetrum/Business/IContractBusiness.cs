@@ -33,7 +33,7 @@ namespace TaskPlannerMetrum.Business
         public bool CompareDate(int ContractID);
         public bool ObservationCreate(Observation observation);
 
-        public dynamic DeleteObservation(int id);
+        public dynamic DeleteObservation(string id);
 
 
 

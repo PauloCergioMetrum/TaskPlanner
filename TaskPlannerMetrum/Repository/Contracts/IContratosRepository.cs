@@ -38,7 +38,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
       
         public bool ObservationCreate(Model.Observation observation);
 
-        public bool DeleteObservation( int id );
+        public bool DeleteObservation( string id );
 
 
 
