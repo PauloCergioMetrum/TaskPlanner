@@ -43,6 +43,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 updateCotract.id = contract.id;
                 updateCotract.Observation = contract.Observation;
                 updateCotract.ClientOrder = contract.ClientOrder;
+                updateCotract.StatusID = contract.StatusID;
 
 
                 _context.Contracts.Update(updateCotract);
