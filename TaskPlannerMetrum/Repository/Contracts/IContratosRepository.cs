@@ -36,7 +36,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
         public bool CompareDate(int ContractID);
 
       
-        public bool ObservationCreate(Model.Observation observation);
+ 
 
         public bool DeleteObservation( string id );
 
@@ -45,7 +45,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
         public dynamic AllObservation (int  contractID);
 
 
-        public bool ObservationUpdate(int ContractID, string Datails, DateTime Date);
+        public bool ObservationUpdate(Observation observation);
 
 
 
