@@ -327,30 +327,44 @@ namespace TaskPlannerMetrum.Repository.Contracts
             return observations;    
         }
 
-      
 
 
-        public bool ObservationUpdate(int ContractID, string Datails, DateTime Date)
+
+        public bool ObservationUpdate(Observation observation)
         {
-            var updateContract = _context.Observation.Where(i => i.ContractID == ContractID).FirstOrDefault();
 
-            updateContract.ContractID = ContractID;
-            updateContract.Date = Date;
-            updateContract.Datails = Datails;
-            _context.Observation.Update(updateContract);
+            var existingObservation = _context.Observation.FirstOrDefault(i => i.ID == observation.ID);
+
+            if (existingObservation != null)
+            {
+
+                existingObservation.Date = observation.Date;
+                existingObservation.Datails = observation.Datails;
+                _context.Observation.Update(existingObservation);
+                _context.SaveChanges();
+            }
+            else
+            {
+
+                var newObservation = new Observation
+                {
+                    ContractID = observation.ContractID,
+                    Date = observation.Date,
+                    Datails = observation.Datails,
+                    ID = observation.ID,
+
+                };
+                _context.Observation.Add(newObservation);
+            }
+
             _context.SaveChanges();
+
+
             return true;
-
-
         }
 
-        public bool ObservationCreate(Observation observation)
-        {
-           _context.Observation.Add(observation);
-            _context.SaveChanges(); return true;    
-        }
 
-        
+
     }
 
 

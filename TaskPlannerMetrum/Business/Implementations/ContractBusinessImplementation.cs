@@ -111,14 +111,14 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public bool ObservationUpdate(int ContractID, string Datails, DateTime Date)
+        public bool ObservationUpdate(Observation observation)
         {
-          return _contractRepository.ObservationUpdate(ContractID , Datails, Date);
+          return _contractRepository.ObservationUpdate(observation);
         }
 
         public bool ObservationCreate(Observation observation)
         {
-          return _contractRepository.ObservationCreate(observation); 
+            throw new NotImplementedException();
         }
     }
 }

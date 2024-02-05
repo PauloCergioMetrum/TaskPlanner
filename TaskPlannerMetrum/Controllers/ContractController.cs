@@ -322,27 +322,7 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
-        [HttpPost("ObservationCreate")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-
-
-        public IActionResult ObservationCreate(Model .Observation observation)
-        {
-            try
-            {
-                return Ok(_contractBusiness.ObservationCreate(observation));
-
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(ex.Message, ELoggerType.Debug);
-
-                return BadRequest(ex.InnerException?.Message ?? ex.Message);
-            }
-        }
+        
 
 
 
@@ -378,11 +358,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(401)]
         //[TypeFilter(typeof(HyperMediaFilter))]
 
-        public IActionResult ObservationUpdate(int ContractID, string Datails, DateTime Date)
+        public IActionResult ObservationUpdate(Observation observation)
         {
             try
             {
-                return Ok(_contractBusiness.ObservationUpdate(ContractID, Datails, Date));
+                return Ok(_contractBusiness.ObservationUpdate(observation));
 
             }
             catch (Exception ex)
