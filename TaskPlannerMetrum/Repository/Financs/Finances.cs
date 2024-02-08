@@ -264,18 +264,19 @@ namespace TaskPlannerMetrum.Repository.Financs
 
         public dynamic GetContractInfo(int id)
         {
-            //var query = _context.Contracts.Where(i => i.id == id).FirstOrDefault();
+
             var contract = _context.Contracts.Where(i => i.id == id).FirstOrDefault();
-
-
             var contractinfo = new
             {
-                InternalCode = _context.Contracts.Where(i => i.id == id).Select(n => n.InternalCode).FirstOrDefault(),
-                id = _context.Contracts.Where(i => i.id == id).Select(n => n.id).FirstOrDefault(),
-                clientName = _context.Clients.Where(i => i.Id == contract.ClientID).Select(n => n.Name).FirstOrDefault()
+                InternalCode = contract.InternalCode,
+                statusID = contract.StatusID,
+                id = contract.id,
+                clientName = _context.Clients.Where(i => i.Id == contract.ClientID).Select(n => n.Name).FirstOrDefault(),
             };
+
             return contractinfo;
         }
+
         public bool UpdateFinances(Model.Finances finances)
         {
 

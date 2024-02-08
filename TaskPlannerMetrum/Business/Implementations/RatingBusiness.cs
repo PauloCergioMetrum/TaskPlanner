@@ -26,9 +26,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             var UsersTasks = _activityPlanRepository.FindAllTaskByProject(projectID.ToString()).ToList();
             foreach (var user in UsersTasks)
             {
-                bool isTechLeader = _repository.IsTechLeader(user.UserID, projectID);
-                _repository.CreateRatingProjects(user.UserID, projectID);
-                _repository.CreateRatings(isTechLeader, user.UserID, projectID);
+                bool isTechLeader = _repository.IsTechLeader(user.ExecutorTeamID, projectID);
+                _repository.CreateRatingProjects(user.ExecutorTeamID, projectID);
+                _repository.CreateRatings(isTechLeader, user.ExecutorTeamID, projectID);
             }
             return _repository.GetAllRatingProject(projectID, UserID);
         }
@@ -43,9 +43,9 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             foreach (var user in UsersTasks)
             {
-                bool isTechLeader = _repository.IsTechLeader(user.UserID, projectID);
-                _repository.CreateRatingProjects(user.UserID, projectID);
-                _repository.CreateRatings(isTechLeader, user.UserID, projectID);
+                bool isTechLeader = _repository.IsTechLeader(user.ExecutorTeamID, projectID);
+                _repository.CreateRatingProjects(user.ExecutorTeamID, projectID);
+                _repository.CreateRatings(isTechLeader, user.ExecutorTeamID, projectID);
             }
             return _repository.GetAllRatingProject(projectID, userID);
         }
@@ -62,7 +62,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             //  BUSCAR NA TABELA DEPARTMENTPROJECTS TODOS OS TECHLEADER DO CONTRACTID (ID DO CONTRATO)
             _repository.ExistLeaderID(ContractID);
 
-            var usersListIDs = _activityPlanRepository.FindAllTaskByProject(ContractID.ToString()).Select(s => s.UserID).Distinct().ToList();
+            var usersListIDs = _activityPlanRepository.FindAllTaskByProject(ContractID.ToString()).Select(s => s.ExecutorTeamID).Distinct().ToList();
             foreach (var userid in usersListIDs)
             {
                 if (_repository.ExistRating(userid, ContractID) == false)
