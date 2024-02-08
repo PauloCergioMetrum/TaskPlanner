@@ -10,9 +10,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public bool Create(TaskPlannerMetrum.Model.ActivityPlan activityPlan);
 
-        public List<vActivityPlan> FindAllTaskByProject(string projectId);
+        public List<vActivePlans> FindAllTaskByProject(string projectId);
         public vActivityPlan GetActivityPlanById(string activityPlanId);
-        public List<vActivityPlan> FindAllTaskByUser(string userId);
+        public List<vActivePlans> FindAllTaskByUser(string userId);
         public bool UpdateActivityPlan(vActivityPlan activityPlan);
 
         public bool DeleteId(int id);

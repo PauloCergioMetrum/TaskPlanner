@@ -486,7 +486,8 @@ namespace TaskPlannerMetrum.Repository.Projects
                     tecLeader = t.TechLeader,
                     expectedHours = t.ExpectedHour,
                     plannedHour = t.PlannedHour,
-                    executedHour = t.ExecutedHour
+                    executedHour = t.ExecutedHour,
+                    status = t.StatusID,
 
 
                 }).ToList(),

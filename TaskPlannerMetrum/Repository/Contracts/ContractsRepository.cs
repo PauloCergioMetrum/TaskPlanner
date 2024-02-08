@@ -22,7 +22,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         public dynamic GetAllContracts()
         {
-            return _context.vContractList.Select(s => new { s.ContractID, s.EnableProject, s.PaymentMethod, s.InspectorName, s.ClientName, s.InternalCode, s.VendorName, s.StartDate, ValueTotal = s.ValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.ClientOrder, InvoicedValueTotal = s.InvoicedValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.Condition, s.BusinessUnit, s.Observation }).OrderBy(s => s.StartDate).ToList();
+            return _context.vContractList.Select(s => new { s.ContractID, s.EnableProject, s.PaymentMethod, s.InspectorName, s.ClientName, s.InternalCode, s.VendorName, s.StartDate, ValueTotal  = s.ValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.ClientOrder, InvoicedValueTotal = s.InvoicedValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.Condition, s.BusinessUnit, s.Observation,  s.Status , s.StatusID }).OrderBy(s => s.StartDate).ToList();
+
         }
 
         public bool UpdateContract(Model.Contracts contract)
@@ -42,6 +43,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 updateCotract.id = contract.id;
                 updateCotract.Observation = contract.Observation;
                 updateCotract.ClientOrder = contract.ClientOrder;
+                updateCotract.StatusID = contract.StatusID;
 
 
                 _context.Contracts.Update(updateCotract);
@@ -109,8 +111,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     inspectorID = newcontract.inspectorID,
                     VendorID = newcontract.VendorID,
                     ClientID = newcontract.ClientID,
-                   // ClientOrder = newcontract.ClientOrder,
-                   ClientOrder=0,
+                    // ClientOrder = newcontract.ClientOrder,
+                    ClientOrder = 0,
                     Condition = newcontract.Condition,
                     EnableProject = false,
                     InternalCode = newcontract.InternalCode,
@@ -118,7 +120,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     PaymentMethod = newcontract.PaymentMethod,
                     StartDate = newcontract.StartDate,
                     TagID = newcontract.TagID,
-                });;
+                    StatusID =1,
+                }); ;
                 _context.SaveChanges();
                 var contractID = _context.Contracts.Select(i => i.id).Max();
                 var pmoID = _context.Department.Where(n => n.Name == "PMO").Select(i => i.ID).FirstOrDefault();
@@ -144,22 +147,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
 
         }
-       /* public bool CreateProject(Model.Contracts newProject)
-        {
-            Model.ProjectsNew project = new Model.ProjectsNew();
-            project.ContractID = _context.Contracts.Where(i => i.InternalCode == newProject.InternalCode).Select(i => i.id).FirstOrDefault();
-            project.PlannedManHour = 0;
-            project.ExecutedManHour = 0;
-            project.ExpectedManHor = 0;
-            project.Status = "1";
-
-            _context.Add(project);
-            _context.SaveChanges();
-            return true;
-
-
-        }
-       */
+      
         public List<Workspace> GetAllWorkSpace()
         {
             return _context.Workspace.OrderBy(n => n.Name).ToList();
@@ -175,7 +163,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
         }
 
 
-     
+
 
 
         public dynamic GetAllProjectsContracts()
@@ -194,7 +182,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 InspectorName = c.InspectorName,
                 Progress = c.Progress,
                 StartDate = c.StartDate,
-                DateRetroactive =c.DateRetroactive,
+                DateRetroactive = c.DateRetroactive,
                 latesActivities = c.Delayed,
             }).OrderByDescending(s => s.StartDate);
 
@@ -316,9 +304,70 @@ namespace TaskPlannerMetrum.Repository.Contracts
             return false;
         }
 
+     
+
+        public bool DeleteObservation( string id)
+        {
+
+            var removeObservation = _context.Observation.Where(o => o.ID == id ) .FirstOrDefault();
+           if(removeObservation != null) {
+                _context.Observation.Remove(removeObservation);
+                _context.SaveChanges();
+               
+            }
+            return true;
+        }
+
+
+  
+
+        public dynamic AllObservation(int contractID)
+        {
+           List<Observation> observations = _context.Observation.Where( i => i.ContractID == contractID).ToList();  
+            return observations;    
+        }
+
+
+
+
+        public bool ObservationUpdate(Observation observation)
+        {
+
+            var existingObservation = _context.Observation.FirstOrDefault(i => i.ID == observation.ID);
+
+            if (existingObservation != null)
+            {
+
+                existingObservation.Date = observation.Date;
+                existingObservation.Datails = observation.Datails;
+                _context.Observation.Update(existingObservation);
+                _context.SaveChanges();
+            }
+            else
+            {
+
+                var newObservation = new Observation
+                {
+                    ContractID = observation.ContractID,
+                    Date = observation.Date,
+                    Datails = observation.Datails,
+                    ID = observation.ID,
+
+                };
+                _context.Observation.Add(newObservation);
+            }
+
+            _context.SaveChanges();
+
+
+            return true;
+        }
+
+
 
     }
 
 
 
 }
+

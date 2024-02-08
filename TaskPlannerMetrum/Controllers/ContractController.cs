@@ -297,5 +297,84 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
+
+        [HttpDelete("DeleteObservation")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+
+        public IActionResult DeleteObservation(string id)
+        {
+            try
+            {
+                return Ok(_contractBusiness.DeleteObservation(id));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.InnerException?.Message ?? ex.Message);
+            }
+        }
+
+
+
+        
+
+
+
+
+
+        [HttpGet("AllObservation")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+
+        public IActionResult AllObservation(int ContractID)
+        {
+            try
+            {
+                return Ok(_contractBusiness.AllObservation(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.InnerException?.Message ?? ex.Message);
+            }
+        }
+
+
+        [HttpPut("ObservationUpdate")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+
+        public IActionResult ObservationUpdate(Observation observation)
+        {
+            try
+            {
+                return Ok(_contractBusiness.ObservationUpdate(observation));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
     }
 }

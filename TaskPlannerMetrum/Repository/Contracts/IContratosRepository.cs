@@ -35,6 +35,21 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         public bool CompareDate(int ContractID);
 
-        //public DateTime DateRetroactive (DateTime date );
+      
+ 
+
+        public bool DeleteObservation( string id );
+
+
+
+        public dynamic AllObservation (int  contractID);
+
+
+        public bool ObservationUpdate(Observation observation);
+
+
+
+
+
     }
 }

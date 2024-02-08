@@ -40,15 +40,8 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
         public dynamic GetContractInfo(int id)
-        {   
-            var contract = _financestRepository.GetContractInfo(id);
-            var result = new
-            {
-                contractName = contract.InternalCode,
-                id = contract.id,
-                clientName = contract.clientName
-            };
-            return result;
+        {
+            return _financestRepository.GetContractInfo(id);
         }
 
         public bool UpdateFinances(Model.Finances newfinance)

@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using TaskPlannerMetrum.Repository.DepartmentProjects;
 using TaskPlannerMetrum.Repository.Projects;
 using TaskPlannerMetrum.Repository.Contracts;
+using System.Diagnostics.Contracts;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -92,5 +93,33 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
            return _contractRepository.CompareDate(ContractID);  
         }
+
+     
+
+        public dynamic DeleteObservation(string id)
+        {
+            return _contractRepository.DeleteObservation( id);
+        }
+
+
+
+        public List<Observation> AllObservation(int ContractID)
+        {
+          return _contractRepository.AllObservation(ContractID);
+        }
+
+
+
+
+        public bool ObservationUpdate(Observation observation)
+        {
+          return _contractRepository.ObservationUpdate(observation);
+        }
+
+        public bool ObservationCreate(Observation observation)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
+

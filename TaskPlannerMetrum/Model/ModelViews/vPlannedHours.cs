@@ -18,5 +18,6 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public double PlannedHour { get; set; }
         public double ExecutedHour { get; set; }
     
+        public int StatusID { get; set; }
     }
 }
