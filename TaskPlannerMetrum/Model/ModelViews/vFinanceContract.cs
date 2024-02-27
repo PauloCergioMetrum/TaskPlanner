@@ -29,9 +29,19 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string? paymentCondition { get; set; }
 
-        public string  BusinessUnit { get; set; }
+        public string BusinessUnit { get; set; }
 
         public string? StatusDpv { get; set; }
+
+
+        public bool? Guarantee { get; set; }
+        public int? GuaranteePeriod { get; set; }
+
+        public DateTime   DateExpectedGarantee { get; set; }
+
+        public string  StatusGuarantee { get; set; }
+
+
 
     }
 }

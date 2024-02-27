@@ -24,6 +24,11 @@ namespace TaskPlannerMetrum.Repository.Financs
             newfinance.Billing = "";
             newfinance.StatusDpv = "EM ANDAMENTO";
 
+            if(newfinance.Guarantee == null)
+            {
+                newfinance.Guarantee = false;
+            }
+
             _context.Finances.Add(new Model.Finances
             {
                 Amount = newfinance.Amount,
@@ -43,23 +48,24 @@ namespace TaskPlannerMetrum.Repository.Financs
                 paymentCondition = newfinance.paymentCondition,
                 InvoicedValue = newfinance.InvoicedValue,
                 Value = newfinance.Value,
+                Guarantee = newfinance.Guarantee,
+                GuaranteePeriod = newfinance.GuaranteePeriod,
                 WorkSpaceID = newfinance.WorkSpaceID,
-
             });
             _context.SaveChanges();
-            int FinanceID = _context.Finances.Where(f => f.ContractID== newfinance.ContractID).OrderBy(i => i.id).Select(f => f.id).LastOrDefault();
+            int FinanceID = _context.Finances.Where(f => f.ContractID == newfinance.ContractID).OrderBy(i => i.id).Select(f => f.id).LastOrDefault();
 
-            if(_context.DepartmentProjects.Where(d=> d.DepartmentID == newfinance.DepartmentID && d.ContractID == newfinance.ContractID).FirstOrDefault() == null)
+            if (_context.DepartmentProjects.Where(d => d.DepartmentID == newfinance.DepartmentID && d.ContractID == newfinance.ContractID).FirstOrDefault() == null)
             {
                 CreateProject(new Model.DepartmentProjects
                 {
-                    DepartmentID= newfinance.DepartmentID,
-                    ContractID= newfinance.ContractID,
+                    DepartmentID = newfinance.DepartmentID,
+                    ContractID = newfinance.ContractID,
                     FinancesID = FinanceID,
                     ExpectedHour = 0,
                 });
             }
-            
+
 
             return true;
 
@@ -87,7 +93,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                 return true;
             }
             return false;
-           
+
         }
 
         public List<Model.ModelViews.vFinanceContract> GetAllFinances()
@@ -148,6 +154,11 @@ namespace TaskPlannerMetrum.Repository.Financs
                     f.EndDate,
                     f.ExpectedInvoiceDate,
                     f.FinanceType,
+
+                    f.Guarantee,
+                    f.GuaranteePeriod,
+                    f.DateExpectedGarantee,
+                    f.StatusGuarantee
 
                 })
 
@@ -289,7 +300,7 @@ namespace TaskPlannerMetrum.Repository.Financs
             updatefinances.EndDate = finances.EndDate;
             updatefinances.BaseDate = finances.BaseDate;
             updatefinances.ContractID = finances.ContractID;
-            updatefinances.Billing= finances.Billing;
+            updatefinances.Billing = finances.Billing;
             updatefinances.id = finances.id;
             updatefinances.Description = finances.Description;
             updatefinances.InvoicedDate = finances.InvoicedDate;
@@ -353,7 +364,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                 {
                     duplicateFinance.invoice = financeMatriz.invoice;
                     duplicateFinance.paymentCondition = financeMatriz.paymentCondition;
-                    duplicateFinance.StatusDpv= financeMatriz.StatusDpv;
+                    duplicateFinance.StatusDpv = financeMatriz.StatusDpv;
                     duplicateFinance.Amount = financeMatriz.Amount;
                     duplicateFinance.InvoicedDate = financeMatriz.InvoicedDate;
                     duplicateFinance.EndDate = financeMatriz.EndDate;
@@ -380,8 +391,9 @@ namespace TaskPlannerMetrum.Repository.Financs
                     return false;
                 }
 
-               
-            }catch(Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 return ex.Message.ToString();
             }

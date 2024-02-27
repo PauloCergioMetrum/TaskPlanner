@@ -48,8 +48,8 @@ namespace TaskPlannerMetrum.Repository.Calendar
             //var userRemove= _context.Users.Where(u => u.IsActive== true).ToList();
             if (AllUserCalendar.userID != 0)
             {
-                var taskuser = tasksUsers.Where(u => u.UserID == AllUserCalendar.userID &&  u.UserDepartment == AllUserCalendar.DepName)
-                    .Select(u => new
+                var taskuser = tasksUsers.Where(u => u.UserID == AllUserCalendar.userID && u.UserDepartment == AllUserCalendar.DepName && u.Status != "4" && u.Status != "3")
+                     .Select(u => new
                     {
                         userID = u.UserID,
                         titleUser = u.UserName,
@@ -69,7 +69,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                 var taskUserList = taskuser.ToList();
                 foreach (var task in taskUserList)
                 {
-                    if (taskuser.Where(u => u.userID == task.userID && u.start == task.start).Count() >=2)
+                    if (taskuser.Where(u => u.userID == task.userID && u.start == task.start).Count() >= 2)
                     {
                         taskuser.Remove(task);
                     }
@@ -79,8 +79,8 @@ namespace TaskPlannerMetrum.Repository.Calendar
             }
             else
             {
-                var taskuser = tasksUsers.Where(u => u.UserDepartment == AllUserCalendar.DepName)
-                  .Select(u => new
+                var taskuser = tasksUsers.Where(u => u.UserDepartment == AllUserCalendar.DepName && u.Status != "4" && u.Status != "3")
+                 .Select(u => new
                   {
                       userID = u.UserID,
                       titleUser = u.UserName,
@@ -92,7 +92,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                       depNameUSER = u.UserDepartment,
                       task = tasksUsers
                           .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
-                          .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode , status = SetStatus(s.Status)})
+                          .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.Status) })
                           .Distinct(),
                       backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
                   }).Distinct().ToList();
@@ -100,7 +100,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                 var taskUserList = taskuser.ToList();
                 foreach (var task in taskUserList)
                 {
-                    if (taskuser.Where(u => u.userID == task.userID && u.start == task.start).Count() >=2)
+                    if (taskuser.Where(u => u.userID == task.userID && u.start == task.start).Count() >= 2)
                     {
                         taskuser.Remove(task);
                     }
@@ -113,8 +113,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
 
         public dynamic UsersForProjects(int contractID)
         {
-            //Lista com todos os Contratos Recebidos do Front
-            List<vCalendar> contractsUsers = _context.vCalendar.Where(i => i.contractID == contractID).ToList();
+            List<vCalendar> contractsUsers = _context.vCalendar.Where(i => i.contractID == contractID && i.Status != "4" && i.Status != "3").ToList();
             try
             {
                 //Lista de tasks de Usuarios 
@@ -130,7 +129,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                     depNameUSER = u.UserDepartment,
                     task = contractsUsers
                            .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
-                           .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.Status)})
+                           .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.Status) })
                            .Distinct(),
                     backgroundColor = setColor(contractsUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
                 }).Distinct().ToList();
@@ -142,7 +141,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                 foreach (var user in userDuplicate)
                 {
                     //Remove User Duplicado 
-                    if (tasksUsers.Where(u => u.userID == user.userID && u.start == user.start).Count() >=2)
+                    if (tasksUsers.Where(u => u.userID == user.userID && u.start == user.start).Count() >= 2)
                     {
                         tasksUsers.Remove(user);
                     }
@@ -162,7 +161,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
             switch (valor)
             {
 
-                case  <= 5:
+                case <= 5:
                     return "#629763";
                     break;
                 case <= 7:
@@ -187,6 +186,8 @@ namespace TaskPlannerMetrum.Repository.Calendar
                 {
                     contractID = c.id,
                     internalCode = c.InternalCode,
+                    StatusID = c.StatusID,
+                    DateRetroactive = c.DateRetroactive,
                 })
                 .ToList();
 
@@ -195,26 +196,26 @@ namespace TaskPlannerMetrum.Repository.Calendar
 
         public string SetStatus(string status)
         {
-           
+
             switch (status)
             {
                 case "5":
-                    status =  "Não Iniciada";
+                    status = "Não Iniciada";
                     break;
                 case "3":
-                    status =  "Bloqueada";
+                    status = "Bloqueada";
                     break;
                 case "4":
-                    status =  "Cancelada";
+                    status = "Cancelada";
                     break;
                 case "6":
-                    status =  "Finalizada";
+                    status = "Finalizada";
                     break;
                 case "2":
-                     status =  "Em Progresso";
+                    status = "Em Progresso";
                     break;
                 case "1":
-                    status =  "Concluído";
+                    status = "Concluído";
                     break;
             }
 
@@ -223,4 +224,3 @@ namespace TaskPlannerMetrum.Repository.Calendar
         }
     }
 }
-

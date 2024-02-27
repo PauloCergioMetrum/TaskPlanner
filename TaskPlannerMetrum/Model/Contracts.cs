@@ -43,7 +43,7 @@ namespace TaskPlannerMetrum.Model
 
         public DateTime? ValidityEndDate { get; set; }
 
-        public int StatusID { get;set; }
+        public int ?StatusID { get;set; }
 
 
 
