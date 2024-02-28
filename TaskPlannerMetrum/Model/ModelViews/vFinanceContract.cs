@@ -37,7 +37,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public bool? Guarantee { get; set; }
         public int? GuaranteePeriod { get; set; }
 
-        public DateTime   DateExpectedGarantee { get; set; }
+        public DateTime DateExpectedGarantee { get; set; }
 
         public string  StatusGuarantee { get; set; }
 

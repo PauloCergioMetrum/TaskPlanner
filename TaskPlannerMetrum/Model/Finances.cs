@@ -40,8 +40,8 @@ namespace TaskPlannerMetrum.Model
         public string? BusinessUnit { get; set; }
 
         public string? StatusDpv { get; set; }
-        public bool Guarantee { get; set; }
-        public int GuaranteePeriod { get; set; }
+        public bool? Guarantee { get; set; }
+        public int? GuaranteePeriod { get; set; }
 
 
 
