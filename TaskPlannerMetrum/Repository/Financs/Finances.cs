@@ -150,11 +150,10 @@ namespace TaskPlannerMetrum.Repository.Financs
                     f.DepartmentID,
                     f.Description,
                     Status = setStatusDate(f.id),
-                    StatusDpv = setOnGoingDate(f.id),
+                    StatusDpv = f.StatusDpv,
                     f.EndDate,
                     f.ExpectedInvoiceDate,
                     f.FinanceType,
-
                     f.Guarantee,
                     f.GuaranteePeriod,
                     f.DateExpectedGarantee,
