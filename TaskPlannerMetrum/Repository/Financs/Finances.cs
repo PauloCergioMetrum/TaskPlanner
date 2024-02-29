@@ -294,8 +294,8 @@ namespace TaskPlannerMetrum.Repository.Financs
 
             if (updatefinances != null)
             {
-                var originalGuarantee = updatefinances.Guarantee;
-                var originalGuaranteePeriod = updatefinances.GuaranteePeriod;
+                //var originalGuarantee = updatefinances.Guarantee;
+                //var originalGuaranteePeriod = updatefinances.GuaranteePeriod;
                 updatefinances.InvoicedValue = finances.InvoicedValue;
                 updatefinances.Value = finances.Value;
                 updatefinances.Status = finances.Status;
@@ -311,8 +311,8 @@ namespace TaskPlannerMetrum.Repository.Financs
                 updatefinances.invoice = finances.invoice;
                 updatefinances.paymentCondition = finances.paymentCondition;
                 updatefinances.StatusDpv = finances.StatusDpv;
-                updatefinances.Guarantee = originalGuarantee;
-                updatefinances.GuaranteePeriod = originalGuaranteePeriod;
+                updatefinances.Guarantee = finances.Guarantee;
+                updatefinances.GuaranteePeriod = finances.GuaranteePeriod;
 
                 _context.Finances.Update(updatefinances);
                 _context.SaveChanges();
