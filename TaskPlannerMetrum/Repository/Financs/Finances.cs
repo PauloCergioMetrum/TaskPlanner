@@ -290,40 +290,42 @@ namespace TaskPlannerMetrum.Repository.Financs
 
         public bool UpdateFinances(Model.Finances finances)
         {
+            var updatefinances = _context.Finances.FirstOrDefault(i => i.id == finances.id);
 
-            var updatefinances = _context.Finances.Where(i => i.id == finances.id).FirstOrDefault();
-            var departamentID = updatefinances.DepartmentID;
-            updatefinances.InvoicedValue = finances.InvoicedValue;
-            updatefinances.Value = finances.Value;
-            updatefinances.Status = finances.Status;
-            updatefinances.Amount = finances.Amount;
-            updatefinances.EndDate = finances.EndDate;
-            updatefinances.BaseDate = finances.BaseDate;
-            updatefinances.ContractID = finances.ContractID;
-            updatefinances.Billing = finances.Billing;
-            updatefinances.id = finances.id;
-            updatefinances.Description = finances.Description;
-            updatefinances.InvoicedDate = finances.InvoicedDate;
-            updatefinances.DepartmentID = finances.DepartmentID;
-            updatefinances.ExpectedInvoiceDate = finances.ExpectedInvoiceDate;
-            updatefinances.invoice = finances.invoice;
-            updatefinances.paymentCondition = finances.paymentCondition;
-            updatefinances.StatusDpv = finances.StatusDpv;
-            _context.Finances.Update(updatefinances);
-            _context.SaveChanges();
-
-
-            if (F_UpdateDepartamentID(updatefinances.ContractID, finances.id, finances.DepartmentID))
+            if (updatefinances != null)
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                var originalGuarantee = updatefinances.Guarantee;
+                var originalGuaranteePeriod = updatefinances.GuaranteePeriod;
+                updatefinances.InvoicedValue = finances.InvoicedValue;
+                updatefinances.Value = finances.Value;
+                updatefinances.Status = finances.Status;
+                updatefinances.Amount = finances.Amount;
+                updatefinances.EndDate = finances.EndDate;
+                updatefinances.BaseDate = finances.BaseDate;
+                updatefinances.ContractID = finances.ContractID;
+                updatefinances.Billing = finances.Billing;
+                updatefinances.Description = finances.Description;
+                updatefinances.InvoicedDate = finances.InvoicedDate;
+                updatefinances.DepartmentID = finances.DepartmentID;
+                updatefinances.ExpectedInvoiceDate = finances.ExpectedInvoiceDate;
+                updatefinances.invoice = finances.invoice;
+                updatefinances.paymentCondition = finances.paymentCondition;
+                updatefinances.StatusDpv = finances.StatusDpv;
+                updatefinances.Guarantee = originalGuarantee;
+                updatefinances.GuaranteePeriod = originalGuaranteePeriod;
+
+                _context.Finances.Update(updatefinances);
+                _context.SaveChanges();
+
+                if (F_UpdateDepartamentID(updatefinances.ContractID, finances.id, finances.DepartmentID))
+                {
+                    return true;
+                }
             }
 
-
+            return false;
         }
+
 
         public bool F_UpdateDepartamentID(int contractID, int finanaceID, int financeDepartamentID)
         {

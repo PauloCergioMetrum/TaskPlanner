@@ -43,6 +43,7 @@ using TaskPlannerMetrum.Repository.Rating;
 using TaskPlannerMetrum.Repository.UserHourCostRepository;
 using TaskPlannerMetrum.Repository.ReportsViewer;
 using TaskPlannerMetrum.Repository.ProjectManagement;
+using TaskPlannerMetrum.Repository.BusinessUnit;
 
 namespace TaskPlannerMetrum
 {
@@ -144,6 +145,8 @@ namespace TaskPlannerMetrum
             services.AddScoped<IRatingBusiness, RatingBusiness>();
             services.AddScoped<IUserHourCostBusiness, UserHourCostBusinessImplementation>();
             services.AddScoped<IProjectManagementBusiness, ProjectManagementBusiness>();
+            services.AddScoped<IBusinessUnitBusiness , BusinessUnitImplementation >();
+
 
 
 
@@ -165,6 +168,7 @@ namespace TaskPlannerMetrum
             services.AddScoped<ICalendarRepository, CalendarRepository>();
             services.AddScoped<IFinances, Finances>();
             services.AddScoped<IProjectManagementRepository, ProjectManagementRepository>();
+         
 
 
 
@@ -181,6 +185,7 @@ namespace TaskPlannerMetrum
             services.AddScoped<IClientsRepository, ClientsRepository>();
             services.AddScoped<IRatingRepository, RatingRepository>();
             services.AddScoped<IUserHourCostRepository, UserHourCostRepository>();
+            services.AddScoped<IBusinessUnitRepository ,BusinessUnitRepository>();
 
 
 
