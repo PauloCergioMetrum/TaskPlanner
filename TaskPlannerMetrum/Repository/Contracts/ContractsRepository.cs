@@ -44,6 +44,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 updateCotract.Observation = contract.Observation;
                 updateCotract.ClientOrder = contract.ClientOrder;
                 updateCotract.StatusID = contract.StatusID;
+               
                 
 
 
@@ -191,6 +192,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
 
         }
+
+
 
         public int CountLateActivities(int contractID)
         {

@@ -488,6 +488,8 @@ namespace TaskPlannerMetrum.Repository.Projects
                     plannedHour = t.PlannedHour,
                     executedHour = t.ExecutedHour,
                     status = t.StatusID,
+                    StatusGuarantee=t.StatusGuarantee,
+
 
 
                 }).ToList(),
