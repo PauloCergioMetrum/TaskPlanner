@@ -179,6 +179,8 @@ namespace TaskPlannerMetrum
 
 
 
+       
+
 
 
             services.AddScoped<IContractViewerRepository, ContractViewerRepository>();

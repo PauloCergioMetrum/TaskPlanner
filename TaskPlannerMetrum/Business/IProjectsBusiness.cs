@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Model.NewContract;
 
 namespace TaskPlannerMetrum.Business
@@ -51,5 +53,11 @@ namespace TaskPlannerMetrum.Business
 
         public bool UpdateRetroactiveDate(int contractID, DateTime retroactiveDate);
 
+
+  
+
+        List<string> GetTechLeadersForMatchingProjects();
+        public List<vPlannedHours> GetProjectsByTechLeader(int techLeaderID);
+        
     }
 }
