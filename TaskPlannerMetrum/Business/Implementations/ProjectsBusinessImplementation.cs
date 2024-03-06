@@ -5,7 +5,9 @@ using System.Drawing;
 using System.Linq;
 using TaskPlannerMetrum.Data.Converter.Implementations;
 using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Model.NewContract;
 using TaskPlannerMetrum.Repository.DepartmentProjects;
 using TaskPlannerMetrum.Repository.Generic;
@@ -19,14 +21,16 @@ namespace TaskPlannerMetrum.Business.Implementations
         private readonly IProjectsRepository _projectRepository;
         private readonly IUserBusiness _userBusiness;
         private readonly IDepartmentProjectsRepository _departmentProjectsRepository;
+        private readonly MSSQLContext _context;
      
 
 
-        public ProjectsBusinessImplementation(IProjectsRepository projectsRepository, IUserBusiness userBusiness, IDepartmentProjectsRepository departmentProjectsRepository)
+        public ProjectsBusinessImplementation(IProjectsRepository projectsRepository, IUserBusiness userBusiness, IDepartmentProjectsRepository departmentProjectsRepository , MSSQLContext context)
         {
             _projectRepository= projectsRepository;
             _userBusiness= userBusiness;
             _departmentProjectsRepository = departmentProjectsRepository;
+            _context= context;
 
 
         }
@@ -231,5 +235,18 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectRepository.UpdateRetroactiveDate(contractID, retroactiveDate);
         }
+
+        public List<string> GetTechLeadersForMatchingProjects()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<vPlannedHours> GetProjectsByTechLeader(int techLeaderID)
+        {
+           var projects = _context.vPlannedHours.Where(p => p.TechLeaderID == techLeaderID).ToList();
+            return projects;
+        }
+
+        // TESTE 
     }
 }

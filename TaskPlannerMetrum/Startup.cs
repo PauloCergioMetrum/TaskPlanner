@@ -179,7 +179,7 @@ namespace TaskPlannerMetrum
 
 
 
-            services.AddScoped<IProjectTechnicialLeaderBussines, ProjectTechnicialLeader>();
+       
 
 
 
