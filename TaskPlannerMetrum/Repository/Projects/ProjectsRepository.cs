@@ -474,7 +474,7 @@ namespace TaskPlannerMetrum.Repository.Projects
             {
                 ProjectName = p.ProjectName,
                 ClientName = p.ClientName,
-                status = t.StatusID,
+                status = p.StatusID,
                 //StatusGuarantee=t.StatusGuarantee,
 
                 percentage = SetPercentege(p.ContractID),
