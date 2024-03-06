@@ -179,6 +179,8 @@ namespace TaskPlannerMetrum
 
 
 
+            services.AddScoped<IProjectTechnicialLeaderBussines, ProjectTechnicialLeader>();
+
 
 
             services.AddScoped<IContractViewerRepository, ContractViewerRepository>();
