@@ -477,6 +477,8 @@ namespace TaskPlannerMetrum.Repository.Projects
             {
                 ProjectName = p.ProjectName,
                 ClientName = p.ClientName,
+                status = p.StatusID,
+                //StatusGuarantee=t.StatusGuarantee,
 
                 percentage = SetPercentege(p.ContractID),
                 executedHourFull = taskDep.Where(p => p.ContractID == id).Select(e => e.ExecutedHour).Sum(),
@@ -490,10 +492,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                     expectedHours = t.ExpectedHour,
                     plannedHour = t.PlannedHour,
                     executedHour = t.ExecutedHour,
-                    status = t.StatusID,
-                    //StatusGuarantee=t.StatusGuarantee,
-
-
+                    
 
                 }).ToList(),
 
