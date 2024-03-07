@@ -415,16 +415,16 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-        [HttpGet("GetProjectsByTechLeader")]
+        [HttpGet("GetAllContractProjectByTechLeader")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetProjectsByTechLeader(int techLeaderID)
+        public IActionResult GetAllContractProjectByTechLeader(int techLeaderID)
         {
             try
             {
-                return Ok(_projectBusiness.GetProjectsByTechLeader(techLeaderID));
+                return Ok(_projectBusiness.GetAllContractProjectByTechLeader(techLeaderID));
 
             }
             catch (Exception ex)

@@ -18,6 +18,9 @@ using System.Reflection.PortableExecutable;
 using Castle.Components.DictionaryAdapter;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Repository.Projects
 {
@@ -361,7 +364,7 @@ namespace TaskPlannerMetrum.Repository.Projects
             }
             return allProjectDes;
         }
-       
+
 
         public bool UpdateProject(Model.DepartmentProjects newProject)
         {
@@ -373,7 +376,7 @@ namespace TaskPlannerMetrum.Repository.Projects
 
             if (removeRatings != null)
             {
-                
+
                 var rating = _context.Rating.Where(i => i.RatingProjectID == removeRatings.ID).ToList();
                 foreach (var leader in rating)
                 {
@@ -474,6 +477,8 @@ namespace TaskPlannerMetrum.Repository.Projects
             {
                 ProjectName = p.ProjectName,
                 ClientName = p.ClientName,
+                status = p.StatusID,
+                //StatusGuarantee=t.StatusGuarantee,
 
                 percentage = SetPercentege(p.ContractID),
                 executedHourFull = taskDep.Where(p => p.ContractID == id).Select(e => e.ExecutedHour).Sum(),
@@ -487,10 +492,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                     expectedHours = t.ExpectedHour,
                     plannedHour = t.PlannedHour,
                     executedHour = t.ExecutedHour,
-                    status = t.StatusID,
-                    //StatusGuarantee=t.StatusGuarantee,
-
-
+                    
 
                 }).ToList(),
 
@@ -549,7 +551,7 @@ namespace TaskPlannerMetrum.Repository.Projects
         {
             try
             {
-                var contract = _context.Contracts.Where(i => i.id == contractID ).FirstOrDefault();
+                var contract = _context.Contracts.Where(i => i.id == contractID).FirstOrDefault();
                 contract.DateRetroactive = retroactiveDate;
                 _context.Update(contract);
                 _context.SaveChanges();
@@ -559,6 +561,60 @@ namespace TaskPlannerMetrum.Repository.Projects
             {
                 return false;
             }
+
+        }
+
+        public List<vContractProject> GetAllContractProjectByTechLeader(int TechLeaderID)
+        {
+            List<vContractProject> vContractProjects = new List<vContractProject>();
+
+
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "EXECUTE [dbo].[GetContractProjectsByTechLeader]    @TechLeaderID";
+                command.Parameters.Add(new SqlParameter("@TechLeaderID", TechLeaderID));
+                _context.Database.OpenConnection();
+                using (var reader = command.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        int index = 0;
+                        var register = new vContractProject
+                        {
+                            ClientName = reader.GetValue(index++).ToString(),
+                            id = Convert.ToInt32(reader.GetValue(index++)),
+                            InternalCode = reader.GetValue(index++).ToString(),
+                            ClientID = Convert.ToInt32(reader.GetValue(index++)),
+                            InspectorName = reader.GetValue(index++).ToString(),
+                            EnableProject = reader.GetBoolean(index++),
+                            StartDate = reader.GetDateTime(index++),
+                            DateRetroactive = reader.GetDateTime(index++),
+                            PlannedMenHour = reader.GetValue(index++).ToString(),
+                            ExecutedMenHour = reader.GetValue(index++).ToString(),
+                            Progress = reader.GetValue(index++).ToString(),
+                            Expectedhour = reader.GetValue(index++).ToString(),
+                            Delayed = Convert.ToInt32(reader.GetValue(index++)),
+                            Status = reader.GetValue(index++).ToString(),
+
+
+
+
+
+                        };
+                        vContractProjects.Add(register);
+
+                    }
+
+                }
+
+
+
+
+
+            }
+            return vContractProjects;
+
 
         }
     }
