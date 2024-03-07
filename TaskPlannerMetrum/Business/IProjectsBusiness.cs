@@ -53,11 +53,14 @@ namespace TaskPlannerMetrum.Business
 
         public bool UpdateRetroactiveDate(int contractID, DateTime retroactiveDate);
 
+        public List<vContractProject> GetAllContractProjectByTechLeader(int TechLeaderID);
 
-  
 
-        List<string> GetTechLeadersForMatchingProjects();
-        public List<vPlannedHours> GetProjectsByTechLeader(int techLeaderID);
-        
+
+
+
+
+
+
     }
 }
