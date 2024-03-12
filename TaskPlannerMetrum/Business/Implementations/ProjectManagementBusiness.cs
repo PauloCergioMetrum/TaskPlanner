@@ -5,6 +5,7 @@ using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Repository.ProjectManagement;
+using TaskPlannerMetrum.Repository.Generic;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -153,5 +154,142 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetPositionsByGrup();
 
         }
+
+        public bool CreateAcquisitionsPlanned(AcquisitionsDTO acquisitionsDTO)
+        {
+            try
+            {
+
+
+                if (_projectmanagementRepository.ExistAcquisition(acquisitionsDTO.ID))
+                {
+
+                    return _projectmanagementRepository.UpdateAcquisition(acquisitionsDTO);
+                }
+                else
+                {
+                    var CreateAcquisitionsItem = _projectmanagementRepository.CreateAcquisitionsItem(new PMAcquisitionPlanned
+                    {
+                        ID = acquisitionsDTO.ID,
+                        TypeAcquisitionID = acquisitionsDTO.TypeAcquisitionID,
+                        Amount = acquisitionsDTO.Amount,
+                        Description = acquisitionsDTO.Description,
+                        ContractID = acquisitionsDTO.ContractID,
+                    });
+                    return true;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+        }
+
+        public bool UpdateAcquisition(AcquisitionsDTO acquisitionsDTO)
+        {
+            try
+            {
+                _projectmanagementRepository.UpdateAcquisition(acquisitionsDTO);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+        }
+
+        public bool DeleteAcquisition(int ID)
+        {
+            try
+            {
+                _projectmanagementRepository.DeleteAcquisition(ID);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+        }
+
+        public bool CreateAcquisitionsMade(AcquisitionMadeDTO acquisitionMade)
+        {
+            try
+            {
+
+                if (_projectmanagementRepository.ExistAcquisitionMade(acquisitionMade.ID))
+                {
+
+                    return _projectmanagementRepository.UpdateAcquisitionMadeItem(acquisitionMade);
+                }
+                else
+                {
+                    var CreateAcquisitionsItem = _projectmanagementRepository.CreateAcquisitionMadeItem(new PMAcquisitionMade
+                    {
+                        ID = acquisitionMade.ID,
+                        StatusAcquistionID = acquisitionMade.StatusAcquistionID,
+                        Amount = acquisitionMade.Amount,
+                        AquisitionPlannedID = acquisitionMade.AquisitionPlannedID,
+                        Value = acquisitionMade.Value,
+                        DateAcquisition = acquisitionMade.DateAcquisition,
+                        DateAcquisitionDelivery = acquisitionMade.DateAcquisitionDelivery,
+                    });
+                    return true;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+        }
+
+        public bool UpdateAcquisitionMadeItem(AcquisitionMadeDTO acquisitionMade)
+        {
+            try
+            {
+                _projectmanagementRepository.UpdateAcquisitionMadeItem(acquisitionMade);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+        }
+
+        public bool DeleteAcquisitionMade(int ID)
+        {
+            try
+            {
+                _projectmanagementRepository.DeleteAcquisitionMade(ID);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+        }
+
+
+        public List<PMAcquisitionPlanned> GetAcquisitions(int ContractID)
+        {
+            return _projectmanagementRepository.GetAcquisitions(ContractID);
+        }
+
+        public List<PMAcquisitionMade> GetAcquisitionsMade(int AquisitionPlannedID)
+        {
+            return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
+        }
     }
 }
+

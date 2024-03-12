@@ -27,10 +27,14 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<Team> Team { get; set; }
 
-        public DbSet<UserHourCosts> UserHourCosts { get; set; }   
+        public DbSet<UserHourCosts> UserHourCosts { get; set; }
 
         public DbSet<Positions> Positions { get; set; }
-        
+
+        public DbSet<PMAcquisitionPlanned> PM_Acquisition_Planned { get; set; }
+
+        public DbSet<PMAcquisitionMade> PM_Acquisition_Made { get; set; }
+
 
         //Views
         public DbSet<vProjectList> vProjectList { get; set; }
@@ -67,7 +71,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<vContractViewer> vContractViewer { get; set; }
 
-        public DbSet<vReports_PlannedExecuted> vReports_PlannedExecuted { get; set; }   
+        public DbSet<vReports_PlannedExecuted> vReports_PlannedExecuted { get; set; }
 
         public DbSet<RatingProject> RatingProject { get; set; }
 
@@ -82,6 +86,8 @@ namespace TaskPlannerMetrum.Model.Context
 
 
         public DbSet<MilestonesValue> MilestonesValue { get; set; }
+
+        
 
 
 

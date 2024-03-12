@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
@@ -19,6 +20,140 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             _context = context;
         }
+
+  
+
+
+        public int CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions)
+        {
+
+            var existAcquisitions = _context.PM_Acquisition_Planned.Where(n => n.Description == acquisitions.Description && n.ID == acquisitions.ID).FirstOrDefault();
+            if (existAcquisitions == null)
+            {
+                _context.PM_Acquisition_Planned.Add(acquisitions);
+                _context.SaveChanges();
+                 return _context.PM_Acquisition_Planned.Where(n => n.Description == acquisitions.Description && n.TypeAcquisitionID == acquisitions.ID).Select(i => i.ID).FirstOrDefault();
+                
+            }
+            else
+            {
+                return existAcquisitions.ID;
+            }
+        }
+
+        public bool ExistAcquisition(int ID)
+        {
+            return _context.PM_Acquisition_Planned.Any(n => n.ID == ID);
+        }
+
+        public bool DeleteAcquisition(int ID)
+        {
+            try
+            {
+                var AcquisitionsItem = _context.PM_Acquisition_Planned.Where(u => u.ID == ID).FirstOrDefault();
+                if (AcquisitionsItem != null)
+                {
+                    _context.PM_Acquisition_Planned.Remove(AcquisitionsItem);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateAcquisition(AcquisitionsDTO acquisitions)
+        {
+            try
+            {
+                var acquisitionEntity = _context.PM_Acquisition_Planned.Find(acquisitions.ID);
+                acquisitionEntity.TypeAcquisitionID = acquisitions.TypeAcquisitionID;
+                acquisitionEntity.Amount = acquisitions.Amount;
+                acquisitionEntity.Description = acquisitions.Description;
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public int CreateAcquisitionMadeItem(PMAcquisitionMade acquisitionMade)
+        {
+
+            var existAcquisitionsMade = _context.PM_Acquisition_Made.Where(n => n.Value == acquisitionMade.Value && n.ID == acquisitionMade.ID).FirstOrDefault();
+            if (existAcquisitionsMade == null)
+            {
+                _context.PM_Acquisition_Made.Add(acquisitionMade);
+                _context.SaveChanges();
+                return _context.PM_Acquisition_Made.Where(n => n.Value == acquisitionMade.Value && n.StatusAcquistionID == acquisitionMade.ID).Select(i => i.ID).FirstOrDefault();
+
+            }
+            else
+            {
+                return existAcquisitionsMade.ID;
+            }
+        }
+
+        public bool ExistAcquisitionMade(int ID)
+        {
+            return _context.PM_Acquisition_Made.Any(n => n.ID == ID);
+        }
+
+        public bool DeleteAcquisitionMade(int ID)
+        {
+            try
+            {
+                var AcquisitionsMadeItem = _context.PM_Acquisition_Made.Where(u => u.ID == ID).FirstOrDefault();
+                if (AcquisitionsMadeItem != null)
+                {
+                    _context.PM_Acquisition_Made.Remove(AcquisitionsMadeItem);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateAcquisitionMadeItem(AcquisitionMadeDTO acquisitionMade)
+        {
+            try
+            {
+                var acquisitionMadeEntity = _context.PM_Acquisition_Made.Find(acquisitionMade.ID);
+                acquisitionMadeEntity.ID = acquisitionMade.ID;
+                acquisitionMadeEntity.StatusAcquistionID = acquisitionMade.StatusAcquistionID;
+                acquisitionMadeEntity.Amount = acquisitionMade.Amount;
+                acquisitionMadeEntity.Value = acquisitionMade.Value;
+                acquisitionMadeEntity.DateAcquisition = acquisitionMade.DateAcquisition;
+                acquisitionMadeEntity.DateAcquisitionDelivery = acquisitionMade.DateAcquisitionDelivery;
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+
+
 
         public int CreateMilestonesItem(MilestonesItem milestones)
         {
@@ -129,5 +264,16 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
+        public List<PMAcquisitionPlanned> GetAcquisitions(int ContractID)
+        {
+            var AcquisitionList = _context.PM_Acquisition_Planned.Where(r => r.ContractID == ContractID).ToList();
+            return AcquisitionList;
+        }
+
+        public List<PMAcquisitionMade> GetAcquisitionsMade(int AquisitionPlannedID)
+        {
+            var AcquisitionsMadeList = _context.PM_Acquisition_Made.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
+            return AcquisitionsMadeList;
+        }
     }
 }
