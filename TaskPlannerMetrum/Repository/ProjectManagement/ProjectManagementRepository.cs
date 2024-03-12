@@ -21,32 +21,32 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             _context = context;
         }
 
-  
+
 
 
         public int CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions)
         {
+            var existAcquisitions = _context.PM_Acquisition_Planned.FirstOrDefault(n => n.Description == acquisitions.Description && n.ID == acquisitions.ID);
 
-            var existAcquisitions = _context.PM_Acquisition_Planned.Where(n => n.Description == acquisitions.Description && n.ID == acquisitions.ID).FirstOrDefault();
             if (existAcquisitions == null)
             {
                 _context.PM_Acquisition_Planned.Add(acquisitions);
                 _context.SaveChanges();
-                 return _context.PM_Acquisition_Planned.Where(n => n.Description == acquisitions.Description && n.TypeAcquisitionID == acquisitions.ID).Select(i => i.ID).FirstOrDefault();
-                
+                return Convert.ToInt32(_context.PM_Acquisition_Planned.FirstOrDefault(n => n.Description == acquisitions.Description && n.ID == acquisitions.ID)?.ID);
             }
             else
             {
-                return existAcquisitions.ID;
+                return Convert.ToInt32(existAcquisitions.ID);
             }
         }
 
-        public bool ExistAcquisition(int ID)
+
+        public bool ExistAcquisition(string ID)
         {
             return _context.PM_Acquisition_Planned.Any(n => n.ID == ID);
         }
 
-        public bool DeleteAcquisition(int ID)
+        public bool DeleteAcquisition(string ID)
         {
             try
             {

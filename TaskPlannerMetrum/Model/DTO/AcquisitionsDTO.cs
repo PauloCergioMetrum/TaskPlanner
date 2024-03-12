@@ -5,7 +5,7 @@ namespace TaskPlannerMetrum.Model.DTO
 {
     public class AcquisitionsDTO
     {
-        public int ID{ get; set; }
+        public string ID{ get; set; }
         public int TypeAcquisitionID { get; set; }
         public int Amount { get; set; }
         public string Description { get; set; }

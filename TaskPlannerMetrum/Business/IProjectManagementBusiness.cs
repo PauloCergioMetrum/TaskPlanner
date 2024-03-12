@@ -29,7 +29,7 @@ namespace TaskPlannerMetrum.Business
 
         public bool CreateAcquisitionsPlanned(AcquisitionsDTO acquisitions);
 
-        public bool DeleteAcquisition(int ID);
+        public bool DeleteAcquisition(string ID);
 
         public bool UpdateAcquisition(AcquisitionsDTO acquisitions);
 

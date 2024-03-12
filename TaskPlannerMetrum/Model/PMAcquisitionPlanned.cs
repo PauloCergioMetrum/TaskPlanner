@@ -4,7 +4,7 @@ namespace TaskPlannerMetrum.Model
 {
     public class PMAcquisitionPlanned
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
         public int TypeAcquisitionID { get; set; }
         public int Amount { get; set; }
         public string Description { get; set; }

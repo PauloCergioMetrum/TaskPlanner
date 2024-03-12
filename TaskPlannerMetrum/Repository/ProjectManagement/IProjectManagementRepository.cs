@@ -34,9 +34,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public int CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions);
 
-        public bool ExistAcquisition(int ID);
+        public bool ExistAcquisition(string ID);
 
-        public bool DeleteAcquisition(int ID);
+        public bool DeleteAcquisition(string ID);
 
         public bool UpdateAcquisition(AcquisitionsDTO acquisitions);
 

@@ -203,7 +203,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
         }
 
-        public bool DeleteAcquisition(int ID)
+        public bool DeleteAcquisition(string ID)
         {
             try
             {
