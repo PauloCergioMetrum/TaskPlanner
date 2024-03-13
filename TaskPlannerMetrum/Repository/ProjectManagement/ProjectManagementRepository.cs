@@ -24,7 +24,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-        public int CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions)
+        public bool CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions)
         {
             var existAcquisitions = _context.PM_Acquisition_Planned.FirstOrDefault(n => n.Description == acquisitions.Description && n.ID == acquisitions.ID);
 
@@ -32,11 +32,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             {
                 _context.PM_Acquisition_Planned.Add(acquisitions);
                 _context.SaveChanges();
-                return Convert.ToInt32(_context.PM_Acquisition_Planned.FirstOrDefault(n => n.Description == acquisitions.Description && n.ID == acquisitions.ID)?.ID);
+
+                return true;
             }
             else
             {
-                return Convert.ToInt32(existAcquisitions.ID);
+                return false;
             }
         }
 

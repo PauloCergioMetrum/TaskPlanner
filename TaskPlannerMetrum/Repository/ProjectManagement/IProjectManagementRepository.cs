@@ -32,7 +32,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<Positions> GetPositionsByGrup();
 
-        public int CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions);
+        public bool CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions);
 
         public bool ExistAcquisition(string ID);
 
