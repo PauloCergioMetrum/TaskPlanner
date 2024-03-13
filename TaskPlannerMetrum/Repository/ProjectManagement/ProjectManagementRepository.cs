@@ -87,33 +87,34 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-        public int CreateAcquisitionMadeItem(PMAcquisitionMade acquisitionMade)
+        public bool CreateAcquisitionMadeItem(PMAcquisitionMade acquisitionMade)
         {
 
-            var existAcquisitionsMade = _context.PM_Acquisition_Made.Where(n => n.Value == acquisitionMade.Value && n.ID == acquisitionMade.ID).FirstOrDefault();
+            var existAcquisitionsMade = _context.PM_Acquisition_Made.FirstOrDefault(n => n.Value == acquisitionMade.Value && n.ID == acquisitionMade.ID);
             if (existAcquisitionsMade == null)
             {
                 _context.PM_Acquisition_Made.Add(acquisitionMade);
                 _context.SaveChanges();
-                return _context.PM_Acquisition_Made.Where(n => n.Value == acquisitionMade.Value && n.StatusAcquistionID == acquisitionMade.ID).Select(i => i.ID).FirstOrDefault();
+                return true;
 
             }
             else
             {
-                return existAcquisitionsMade.ID;
+                return false;
             }
         }
 
-        public bool ExistAcquisitionMade(int ID)
+
+public bool ExistAcquisitionMade(string ID)
         {
             return _context.PM_Acquisition_Made.Any(n => n.ID == ID);
         }
 
-        public bool DeleteAcquisitionMade(int ID)
+        public bool DeleteAcquisitionMade(string ID)
         {
             try
             {
-                var AcquisitionsMadeItem = _context.PM_Acquisition_Made.Where(u => u.ID == ID).FirstOrDefault();
+                var AcquisitionsMadeItem = _context.PM_Acquisition_Made.FirstOrDefault(u => u.ID == ID);
                 if (AcquisitionsMadeItem != null)
                 {
                     _context.PM_Acquisition_Made.Remove(AcquisitionsMadeItem);
@@ -271,7 +272,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return AcquisitionList;
         }
 
-        public List<PMAcquisitionMade> GetAcquisitionsMade(int AquisitionPlannedID)
+        public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID)
         {
             var AcquisitionsMadeList = _context.PM_Acquisition_Made.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
             return AcquisitionsMadeList;

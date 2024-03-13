@@ -225,7 +225,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetAcquisitionsMade(int AquisitionPlannedID)
+        public IActionResult GetAcquisitionsMade(string AquisitionPlannedID)
         {
             try
             {
@@ -244,7 +244,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult DeleteAcquisitionMade(int ID)
+        public IActionResult DeleteAcquisitionMade(string ID)
         {
             try
             {

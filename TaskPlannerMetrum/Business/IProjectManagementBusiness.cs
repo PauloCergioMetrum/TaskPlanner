@@ -35,12 +35,12 @@ namespace TaskPlannerMetrum.Business
 
         public bool CreateAcquisitionsMade(AcquisitionMadeDTO acquisitionMade);
 
-        public bool DeleteAcquisitionMade(int ID);
+        public bool DeleteAcquisitionMade(string ID);
 
         public bool UpdateAcquisitionMadeItem(AcquisitionMadeDTO acquisitionMade);
 
         public List<PMAcquisitionPlanned> GetAcquisitions(int ContractID);
 
-        public List<PMAcquisitionMade> GetAcquisitionsMade(int AquisitionPlannedID);
+        public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID);
     }
 }

@@ -266,7 +266,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
         }
 
-        public bool DeleteAcquisitionMade(int ID)
+        public bool DeleteAcquisitionMade(string ID)
         {
             try
             {
@@ -286,7 +286,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAcquisitions(ContractID);
         }
 
-        public List<PMAcquisitionMade> GetAcquisitionsMade(int AquisitionPlannedID)
+        public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID)
         {
             return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
         }
