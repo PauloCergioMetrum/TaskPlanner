@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Model.Context
@@ -17,6 +18,9 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<vContractList> vContractsList { get; set; }
 
-
+        public static implicit operator MySQLContext(MSSQLContext v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -24,6 +24,11 @@ namespace TaskPlannerMetrum.Repository.Financs
             newfinance.Billing = "";
             newfinance.StatusDpv = "EM ANDAMENTO";
 
+            if(newfinance.Guarantee == null)
+            {
+                newfinance.Guarantee = false;
+            }
+
             _context.Finances.Add(new Model.Finances
             {
                 Amount = newfinance.Amount,
@@ -43,23 +48,24 @@ namespace TaskPlannerMetrum.Repository.Financs
                 paymentCondition = newfinance.paymentCondition,
                 InvoicedValue = newfinance.InvoicedValue,
                 Value = newfinance.Value,
+                Guarantee = newfinance.Guarantee,
+                GuaranteePeriod = newfinance.GuaranteePeriod,
                 WorkSpaceID = newfinance.WorkSpaceID,
-
             });
             _context.SaveChanges();
-            int FinanceID = _context.Finances.Where(f => f.ContractID== newfinance.ContractID).OrderBy(i => i.id).Select(f => f.id).LastOrDefault();
+            int FinanceID = _context.Finances.Where(f => f.ContractID == newfinance.ContractID).OrderBy(i => i.id).Select(f => f.id).LastOrDefault();
 
-            if(_context.DepartmentProjects.Where(d=> d.DepartmentID == newfinance.DepartmentID && d.ContractID == newfinance.ContractID).FirstOrDefault() == null)
+            if (_context.DepartmentProjects.Where(d => d.DepartmentID == newfinance.DepartmentID && d.ContractID == newfinance.ContractID).FirstOrDefault() == null)
             {
                 CreateProject(new Model.DepartmentProjects
                 {
-                    DepartmentID= newfinance.DepartmentID,
-                    ContractID= newfinance.ContractID,
+                    DepartmentID = newfinance.DepartmentID,
+                    ContractID = newfinance.ContractID,
                     FinancesID = FinanceID,
                     ExpectedHour = 0,
                 });
             }
-            
+
 
             return true;
 
@@ -87,7 +93,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                 return true;
             }
             return false;
-           
+
         }
 
         public List<Model.ModelViews.vFinanceContract> GetAllFinances()
@@ -144,10 +150,14 @@ namespace TaskPlannerMetrum.Repository.Financs
                     f.DepartmentID,
                     f.Description,
                     Status = setStatusDate(f.id),
-                    StatusDpv = setOnGoingDate(f.id),
+                    StatusDpv = f.StatusDpv,
                     f.EndDate,
                     f.ExpectedInvoiceDate,
                     f.FinanceType,
+                    f.Guarantee,
+                    f.GuaranteePeriod,
+                    f.DateExpectedGarantee,
+                    f.StatusGuarantee
 
                 })
 
@@ -279,40 +289,42 @@ namespace TaskPlannerMetrum.Repository.Financs
 
         public bool UpdateFinances(Model.Finances finances)
         {
+            var updatefinances = _context.Finances.FirstOrDefault(i => i.id == finances.id);
 
-            var updatefinances = _context.Finances.Where(i => i.id == finances.id).FirstOrDefault();
-            var departamentID = updatefinances.DepartmentID;
-            updatefinances.InvoicedValue = finances.InvoicedValue;
-            updatefinances.Value = finances.Value;
-            updatefinances.Status = finances.Status;
-            updatefinances.Amount = finances.Amount;
-            updatefinances.EndDate = finances.EndDate;
-            updatefinances.BaseDate = finances.BaseDate;
-            updatefinances.ContractID = finances.ContractID;
-            updatefinances.Billing= finances.Billing;
-            updatefinances.id = finances.id;
-            updatefinances.Description = finances.Description;
-            updatefinances.InvoicedDate = finances.InvoicedDate;
-            updatefinances.DepartmentID = finances.DepartmentID;
-            updatefinances.ExpectedInvoiceDate = finances.ExpectedInvoiceDate;
-            updatefinances.invoice = finances.invoice;
-            updatefinances.paymentCondition = finances.paymentCondition;
-            updatefinances.StatusDpv = finances.StatusDpv;
-            _context.Finances.Update(updatefinances);
-            _context.SaveChanges();
-
-
-            if (F_UpdateDepartamentID(updatefinances.ContractID, finances.id, finances.DepartmentID))
+            if (updatefinances != null)
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                //var originalGuarantee = updatefinances.Guarantee;
+                //var originalGuaranteePeriod = updatefinances.GuaranteePeriod;
+                updatefinances.InvoicedValue = finances.InvoicedValue;
+                updatefinances.Value = finances.Value;
+                updatefinances.Status = finances.Status;
+                updatefinances.Amount = finances.Amount;
+                updatefinances.EndDate = finances.EndDate;
+                updatefinances.BaseDate = finances.BaseDate;
+                updatefinances.ContractID = finances.ContractID;
+                updatefinances.Billing = finances.Billing;
+                updatefinances.Description = finances.Description;
+                updatefinances.InvoicedDate = finances.InvoicedDate;
+                updatefinances.DepartmentID = finances.DepartmentID;
+                updatefinances.ExpectedInvoiceDate = finances.ExpectedInvoiceDate;
+                updatefinances.invoice = finances.invoice;
+                updatefinances.paymentCondition = finances.paymentCondition;
+                updatefinances.StatusDpv = finances.StatusDpv;
+                updatefinances.Guarantee = finances.Guarantee;
+                updatefinances.GuaranteePeriod = finances.GuaranteePeriod;
+
+                _context.Finances.Update(updatefinances);
+                _context.SaveChanges();
+
+                if (F_UpdateDepartamentID(updatefinances.ContractID, finances.id, finances.DepartmentID))
+                {
+                    return true;
+                }
             }
 
-
+            return false;
         }
+
 
         public bool F_UpdateDepartamentID(int contractID, int finanaceID, int financeDepartamentID)
         {
@@ -353,7 +365,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                 {
                     duplicateFinance.invoice = financeMatriz.invoice;
                     duplicateFinance.paymentCondition = financeMatriz.paymentCondition;
-                    duplicateFinance.StatusDpv= financeMatriz.StatusDpv;
+                    duplicateFinance.StatusDpv = financeMatriz.StatusDpv;
                     duplicateFinance.Amount = financeMatriz.Amount;
                     duplicateFinance.InvoicedDate = financeMatriz.InvoicedDate;
                     duplicateFinance.EndDate = financeMatriz.EndDate;
@@ -380,8 +392,9 @@ namespace TaskPlannerMetrum.Repository.Financs
                     return false;
                 }
 
-               
-            }catch(Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 return ex.Message.ToString();
             }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Memt.Logger;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Business.Implementations;
@@ -10,12 +11,12 @@ namespace TaskPlannerMetrum.Controllers
 
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
-    public class ProjectManagementController:ControllerBase
+    public class ProjectManagementController : ControllerBase
     {
 
         private readonly IProjectManagementBusiness _projectManagementBusiness;
 
-        public ProjectManagementController (IProjectManagementBusiness projectManagementBusiness)
+        public ProjectManagementController(IProjectManagementBusiness projectManagementBusiness)
         {
             _projectManagementBusiness = projectManagementBusiness;
         }
@@ -30,7 +31,7 @@ namespace TaskPlannerMetrum.Controllers
 
             try
             {
-                
+
                 return Ok(_projectManagementBusiness.UpdateForecast(forcast));
 
             }
@@ -126,6 +127,25 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+        [HttpGet("GetPositionsByGrup")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetPositionsByGrup()
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.GetPositionsByGrup());
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
         }
 
     }

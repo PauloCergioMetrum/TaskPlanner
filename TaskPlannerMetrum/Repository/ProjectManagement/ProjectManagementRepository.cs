@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Memt.Logger;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaskPlannerMetrum.Model;
@@ -13,28 +15,28 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
     {
         private readonly MSSQLContext _context;
 
-        public ProjectManagementRepository (MSSQLContext context)
+        public ProjectManagementRepository(MSSQLContext context)
         {
-            _context=context;
+            _context = context;
         }
 
         public int CreateMilestonesItem(MilestonesItem milestones)
         {
-            
-                var existMilesTones = _context.MilestonesItem.Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID).FirstOrDefault();
-                if(existMilesTones == null)
-                {
-                    _context.MilestonesItem.Add(milestones);
-                    _context.SaveChanges();
-                    return _context.MilestonesItem.Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID).Select(i => i.ID).FirstOrDefault();
-                }
-                else
-                {
-                    return existMilesTones.ID;
-                }
-                
-            
-           
+
+            var existMilesTones = _context.MilestonesItem.Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID).FirstOrDefault();
+            if (existMilesTones == null)
+            {
+                _context.MilestonesItem.Add(milestones);
+                _context.SaveChanges();
+                return _context.MilestonesItem.Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID).Select(i => i.ID).FirstOrDefault();
+            }
+            else
+            {
+                return existMilesTones.ID;
+            }
+
+
+
         }
 
         public bool CreateMilestonesValue(MilestonesValue milestones)
@@ -47,13 +49,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
             catch
             {
-                return false;   
+                return false;
             }
         }
 
         public void DeleteMilestones(int contractID)
         {
-            
+
         }
 
         public Model.Contracts GetForecastByID(int id)
@@ -64,7 +66,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public vContractList GetForecastByIDView(int id)
         {
-            return _context.vContractList.Where(i => i.ContractID == id).FirstOrDefault();  
+            return _context.vContractList.Where(i => i.ContractID == id).FirstOrDefault();
         }
 
 
@@ -104,8 +106,27 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool UpdateMilesTones(MilestonesValue milestonesValue)
         {
             _context.MilestonesValue.Update(milestonesValue);
-            _context.SaveChanges(); 
-            return true;   
+            _context.SaveChanges();
+            return true;
+        }
+
+        public List<Positions> GetPositionsByGrup()
+        {
+            try
+            {
+
+                List<Positions> positions = _context.Positions
+                    .OrderBy(i => i.PositionName)
+                    .ToList();
+
+                return positions;
+            }
+            catch (Exception ex)
+            {
+
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return new List<Positions>();
+            }
         }
 
     }

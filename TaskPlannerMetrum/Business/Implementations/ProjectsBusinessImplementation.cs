@@ -1,15 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using TaskPlannerMetrum.Data.Converter.Implementations;
 using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Model.NewContract;
 using TaskPlannerMetrum.Repository.DepartmentProjects;
 using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Repository.Projects;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -19,14 +25,17 @@ namespace TaskPlannerMetrum.Business.Implementations
         private readonly IProjectsRepository _projectRepository;
         private readonly IUserBusiness _userBusiness;
         private readonly IDepartmentProjectsRepository _departmentProjectsRepository;
-     
+        private readonly MSSQLContext _context;
 
 
-        public ProjectsBusinessImplementation(IProjectsRepository projectsRepository, IUserBusiness userBusiness, IDepartmentProjectsRepository departmentProjectsRepository)
+
+        public ProjectsBusinessImplementation(IProjectsRepository projectsRepository, IUserBusiness userBusiness, IDepartmentProjectsRepository departmentProjectsRepository, MSSQLContext context)
         {
-            _projectRepository= projectsRepository;
-            _userBusiness= userBusiness;
+            _projectRepository = projectsRepository;
+            _userBusiness = userBusiness;
             _departmentProjectsRepository = departmentProjectsRepository;
+            _context = context;
+            
 
 
         }
@@ -47,7 +56,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 WorkspaceID = 1,
                 Status = "5",
                 TechLeaderID = projects.TechLeaderID,
-                
+
                 DepartamentID = _projectRepository.getDep(projects.dapartment[0])
             };
 
@@ -117,20 +126,20 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public dynamic GetAllProjectDep(int contractID)
         {
-            return _projectRepository.GetAllProjectDep(contractID); 
+            return _projectRepository.GetAllProjectDep(contractID);
         }
 
         public bool UpdateProject(CreateProjectRetroactiveDate newProject)
         {
 
             _projectRepository.CreateRetroactiveDate(newProject.ContractID, newProject.RetroactiveDate);
-            return _projectRepository.UpdateProject(new DepartmentProjects 
-            { 
-            ContractID = newProject.ContractID,
-            DepartmentID = newProject.DepartmentID,
-            ExpectedHour = newProject.ExpectedHour,
-            TechLeaderID = newProject.TechLeaderID, 
-            FinancesID = newProject.FinancesID,
+            return _projectRepository.UpdateProject(new DepartmentProjects
+            {
+                ContractID = newProject.ContractID,
+                DepartmentID = newProject.DepartmentID,
+                ExpectedHour = newProject.ExpectedHour,
+                TechLeaderID = newProject.TechLeaderID,
+                FinancesID = newProject.FinancesID,
             });
         }
 
@@ -168,7 +177,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public dynamic GetDepFinances(int id)
         {
-            return  _projectRepository.GetDepFinances(id);
+            return _projectRepository.GetDepFinances(id);
         }
 
         public bool NewCreat(Model.NewContract.NewProject newproject)
@@ -195,7 +204,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool ActiveProject(int id)
         {
-            return _projectRepository.ActiveProject(id);    
+            return _projectRepository.ActiveProject(id);
         }
 
         public dynamic getActiveProject()
@@ -210,12 +219,12 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public void FavoriteProject(int ContractID, int UserID)
         {
-            
-            _projectRepository.FavoriteProject( new UserProjects
+
+            _projectRepository.FavoriteProject(new UserProjects
             {
                 UserID = UserID,
                 ContractID = ContractID,
-            } );
+            });
         }
 
         public void DeletFavoritProject(int ContractID, int UserID)
@@ -231,5 +240,18 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectRepository.UpdateRetroactiveDate(contractID, retroactiveDate);
         }
+
+        public List<vContractProject> GetAllContractProjectByTechLeader(int TechLeaderID)
+        {
+           
+            return _projectRepository.GetAllContractProjectByTechLeader(TechLeaderID);
+        
+        }
     }
+
+
 }
+
+
+
+
