@@ -106,21 +106,42 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
-public bool ExistAcquisitionMade(string ID)
+        public bool ExistAcquisitionMade(string ID)
         {
             return _context.PM_Acquisition_Made.Any(n => n.ID == ID);
         }
-        // DELETE DE DENTRO
+
         public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID)
         {
             try
             {
-                var AcquisitionsMadeItem = _context.PM_Acquisition_Made.FirstOrDefault(u => u.ID == ID || u.AquisitionPlannedID == AquisitionPlannedID);
-                if (AcquisitionsMadeItem != null)
+                if (!string.IsNullOrEmpty(AquisitionPlannedID))
                 {
-                    _context.PM_Acquisition_Made.Remove(AcquisitionsMadeItem);
-                    _context.SaveChanges();
-                    return true;
+                    var AcquisitionsMadeItems = _context.PM_Acquisition_Made.Where(u => u.AquisitionPlannedID == AquisitionPlannedID).ToList();
+                    if (AcquisitionsMadeItems.Any())
+                    {
+                        _context.PM_Acquisition_Made.RemoveRange(AcquisitionsMadeItems);
+                        _context.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if (!string.IsNullOrEmpty(ID))
+                {
+                    var AcquisitionsMadeItem = _context.PM_Acquisition_Made.FirstOrDefault(u => u.ID == ID);
+                    if (AcquisitionsMadeItem != null)
+                    {
+                        _context.PM_Acquisition_Made.Remove(AcquisitionsMadeItem);
+                        _context.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+                        return false; 
+                    }
                 }
                 else
                 {
