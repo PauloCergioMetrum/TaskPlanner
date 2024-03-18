@@ -244,11 +244,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult DeleteAcquisitionMade(string ID)
+        public IActionResult DeleteAcquisitionMade(string ID, string AquisitionPlannedID)
         {
             try
             {
-                return Ok(_projectManagementBusiness.DeleteAcquisitionMade(ID));
+                return Ok(_projectManagementBusiness.DeleteAcquisitionMade(ID, AquisitionPlannedID));
             }
             catch (Exception ex)
             {

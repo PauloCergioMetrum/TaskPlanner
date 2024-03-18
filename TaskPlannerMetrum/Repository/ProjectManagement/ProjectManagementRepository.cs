@@ -75,7 +75,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             {
                 var acquisitionEntity = _context.PM_Acquisition_Planned.Find(acquisitions.ID);
                 acquisitionEntity.TypeAcquisitionID = acquisitions.TypeAcquisitionID;
-                acquisitionEntity.Amount = acquisitions.Amount;
+                acquisitionEntity.AmountPlanned = acquisitions.AmountPlanned;
+                acquisitionEntity.AmountValue = acquisitions.AmountValue;
                 acquisitionEntity.Description = acquisitions.Description;
                 _context.SaveChanges();
 
@@ -109,12 +110,12 @@ public bool ExistAcquisitionMade(string ID)
         {
             return _context.PM_Acquisition_Made.Any(n => n.ID == ID);
         }
-
-        public bool DeleteAcquisitionMade(string ID)
+        // DELETE DE DENTRO
+        public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID)
         {
             try
             {
-                var AcquisitionsMadeItem = _context.PM_Acquisition_Made.FirstOrDefault(u => u.ID == ID);
+                var AcquisitionsMadeItem = _context.PM_Acquisition_Made.FirstOrDefault(u => u.ID == ID || u.AquisitionPlannedID == AquisitionPlannedID);
                 if (AcquisitionsMadeItem != null)
                 {
                     _context.PM_Acquisition_Made.Remove(AcquisitionsMadeItem);
@@ -266,9 +267,9 @@ public bool ExistAcquisitionMade(string ID)
             }
         }
 
-        public List<PMAcquisitionPlanned> GetAcquisitions(int ContractID)
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
         {
-            var AcquisitionList = _context.PM_Acquisition_Planned.Where(r => r.ContractID == ContractID).ToList();
+           var AcquisitionList = _context.vPM_Acquisition_Combined.Where(r => r.ContractID == ContractID).ToList();
             return AcquisitionList;
         }
 

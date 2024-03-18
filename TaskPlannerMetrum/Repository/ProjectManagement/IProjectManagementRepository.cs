@@ -42,13 +42,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool CreateAcquisitionMadeItem(PMAcquisitionMade acquisitionMade);
 
-        public bool DeleteAcquisitionMade(string ID);
+        public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
 
         public bool UpdateAcquisitionMadeItem(AcquisitionMadeDTO acquisitionMade);
 
         public bool ExistAcquisitionMade(string ID);
 
-        public List<PMAcquisitionPlanned> GetAcquisitions(int ContractID);
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
 
         public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID);
 

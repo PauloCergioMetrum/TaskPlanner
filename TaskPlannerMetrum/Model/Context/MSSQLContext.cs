@@ -87,7 +87,9 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<MilestonesValue> MilestonesValue { get; set; }
 
-        
+        public DbSet <vPMAcquisitionCombined> vPM_Acquisition_Combined { get; set; }
+
+
 
 
 

@@ -6,6 +6,7 @@ using TaskPlannerMetrum.Model.DTO;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Repository.ProjectManagement;
 using TaskPlannerMetrum.Repository.Generic;
+using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -172,9 +173,10 @@ namespace TaskPlannerMetrum.Business.Implementations
                     {
                         ID = acquisitionsDTO.ID,
                         TypeAcquisitionID = acquisitionsDTO.TypeAcquisitionID,
-                        Amount = acquisitionsDTO.Amount,
+                        AmountPlanned = acquisitionsDTO.AmountPlanned,
                         Description = acquisitionsDTO.Description,
                         ContractID = acquisitionsDTO.ContractID,
+                        AmountValue = acquisitionsDTO.AmountValue,
                     });
                     return true;
 
@@ -203,19 +205,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
         }
 
-        public bool DeleteAcquisition(string ID)
-        {
-            try
-            {
-                _projectmanagementRepository.DeleteAcquisition(ID);
-                return true;
-            }
-            catch (Exception ex)
-            {
-
-                return false;
-            }
-        }
+ 
 
         public bool CreateAcquisitionsMade(AcquisitionMadeDTO acquisitionMade)
         {
@@ -266,11 +256,25 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
         }
 
-        public bool DeleteAcquisitionMade(string ID)
+        public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID)
         {
             try
             {
-                _projectmanagementRepository.DeleteAcquisitionMade(ID);
+                _projectmanagementRepository.DeleteAcquisitionMade(ID, AquisitionPlannedID);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+        }
+
+        public bool DeleteAcquisition(string ID)
+        {
+            try
+            {
+                _projectmanagementRepository.DeleteAcquisition(ID);
                 return true;
             }
             catch (Exception ex)
@@ -281,7 +285,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public List<PMAcquisitionPlanned> GetAcquisitions(int ContractID)
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
         {
             return _projectmanagementRepository.GetAcquisitions(ContractID);
         }

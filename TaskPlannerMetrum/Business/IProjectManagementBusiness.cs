@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Business
 {
@@ -35,11 +36,11 @@ namespace TaskPlannerMetrum.Business
 
         public bool CreateAcquisitionsMade(AcquisitionMadeDTO acquisitionMade);
 
-        public bool DeleteAcquisitionMade(string ID);
+        public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
 
         public bool UpdateAcquisitionMadeItem(AcquisitionMadeDTO acquisitionMade);
 
-        public List<PMAcquisitionPlanned> GetAcquisitions(int ContractID);
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
 
         public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID);
     }
