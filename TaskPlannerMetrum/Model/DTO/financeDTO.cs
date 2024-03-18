@@ -41,6 +41,10 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public string? StatusDpv { get; set; }
 
-        public bool hoursPMO { get; set; }
+        public DateTime hoursPMO { get; set; }
+        public bool Guarantee { get; set; }
+        public int  GuaranteePeriod { get; set; }
+    
+
     }
 }

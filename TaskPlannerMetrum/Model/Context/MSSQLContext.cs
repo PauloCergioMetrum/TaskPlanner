@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Security.Cryptography;
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Model.Context
@@ -27,6 +28,9 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<Team> Team { get; set; }
 
         public DbSet<UserHourCosts> UserHourCosts { get; set; }   
+
+        public DbSet<Positions> Positions { get; set; }
+        
 
         //Views
         public DbSet<vProjectList> vProjectList { get; set; }
@@ -77,10 +81,13 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<vActivePlans> vActivePlans { get; set; }
         public DbSet<Observation> Observation { get; set; } 
+        public DbSet<vBusinessUnit>vBusinessUnit {  get; set; }
+       
 
 
 
-        
+
+
 
         public DbSet<MilestonesItem> MilestonesItem { get; set; }
 

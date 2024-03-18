@@ -30,6 +30,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool UpdateMilesTones(MilestonesValue milestonesValue);
 
 
-
+        public List<Positions> GetPositionsByGrup();
     }
 }

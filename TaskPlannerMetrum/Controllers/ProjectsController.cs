@@ -415,7 +415,28 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
+        [HttpGet("GetAllContractProjectByTechLeader")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAllContractProjectByTechLeader(int techLeaderID)
+        {
+            try
+            {
+                return Ok(_projectBusiness.GetAllContractProjectByTechLeader(techLeaderID));
 
-        
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
     }
 }
