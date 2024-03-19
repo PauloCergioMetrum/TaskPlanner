@@ -26,7 +26,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions)
         {
-            var existAcquisitions = _context.PM_Acquisition_Planned.FirstOrDefault(n => n.Description == acquisitions.Description && n.ID == acquisitions.ID);
+            var existAcquisitions = _context.PM_Acquisition_Planned.FirstOrDefault(n => n.TypeAcquisitionID == acquisitions.TypeAcquisitionID && n.ID == acquisitions.ID);
 
             if (existAcquisitions == null)
             {
