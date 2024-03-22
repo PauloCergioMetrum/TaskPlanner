@@ -31,5 +31,27 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
         public List<Positions> GetPositionsByGrup();
+
+        public bool CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions);
+
+        public bool ExistAcquisition(string ID);
+
+        public bool DeleteAcquisition(string ID);
+
+        public bool UpdateAcquisition(AcquisitionsDTO acquisitions);
+
+        public bool CreateAcquisitionMadeItem(PMAcquisitionMade acquisitionMade);
+
+        public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
+
+        public bool UpdateAcquisitionMadeItem(AcquisitionMadeDTO acquisitionMade);
+
+        public bool ExistAcquisitionMade(string ID);
+
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
+
+        public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID);
+
+
     }
 }

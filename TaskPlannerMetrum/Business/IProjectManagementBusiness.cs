@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Business
 {
@@ -27,6 +28,20 @@ namespace TaskPlannerMetrum.Business
 
         public List<Positions> GetPositionsByGrup();
 
+        public bool CreateAcquisitionsPlanned(AcquisitionsDTO acquisitions);
 
+        public bool DeleteAcquisition(string ID);
+
+        public bool UpdateAcquisition(AcquisitionsDTO acquisitions);
+
+        public bool CreateAcquisitionsMade(AcquisitionMadeDTO acquisitionMade);
+
+        public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
+
+        public bool UpdateAcquisitionMadeItem(AcquisitionMadeDTO acquisitionMade);
+
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
+
+        public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID);
     }
 }

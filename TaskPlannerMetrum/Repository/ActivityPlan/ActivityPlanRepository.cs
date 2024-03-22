@@ -180,7 +180,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             //List<vActivityPlan> _activityPlans = new List<vActivityPlan>();
             //var taskPlans = _context.ActivityPlan.Where(a => a.ContractID == Convert.ToInt32(projectId)).ToList().OrderBy(d => d.ScheduledDate);
 
-            
+
 
             //foreach (var taskPlan in taskPlans)
             //{
@@ -231,7 +231,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             return _context.vActivePlans.Where(u => u.ExecutorTeamID == Convert.ToInt32(userId)).ToList();
             //List<vActivityPlan> _activityPlans = new List<vActivityPlan>();
             //var pmTeamId = _context.Team.Where(t => t.UserID == Convert.ToInt32(userId)).Select(s => s.ID).FirstOrDefault();
-            
+
 
             //foreach (var taskPlan in _context.ActivityPlan.Where(t => t.ExecutorTeamID == pmTeamId).ToList())
             //{
@@ -358,12 +358,12 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public vActivityPlan GetActivityPlanById(string activityPlanId)
         {
-            
+
             var activity = _context.ActivityPlan.FirstOrDefault(a => a.ID == Convert.ToInt32(activityPlanId));
 
             if (activity == null)
             {
-   
+
                 return null;
             }
 
@@ -381,7 +381,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     .Where(p => p.ID == activity.ContractID)
                     .Select(p => p.Name)
                     .FirstOrDefault(),
-               
+
             };
 
             return activityPlan;
@@ -390,28 +390,45 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
 
 
+
         public bool UpdateActivityPlan(vActivityPlan activityPlan)
         {
+            var newActivityPlan = _context.ActivityPlan.FirstOrDefault(a => a.ID == activityPlan.ID);
 
-            var newActivityPaln = _context.ActivityPlan.Where(a => a.ID == activityPlan.ID).FirstOrDefault();
-            if (newActivityPaln.ExecutorTeamID != activityPlan.ExecutorTeamID)
+            if (newActivityPlan == null)
             {
-                updateRatingExecutor(activityPlan.ExecutorTeamID, newActivityPaln.ExecutorTeamID, newActivityPaln.ContractID);
+                return false;
             }
-            newActivityPaln.Status = activityPlan.Status;
-            newActivityPaln.ExecutedManHour = activityPlan.ExecutedManHour;
-            newActivityPaln.ScheduledDate = activityPlan.ScheduledDate;
-            newActivityPaln.NotesFromExecutor = activityPlan.NotesFromExecutor;
-            newActivityPaln.NotesFromPlanner = activityPlan.NotesFromPlanner;
-            newActivityPaln.TaskDescription = activityPlan.TaskDescription;
-            newActivityPaln.PlannedManHour = activityPlan.PlannedManHour;
-            newActivityPaln.ExecutorTeamID = activityPlan.ExecutorTeamID;
-            _context.ActivityPlan.Update(newActivityPaln);
+
+            if (newActivityPlan.ExecutorTeamID != activityPlan.ExecutorTeamID)
+            {
+                updateRatingExecutor(activityPlan.ExecutorTeamID, newActivityPlan.ExecutorTeamID, newActivityPlan.ContractID);
+            }
+
+            if (activityPlan.ExecutedManHour == 0)
+            {
+                newActivityPlan.Status = "5";
+            }
+            else
+            {
+                newActivityPlan.Status = activityPlan.Status;
+            }
+
+
+            newActivityPlan.ExecutedManHour = activityPlan.ExecutedManHour;
+            newActivityPlan.ScheduledDate = activityPlan.ScheduledDate;
+            newActivityPlan.NotesFromExecutor = activityPlan.NotesFromExecutor;
+            newActivityPlan.NotesFromPlanner = activityPlan.NotesFromPlanner;
+            newActivityPlan.TaskDescription = activityPlan.TaskDescription;
+            newActivityPlan.PlannedManHour = activityPlan.PlannedManHour;
+            newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID;
+
+            _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
+
             return true;
-
-
         }
+
 
 
         public void updateRatingExecutor(int newUserID, int oldUserID, int contractID)
@@ -648,14 +665,14 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             id = _context.Team.Where(i => i.UserID == id).Select(u => u.ID).FirstOrDefault();
             var alltasks = _context.ActivityPlan.Where(i => i.ExecutorTeamID == id).ToList();
 
-          
+
 
 
 
 
             foreach (var task in alltasks)
             {
-               
+
                 var Task = new
                 {
                     id = task.ID,
@@ -680,7 +697,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     isRework = task.IsRework,
 
 
-                  
+
 
                 };
                 retorno.Add(Task);
@@ -697,7 +714,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public string getClientName(int id)
         {
-            return _context.Clients.Where(i=> i.Id == _context.Contracts.Where(a => a.id == id).Select(c => c.ClientID).FirstOrDefault()).Select(n=> n.Name).FirstOrDefault();
+            return _context.Clients.Where(i => i.Id == _context.Contracts.Where(a => a.id == id).Select(c => c.ClientID).FirstOrDefault()).Select(n => n.Name).FirstOrDefault();
         }
 
         public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
