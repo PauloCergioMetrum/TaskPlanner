@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Business.Implementations;
+using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Controllers
@@ -140,6 +141,114 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return Ok(_projectManagementBusiness.GetPositionsByGrup());
 
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("CreateAcquisitionsPlanned")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateAcquisitionsPlanned(AcquisitionsDTO acquisitions)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.CreateAcquisitionsPlanned(acquisitions));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetAcquisitions")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAcquisitions(int ContractID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.GetAcquisitions(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("DeleteAcquisition")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteAcquisition(string ID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.DeleteAcquisition(ID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("CreateAcquisitionsMadeItem")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateAcquisitionsMade(AcquisitionMadeDTO acquisitionMade)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.CreateAcquisitionsMade(acquisitionMade));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetAcquisitionsMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAcquisitionsMade(string AquisitionPlannedID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.GetAcquisitionsMade(AquisitionPlannedID));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("DeleteAcquisitionsMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteAcquisitionMade(string ID, string AquisitionPlannedID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.DeleteAcquisitionMade(ID, AquisitionPlannedID));
             }
             catch (Exception ex)
             {

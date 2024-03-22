@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TaskPlannerMetrum.Data.Converter.Implementations;
 using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Repository.ActiviesScope;
 using TaskPlannerMetrum.Repository.ActivityPlan;
@@ -15,6 +18,11 @@ namespace TaskPlannerMetrum.Business.Implementations
     public class ActivityPlanBusiness : IActivityPlanBusiness
     {
         private readonly IActivityPlanRepository _activiesRepository;
+
+        private MSSQLContext _context;
+
+
+     
 
         public ActivityPlanBusiness(IActivityPlanRepository activiesRepository)
         {
@@ -46,11 +54,11 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.IsRework = activityPlan.IsRework;
                     task.DepartamentID = activityPlan.DepartamentID;
                     task.TaskDescription = activityPlan.TaskDescription;
-                  
                     _activiesRepository.Create(task);
-
                 }
                 return true;
+
+                _context.SaveChanges();
             }
             catch (Exception e)
             {
