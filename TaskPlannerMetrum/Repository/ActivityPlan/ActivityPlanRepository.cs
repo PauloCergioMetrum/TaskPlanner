@@ -407,13 +407,14 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
             if (activityPlan.ExecutedManHour == 0)
             {
+                
                 newActivityPlan.Status = "5";
             }
-            else
+            else if (!string.IsNullOrEmpty(activityPlan.Status))
             {
+                
                 newActivityPlan.Status = activityPlan.Status;
             }
-
 
             newActivityPlan.ExecutedManHour = activityPlan.ExecutedManHour;
             newActivityPlan.ScheduledDate = activityPlan.ScheduledDate;
@@ -428,6 +429,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
             return true;
         }
+
 
 
 
