@@ -338,10 +338,14 @@ namespace TaskPlannerMetrum.Repository.Projects
                     .FirstOrDefault()
                     .ToString();
 
-                var TechLeaderName = _context.Users
-                    .Where(i => i.Id == item.TechLeaderID)
-                    .Select(n => n.FullName)
-                    .FirstOrDefault();
+
+
+                var TechLeaderName = _context.Users.Where(u => (u.Id == item.TechLeaderID && u.PermissionId != null) || u.PermissionId == 2).Select(u => new
+                {
+                    UserId = u.Id,
+                    FullName = u.FullName
+                }).ToList();
+
 
                 var result = new
                 {
@@ -492,7 +496,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                     expectedHours = t.ExpectedHour,
                     plannedHour = t.PlannedHour,
                     executedHour = t.ExecutedHour,
-                    
+
 
                 }).ToList(),
 
