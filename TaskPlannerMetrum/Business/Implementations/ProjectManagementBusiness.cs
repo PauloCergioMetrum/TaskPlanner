@@ -304,6 +304,42 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.DeleteTypeOfCost(ID);
         }
+
+        public List<PmTypeCost> GetTypeOfCost()
+        {
+            return (_projectmanagementRepository.GetTypeOfCost());
+        }
+
+        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned)
+        {
+            return (_projectmanagementRepository.CreateOrUpdatePredictedCost((pmCostPlanned)));
+        }
+        public bool DeletePredictedCost(string ID)
+        {
+            return _projectmanagementRepository.DeletePredictedCost(ID);
+        }
+
+        public List<PmCostPlanned> GetPmCostPlanned()
+        {
+            return _projectmanagementRepository.GetPmCostPlanned();
+        }
+
+        public bool CreateOrUpdateCostMade(PmCostMade pmCostMade)
+        {
+            return _projectmanagementRepository.CreateOrUpdateCostMade(pmCostMade);
+        }
+
+
+        public bool DeleteCostMade(string ID)
+        {
+            return _projectmanagementRepository.DeleteCostMade(ID);
+        }
+
+
+        public List<PmCostMade> GetPmCostMade()
+        {
+            return _projectmanagementRepository.GetPmCostMade();
+        }
     }
 }
 

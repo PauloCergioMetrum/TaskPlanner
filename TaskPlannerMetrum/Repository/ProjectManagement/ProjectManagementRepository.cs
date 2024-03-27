@@ -344,6 +344,110 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return false;
         }
 
+        public List<PmTypeCost> GetTypeOfCost()
+        {
+            var ListGetTypeOfCost = _context.Pm_Type_Cost.ToList();
+            return ListGetTypeOfCost;
+        }
 
+
+        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned)
+        {
+            var existingCost = _context.Pm_Cost_Planned.FirstOrDefault(c => c.Id == pmCostPlanned.Id);
+
+            if (existingCost != null)
+            {
+
+                existingCost.TypeCostID = pmCostPlanned.TypeCostID;
+                existingCost.Amount = pmCostPlanned.Amount;
+                existingCost.ValueUnit = pmCostPlanned.ValueUnit;
+                existingCost.Description = pmCostPlanned.Description;
+                existingCost.ContractID = pmCostPlanned.ContractID;
+
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+
+                _context.Pm_Cost_Planned.Add(pmCostPlanned);
+                _context.SaveChanges();
+                return true;
+            }
+        }
+        public bool DeletePredictedCost(string ID)
+        {
+            var RemovePredictedCost = _context.Pm_Cost_Planned.SingleOrDefault(t => t.Id == ID);
+            if (RemovePredictedCost != null)
+            {
+                _context.Pm_Cost_Planned.Remove(RemovePredictedCost);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public List<PmCostPlanned> GetPmCostPlanned()
+        {
+            var ListPmCostPlanned = _context.Pm_Cost_Planned.ToList();
+            return ListPmCostPlanned;
+        }
+
+
+        public bool CreateOrUpdateCostMade(PmCostMade pmCostMade)
+        {
+            try
+            {
+                var existingCostMade = _context.PM_Cost_Made.FirstOrDefault(c => c.Id == pmCostMade.Id);
+
+                if (existingCostMade != null)
+                {
+
+                    existingCostMade.Amount = pmCostMade.Amount;
+                    existingCostMade.ValueUnit = pmCostMade.ValueUnit;
+                    existingCostMade.Description = pmCostMade.Description;
+                    existingCostMade.Pm_Cost_PlannedID = pmCostMade.Pm_Cost_PlannedID;
+                    existingCostMade.TypeCostID = pmCostMade.TypeCostID;
+
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+
+                    _context.PM_Cost_Made.Add(pmCostMade);
+                    _context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("Erro ao salvar as alterações no banco de dados: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Exceção interna: " + ex.InnerException.Message);
+                }
+                return false;
+            }
+        }
+
+        public bool DeleteCostMade(string ID)
+        {
+            var RemoveCost = _context.PM_Cost_Made.SingleOrDefault(t => t.Id == ID);
+            if (RemoveCost != null)
+            {
+                _context.PM_Cost_Made.Remove(RemoveCost);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public List<PmCostMade> GetPmCostMade()
+        {
+            var ListGetCostMade = _context.PM_Cost_Made.ToList();
+            return ListGetCostMade;
+        }
     }
 }
