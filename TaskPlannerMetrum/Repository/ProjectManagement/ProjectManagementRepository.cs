@@ -332,5 +332,18 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
+        public bool DeleteTypeOfCost(int ID)
+        {
+            var typeOfCostToRemove = _context.Pm_Type_Cost.SingleOrDefault(t => t.ID == ID);
+            if (typeOfCostToRemove != null)
+            {
+                _context.Pm_Type_Cost.Remove(typeOfCostToRemove);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+
     }
 }

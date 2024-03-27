@@ -278,5 +278,23 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
+        [HttpDelete("DeleteTypeOf")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteTypeOfCost(int ID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.DeleteTypeOfCost(ID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

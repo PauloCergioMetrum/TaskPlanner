@@ -53,6 +53,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID);
 
         public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
+        public bool DeleteTypeOfCost(int ID);
 
 
 
