@@ -323,7 +323,7 @@ namespace TaskPlannerMetrum.Repository.Projects
             foreach (var item in info)
             {
                 var users = _context.Users
-                    .Where(i => i.DepartmentId == item.DepartmentID)
+                    .Where(i => (i.DepartmentId == item.DepartmentID && i.PermissionId != null) || i.PermissionId == 2)
                     .Select(u => new
                     {
                         u.Id,
@@ -332,42 +332,31 @@ namespace TaskPlannerMetrum.Repository.Projects
                     })
                     .ToList();
 
-                var departamentName = _context.Department
+                var departmentName = _context.Department
                     .Where(i => i.ID == item.DepartmentID)
                     .Select(n => n.Name)
-                    .FirstOrDefault()
-                    .ToString();
+                    .FirstOrDefault(); 
 
-
-
-                var TechLeaderName = _context.Users.Where(u => (u.Id == item.TechLeaderID && u.PermissionId != null) || u.PermissionId == 2).Select(u => new
-                {
-                    UserId = u.Id,
-                    FullName = u.FullName
-                }).ToList();
-
+                var techLeaderName = _context.Users
+                    .Where(i => i.Id == item.TechLeaderID)
+                    .Select(n => new { UserId = n.Id, FullName = n.FullName })
+                    .FirstOrDefault(); 
 
                 var result = new
                 {
                     DepartmentID = item.DepartmentID,
-                    DepartmentName = departamentName,
-                    users = users,
-                    expectedHour = item.ExpectedHour,
+                    DepartmentName = departmentName,
+                    Users = users,
+                    ExpectedHour = item.ExpectedHour,
                     TechLeaderID = item.TechLeaderID,
-                    TechLeaderName = TechLeaderName,
+                    TechLeaderName = techLeaderName
                 };
 
                 allProjectDes.Add(result);
-
-                var count = allProjectDes.Where(i => i.DepartmentID == item.DepartmentID).Count();
-
-                if (count > 1)
-                {
-                    allProjectDes.Remove(result);
-                }
             }
             return allProjectDes;
         }
+
 
 
         public bool UpdateProject(Model.DepartmentProjects newProject)
