@@ -294,6 +294,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
         }
+
+        public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
+        {
+            return _projectmanagementRepository.CreateTypeOfCost((PmTypeCost)pmTypeCost);
+        }
     }
 }
 
