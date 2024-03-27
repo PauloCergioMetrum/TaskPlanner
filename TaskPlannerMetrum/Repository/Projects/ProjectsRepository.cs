@@ -323,7 +323,7 @@ namespace TaskPlannerMetrum.Repository.Projects
             foreach (var item in info)
             {
                 var users = _context.Users
-                    .Where(i => (i.DepartmentId == item.DepartmentID && i.PermissionId != null) || i.PermissionId == 2)
+                     .Where(i => (i.DepartmentId == item.DepartmentID && i.PermissionId != null) || i.PermissionId == 2)
                     .Select(u => new
                     {
                         u.Id,
@@ -332,31 +332,38 @@ namespace TaskPlannerMetrum.Repository.Projects
                     })
                     .ToList();
 
-                var departmentName = _context.Department
+                var departamentName = _context.Department
                     .Where(i => i.ID == item.DepartmentID)
                     .Select(n => n.Name)
-                    .FirstOrDefault(); 
+                    .FirstOrDefault()
+                    .ToString();
 
-                var techLeaderName = _context.Users
+                var TechLeaderName = _context.Users
                     .Where(i => i.Id == item.TechLeaderID)
-                    .Select(n => new { UserId = n.Id, FullName = n.FullName })
-                    .FirstOrDefault(); 
+                    .Select(n => n.FullName)
+                    .FirstOrDefault();
 
                 var result = new
                 {
                     DepartmentID = item.DepartmentID,
-                    DepartmentName = departmentName,
-                    Users = users,
-                    ExpectedHour = item.ExpectedHour,
+                    DepartmentName = departamentName,
+                    users = users,
+                    expectedHour = item.ExpectedHour,
                     TechLeaderID = item.TechLeaderID,
-                    TechLeaderName = techLeaderName
+                    TechLeaderName = TechLeaderName,
                 };
 
                 allProjectDes.Add(result);
+
+                var count = allProjectDes.Where(i => i.DepartmentID == item.DepartmentID).Count();
+
+                if (count > 1)
+                {
+                    allProjectDes.Remove(result);
+                }
             }
             return allProjectDes;
         }
-
 
 
         public bool UpdateProject(Model.DepartmentProjects newProject)
@@ -485,7 +492,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                     expectedHours = t.ExpectedHour,
                     plannedHour = t.PlannedHour,
                     executedHour = t.ExecutedHour,
-
+                    
 
                 }).ToList(),
 
