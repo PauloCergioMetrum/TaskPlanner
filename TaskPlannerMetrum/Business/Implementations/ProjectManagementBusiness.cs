@@ -205,7 +205,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
         }
 
- 
+
 
         public bool CreateAcquisitionsMade(AcquisitionMadeDTO acquisitionMade)
         {
@@ -339,6 +339,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         public List<PmCostMade> GetPmCostMade()
         {
             return _projectmanagementRepository.GetPmCostMade();
+        }
+
+        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
+        {
+            return _projectmanagementRepository.GetAllContractProjectByTechLeader(TechLeaderID, InspectorName);
         }
     }
 }

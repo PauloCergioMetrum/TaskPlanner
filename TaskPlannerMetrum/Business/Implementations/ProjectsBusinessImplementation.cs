@@ -35,7 +35,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             _userBusiness = userBusiness;
             _departmentProjectsRepository = departmentProjectsRepository;
             _context = context;
-            
+
 
 
         }
@@ -241,12 +241,11 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectRepository.UpdateRetroactiveDate(contractID, retroactiveDate);
         }
 
-        public List<vContractProject> GetAllContractProjectByTechLeader(int TechLeaderID)
+        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
         {
-           
-            return _projectRepository.GetAllContractProjectByTechLeader(TechLeaderID);
-        
+            return _projectRepository.GetAllContractProjectByTechLeader(TechLeaderID, InspectorName);
         }
+
     }
 
 

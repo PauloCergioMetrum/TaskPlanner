@@ -15,9 +15,9 @@ namespace TaskPlannerMetrum.Repository.Projects
         public List<User> FindAllUser();
 
 
-        public  bool SetStatus(TaskPlannerMetrum.Model.ProjectStauts project);
+        public bool SetStatus(TaskPlannerMetrum.Model.ProjectStauts project);
 
-        
+
         public bool Create(TaskPlannerMetrum.Model.Projects newProject);
 
         public List<User> UserByDep(string departament);
@@ -49,11 +49,11 @@ namespace TaskPlannerMetrum.Repository.Projects
 
 
         public void CreateRetroactiveDate(int contractID, DateTime? retroactiveDate);
-        
+
 
         public bool UpdateRetroactiveDate(int contractID, DateTime retroactiveDate);
 
-        public List<vContractProject> GetAllContractProjectByTechLeader(int TechLeaderID);
+        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
 
     }

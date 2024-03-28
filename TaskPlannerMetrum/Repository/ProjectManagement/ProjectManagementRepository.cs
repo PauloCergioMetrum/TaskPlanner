@@ -140,7 +140,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     }
                     else
                     {
-                        return false; 
+                        return false;
                     }
                 }
                 else
@@ -290,7 +290,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
         {
-           var AcquisitionList = _context.vPM_Acquisition_Combined.Where(r => r.ContractID == ContractID).ToList();
+            var AcquisitionList = _context.vPM_Acquisition_Combined.Where(r => r.ContractID == ContractID).ToList();
             return AcquisitionList;
         }
 
@@ -448,6 +448,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             var ListGetCostMade = _context.PM_Cost_Made.ToList();
             return ListGetCostMade;
+        }
+
+        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

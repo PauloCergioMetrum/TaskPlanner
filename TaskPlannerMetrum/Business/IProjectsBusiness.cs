@@ -53,9 +53,7 @@ namespace TaskPlannerMetrum.Business
 
         public bool UpdateRetroactiveDate(int contractID, DateTime retroactiveDate);
 
-        public List<vContractProject> GetAllContractProjectByTechLeader(int TechLeaderID);
-
-
+        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
 
 

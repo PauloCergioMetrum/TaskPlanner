@@ -154,8 +154,8 @@ namespace TaskPlannerMetrum.Repository.Financs
                     f.EndDate,
                     f.ExpectedInvoiceDate,
                     f.FinanceType,
-                    f.Guarantee,
-                    f.GuaranteePeriod,
+                    Guarantee = f.StatusDpv == "FATURADO" ? null : f.Guarantee,
+                    GuaranteePeriod = f.StatusDpv == "FATURADO" ? null : f.GuaranteePeriod,
                     f.DateExpectedGarantee,
                     f.StatusGuarantee
 
