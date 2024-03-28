@@ -310,8 +310,9 @@ namespace TaskPlannerMetrum.Repository.Financs
                 updatefinances.GuaranteePeriod = finances.GuaranteePeriod;
                 updatefinances.BusinessUnit = finances.BusinessUnit;
 
-              
-                if (finances.InvoicedValue > 0 && finances.InvoicedDate > new DateTime(1, 1, 1, 0, 0, 0))
+
+                if (finances.InvoicedValue > 0 && finances.InvoicedDate > new DateTime(1901, 1, 1))
+
                 {
                     updatefinances.StatusDpv = "FATURADO";
                 }
