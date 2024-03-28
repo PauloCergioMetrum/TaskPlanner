@@ -312,7 +312,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                 updatefinances.StatusDpv = finances.StatusDpv;
                 updatefinances.Guarantee = finances.Guarantee;
                 updatefinances.GuaranteePeriod = finances.GuaranteePeriod;
-
+                updatefinances.BusinessUnit = finances.BusinessUnit;
                 _context.Finances.Update(updatefinances);
                 _context.SaveChanges();
 
