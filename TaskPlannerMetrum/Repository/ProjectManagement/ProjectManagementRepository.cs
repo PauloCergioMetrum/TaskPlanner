@@ -301,36 +301,53 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
         public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
+
         {
+
             try
+
             {
+
                 _context.Database.OpenConnection();
-                _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Pm_Type_Cost ON");
 
                 var existingTypeOfCost = _context.Pm_Type_Cost.Find(pmTypeCost.ID);
+
                 if (existingTypeOfCost != null)
+
                 {
 
                     existingTypeOfCost.Name = pmTypeCost.Name;
+
                     existingTypeOfCost.isDefault = pmTypeCost.isDefault;
+
                     existingTypeOfCost.ContractID = pmTypeCost.ContractID;
+
                 }
+
                 else
+
                 {
 
                     _context.Pm_Type_Cost.Add(pmTypeCost);
+
                 }
 
                 _context.SaveChanges();
 
-                _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Pm_Type_Cost OFF");
                 return true;
+
             }
+
             finally
+
             {
+
                 _context.Database.CloseConnection();
+
             }
+
         }
+
 
         public bool DeleteTypeOfCost(string ID)
         {
