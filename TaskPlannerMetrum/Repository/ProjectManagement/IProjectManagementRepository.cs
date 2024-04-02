@@ -50,7 +50,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
 
-        public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID);
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
 
         public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
 

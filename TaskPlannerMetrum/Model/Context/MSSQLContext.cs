@@ -89,9 +89,9 @@ namespace TaskPlannerMetrum.Model.Context
 
 
         public DbSet<vActivePlans> vActivePlans { get; set; }
-        public DbSet<Observation> Observation { get; set; } 
-        public DbSet<vBusinessUnit>vBusinessUnit {  get; set; }
-       
+        public DbSet<Observation> Observation { get; set; }
+        public DbSet<vBusinessUnit> vBusinessUnit { get; set; }
+
 
 
 
@@ -103,7 +103,9 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<MilestonesValue> MilestonesValue { get; set; }
 
-        public DbSet <vPMAcquisitionCombined> vPM_Acquisition_Combined { get; set; }
+        public DbSet<vPMAcquisitionCombined> vPM_Acquisition_Combined { get; set; }
+
+        public DbSet<vPMAcquisitionCost> vPM_Acquisition_Cost {  get; set; }
 
 
 

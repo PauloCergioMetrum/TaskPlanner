@@ -294,9 +294,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return AcquisitionList;
         }
 
-        public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID)
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
         {
-            var AcquisitionsMadeList = _context.PM_Acquisition_Made.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
+            var AcquisitionsMadeList = _context.vPM_Acquisition_Cost.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
             return AcquisitionsMadeList;
         }
 

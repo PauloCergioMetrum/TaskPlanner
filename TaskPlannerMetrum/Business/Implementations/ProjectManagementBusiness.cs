@@ -290,7 +290,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAcquisitions(ContractID);
         }
 
-        public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID)
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
         {
             return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
         }
