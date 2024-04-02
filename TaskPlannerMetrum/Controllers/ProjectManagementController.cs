@@ -283,7 +283,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult DeleteTypeOfCost(int ID)
+        public IActionResult DeleteTypeOfCost(string ID)
         {
             try
             {

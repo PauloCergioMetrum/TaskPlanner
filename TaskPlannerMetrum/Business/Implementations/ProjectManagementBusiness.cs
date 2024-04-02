@@ -300,7 +300,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.CreateTypeOfCost((PmTypeCost)pmTypeCost);
         }
 
-        public bool DeleteTypeOfCost(int ID)
+        public bool DeleteTypeOfCost(string ID)
         {
             return _projectmanagementRepository.DeleteTypeOfCost(ID);
         }
@@ -345,6 +345,8 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetAllContractProjectByTechLeader(TechLeaderID, InspectorName);
         }
+
+       
     }
 }
 
