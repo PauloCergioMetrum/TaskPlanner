@@ -345,7 +345,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return false;
         }
 
-        public List<PmTypeCost> GetTypeOfCost()
+        public List<PmTypeCost> GetTypeOfCost(int ContractID)
         {
             var ListGetTypeOfCost = _context.Pm_Type_Cost.ToList();
             return ListGetTypeOfCost;

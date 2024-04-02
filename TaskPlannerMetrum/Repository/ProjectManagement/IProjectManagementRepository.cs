@@ -55,7 +55,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
 
         public bool DeleteTypeOfCost(string ID);
-        public List<PmTypeCost> GetTypeOfCost();
+        public List<PmTypeCost> GetTypeOfCost(int ContractID);
         public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public bool DeletePredictedCost(string ID);
         public List<PmCostPlanned> GetPmCostPlanned();
