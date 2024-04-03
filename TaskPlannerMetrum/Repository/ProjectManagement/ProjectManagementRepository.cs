@@ -405,10 +405,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return false;
         }
 
-        public List<PmCostPlanned> GetPmCostPlanned()
+        public List<PmCostPlanned> GetPmCostPlanned( int ContractID )
         {
-            var ListPmCostPlanned = _context.Pm_Cost_Planned.ToList();
-            return ListPmCostPlanned;
+            var ListPmCostPlanned = _context.Pm_Cost_Planned.Where(i => i.ContractID == ContractID).ToList();
+
+            //var ListPmCostPlanned = _context.Pm_Cost_Planned.ToList();
+           return ListPmCostPlanned;
         }
 
 
@@ -425,7 +427,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
                     existingCostMade.Pm_Cost_PlannedID = pmCostMade.Pm_Cost_PlannedID;
-                    existingCostMade.TypeCostID = pmCostMade.TypeCostID;
+                   // existingCostMade.TypeCostID = pmCostMade.TypeCostID;
 
                     _context.SaveChanges();
                     return true;

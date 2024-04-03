@@ -319,9 +319,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.DeletePredictedCost(ID);
         }
 
-        public List<PmCostPlanned> GetPmCostPlanned()
+        public List<PmCostPlanned> GetPmCostPlanned(int ContractID)
         {
-            return _projectmanagementRepository.GetPmCostPlanned();
+            return _projectmanagementRepository.GetPmCostPlanned(ContractID);
         }
 
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade)

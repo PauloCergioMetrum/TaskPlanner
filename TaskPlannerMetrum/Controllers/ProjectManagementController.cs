@@ -364,13 +364,13 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetPmCostPlanned()
+        public IActionResult GetPmCostPlanned(int ContractID)
         {
 
             try
             {
 
-                return Ok(_projectManagementBusiness.GetPmCostPlanned());
+                return Ok(_projectManagementBusiness.GetPmCostPlanned(ContractID ));
 
             }
             catch (Exception ex)
