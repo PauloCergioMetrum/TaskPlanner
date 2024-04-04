@@ -336,9 +336,9 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public List<PmCostMade> GetPmCostMade()
+        public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
         {
-            return _projectmanagementRepository.GetPmCostMade();
+            return _projectmanagementRepository.GetPmCostMade(Pm_Cost_PlannedID);
         }
 
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
