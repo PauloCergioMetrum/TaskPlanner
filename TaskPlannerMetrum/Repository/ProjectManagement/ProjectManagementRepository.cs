@@ -140,7 +140,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     }
                     else
                     {
-                        return false; 
+                        return false;
                     }
                 }
                 else
@@ -290,14 +290,189 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
         {
-           var AcquisitionList = _context.vPM_Acquisition_Combined.Where(r => r.ContractID == ContractID).ToList();
+            var AcquisitionList = _context.vPM_Acquisition_Combined.Where(r => r.ContractID == ContractID).ToList();
             return AcquisitionList;
         }
 
-        public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID)
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
         {
-            var AcquisitionsMadeList = _context.PM_Acquisition_Made.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
+            var AcquisitionsMadeList = _context.vPM_Acquisition_Cost.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
             return AcquisitionsMadeList;
+        }
+
+        public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
+
+        {
+
+            try
+
+            {
+
+                _context.Database.OpenConnection();
+
+                var existingTypeOfCost = _context.Pm_Type_Cost.Find(pmTypeCost.ID);
+
+                if (existingTypeOfCost != null)
+
+                {
+
+                    existingTypeOfCost.Name = pmTypeCost.Name;
+
+                    existingTypeOfCost.isDefault = pmTypeCost.isDefault;
+
+                    existingTypeOfCost.ContractID = pmTypeCost.ContractID;
+
+                }
+
+                else
+
+                {
+
+                    _context.Pm_Type_Cost.Add(pmTypeCost);
+
+                }
+
+                _context.SaveChanges();
+
+                return true;
+
+            }
+
+            finally
+
+            {
+
+                _context.Database.CloseConnection();
+
+            }
+
+        }
+
+
+        public bool DeleteTypeOfCost(string ID)
+        {
+            var typeOfCostToRemove = _context.Pm_Type_Cost.SingleOrDefault( t => t.ID == ID);
+
+            if (typeOfCostToRemove != null)
+            {
+                _context.Pm_Type_Cost.Remove(typeOfCostToRemove);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public List<PmTypeCost> GetTypeOfCost(int ContractID)
+        {
+            var ListGetTypeOfCost = _context.Pm_Type_Cost.ToList();
+            return ListGetTypeOfCost;
+        }
+
+
+        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned)
+        {
+            var existingCost = _context.Pm_Cost_Planned.FirstOrDefault(c => c.Id == pmCostPlanned.Id);
+
+            if (existingCost != null)
+            {
+
+                existingCost.TypeCostID = pmCostPlanned.TypeCostID;
+                existingCost.Amount = pmCostPlanned.Amount;
+                existingCost.ValueUnit = pmCostPlanned.ValueUnit;
+                existingCost.Description = pmCostPlanned.Description;
+                existingCost.ContractID = pmCostPlanned.ContractID;
+
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+
+                _context.Pm_Cost_Planned.Add(pmCostPlanned);
+                _context.SaveChanges();
+                return true;
+            }
+        }
+        public bool DeletePredictedCost(string ID)
+        {
+            var RemovePredictedCost = _context.Pm_Cost_Planned.SingleOrDefault(t => t.Id == ID);
+            if (RemovePredictedCost != null)
+            {
+                _context.Pm_Cost_Planned.Remove(RemovePredictedCost);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public List<PmCostPlanned> GetPmCostPlanned( int ContractID )
+        {
+            var ListPmCostPlanned = _context.Pm_Cost_Planned.Where(i => i.ContractID == ContractID).ToList();
+
+            //var ListPmCostPlanned = _context.Pm_Cost_Planned.ToList();
+           return ListPmCostPlanned;
+        }
+
+
+        public bool CreateOrUpdateCostMade(PmCostMade pmCostMade)
+        {
+            try
+            {
+                var existingCostMade = _context.PM_Cost_Made.FirstOrDefault(c => c.Id == pmCostMade.Id);
+
+                if (existingCostMade != null)
+                {
+
+                    existingCostMade.Amount = pmCostMade.Amount;
+                    existingCostMade.ValueUnit = pmCostMade.ValueUnit;
+                    existingCostMade.Description = pmCostMade.Description;
+                    existingCostMade.Pm_Cost_PlannedID = pmCostMade.Pm_Cost_PlannedID;
+                   //existingCostMade.TypeCostID = pmCostMade.TypeCostID = "sjkbgdhufgsdhf";
+
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+
+                    _context.PM_Cost_Made.Add(pmCostMade);
+                    _context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("Erro ao salvar as alterações no banco de dados: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Exceção interna: " + ex.InnerException.Message);
+                }
+                return false;
+            }
+        }
+
+        public bool DeleteCostMade(string ID)
+        {
+            var RemoveCost = _context.PM_Cost_Made.SingleOrDefault(t => t.Id == ID);
+            if (RemoveCost != null)
+            {
+                _context.PM_Cost_Made.Remove(RemoveCost);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
+        {
+            var ListGetCostMade = _context.PM_Cost_Made.Where(i => i.Pm_Cost_PlannedID == Pm_Cost_PlannedID).ToList();
+            return ListGetCostMade;
+        }
+
+        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

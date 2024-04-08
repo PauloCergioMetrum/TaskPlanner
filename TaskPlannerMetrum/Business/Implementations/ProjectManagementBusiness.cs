@@ -205,7 +205,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
         }
 
- 
+
 
         public bool CreateAcquisitionsMade(AcquisitionMadeDTO acquisitionMade)
         {
@@ -290,10 +290,63 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAcquisitions(ContractID);
         }
 
-        public List<PMAcquisitionMade> GetAcquisitionsMade(string AquisitionPlannedID)
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
         {
             return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
         }
+
+        public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
+        {
+            return _projectmanagementRepository.CreateTypeOfCost((PmTypeCost)pmTypeCost);
+        }
+
+        public bool DeleteTypeOfCost(string ID)
+        {
+            return _projectmanagementRepository.DeleteTypeOfCost(ID);
+        }
+
+        public List<PmTypeCost> GetTypeOfCost( int ContractID)
+        {
+            return (_projectmanagementRepository.GetTypeOfCost(ContractID));
+        }
+
+        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned)
+        {
+            return (_projectmanagementRepository.CreateOrUpdatePredictedCost((pmCostPlanned)));
+        }
+        public bool DeletePredictedCost(string ID)
+        {
+            return _projectmanagementRepository.DeletePredictedCost(ID);
+        }
+
+        public List<PmCostPlanned> GetPmCostPlanned(int ContractID)
+        {
+            return _projectmanagementRepository.GetPmCostPlanned(ContractID);
+        }
+
+        public bool CreateOrUpdateCostMade(PmCostMade pmCostMade)
+        {
+            return _projectmanagementRepository.CreateOrUpdateCostMade(pmCostMade);
+        }
+
+
+        public bool DeleteCostMade(string ID)
+        {
+            return _projectmanagementRepository.DeleteCostMade(ID);
+        }
+
+
+        public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
+        {
+            return _projectmanagementRepository.GetPmCostMade(Pm_Cost_PlannedID);
+        }
+
+        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
+        {
+            return _projectmanagementRepository.GetAllContractProjectByTechLeader(TechLeaderID, InspectorName);
+        }
+
+       
     }
 }
 

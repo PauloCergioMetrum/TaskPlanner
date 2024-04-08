@@ -257,5 +257,193 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        [HttpPost("CreateTypeOfCost")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult CreateTypeOfCost(PmTypeCost pmTypeCost)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.CreateTypeOfCost(pmTypeCost));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpDelete("DeleteTypeOf")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteTypeOfCost(string ID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.DeleteTypeOfCost(ID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetTypeOfCost")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetTypeOfCost( int ContractID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetTypeOfCost(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPost("CreateOrUpdatePredictedCost")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.CreateOrUpdatePredictedCost(pmCostPlanned));
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpDelete("DeletePredictedCost")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeletePredictedCost(string ID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.DeletePredictedCost(ID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("GetPmCostPlanned")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetPmCostPlanned(int ContractID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetPmCostPlanned(ContractID ));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+        [HttpPost("CreatePMCostMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreatePMCostMade([FromBody] PmCostMade pmCostMade)
+        {
+            try
+            {
+                bool created = _projectManagementBusiness.CreateOrUpdateCostMade(pmCostMade);
+                if (created)
+                {
+                    return Ok("Cadastrado.");
+                }
+                else
+                {
+                    return BadRequest("Erro ao Cadastrar.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("DeleteCostMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteCostMade(string ID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.DeleteCostMade(ID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("GetPmCostMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetPmCostMade(string Pm_Cost_PlannedID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetPmCostMade(Pm_Cost_PlannedID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

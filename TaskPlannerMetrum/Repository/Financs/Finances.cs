@@ -168,34 +168,31 @@ namespace TaskPlannerMetrum.Repository.Financs
 
         }
 
-        public string setOnGoingDate(int id)
+        public string SetOnGoingDate(int id)
         {
             var finance = _context.Finances.Where(i => i.id == id).FirstOrDefault();
 
-            if (finance.InvoicedDate > Convert.ToDateTime("1901-01-01 00:00:00.0000000"))
+            if (finance == null)
+            {
+                return "ID não encontrado";
+            }
+
+            if (finance.InvoicedDate > new DateTime(1901, 1, 1))
             {
                 return "FATURADO";
             }
-            if (finance.StatusDpv == "CANCELADO" || finance.StatusDpv == "CANCELADO")
-            {
-                return finance.StatusDpv;
-            }
-            if (finance.StatusDpv == "ENCERRADO" || finance.StatusDpv == "ENCERRADO")
-            {
-                return finance.StatusDpv;
-            }
-            if (finance.StatusDpv == "PARALISADO" || finance.StatusDpv == "PARALISADO")
-            {
-                return finance.StatusDpv;
-            }
-            else
-            {
-                return "EM ANDAMENTO";
 
+            switch (finance.StatusDpv)
+            {
+                case "CANCELADO":
+                case "ENCERRADO":
+                case "PARALISADO":
+                    return finance.StatusDpv;
+                default:
+                    return "EM ANDAMENTO";
             }
-
-
         }
+
 
 
         public string setStatusDate(int id)
@@ -287,14 +284,14 @@ namespace TaskPlannerMetrum.Repository.Financs
             return contractinfo;
         }
 
-        public bool UpdateFinances(Model.Finances finances)
+   
+       public bool UpdateFinances(Model.Finances finances)
         {
             var updatefinances = _context.Finances.FirstOrDefault(i => i.id == finances.id);
 
             if (updatefinances != null)
             {
-                //var originalGuarantee = updatefinances.Guarantee;
-                //var originalGuaranteePeriod = updatefinances.GuaranteePeriod;
+                // Update other properties as before
                 updatefinances.InvoicedValue = finances.InvoicedValue;
                 updatefinances.Value = finances.Value;
                 updatefinances.Status = finances.Status;
@@ -309,9 +306,20 @@ namespace TaskPlannerMetrum.Repository.Financs
                 updatefinances.ExpectedInvoiceDate = finances.ExpectedInvoiceDate;
                 updatefinances.invoice = finances.invoice;
                 updatefinances.paymentCondition = finances.paymentCondition;
-                updatefinances.StatusDpv = finances.StatusDpv;
                 updatefinances.Guarantee = finances.Guarantee;
                 updatefinances.GuaranteePeriod = finances.GuaranteePeriod;
+                updatefinances.BusinessUnit = finances.BusinessUnit;
+
+
+                if (finances.InvoicedValue > 0 && finances.InvoicedDate > new DateTime(1901, 1, 1))
+
+                {
+                    updatefinances.StatusDpv = "FATURADO";
+                }
+                else
+                {
+                    updatefinances.StatusDpv = finances.StatusDpv; 
+                }
 
                 _context.Finances.Update(updatefinances);
                 _context.SaveChanges();
@@ -324,6 +332,7 @@ namespace TaskPlannerMetrum.Repository.Financs
 
             return false;
         }
+
 
 
         public bool F_UpdateDepartamentID(int contractID, int finanaceID, int financeDepartamentID)

@@ -323,7 +323,9 @@ namespace TaskPlannerMetrum.Repository.Projects
             foreach (var item in info)
             {
                 var users = _context.Users
-                    .Where(i => i.DepartmentId == item.DepartmentID)
+                     .Where(i => (i.DepartmentId == item.DepartmentID && i.PermissionId != null) || (i.PermissionId == 2 || i.PermissionId == 4))
+
+
                     .Select(u => new
                     {
                         u.Id,
@@ -564,58 +566,61 @@ namespace TaskPlannerMetrum.Repository.Projects
 
         }
 
-        public List<vContractProject> GetAllContractProjectByTechLeader(int TechLeaderID)
+        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
         {
             List<vContractProject> vContractProjects = new List<vContractProject>();
 
-
             using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
-                command.CommandText = "EXECUTE [dbo].[GetContractProjectsByTechLeader]    @TechLeaderID";
-                command.Parameters.Add(new SqlParameter("@TechLeaderID", TechLeaderID));
+                command.CommandText = "GetContractProjectsByTechLeader";
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Verifica se TechLeaderID é nulo
+                if (TechLeaderID.HasValue)
+                    command.Parameters.Add(new SqlParameter("@TechLeaderID", TechLeaderID));
+                else
+                    command.Parameters.Add(new SqlParameter("@TechLeaderID", DBNull.Value));
+
+                // Verifica se InspectorName é nulo
+                if (!string.IsNullOrEmpty(InspectorName))
+                    command.Parameters.Add(new SqlParameter("@InspectorName", InspectorName));
+                else
+                    command.Parameters.Add(new SqlParameter("@InspectorName", DBNull.Value));
+
                 _context.Database.OpenConnection();
                 using (var reader = command.ExecuteReader())
                 {
-
                     while (reader.Read())
                     {
                         int index = 0;
                         var register = new vContractProject
                         {
-                            ClientName = reader.GetValue(index++).ToString(),
-                            id = Convert.ToInt32(reader.GetValue(index++)),
-                            InternalCode = reader.GetValue(index++).ToString(),
-                            ClientID = Convert.ToInt32(reader.GetValue(index++)),
-                            InspectorName = reader.GetValue(index++).ToString(),
+                            ClientName = reader.GetString(index++),
+                            id = reader.GetInt32(index++),
+                            InternalCode = reader.GetString(index++),
+                            ClientID = reader.GetInt32(index++),
+                            InspectorName = reader.GetString(index++),
                             EnableProject = reader.GetBoolean(index++),
                             StartDate = reader.GetDateTime(index++),
                             DateRetroactive = reader.GetDateTime(index++),
-                            PlannedMenHour = reader.GetValue(index++).ToString(),
-                            ExecutedMenHour = reader.GetValue(index++).ToString(),
-                            Progress = reader.GetValue(index++).ToString(),
-                            Expectedhour = reader.GetValue(index++).ToString(),
-                            Delayed = Convert.ToInt32(reader.GetValue(index++)),
-                            Status = reader.GetValue(index++).ToString(),
-
-
-
-
-
+                            PlannedMenHour = reader.GetString(index++),
+                            ExecutedMenHour = reader.GetString(index++),
+                            Progress = reader.GetString(index++),
+                            Expectedhour = reader.GetString(index++),
+                            Delayed = reader.GetInt32(index++),
+                            Status = reader.GetString(index++)
                         };
                         vContractProjects.Add(register);
-
                     }
 
+
+
+
+
                 }
-
-
-
-
+                return vContractProjects;
 
             }
-            return vContractProjects;
-
-
         }
     }
 }
