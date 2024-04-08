@@ -35,6 +35,11 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<PMAcquisitionMade> PM_Acquisition_Made { get; set; }
 
+        public DbSet<PmTypeCost> Pm_Type_Cost { get; set; }
+
+        public DbSet<PmCostPlanned> Pm_Cost_Planned { get; set; }
+        public DbSet<PmCostMade> PM_Cost_Made { get; set; }
+
 
         //Views
         public DbSet<vProjectList> vProjectList { get; set; }
@@ -84,9 +89,9 @@ namespace TaskPlannerMetrum.Model.Context
 
 
         public DbSet<vActivePlans> vActivePlans { get; set; }
-        public DbSet<Observation> Observation { get; set; } 
-        public DbSet<vBusinessUnit>vBusinessUnit {  get; set; }
-       
+        public DbSet<Observation> Observation { get; set; }
+        public DbSet<vBusinessUnit> vBusinessUnit { get; set; }
+
 
 
 
@@ -98,7 +103,9 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<MilestonesValue> MilestonesValue { get; set; }
 
-        public DbSet <vPMAcquisitionCombined> vPM_Acquisition_Combined { get; set; }
+        public DbSet<vPMAcquisitionCombined> vPM_Acquisition_Combined { get; set; }
+
+        public DbSet<vPMAcquisitionCost> vPM_Acquisition_Cost {  get; set; }
 
 
 

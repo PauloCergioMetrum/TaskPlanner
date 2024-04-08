@@ -420,11 +420,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetAllContractProjectByTechLeader(int techLeaderID)
+        public IActionResult GetAllContractProjectByTechLeader(int? techLeaderID, string InspectorName)
         {
             try
             {
-                return Ok(_projectBusiness.GetAllContractProjectByTechLeader(techLeaderID));
+                return Ok(_projectBusiness.GetAllContractProjectByTechLeader(techLeaderID, InspectorName));
 
             }
             catch (Exception ex)

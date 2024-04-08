@@ -405,15 +405,12 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 updateRatingExecutor(activityPlan.ExecutorTeamID, newActivityPlan.ExecutorTeamID, newActivityPlan.ContractID);
             }
 
-            if (activityPlan.ExecutedManHour == 0)
+            if (activityPlan.ExecutedManHour == 0 && (activityPlan.Status != "4" && activityPlan.Status != "3"))
             {
-                newActivityPlan.Status = "5";
+                
+                activityPlan.Status = "5";
             }
-            else
-            {
-                newActivityPlan.Status = activityPlan.Status;
-            }
-
+            
 
             newActivityPlan.ExecutedManHour = activityPlan.ExecutedManHour;
             newActivityPlan.ScheduledDate = activityPlan.ScheduledDate;
@@ -422,12 +419,18 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPlan.TaskDescription = activityPlan.TaskDescription;
             newActivityPlan.PlannedManHour = activityPlan.PlannedManHour;
             newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID;
+            newActivityPlan.Status = activityPlan.Status;
 
             _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
 
+         
+
             return true;
         }
+
+
+
 
 
 
