@@ -21,6 +21,8 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model;
+
 
 namespace TaskPlannerMetrum.Repository.Projects
 {
@@ -425,6 +427,16 @@ namespace TaskPlannerMetrum.Repository.Projects
         }
 
 
+        public bool IsTechLeaderAssociated(int contractID, int techLeaderID)
+        {
+            var association = _context.ContractTechLeaders
+                .Any(ct => ct.ContractID == contractID && ct.TechLeaderID == techLeaderID);
+
+            return association;
+        }
+
+
+
         public void UpdateRatingLeader(int userID, int contractID)
         {
             var ratingProjectID = _context.RatingProject.Where(r => r.ProjectID == contractID && r.UserID == userID).Select(r => r.ID).FirstOrDefault();
@@ -469,12 +481,15 @@ namespace TaskPlannerMetrum.Repository.Projects
             return true;
 
         }
+      
 
 
         public dynamic getInfoProject(int id)
         {
 
-            var taskDep = _context.vPlannedHours.Where(i => i.ContractID == id).ToList();
+            var taskDep = _context.vPlannedHours1.Where(i => i.ContractID == id).ToList();
+        
+          
             return taskDep.Select(p => new
             {
                 ProjectName = p.ProjectName,
@@ -483,18 +498,12 @@ namespace TaskPlannerMetrum.Repository.Projects
                 //StatusGuarantee=t.StatusGuarantee,
 
                 percentage = SetPercentege(p.ContractID),
-                executedHourFull = taskDep.Where(p => p.ContractID == id).Select(e => e.ExecutedHour).Sum(),
-                plannedHourFull = taskDep.Where(p => p.ContractID == id).Select(e => e.PlannedHour).Sum(),
-                expectedHoursFull = taskDep.Where(p => p.ContractID == id).Select(e => e.ExpectedHour).Sum(),
-
                 ExpetedHours = taskDep.Where(c => c.ContractID == p.ContractID).Select(t => new
                 {
                     departamentName = t.DepartmentName,
                     tecLeader = t.TechLeader,
-                    expectedHours = t.ExpectedHour,
-                    plannedHour = t.PlannedHour,
-                    executedHour = t.ExecutedHour,
-                    
+                  
+
 
                 }).ToList(),
 
@@ -566,6 +575,40 @@ namespace TaskPlannerMetrum.Repository.Projects
 
         }
 
+        public bool AddContractTechLeaders(List<ContractTechLeaders> contractTechLeaders)
+        {
+            try
+            {
+                foreach (var contractTechLeader in contractTechLeaders)
+                {
+                    var existingEntity = _context.ContractTechLeaders.FirstOrDefault(ct =>
+                        ct.ContractID == contractTechLeader.ContractID && ct.TechLeaderID == contractTechLeader.TechLeaderID);
+
+                    if (existingEntity != null)
+                    {
+
+                        _context.Entry(existingEntity).CurrentValues.SetValues(contractTechLeader);
+                    }
+                    else
+                    {
+
+                        _context.ContractTechLeaders.Add(contractTechLeader);
+                        _context.SaveChanges();
+
+                    }
+                }
+
+             
+              
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
         {
             List<vContractProject> vContractProjects = new List<vContractProject>();
@@ -621,7 +664,12 @@ namespace TaskPlannerMetrum.Repository.Projects
                 return vContractProjects;
 
             }
+
+
+
         }
+
+       
     }
 }
 

@@ -129,19 +129,45 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectRepository.GetAllProjectDep(contractID);
         }
 
+
+
+
+
         public bool UpdateProject(CreateProjectRetroactiveDate newProject)
         {
-
             _projectRepository.CreateRetroactiveDate(newProject.ContractID, newProject.RetroactiveDate);
-            return _projectRepository.UpdateProject(new DepartmentProjects
+
+
+            List<ContractTechLeaders> contractTechLeadersToAdd = new List<ContractTechLeaders>();
+
+
+            foreach (var techLeaderId in newProject.TechLeaderID)
             {
-                ContractID = newProject.ContractID,
-                DepartmentID = newProject.DepartmentID,
-                ExpectedHour = newProject.ExpectedHour,
-                TechLeaderID = newProject.TechLeaderID,
-                FinancesID = newProject.FinancesID,
-            });
+
+                bool exists = _projectRepository.IsTechLeaderAssociated(newProject.ContractID, techLeaderId);
+
+
+                if (!exists)
+                {
+                    contractTechLeadersToAdd.Add(new ContractTechLeaders
+                    {
+                        ContractID = newProject.ContractID,
+                        TechLeaderID = techLeaderId
+                    });
+                    _projectRepository.AddContractTechLeaders(contractTechLeadersToAdd);
+                }
+            }
+
+
+           
+
+            return true;
         }
+
+
+
+
+
 
         public dynamic GetAllProjects()
         {
@@ -217,6 +243,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectRepository.getInfoProject(id);
         }
 
+     
+
+
         public void FavoriteProject(int ContractID, int UserID)
         {
 
@@ -246,6 +275,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectRepository.GetAllContractProjectByTechLeader(TechLeaderID, InspectorName);
         }
 
+        
     }
 
 
