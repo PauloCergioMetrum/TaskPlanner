@@ -45,6 +45,7 @@ namespace TaskPlannerMetrum.Business
         public dynamic getActiveProject();
 
         public dynamic getInfoProject(int id);
+     
 
         public void FavoriteProject(int ContractID, int UserID);
 
