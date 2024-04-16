@@ -311,15 +311,9 @@ namespace TaskPlannerMetrum.Repository.Financs
                 updatefinances.BusinessUnit = finances.BusinessUnit;
 
 
-                if (finances.InvoicedValue > 0 && finances.InvoicedDate > new DateTime(1901, 1, 1))
-
-                {
-                    updatefinances.StatusDpv = "FATURADO";
-                }
-                else
-                {
+             
                     updatefinances.StatusDpv = finances.StatusDpv; 
-                }
+             
 
                 _context.Finances.Update(updatefinances);
                 _context.SaveChanges();
