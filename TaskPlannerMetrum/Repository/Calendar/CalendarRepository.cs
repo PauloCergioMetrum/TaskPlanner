@@ -178,21 +178,80 @@ namespace TaskPlannerMetrum.Repository.Calendar
         }
 
 
+
+        //public dynamic GetAllContracts()
+        //{
+        //    var matchedClientNames = _context.Contracts
+        //        .Join(_context.vContractList,
+        //            contract => contract.InternalCode,
+        //            vContract => vContract.InternalCode,
+        //            (contract, vContract) => new
+        //            {
+        //                ContractID = contract.id,
+        //                internalCode = contract.InternalCode,
+        //                ClientName = vContract.ClientName
+        //            })
+        //        .Where(joinResult => joinResult.internalCode != null && joinResult.ClientName != null)
+        //        .Select(joinResult => joinResult.ClientName)
+        //        .ToList();
+
+        //    return matchedClientNames;
+        //}
+
+
+
+
+
+        //public dynamic GetAllContracts()
+        //{
+
+        //    var teste = _context.vContractList.Where(i => i.InternalCode == i.InternalCode).ToList();
+        //    {
+
+        //    }
+
+        //    var contracts = _context.Contracts
+        //        .Where(e => true)
+        //        .Select(c => new
+        //        {
+        //            contractID = c.id,
+        //            internalCode = c.InternalCode,
+        //            StatusID = c.StatusID,
+        //            DateRetroactive = c.DateRetroactive,
+        //        })
+        //        .ToList();
+
+        //    return contracts;
+        //}
+
+
+
         public dynamic GetAllContracts()
         {
-            var contracts = _context.Contracts
-                .Where(e => true)
-                .Select(c => new
-                {
-                    contractID = c.id,
-                    internalCode = c.InternalCode,
-                    StatusID = c.StatusID,
-                    DateRetroactive = c.DateRetroactive,
-                })
+            var matchedClientNames = _context.Contracts
+                .Join(_context.vContractList,
+                    contract => contract.id,
+                    vContract => vContract.ContractID,
+                    (contract, vContract) => new
+                    {
+                        contractID = contract.id,
+                        internalCode = contract.InternalCode,
+                        ClientName = vContract.ClientName,
+                        statusID = contract.StatusID,
+                        DateRetroactive = contract.DateRetroactive
+                    })
+                .Where(joinResult => joinResult.internalCode != null && joinResult.ClientName != null)
                 .ToList();
 
-            return contracts;
+            return matchedClientNames;
         }
+
+
+
+
+
+
+
 
         public string SetStatus(string status)
         {

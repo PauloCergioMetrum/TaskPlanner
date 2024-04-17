@@ -333,17 +333,27 @@ namespace TaskPlannerMetrum.Repository.Financs
         {
             try
             {
-                var updateDepartmentProjects = _context.DepartmentProjects.Where(c => c.ContractID == contractID && c.FinancesID == finanaceID).FirstOrDefault();
-                updateDepartmentProjects.DepartmentID = financeDepartamentID;
-                _context.DepartmentProjects.Update(updateDepartmentProjects);
-                _context.SaveChanges();
-                return true;
+                var updateDepartmentProjects = _context.DepartmentProjects.FirstOrDefault(c => c.ContractID == contractID && c.FinancesID == finanaceID);
+
+                if (updateDepartmentProjects != null)
+                {
+                    updateDepartmentProjects.DepartmentID = financeDepartamentID;
+                    _context.DepartmentProjects.Update(updateDepartmentProjects);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                  
+                    return false;
+                }
             }
             catch
             {
                 return false;
             }
         }
+
 
         public dynamic getAllServices(string type)
         {
