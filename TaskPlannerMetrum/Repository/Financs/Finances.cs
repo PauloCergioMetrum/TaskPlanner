@@ -24,7 +24,7 @@ namespace TaskPlannerMetrum.Repository.Financs
             newfinance.Billing = "";
             newfinance.StatusDpv = "EM ANDAMENTO";
 
-            if(newfinance.Guarantee == null)
+            if (newfinance.Guarantee == null)
             {
                 newfinance.Guarantee = false;
             }
@@ -100,70 +100,84 @@ namespace TaskPlannerMetrum.Repository.Financs
         {
             return _context.vFinanceContract.ToList();
         }
+
+
         public dynamic GetFinancesById(int contractId)
+
         {
 
-            var financas = _context.vFinanceContract.Where(i => i.ContractID == contractId).ToList();
-            var Contract = _context.Contracts.Where(i => i.id == contractId).FirstOrDefault();
-            var ClientId = _context.Contracts.Where(i => i.id == contractId).Select(n => n.ClientID).FirstOrDefault();
-            var WorkSpace = _context.Workspace.Where(i => i.ID == Contract.TagID).Select(n => n.Name).FirstOrDefault();
 
-            double value = 0;
-            double invoicevalues = 0;
+            var blockContract = _context.Contracts.Where(i => i.id == contractId).FirstOrDefault(); 
+          
 
-            foreach (var valuefinanc in financas)
+            if (blockContract != null)
             {
-                value = value + valuefinanc.Value;
-            }
-            foreach (var invoicevalue in financas)
-            {
-                invoicevalues = invoicevalues + invoicevalue.InvoicedValue;
-            }
-            double totalpercents = invoicevalues / value * 100;
-            if (Convert.ToString(totalpercents) == "NaN")
-            {
-                totalpercents = 0;
-            }
-            var contractfinances = new
-            {
-                ContractName = Contract.InternalCode,
-                TotalValue = value.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
-                percents = totalpercents.ToString("0.00").Replace(",", "."),
-                ClientName = _context.Clients.Where(i => i.Id == ClientId).Select(n => n.Name).FirstOrDefault().ToString(),
-                totalbilled = invoicevalues.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
-                WorkSpace = WorkSpace,
-                Finances = financas.Select(f => new
+                var financas = _context.vFinanceContract.Where(i => i.ContractID == contractId).ToList();
+                var ClientId = blockContract.ClientID;
+                var WorkSpace = _context.Workspace.Where(i => i.ID == blockContract.TagID).Select(n => n.Name).FirstOrDefault();
+
+                double value = 0;
+                double invoicevalues = 0;
+
+                foreach (var valuefinanc in financas)
                 {
-                    f.id,
-                    f.ContractID,
-                    f.InvoicedDate,
-                    f.BaseDate,
-                    f.Amount,
-                    f.Billing,
-                    f.invoice,
-                    f.InvoicedValue,
-                    f.paymentCondition,
-                    f.Value,
-                    f.BusinessUnit,
-                    f.ContractName,
-                    f.DepartmentName,
-                    f.DepartmentID,
-                    f.Description,
-                    Status = setStatusDate(f.id),
-                    StatusDpv = f.StatusDpv,
-                    f.EndDate,
-                    f.ExpectedInvoiceDate,
-                    f.FinanceType,
-                    f.Guarantee,
-                    f.GuaranteePeriod,
-                    f.DateExpectedGarantee,
-                    f.StatusGuarantee
+                    value = value + valuefinanc.Value;
+                }
+                foreach (var invoicevalue in financas)
+                {
+                    invoicevalues = invoicevalues + invoicevalue.InvoicedValue;
+                }
+                double totalpercents = invoicevalues / value * 100;
+                if (double.IsNaN(totalpercents))
+                {
+                    totalpercents = 0;
+                }
 
-                })
+                var contractfinances = new
+                {
+                    ContractName = blockContract.InternalCode,
+                    TotalValue = value.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
+                    percents = totalpercents.ToString("0.00").Replace(",", "."),
+                    ClientName = _context.Clients.Where(i => i.Id == ClientId).Select(n => n.Name).FirstOrDefault().ToString(),
+                    totalbilled = invoicevalues.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
+                    WorkSpace = WorkSpace,
+                    StatusID = blockContract.StatusID, 
+                    Finances = financas.Select(f => new
+                    {
+                        f.id,
+                        f.ContractID,
+                        f.InvoicedDate,
+                        f.BaseDate,
+                        f.Amount,
+                        f.Billing,
+                        f.invoice,
+                        f.InvoicedValue,
+                        f.paymentCondition,
+                        f.Value,
+                        f.BusinessUnit,
+                        f.ContractName,
+                        f.DepartmentName,
+                        f.DepartmentID,
+                        f.Description,
+                        Status = setStatusDate(f.id),
+                        StatusDpv = f.StatusDpv,
+                        f.EndDate,
+                        f.ExpectedInvoiceDate,
+                        f.FinanceType,
+                        f.Guarantee,
+                        f.GuaranteePeriod,
+                        f.DateExpectedGarantee,
+                        f.StatusGuarantee,
+                    })
+                };
+                return contractfinances;
+            }
+            else
+            {
+              
+                return null; 
+            }
 
-
-            };
-            return contractfinances;
 
 
         }
@@ -284,8 +298,8 @@ namespace TaskPlannerMetrum.Repository.Financs
             return contractinfo;
         }
 
-   
-       public bool UpdateFinances(Model.Finances finances)
+
+        public bool UpdateFinances(Model.Finances finances)
         {
             var updatefinances = _context.Finances.FirstOrDefault(i => i.id == finances.id);
 
@@ -311,9 +325,9 @@ namespace TaskPlannerMetrum.Repository.Financs
                 updatefinances.BusinessUnit = finances.BusinessUnit;
 
 
-             
-                    updatefinances.StatusDpv = finances.StatusDpv; 
-             
+
+                updatefinances.StatusDpv = finances.StatusDpv;
+
 
                 _context.Finances.Update(updatefinances);
                 _context.SaveChanges();
@@ -344,7 +358,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                 }
                 else
                 {
-                  
+
                     return false;
                 }
             }

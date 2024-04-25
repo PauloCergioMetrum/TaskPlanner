@@ -325,7 +325,7 @@ namespace TaskPlannerMetrum.Repository.Projects
             foreach (var item in info)
             {
                 var users = _context.Users
-                     .Where(i => (i.DepartmentId == item.DepartmentID && i.PermissionId != null) || (i.PermissionId == 2 || i.PermissionId == 4))
+                     .Where(i => (i.DepartmentId == item.DepartmentID && i.PermissionId != null) || (i.PermissionId == 1 || i.PermissionId == 4))
 
 
                     .Select(u => new
@@ -481,15 +481,15 @@ namespace TaskPlannerMetrum.Repository.Projects
             return true;
 
         }
-      
+
 
 
         public dynamic getInfoProject(int id)
         {
 
             var taskDep = _context.vPlannedHours1.Where(i => i.ContractID == id).ToList();
-        
-          
+
+
             return taskDep.Select(p => new
             {
                 ProjectName = p.ProjectName,
@@ -502,7 +502,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                 {
                     departamentName = t.DepartmentName,
                     tecLeader = t.TechLeader,
-                  
+
 
 
                 }).ToList(),
@@ -598,8 +598,8 @@ namespace TaskPlannerMetrum.Repository.Projects
                     }
                 }
 
-             
-              
+
+
                 return true;
             }
             catch (Exception)
@@ -608,8 +608,7 @@ namespace TaskPlannerMetrum.Repository.Projects
             }
         }
 
-
-        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
+        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string? InspectorName)
         {
             List<vContractProject> vContractProjects = new List<vContractProject>();
 
@@ -653,23 +652,17 @@ namespace TaskPlannerMetrum.Repository.Projects
                             Delayed = reader.GetInt32(index++),
                             Status = reader.GetString(index++)
                         };
-                        vContractProjects.Add(register);
+                        if (register.EnableProject)
+                        {
+                            vContractProjects.Add(register);
+                        }
                     }
-
-
-
-
-
                 }
-                return vContractProjects;
-
             }
 
-
-
+            return vContractProjects;
         }
 
-       
     }
 }
 
