@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TaskPlannerMetrum.Model.ModelViews
 {
-    public class vPlannedHours1
+    public class vPlannedHours
     {
         [Key]
         public Int64 ID { get; set; }
@@ -20,7 +20,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
     
         public int StatusID { get; set; }
         public int TechLeaderID {  get; set; }  
-       // public  string StatusGuarantee {  get; set; }  
+       public  string StatusGuarantee {  get; set; }  
 
     }
 }
