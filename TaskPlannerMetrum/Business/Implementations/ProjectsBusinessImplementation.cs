@@ -135,34 +135,18 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool UpdateProject(CreateProjectRetroactiveDate newProject)
         {
+
             _projectRepository.CreateRetroactiveDate(newProject.ContractID, newProject.RetroactiveDate);
-
-
-            List<ContractTechLeaders> contractTechLeadersToAdd = new List<ContractTechLeaders>();
-
-
-            foreach (var techLeaderId in newProject.TechLeaderID)
+            return _projectRepository.UpdateProject(new DepartmentProjects
             {
-
-                bool exists = _projectRepository.IsTechLeaderAssociated(newProject.ContractID, techLeaderId);
-
-
-                if (!exists)
-                {
-                    contractTechLeadersToAdd.Add(new ContractTechLeaders
-                    {
-                        ContractID = newProject.ContractID,
-                        TechLeaderID = techLeaderId
-                    });
-                    _projectRepository.AddContractTechLeaders(contractTechLeadersToAdd);
-                }
-            }
-
-
-           
-
-            return true;
+                ContractID = newProject.ContractID,
+                DepartmentID = newProject.DepartmentID,
+                ExpectedHour = newProject.ExpectedHour,
+                TechLeaderID = newProject.TechLeaderID,
+                FinancesID = newProject.FinancesID,
+            });
         }
+
 
 
 

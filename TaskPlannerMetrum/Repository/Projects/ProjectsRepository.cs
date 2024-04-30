@@ -486,32 +486,27 @@ namespace TaskPlannerMetrum.Repository.Projects
 
         public dynamic getInfoProject(int id)
         {
-
-            var taskDep = _context.vPlannedHours1.Where(i => i.ContractID == id).ToList();
-
-
+            var taskDep = _context.VPlannedHours.Where(i => i.ContractID == id).ToList();
             return taskDep.Select(p => new
             {
                 ProjectName = p.ProjectName,
                 ClientName = p.ClientName,
                 status = p.StatusID,
-                //StatusGuarantee=t.StatusGuarantee,
-
                 percentage = SetPercentege(p.ContractID),
-                ExpetedHours = taskDep.Where(c => c.ContractID == p.ContractID).Select(t => new
+                executedHourFull = taskDep.Where(t => t.ContractID == id).Select(e => e.ExecutedHour).Sum(),
+                plannedHourFull = taskDep.Where(t => t.ContractID == id).Select(e => e.PlannedHour).Sum(),
+                expectedHoursFull = taskDep.Where(t => t.ContractID == id).Select(e => e.ExpectedHour).Sum(),
+                ExpetedHours = taskDep.Where(t => t.ContractID == p.ContractID).Select(t => new
                 {
                     departamentName = t.DepartmentName,
                     tecLeader = t.TechLeader,
-
-
-
-                }).ToList(),
-
+                    expectedHours = t.ExpectedHour,
+                    plannedHour = t.PlannedHour,
+                    executedHour = t.ExecutedHour
+                }).ToList()
             }).FirstOrDefault();
-
-
-
         }
+
 
 
         public string SetPercentege(int id)

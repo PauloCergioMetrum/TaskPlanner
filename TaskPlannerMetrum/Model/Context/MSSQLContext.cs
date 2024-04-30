@@ -75,7 +75,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<Service> Service { get; set; }
 
         public DbSet<vCalendar> vCalendar { get; set; }
-        public DbSet<vPlannedHours1> vPlannedHours1 { get; set; }
+        public DbSet<vPlannedHours> VPlannedHours { get; set; }
 
         public DbSet<UserProjects> UserProjects { get; set; }
 
