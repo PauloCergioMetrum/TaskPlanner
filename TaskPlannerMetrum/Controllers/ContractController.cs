@@ -15,7 +15,7 @@ namespace TaskPlannerMetrum.Controllers
 {
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
-    [Authorize(Roles = "1,4,DEPCNT")]
+    [Authorize(Roles = "4")]
     public class ContractController : ControllerBase
     {
         private readonly ILogger<ProjectsController> _logger;
