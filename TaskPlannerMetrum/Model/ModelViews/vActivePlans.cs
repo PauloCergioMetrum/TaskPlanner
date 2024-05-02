@@ -40,7 +40,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public bool IsRework { get; set; }
 
-
+        public string BusinessUnit { get; set; }
 
 
 

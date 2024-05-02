@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Model.NewContract;
 
@@ -42,6 +43,7 @@ namespace TaskPlannerMetrum.Repository.Projects
         public dynamic getActiveProject();
 
         public dynamic getInfoProject(int id);
+       
 
         public void FavoriteProject(UserProjects userProjects);
 
@@ -54,6 +56,14 @@ namespace TaskPlannerMetrum.Repository.Projects
         public bool UpdateRetroactiveDate(int contractID, DateTime retroactiveDate);
 
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
+
+        public bool AddContractTechLeaders(List<ContractTechLeaders> contractTechLeaders);
+
+        public bool IsTechLeaderAssociated(int contractID, int techLeaderID);
+
+
+
+
 
 
     }

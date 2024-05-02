@@ -129,6 +129,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectRepository.GetAllProjectDep(contractID);
         }
 
+
+
+
+
         public bool UpdateProject(CreateProjectRetroactiveDate newProject)
         {
 
@@ -142,6 +146,12 @@ namespace TaskPlannerMetrum.Business.Implementations
                 FinancesID = newProject.FinancesID,
             });
         }
+
+
+
+
+
+
 
         public dynamic GetAllProjects()
         {
@@ -217,6 +227,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectRepository.getInfoProject(id);
         }
 
+     
+
+
         public void FavoriteProject(int ContractID, int UserID)
         {
 
@@ -246,6 +259,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectRepository.GetAllContractProjectByTechLeader(TechLeaderID, InspectorName);
         }
 
+        
     }
 
 

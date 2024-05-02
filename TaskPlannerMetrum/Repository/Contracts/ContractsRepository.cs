@@ -122,7 +122,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     PaymentMethod = newcontract.PaymentMethod,
                     StartDate = newcontract.StartDate,
                     TagID = newcontract.TagID,
-                    StatusID =1,
+                    StatusID =11,  /*status começa como não iniciado regra feita no banco*/
                 }); ;
                 _context.SaveChanges();
                 var contractID = _context.Contracts.Select(i => i.id).Max();

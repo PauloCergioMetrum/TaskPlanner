@@ -20,7 +20,7 @@ namespace TaskPlannerMetrum.Controllers
         private readonly ILogger<ActivityPlanController> _logger;
         public ActivityPlanController(IActivityPlanBusiness activityPlanBusiness, ILogger<ActivityPlanController> logger)
         {
-            _logger= logger;
+            _logger = logger;
             _activityPlanBusiness = activityPlanBusiness;
         }
 
@@ -319,6 +319,25 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("GetBusinessUnitByContract")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetBusinessUnitByContract(int ContractID)
+        {
+            try
+            {
+                return Ok(_activityPlanBusiness.GetBusinessUnitByContract(ContractID));
+            }
+            catch (Exception ex) {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+
+        }
+
 
 
 
