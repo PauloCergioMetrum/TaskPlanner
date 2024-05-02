@@ -59,7 +59,8 @@ namespace TaskPlannerMetrum.Business.Implementations
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
                 new Claim(JwtRegisteredClaimNames.UniqueName, findUser.UserName),
-                new Claim(ClaimTypes.Role, user.role)
+                new Claim(ClaimTypes.Role, user.role),
+                new Claim(ClaimTypes.Role, user.departName)
             };
 
 

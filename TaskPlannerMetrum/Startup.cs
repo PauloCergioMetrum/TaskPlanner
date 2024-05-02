@@ -106,7 +106,10 @@ namespace TaskPlannerMetrum
                 auth.AddPolicy("2", policy => policy.RequireClaim("role", "2"));
                 auth.AddPolicy("3", policy => policy.RequireClaim("role", "3"));
                 auth.AddPolicy("4", policy => policy.RequireClaim("role", "4"));
-               
+                auth.AddPolicy("DEPCNT", policy => policy.RequireClaim("departName", "DEPCNT"));
+                
+
+
 
             });
 

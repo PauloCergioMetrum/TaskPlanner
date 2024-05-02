@@ -16,7 +16,7 @@ namespace TaskPlannerMetrum.Controllers
 
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
-    [Authorize(Roles = "1,4")]
+    [Authorize(Roles = "1,4,DEPCNT")]
     public class CalenderController: ControllerBase
     {
 

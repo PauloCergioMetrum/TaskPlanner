@@ -17,7 +17,7 @@ namespace TaskPlannerMetrum.Controllers
 
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
-    [Authorize(Roles = "4,1")]
+    [Authorize(Roles = "4,1,DEPCNT")]
 
     public class ProjectsController : ControllerBase
     {
