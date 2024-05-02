@@ -26,7 +26,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public int ExecutorTeamID { get; set; }
 
-        public string Status { get; set; }    
+        public string Status { get; set; }
 
         public double ExecutedManHour { get; set; }
 
@@ -38,8 +38,10 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string statusName { get; set; }
 
-        public bool? IsRework{ get; set; }
+        public bool? IsRework { get; set; }
 
         public string TaskDescription { get; set; }
+
+        public string BusinessUnit {  get; set; }
     }
 }

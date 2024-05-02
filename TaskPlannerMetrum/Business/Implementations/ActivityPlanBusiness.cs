@@ -54,6 +54,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.IsRework = activityPlan.IsRework;
                     task.DepartamentID = activityPlan.DepartamentID;
                     task.TaskDescription = activityPlan.TaskDescription;
+                    task.BusinessUnit = activityPlan.BusinessUnit;
                     _activiesRepository.Create(task);
                 }
                 return true;
@@ -217,6 +218,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.UpdateTaskDescription(taskID, taskDescription);
         }
 
-
+        public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID)
+        {
+            return _activiesRepository.GetBusinessUnitByContract(ContractID);
+        }
     }
 }

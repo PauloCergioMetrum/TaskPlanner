@@ -107,7 +107,7 @@ namespace TaskPlannerMetrum
             // services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
 
             var connection = Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"];
-            services.AddDbContext<MSSQLContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<MSSQLContext>(options =>  options.UseSqlServer(connection));
 
             services.AddMvc(options =>
             {

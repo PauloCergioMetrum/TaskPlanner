@@ -38,6 +38,7 @@ using System.ComponentModel.DataAnnotations;
 
         public string TaskDescription { get; set; }
 
+        public string BusinessUnit {  get; set; }
 
     }
 

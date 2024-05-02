@@ -21,6 +21,8 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model;
+
 
 namespace TaskPlannerMetrum.Repository.Projects
 {
@@ -323,7 +325,7 @@ namespace TaskPlannerMetrum.Repository.Projects
             foreach (var item in info)
             {
                 var users = _context.Users
-                     .Where(i => (i.DepartmentId == item.DepartmentID && i.PermissionId != null) || (i.PermissionId == 2 || i.PermissionId == 4))
+                     .Where(i => (i.DepartmentId == item.DepartmentID && i.PermissionId != null) || (i.PermissionId == 1 || i.PermissionId == 4))
 
 
                     .Select(u => new
@@ -425,6 +427,16 @@ namespace TaskPlannerMetrum.Repository.Projects
         }
 
 
+        public bool IsTechLeaderAssociated(int contractID, int techLeaderID)
+        {
+            var association = _context.ContractTechLeaders
+                .Any(ct => ct.ContractID == contractID && ct.TechLeaderID == techLeaderID);
+
+            return association;
+        }
+
+
+
         public void UpdateRatingLeader(int userID, int contractID)
         {
             var ratingProjectID = _context.RatingProject.Where(r => r.ProjectID == contractID && r.UserID == userID).Select(r => r.ID).FirstOrDefault();
@@ -471,38 +483,30 @@ namespace TaskPlannerMetrum.Repository.Projects
         }
 
 
+
         public dynamic getInfoProject(int id)
         {
-
-            var taskDep = _context.vPlannedHours.Where(i => i.ContractID == id).ToList();
+            var taskDep = _context.VPlannedHours.Where(i => i.ContractID == id).ToList();
             return taskDep.Select(p => new
             {
                 ProjectName = p.ProjectName,
                 ClientName = p.ClientName,
                 status = p.StatusID,
-                //StatusGuarantee=t.StatusGuarantee,
-
                 percentage = SetPercentege(p.ContractID),
-                executedHourFull = taskDep.Where(p => p.ContractID == id).Select(e => e.ExecutedHour).Sum(),
-                plannedHourFull = taskDep.Where(p => p.ContractID == id).Select(e => e.PlannedHour).Sum(),
-                expectedHoursFull = taskDep.Where(p => p.ContractID == id).Select(e => e.ExpectedHour).Sum(),
-
-                ExpetedHours = taskDep.Where(c => c.ContractID == p.ContractID).Select(t => new
+                executedHourFull = taskDep.Where(t => t.ContractID == id).Select(e => e.ExecutedHour).Sum(),
+                plannedHourFull = taskDep.Where(t => t.ContractID == id).Select(e => e.PlannedHour).Sum(),
+                expectedHoursFull = taskDep.Where(t => t.ContractID == id).Select(e => e.ExpectedHour).Sum(),
+                ExpetedHours = taskDep.Where(t => t.ContractID == p.ContractID).Select(t => new
                 {
                     departamentName = t.DepartmentName,
                     tecLeader = t.TechLeader,
                     expectedHours = t.ExpectedHour,
                     plannedHour = t.PlannedHour,
-                    executedHour = t.ExecutedHour,
-                    
-
-                }).ToList(),
-
+                    executedHour = t.ExecutedHour
+                }).ToList()
             }).FirstOrDefault();
-
-
-
         }
+
 
 
         public string SetPercentege(int id)
@@ -566,7 +570,40 @@ namespace TaskPlannerMetrum.Repository.Projects
 
         }
 
-        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
+        public bool AddContractTechLeaders(List<ContractTechLeaders> contractTechLeaders)
+        {
+            try
+            {
+                foreach (var contractTechLeader in contractTechLeaders)
+                {
+                    var existingEntity = _context.ContractTechLeaders.FirstOrDefault(ct =>
+                        ct.ContractID == contractTechLeader.ContractID && ct.TechLeaderID == contractTechLeader.TechLeaderID);
+
+                    if (existingEntity != null)
+                    {
+
+                        _context.Entry(existingEntity).CurrentValues.SetValues(contractTechLeader);
+                    }
+                    else
+                    {
+
+                        _context.ContractTechLeaders.Add(contractTechLeader);
+                        _context.SaveChanges();
+
+                    }
+                }
+
+
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string? InspectorName)
         {
             List<vContractProject> vContractProjects = new List<vContractProject>();
 
@@ -610,18 +647,17 @@ namespace TaskPlannerMetrum.Repository.Projects
                             Delayed = reader.GetInt32(index++),
                             Status = reader.GetString(index++)
                         };
-                        vContractProjects.Add(register);
+                        if (register.EnableProject)
+                        {
+                            vContractProjects.Add(register);
+                        }
                     }
-
-
-
-
-
                 }
-                return vContractProjects;
-
             }
+
+            return vContractProjects;
         }
+
     }
 }
 

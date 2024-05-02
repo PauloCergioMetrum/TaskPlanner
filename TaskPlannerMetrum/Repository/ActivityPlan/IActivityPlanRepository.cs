@@ -37,6 +37,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public string UpdateTaskDescription(int taskID, string taskDescription);
 
+        public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID);
+
 
     }
 }

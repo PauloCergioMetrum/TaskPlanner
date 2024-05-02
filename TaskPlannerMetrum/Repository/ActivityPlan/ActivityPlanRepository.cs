@@ -50,6 +50,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     WorkspaceID = activityPlan.WorkspaceID,
                     IsRework = activityPlan.IsRework,
                     DepartamentID = activityPlan.DepartamentID,
+                    BusinessUnit = activityPlan.BusinessUnit,
                 });
                 _context.SaveChanges();
 
@@ -377,6 +378,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 Status = activity.Status,
                 TaskDescription = activity.TaskDescription,
                 ScheduledDate = activity.ScheduledDate,
+                BusinessUnit = activity.BusinessUnit,
                 ProjectName = _context.Projects
                     .Where(p => p.ID == activity.ContractID)
                     .Select(p => p.Name)
@@ -420,6 +422,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPlan.PlannedManHour = activityPlan.PlannedManHour;
             newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID;
             newActivityPlan.Status = activityPlan.Status;
+            newActivityPlan.BusinessUnit = activityPlan.BusinessUnit;
 
             _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
@@ -791,5 +794,10 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             return taskDescription;
         }
 
+        public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID)
+        {
+            var BusinessOptions = _context.vActivePlanBusinessUnit.Where(i => i.ContractID == ContractID).ToList();
+            return BusinessOptions;
+        }
     }
 }

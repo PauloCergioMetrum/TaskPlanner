@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using TaskPlannerMetrum.Model.Context;
 
@@ -18,7 +19,11 @@ namespace TaskPlannerMetrum.Repository.ContractViewer
         {
 
 
-            return _context.vContractViewer.Where(d => d.BillingMonth == Date).OrderBy(d=> d.BillingMonth).ToList();
+
+
+            return _context.vContractViewer.Where(d => d.BillingMonth  ==  Date).ToList();  
+                           
+
         }
     }
 }

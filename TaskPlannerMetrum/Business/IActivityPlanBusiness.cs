@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Business
 {
@@ -34,8 +35,7 @@ namespace TaskPlannerMetrum.Business
         public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier);
 
         public string UpdateTaskDescription(int taskID, string taskDescription);
-
-
+        public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID);
 
 
 
