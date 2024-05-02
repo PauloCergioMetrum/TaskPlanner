@@ -1,6 +1,8 @@
 ﻿using Memt.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Data;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Business.Implementations;
 using TaskPlannerMetrum.Model;
@@ -12,6 +14,8 @@ namespace TaskPlannerMetrum.Controllers
 
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
+    [Authorize(Roles = "4,1")]
+
     public class ProjectManagementController : ControllerBase
     {
 

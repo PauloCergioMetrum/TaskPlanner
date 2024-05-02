@@ -5,11 +5,15 @@ using System;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Data.VO;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace TaskPlannerMetrum.Controllers
 {
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
+    [Authorize(Roles = "4,1")]
+
     public class RatingController : ControllerBase
     {
         private readonly IRatingBusiness _ratingBusiness;

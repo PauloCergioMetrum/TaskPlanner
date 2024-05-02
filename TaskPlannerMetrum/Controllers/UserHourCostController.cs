@@ -7,11 +7,15 @@ using TaskPlannerMetrum.Model;
 using Memt.Logger;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Model.DTO;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace TaskPlannerMetrum.Controllers
 {
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
+    [Authorize(Roles = "4")]
+
     public class UserHourCostController : ControllerBase
     {
         private readonly ILogger<UserHourCostController> _logger;

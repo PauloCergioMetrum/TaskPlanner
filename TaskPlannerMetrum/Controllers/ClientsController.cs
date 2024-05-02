@@ -1,8 +1,10 @@
 ﻿using Memt.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Runtime.Intrinsics.X86;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
@@ -13,6 +15,7 @@ namespace TaskPlannerMetrum.Controllers
 
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
+    [Authorize(Roles = "4,1")]
     public class ClientsController : ControllerBase
     {
         private readonly ILogger<ClientsController> _logger;
