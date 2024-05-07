@@ -325,7 +325,7 @@ namespace TaskPlannerMetrum.Repository.Projects
             foreach (var item in info)
             {
                 var users = _context.Users
-                     .Where(i => (i.DepartmentId == item.DepartmentID && i.PermissionId != null) || (i.PermissionId == 1 || i.PermissionId == 4))
+              .Where(i => ((i.DepartmentId == item.DepartmentID && i.PermissionId != null) || (i.PermissionId == 1 || i.PermissionId == 4)) && i.IsActive)
 
 
                     .Select(u => new
