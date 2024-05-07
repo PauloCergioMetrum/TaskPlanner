@@ -91,7 +91,8 @@ namespace TaskPlannerMetrum
                     
                     ValidIssuer = tokenConfigurations.Issuer,
                     ValidAudience = tokenConfigurations.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret)),
+                    ClockSkew = TimeSpan.Zero
                 };
             });
           

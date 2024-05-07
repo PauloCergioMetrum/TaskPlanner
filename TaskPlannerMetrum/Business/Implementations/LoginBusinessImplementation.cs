@@ -55,12 +55,15 @@ namespace TaskPlannerMetrum.Business.Implementations
                 id = findUser.Id,
                 phoneNumber = findUser.PhoneNumber, 
             };
+            var expirationTime = DateTime.UtcNow.AddMinutes(1440);
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
                 new Claim(JwtRegisteredClaimNames.UniqueName, findUser.UserName),
                 new Claim(ClaimTypes.Role, user.role),
-                new Claim(ClaimTypes.Role, user.departName)
+                new Claim(ClaimTypes.Role, user.departName),
+                new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(expirationTime).ToUnixTimeSeconds().ToString()) 
+
             };
 
 
