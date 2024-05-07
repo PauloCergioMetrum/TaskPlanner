@@ -43,8 +43,10 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string Status { get; set; }
         public int StatusID { get; set; }  
         
-        public string StatusGuarantee {  get; set; }    
+        public string StatusGuarantee {  get; set; }
 
+        public string? PaymentCondition { get; set; }
 
+        public int WorkSpaceID { get; set; }
     }
 }

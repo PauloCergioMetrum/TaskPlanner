@@ -22,7 +22,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         public dynamic GetAllContracts()
         {
-            return _context.vContractList.Select(s => new { s.ContractID, s.EnableProject, s.PaymentMethod, s.InspectorName, s.ClientName, s.InternalCode, s.VendorName, s.StartDate, ValueTotal  = s.ValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.ClientOrder, InvoicedValueTotal = s.InvoicedValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.Condition, s.BusinessUnit, s.Observation,  s.Status , s.StatusID ,s.StatusGuarantee }).OrderBy(s => s.StartDate).ToList();
+            return _context.vContractList.Select(s => new { s.ContractID, s.EnableProject, s.PaymentMethod, s.InspectorName, s.ClientName, s.InternalCode, s.VendorName, s.StartDate, ValueTotal  = s.ValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.ClientOrder, InvoicedValueTotal = s.InvoicedValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.Condition, s.BusinessUnit, s.Observation,  s.Status , s.StatusID ,s.StatusGuarantee, s.PaymentCondition, s.WorkSpaceID }).OrderBy(s => s.StartDate).ToList();
 
         }
 
@@ -44,8 +44,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 updateCotract.Observation = contract.Observation;
                 updateCotract.ClientOrder = contract.ClientOrder;
                 updateCotract.StatusID = contract.StatusID;
-               
-                
+                updateCotract.PaymentCondition = contract.PaymentCondition;
+                updateCotract.WorkSpaceID = contract.WorkSpaceID;
 
 
                 _context.Contracts.Update(updateCotract);
@@ -123,6 +123,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     StartDate = newcontract.StartDate,
                     TagID = newcontract.TagID,
                     StatusID =11,  /*status começa como não iniciado regra feita no banco*/
+                    PaymentCondition = newcontract.PaymentCondition,
+                    WorkSpaceID = newcontract.WorkSpaceID,
                 }); ;
                 _context.SaveChanges();
                 var contractID = _context.Contracts.Select(i => i.id).Max();
