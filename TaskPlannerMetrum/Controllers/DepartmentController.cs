@@ -13,6 +13,7 @@ namespace TaskPlannerMetrum.Controllers
     
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
+    [Authorize]
     public class DepartmentController : ControllerBase
     {
 

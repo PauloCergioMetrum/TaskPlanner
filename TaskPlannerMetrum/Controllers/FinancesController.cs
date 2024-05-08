@@ -12,11 +12,14 @@ using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using Memt.Logger;
+using TaskPlannerMetrum.Data.VO;
 
 namespace TaskPlannerMetrum.Controllers
 {
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
+    [Authorize(Roles = "4,1,DEPCNT")]
+
     public class FinancesController:ControllerBase
     {
         private readonly ILogger<FinancesController> _logger;
@@ -30,11 +33,13 @@ namespace TaskPlannerMetrum.Controllers
             _financestBusiness = financeBusiness;
 
         }
+        
         [HttpGet("GetAllFinances")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+       
         public IActionResult GetAllContracts()
         {
             try

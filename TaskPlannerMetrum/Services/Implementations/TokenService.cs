@@ -27,7 +27,7 @@ namespace TaskPlannerMetrum.Services.Implementations
                 issuer: _configuration.Issuer,
                 audience: _configuration.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(_configuration.Minutes),
+                expires: DateTime.UtcNow.AddMinutes(_configuration.Minutes),
                 signingCredentials: signinCredentials
             );
             string tokenString = new JwtSecurityTokenHandler().WriteToken(options);
