@@ -45,7 +45,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 departmentId = findUser.DepartmentId,
                 workspaceID = findUser.WorkspaceID,
                 role = findUser.PermissionId.ToString(),
-                PermissionId = findUser.PermissionId,
+                permissionId = findUser.PermissionId,
                 permissionName = _context.Permissions.Where(i => i.id == findUser.PermissionId).Select(d => d.Description).FirstOrDefault(),
                 refreshToken = findUser.RefreshToken,
                 refreshTokenExpiryTime = findUser.RefreshTokenExpiryTime,

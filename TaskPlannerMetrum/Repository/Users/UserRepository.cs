@@ -86,6 +86,7 @@ namespace TaskPlannerMetrum.Repository.Users
                     DepartmentId = user.DepartmentId,
                     DepartamentName = GetDepartament(user.DepartmentId),
                     role = user.PermissionId.ToString(),
+                    PermissionId = user.PermissionId,
                     PhoneNumber = user.PhoneNumber,
                     WorkspaceID = user.WorkspaceID,
                     IsActive = user.IsActive,
