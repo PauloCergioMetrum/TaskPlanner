@@ -1,6 +1,8 @@
 ﻿using Memt.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Data;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -10,6 +12,7 @@ namespace TaskPlannerMetrum.Controllers
 
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
+    [Authorize(Roles = "4")]
     public class ContractViewerController:ControllerBase
     {
 

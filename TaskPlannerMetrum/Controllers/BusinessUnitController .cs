@@ -9,6 +9,7 @@ namespace TaskPlannerMetrum.Controllers
 {
     [Route("api/[controller]/v{version:apiVersion}")]
     [ApiController]
+    [Authorize(Roles = "4,1")]
     public class BusinessUnitController : ControllerBase
     {
         private readonly IBusinessUnitBusiness _businessUnitBusiness;

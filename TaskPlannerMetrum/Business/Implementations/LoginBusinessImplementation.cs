@@ -9,6 +9,8 @@ using System.IdentityModel.Tokens.Jwt;
 using TaskPlannerMetrum.Model.Context;
 using System.Linq;
 using TaskPlannerMetrum.Model;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.IdentityModel.Tokens;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -42,7 +44,8 @@ namespace TaskPlannerMetrum.Business.Implementations
                 departName = _context.Department.Where(i => i.Id == findUser.DepartmentId).Select(n => n.Name).FirstOrDefault(),
                 departmentId = findUser.DepartmentId,
                 workspaceID = findUser.WorkspaceID,
-                permissionID = findUser.PermissionId,
+                role = findUser.PermissionId.ToString(),
+                permissionId = findUser.PermissionId,
                 permissionName = _context.Permissions.Where(i => i.id == findUser.PermissionId).Select(d => d.Description).FirstOrDefault(),
                 refreshToken = findUser.RefreshToken,
                 refreshTokenExpiryTime = findUser.RefreshTokenExpiryTime,
@@ -52,13 +55,20 @@ namespace TaskPlannerMetrum.Business.Implementations
                 id = findUser.Id,
                 phoneNumber = findUser.PhoneNumber, 
             };
+            var expirationTime = DateTime.UtcNow.AddMinutes(1440);
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                new Claim(JwtRegisteredClaimNames.UniqueName, findUser.UserName)
+                new Claim(JwtRegisteredClaimNames.UniqueName, findUser.UserName),
+                new Claim(ClaimTypes.Role, user.role),
+                new Claim(ClaimTypes.Role, user.departName),
+                new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(expirationTime).ToUnixTimeSeconds().ToString()) 
+
             };
 
+
             var accessToken = _tokenService.GenerateAccessToken(claims);
+            var token = new JwtSecurityTokenHandler();
             var refreshToken = _tokenService.GenerateRefreshToken();
 
             findUser.RefreshToken = refreshToken;
@@ -96,6 +106,9 @@ namespace TaskPlannerMetrum.Business.Implementations
                 user.RefreshToken != refreshToken ||
                 user.RefreshTokenExpiryTime <= DateTime.Now) return null;
 
+
+          
+
             accessToken = _tokenService.GenerateAccessToken(principal.Claims);
             refreshToken = _tokenService.GenerateRefreshToken();
 
@@ -107,6 +120,8 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             DateTime createDate = DateTime.Now;
             DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);
+
+
 
             return new TokenVO(
                 true,
