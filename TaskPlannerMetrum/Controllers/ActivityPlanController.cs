@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Controllers
@@ -58,6 +59,31 @@ namespace TaskPlannerMetrum.Controllers
 
 
         }
+
+
+    
+        [HttpPost("ExecutorHourForPeriod")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult ExecutorHourForPeriod(HoursExecutorDTO activityPlan)
+
+        {
+            try
+            {
+                return Ok(_activityPlanBusiness.ExecutorHourForPeriod(activityPlan));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+
+        }
+
+
         [HttpGet("TasksByProject")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]

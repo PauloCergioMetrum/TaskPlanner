@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
 using System.Security.Cryptography;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -120,6 +123,21 @@ namespace TaskPlannerMetrum.Model.Context
 
 
         public DbSet<vActivePlanBusinessUnit> vActivePlanBusinessUnit { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<HoursExecutor>().HasNoKey();
+        }
+
+
+
+
+
+        public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, double horaSchedule)
+        {
+            var query = $"EXECUTE [dbo].[GetActivityPlanByExecutorTeamIDAndPeriod] @ExecutorTeamIDs='{executorTeamIDs}', @StartDate='{startDate}', @EndDate='{endDate}', @HoraSchedule={horaSchedule}";
+
+            return this.Set<HoursExecutor>().FromSqlRaw(query).ToList();
+        }
 
 
 

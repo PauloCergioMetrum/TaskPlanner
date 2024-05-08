@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using MySqlConnector;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -17,6 +18,7 @@ using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Repository.Generic;
 
 namespace TaskPlannerMetrum.Repository.ActivityPlan
 {
@@ -798,6 +800,34 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         {
             var BusinessOptions = _context.vActivePlanBusinessUnit.Where(i => i.ContractID == ContractID).ToList();
             return BusinessOptions;
+        }
+
+        public List<HoursExecutor> ExecutorHourForPeriod(HoursExecutorDTO executors)
+        {
+            string executorTeamIDs = executors.ExecutorsTeamID;
+            DateTime startDate = executors.StartDate;
+            DateTime endDate = executors.EndDate;
+            double Hours = executors.Hours;
+
+            var listData =  _context.GetActivityPlanByExecutorTeamIDAndPeriod(executorTeamIDs, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"), Hours);
+
+            foreach (var obj in listData)
+            {
+                // Divida o nome em partes
+                string[] partesNome = obj.Executor.Split(' ');
+
+                // Verifique se o nome tem mais de 1 parte
+                if (partesNome.Length > 1)
+                {
+                    // pegando apenas o primeiro e ultimo nome 
+                    string novoNome = partesNome[0] + " " + partesNome[partesNome.Length - 1];
+                    
+                    obj.Executor = novoNome;
+                }
+            }
+
+            return listData;
+
         }
     }
 }
