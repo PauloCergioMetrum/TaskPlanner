@@ -645,7 +645,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                             Progress = reader.GetString(index++),
                             Expectedhour = reader.GetString(index++),
                             Delayed = reader.GetInt32(index++),
-                            Status = reader.GetString(index++)
+                            Status = reader.GetInt32(index++)
                         };
                         if (register.EnableProject)
                         {
