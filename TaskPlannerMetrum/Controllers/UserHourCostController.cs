@@ -14,7 +14,7 @@ namespace TaskPlannerMetrum.Controllers
 {
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
-    [Authorize(Roles = "4")]
+    [Authorize(Roles = "4,3")]
 
     public class UserHourCostController : ControllerBase
     {
