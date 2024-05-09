@@ -1,8 +1,10 @@
 ﻿using Memt.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using TaskPlannerMetrum.Business;
 
 using TaskPlannerMetrum.Model;
@@ -14,6 +16,7 @@ namespace TaskPlannerMetrum.Controllers
 
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
+    [Authorize(Roles = "1,4")]
     public class CalenderController: ControllerBase
     {
 

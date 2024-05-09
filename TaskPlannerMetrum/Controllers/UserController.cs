@@ -6,11 +6,15 @@ using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using Memt.Logger;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace TaskPlannerMetrum.Controllers
 {
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
+    [Authorize(Roles = "4,3")]
+
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;

@@ -587,31 +587,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public dynamic GetDepTask(UserDepForTask deptask)
         {
-            List<dynamic> Users = new List<dynamic>();
-            var userid = _context.Users.Where(a => a.IsActive == true).OrderBy(i => i.FullName).ToList();
-            foreach (var user in userid)
-            {
-                var raiting = _context.UserTask.Where(i => i.ActivitiesScopeListID == deptask.taskID && i.UserID == user.Id).Select(r => r.Rating).Sum();
-                double allTask = _context.UserTask.Where(a => a.ActivitiesScopeListID == deptask.taskID && user.Id == a.UserID).Count();
-                double media = raiting / allTask;
-                if (raiting == 0 && allTask == 0)
-                {
-                    media = 0;
-                }
-
-                var users = new
-                {
-                    UserName = user.FullName,
-                    UserID = user.Id,
-                    Rating = Convert.ToDouble(media.ToString("0.0")),
-                    ContractID = deptask.ContractID,
-                    IsActive = user.IsActive
-
-                };
-                Users.Add(users);
-
-            }
-            return Users;
+            return _context.Users.Where(a => a.IsActive == true).OrderBy(i => i.FullName).Select( u => new {UserName = u.FullName, UserID = u.Id , ContractID = 0 , IsActive = u.IsActive}).ToList();
+           
         }
 
         public bool DuplicateTask(Model.DuplicatTask activityPlan)
