@@ -47,7 +47,7 @@ namespace TaskPlannerMetrum.Model
 
         public string? PaymentCondition { get; set; }
 
-        public int WorkSpaceID { get; set; }
+        //public int WorkSpaceID { get; set; }
 
 
     }
