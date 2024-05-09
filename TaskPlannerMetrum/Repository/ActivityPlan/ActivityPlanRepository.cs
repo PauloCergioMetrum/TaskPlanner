@@ -179,41 +179,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public List<vActivePlans> FindAllTaskByProject(string projectId)
         {
             return _context.vActivePlans.Where(c => c.ContractID == Convert.ToInt32(projectId)).OrderBy(d => d.ScheduledDate).ToList();
-
-            //List<vActivityPlan> _activityPlans = new List<vActivityPlan>();
-            //var taskPlans = _context.ActivityPlan.Where(a => a.ContractID == Convert.ToInt32(projectId)).ToList().OrderBy(d => d.ScheduledDate);
-
-
-
-            //foreach (var taskPlan in taskPlans)
-            //{
-
-            //    var userid = _context.Team.Where(t => t.ID == taskPlan.ExecutorTeamID).Select(s => s.UserID).FirstOrDefault();
-            //    _activityPlans.Add(new vActivityPlan
-            //    {
-            //        ActivitiesScopeListID = taskPlan.ActivitiesScopeListID,
-            //        Description = _context.ActivitiesScopeList.Where(d => d.ID == Convert.ToInt32(taskPlan.ActivitiesScopeListID)).Select(s => s.Description).FirstOrDefault(),
-            //        ExecutedManHour = taskPlan.ExecutedManHour,
-            //        ExecutorName = _context.Users.Where(u => u.Id == userid).Select(s => s.FullName).FirstOrDefault(),
-            //        ExecutorTeamID = taskPlan.ExecutorTeamID,
-            //        NotesFromExecutor = taskPlan.NotesFromExecutor,
-            //        NotesFromPlanner = taskPlan.NotesFromPlanner,
-            //        TaskDescription = taskPlan.TaskDescription,
-            //        PlannedManHour = taskPlan.PlannedManHour,
-            //        PlannerTeamID = taskPlan.PlannerTeamID,
-            //        ContractID = taskPlan.ContractID,
-            //        ScheduledDate = taskPlan.ScheduledDate,
-            //        Status = taskPlan.Status,
-            //        ID = taskPlan.ID,
-            //        statusName = GetStatusName(taskPlan.Status.ToString(), taskPlan.ScheduledDate),
-            //        IsRework = taskPlan.IsRework,
-            //        ProjectName = _context.Projects.Where(p => p.ID == taskPlan.ContractID).Select(p => p.Name).FirstOrDefault(),
-            //        UserID = _context.Team.Where(u => u.ID == taskPlan.ExecutorTeamID).Select(u => u.UserID).FirstOrDefault()
-
-            //    }); ;
-            //}
-
-            //return _activityPlans;
         }
 
 
@@ -232,36 +197,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public List<vActivePlans> FindAllTaskByUser(string userId)
         {
             return _context.vActivePlans.Where(u => u.ExecutorTeamID == Convert.ToInt32(userId)).ToList();
-            //List<vActivityPlan> _activityPlans = new List<vActivityPlan>();
-            //var pmTeamId = _context.Team.Where(t => t.UserID == Convert.ToInt32(userId)).Select(s => s.ID).FirstOrDefault();
-
-
-            //foreach (var taskPlan in _context.ActivityPlan.Where(t => t.ExecutorTeamID == pmTeamId).ToList())
-            //{
-            //    _activityPlans.Add(new vActivityPlan
-            //    {
-            //        ActivitiesScopeListID = taskPlan.ActivitiesScopeListID,
-            //        Description = _context.ActivitiesScopeList.Where(d => d.ID == Convert.ToInt32(taskPlan.ActivitiesScopeListID)).Select(s => s.Description).FirstOrDefault(),
-            //        ExecutedManHour = taskPlan.ExecutedManHour,
-            //        ExecutorName = _context.Users.Where(u => u.Id == Convert.ToInt32(userId)).Select(s => s.FullName).FirstOrDefault(),
-            //        ExecutorTeamID = taskPlan.ExecutorTeamID,
-            //        NotesFromExecutor = taskPlan.NotesFromExecutor,
-            //        NotesFromPlanner = taskPlan.NotesFromPlanner,
-            //        TaskDescription = taskPlan.TaskDescription,
-            //        PlannedManHour = taskPlan.PlannedManHour,
-            //        PlannerTeamID = taskPlan.PlannerTeamID,
-            //        ContractID = taskPlan.ContractID,
-            //        ScheduledDate = taskPlan.ScheduledDate,
-            //        Status = taskPlan.Status,
-            //        ID = taskPlan.ID,
-            //        statusName = GetStatusName(taskPlan.Status.ToString(), taskPlan.ScheduledDate),
-            //        ProjectName = _context.Projects.Where(p => p.ID == taskPlan.ContractID).Select(p => p.Name).FirstOrDefault(),
-            //        IsRework = taskPlan.IsRework,
-
-
-            //    });
-            //}
-            //return _activityPlans;
         }
 
 
@@ -670,7 +605,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     plannerTeamID = task.PlannerTeamID,
                     notesFromPlanner = task.NotesFromPlanner,
                     executorTeamID = task.ExecutorTeamID,
-                    status = GetStatus(task),
+                    status = task.Status,
                     executedManHour = task.ExecutedManHour,
                     taskDescription = task.TaskDescription,
                     notesFromExecutor = task.NotesFromExecutor,
@@ -730,39 +665,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         }
 
-        private string GetStatus(Model.ActivityPlan task)
-        {
-            if (task.ExecutedManHour > 0 && (task.Status != "1" && task.Status != "6" && task.Status != "4" && task.Status != "3"))
-            {
-                return "2";
-            }
-            return task.Status;
-        }
-
-
-
-        // Ao cadastrar outro fiscal, o fiscal já cadastrado será removido
-
-        /* public void managerRemover(int ContractID, int UserID)
-        {
-            var removerManager = _context.RatingProject.Where(f => f.UserID == UserID && f.ID == ContractID).FirstOrDefault();
-            if (removerManager != null)
-            {
-                var ratingGet = _context.Rating.Where(r => r.RatingProjectID == removerManager.ID).ToList();
-
-                foreach (var rating in ratingGet)
-                {
-                    _context.Rating.Remove(rating);
-                    _context.SaveChanges();
-
-
-                }
-                _context.SaveChanges();
-                _context.RatingProject.Remove(removerManager);
-            }
-
-        }
-        */
 
         public string UpdateTaskDescription(int taskID, string taskDescription)
         {
@@ -785,8 +687,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             DateTime startDate = executors.StartDate;
             DateTime endDate = executors.EndDate;
             double Hours = executors.Hours;
+   
 
-            var listData =  _context.GetActivityPlanByExecutorTeamIDAndPeriod(executorTeamIDs, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"), Hours);
+            var listData =  _context.GetActivityPlanByExecutorTeamIDAndPeriod(executorTeamIDs, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"), Hours.ToString());
 
             foreach (var obj in listData)
             {
