@@ -344,7 +344,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 updateRatingExecutor(activityPlan.ExecutorTeamID, newActivityPlan.ExecutorTeamID, newActivityPlan.ContractID);
             }
 
-            if (activityPlan.ExecutedManHour == 0 && (activityPlan.Status != "4" && activityPlan.Status != "3"))
+            if (activityPlan.ExecutedManHour == 0 && (activityPlan.Status != "4" && activityPlan.Status != "3" && activityPlan.Status != "9" ))
             {
                 
                 activityPlan.Status = "5";
