@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,6 +127,7 @@ namespace TaskPlannerMetrum.Model.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HoursExecutor>().HasNoKey();
+            modelBuilder.Entity<ActivePlansByExecutor>().HasNoKey();
         }
 
 
@@ -142,7 +144,22 @@ namespace TaskPlannerMetrum.Model.Context
 
 
 
+        public List<ActivePlansByExecutor> GetActivityPlanDetailsByExecutorID(int executorID)
+        {
 
+          
+     
+            var query = $"EXECUTE [dbo].[GetActivityPlanDetailsByExecutorID] @ExecutorID={executorID}";
 
+          
+            return this.Set<ActivePlansByExecutor>()
+                       .FromSqlRaw(query)
+                       .ToList();
+        }
+
+     
     }
+
+
 }
+

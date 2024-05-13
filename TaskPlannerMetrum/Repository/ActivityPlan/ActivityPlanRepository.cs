@@ -344,27 +344,25 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 updateRatingExecutor(activityPlan.ExecutorTeamID, newActivityPlan.ExecutorTeamID, newActivityPlan.ContractID);
             }
 
-            if (activityPlan.ExecutedManHour == 0 && (activityPlan.Status != "4" && activityPlan.Status != "3" && activityPlan.Status != "9" ))
+            if (activityPlan.ExecutedManHour == 0 && (activityPlan.Status != "4" && activityPlan.Status != "3" && activityPlan.Status != "9"))
             {
-                
+
                 activityPlan.Status = "5";
             }
-            
+
 
             newActivityPlan.ExecutedManHour = activityPlan.ExecutedManHour;
             newActivityPlan.ScheduledDate = activityPlan.ScheduledDate;
             newActivityPlan.NotesFromExecutor = activityPlan.NotesFromExecutor;
             newActivityPlan.NotesFromPlanner = activityPlan.NotesFromPlanner;
-            newActivityPlan.TaskDescription = activityPlan.TaskDescription;
-            newActivityPlan.PlannedManHour = activityPlan.PlannedManHour;
-            newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID;
+            newActivityPlan.TaskDescription = activityPlan.TaskDescription;            
             newActivityPlan.Status = activityPlan.Status;
             newActivityPlan.BusinessUnit = activityPlan.BusinessUnit;
 
             _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
 
-         
+
 
             return true;
         }
@@ -522,8 +520,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public dynamic GetDepTask(UserDepForTask deptask)
         {
-            return _context.Users.Where(a => a.IsActive == true).OrderBy(i => i.FullName).Select( u => new {UserName = u.FullName, UserID = u.Id , ContractID = 0 , IsActive = u.IsActive}).ToList();
-           
+            return _context.Users.Where(a => a.IsActive == true).OrderBy(i => i.FullName).Select(u => new { UserName = u.FullName, UserID = u.Id, ContractID = 0, IsActive = u.IsActive }).ToList();
+
         }
 
         public bool DuplicateTask(Model.DuplicatTask activityPlan)
@@ -577,137 +575,101 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         }
 
-
-
         public dynamic GetUserforTask(int id)
         {
-            List<dynamic> retorno = new List<dynamic>();
+            
             id = _context.Team.Where(i => i.UserID == id).Select(u => u.ID).FirstOrDefault();
-            var alltasks = _context.ActivityPlan.Where(i => i.ExecutorTeamID == id).ToList();
-
-
-
-
-
-
-            foreach (var task in alltasks)
-            {
-
-                var Task = new
-                {
-                    id = task.ID,
-                    contractID = task.ContractID,
-                    projectName = _context.Contracts.Where(i => i.id == task.ContractID).Select(i => i.InternalCode).FirstOrDefault(),
-                    description = _context.ActivitiesScopeList.Where(i => i.ID == task.ActivitiesScopeListID).Select(d => d.Description).FirstOrDefault(),
-                    activitiesScopeListID = task.ActivitiesScopeListID,
-                    scheduledDate = task.ScheduledDate,
-                    plannedManHour = task.PlannedManHour,
-                    plannerTeamID = task.PlannerTeamID,
-                    notesFromPlanner = task.NotesFromPlanner,
-                    executorTeamID = task.ExecutorTeamID,
-                    status = task.Status,
-                    executedManHour = task.ExecutedManHour,
-                    taskDescription = task.TaskDescription,
-                    notesFromExecutor = task.NotesFromExecutor,
-                    userID = task.ExecutorTeamID,
-
-                    clientName = _context.Clients.Where(i => i.Id == _context.Contracts.Where(a => a.id == task.ContractID).Select(c => c.ClientID).FirstOrDefault()).Select(n => n.Name).FirstOrDefault(),
-
-                    executorName = _context.Users.Where(i => i.Id == _context.Team.Where(i => i.ID == id).Select(i => i.UserID).FirstOrDefault()).Select(n => n.FullName).FirstOrDefault(),
-                    isRework = task.IsRework,
-
-
-
-
-                };
-                retorno.Add(Task);
-
-
-
-            }
-            return retorno;
-
-
-
-
-        }
-
-        public string getClientName(int id)
-        {
-            return _context.Clients.Where(i => i.Id == _context.Contracts.Where(a => a.id == id).Select(c => c.ClientID).FirstOrDefault()).Select(n => n.Name).FirstOrDefault();
-        }
-
-        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
-        {
-            if (identifier == "E")
-            {
-                var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
-                updateNotes.NotesFromExecutor = notesExecut;
-                _context.Update(updateNotes);
-                _context.SaveChanges();
-                return true;
-
-            }
-            if (identifier == "P")
-            {
-                var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
-                updateNotes.NotesFromPlanner = notesPlanned;
-                _context.Update(updateNotes);
-                _context.SaveChanges();
-                return true;
-            }
-
-
-            else
-            {
-                return false;
-            }
-
+            return  _context.GetActivityPlanDetailsByExecutorID(id);
+             
+          
         }
 
 
-        public string UpdateTaskDescription(int taskID, string taskDescription)
-        {
-            var updateDescription = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
-            updateDescription.TaskDescription = taskDescription;
-            _context.Update(updateDescription);
-            _context.SaveChanges();
-            return taskDescription;
-        }
 
-        public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID)
-        {
-            var BusinessOptions = _context.vActivePlanBusinessUnit.Where(i => i.ContractID == ContractID).ToList();
-            return BusinessOptions;
-        }
 
-        public List<HoursExecutor> ExecutorHourForPeriod(HoursExecutorDTO executors)
-        {
-            string executorTeamIDs = executors.ExecutorsTeamID;
-            DateTime startDate = executors.StartDate;
-            DateTime endDate = executors.EndDate;
-            double Hours = executors.Hours;
-   
 
-            var listData =  _context.GetActivityPlanByExecutorTeamIDAndPeriod(executorTeamIDs, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"), Hours.ToString());
 
-            foreach (var obj in listData)
-            {
-                // Divida o nome em partes
-                string[] partesNome = obj.Executor.Split(' ');
 
-                // Verifique se o nome tem mais de 1 parte
-                if (partesNome.Length > 1)
-                {
-                    // pegando apenas o primeiro e ultimo nome 
-                    string novoNome = partesNome[0] + " " + partesNome[partesNome.Length - 1];
-                    
-                    obj.Executor = novoNome;
-                }
-            }
+    
 
-            return listData;
-
-        }
+    public string getClientName(int id)
+    {
+        return _context.Clients.Where(i => i.Id == _context.Contracts.Where(a => a.id == id).Select(c => c.ClientID).FirstOrDefault()).Select(n => n.Name).FirstOrDefault();
     }
+
+    public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
+    {
+        if (identifier == "E")
+        {
+            var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
+            updateNotes.NotesFromExecutor = notesExecut;
+            _context.Update(updateNotes);
+            _context.SaveChanges();
+            return true;
+
+        }
+        if (identifier == "P")
+        {
+            var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
+            updateNotes.NotesFromPlanner = notesPlanned;
+            _context.Update(updateNotes);
+            _context.SaveChanges();
+            return true;
+        }
+
+
+        else
+        {
+            return false;
+        }
+
+    }
+
+
+    public string UpdateTaskDescription(int taskID, string taskDescription)
+    {
+        var updateDescription = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
+        updateDescription.TaskDescription = taskDescription;
+        _context.Update(updateDescription);
+        _context.SaveChanges();
+        return taskDescription;
+    }
+
+    public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID)
+    {
+        var BusinessOptions = _context.vActivePlanBusinessUnit.Where(i => i.ContractID == ContractID).ToList();
+        return BusinessOptions;
+    }
+
+    public List<HoursExecutor> ExecutorHourForPeriod(HoursExecutorDTO executors)
+    {
+        string executorTeamIDs = executors.ExecutorsTeamID;
+        DateTime startDate = executors.StartDate;
+        DateTime endDate = executors.EndDate;
+        double Hours = executors.Hours;
+
+        var listData = _context.GetActivityPlanByExecutorTeamIDAndPeriod(executorTeamIDs, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"), Hours.ToString());
+
+        foreach (var obj in listData)
+        {
+        
+            string[] partesNome = obj.Executor.Split(' ');
+
+        
+            if (partesNome.Length > 1)
+            {
+             
+                string novoNome = partesNome[0] + " " + partesNome[partesNome.Length - 1];
+
+                obj.Executor = novoNome;
+            }
+        }
+
+        return listData;
+
+
+            
+
+    }
+}
 }

@@ -15,7 +15,7 @@ namespace TaskPlannerMetrum.Controllers
 
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
-    [Authorize]
+
     public class ActivityPlanController : ControllerBase
     {
         private readonly IActivityPlanBusiness _activityPlanBusiness;
