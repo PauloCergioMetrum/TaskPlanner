@@ -224,7 +224,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetBusinessUnitByContract(ContractID);
         }
 
-        public List<HoursExecutor> ExecutorHourForPeriod(HoursExecutorDTO executors)
+        public List<HoursDTO> ExecutorHourForPeriod(HoursExecutorDTO executors)
         {
          
             return  _activiesRepository.ExecutorHourForPeriod(executors);

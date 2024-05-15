@@ -39,7 +39,7 @@ namespace TaskPlannerMetrum.Business
         public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID);
 
 
-        public List<HoursExecutor> ExecutorHourForPeriod(HoursExecutorDTO activityPlan);
+        public List<HoursDTO> ExecutorHourForPeriod(HoursExecutorDTO activityPlan);
 
 
 
