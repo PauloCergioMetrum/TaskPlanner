@@ -13,10 +13,16 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public List<HoursByDay> Hours { get; set; }
 
+        public bool IsOverAllocated { get; set; }
+
+
         public class HoursByDay
         {
             public string PlannedManHours { get; set; }
             public string Project { get; set; }
+
+            public bool IsOverAllocated { get; set; }
+
         }
     }
 }

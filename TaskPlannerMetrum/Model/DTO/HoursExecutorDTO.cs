@@ -12,5 +12,7 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public double Hours { get; set; }
 
-    }
+
+        public bool IsOverAllocated { get; set; }   
+    } 
 }

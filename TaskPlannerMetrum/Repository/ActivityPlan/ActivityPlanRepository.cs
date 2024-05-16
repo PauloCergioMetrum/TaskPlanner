@@ -13,12 +13,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Repository.Generic;
+using static TaskPlannerMetrum.Model.DTO.HoursDTO;
 
 namespace TaskPlannerMetrum.Repository.ActivityPlan
 {
@@ -355,7 +358,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPlan.ScheduledDate = activityPlan.ScheduledDate;
             newActivityPlan.NotesFromExecutor = activityPlan.NotesFromExecutor;
             newActivityPlan.NotesFromPlanner = activityPlan.NotesFromPlanner;
-            newActivityPlan.TaskDescription = activityPlan.TaskDescription;            
+            newActivityPlan.TaskDescription = activityPlan.TaskDescription;
             newActivityPlan.Status = activityPlan.Status;
             newActivityPlan.BusinessUnit = activityPlan.BusinessUnit;
 
@@ -577,11 +580,11 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public dynamic GetUserforTask(int id)
         {
-            
+
             id = _context.Team.Where(i => i.UserID == id).Select(u => u.ID).FirstOrDefault();
-            return  _context.GetActivityPlanDetailsByExecutorID(id);
-             
-          
+            return _context.GetActivityPlanDetailsByExecutorID(id);
+
+
         }
 
 
@@ -590,86 +593,142 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
 
 
-    
 
-    public string getClientName(int id)
-    {
-        return _context.Clients.Where(i => i.Id == _context.Contracts.Where(a => a.id == id).Select(c => c.ClientID).FirstOrDefault()).Select(n => n.Name).FirstOrDefault();
-    }
 
-    public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
-    {
-        if (identifier == "E")
+        public string getClientName(int id)
         {
-            var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
-            updateNotes.NotesFromExecutor = notesExecut;
-            _context.Update(updateNotes);
-            _context.SaveChanges();
-            return true;
-
-        }
-        if (identifier == "P")
-        {
-            var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
-            updateNotes.NotesFromPlanner = notesPlanned;
-            _context.Update(updateNotes);
-            _context.SaveChanges();
-            return true;
+            return _context.Clients.Where(i => i.Id == _context.Contracts.Where(a => a.id == id).Select(c => c.ClientID).FirstOrDefault()).Select(n => n.Name).FirstOrDefault();
         }
 
-
-        else
+        public bool UpdateNotes(int taskID, string notesExecut, string notesPlanned, string identifier)
         {
-            return false;
-        }
-
-    }
-
-
-    public string UpdateTaskDescription(int taskID, string taskDescription)
-    {
-        var updateDescription = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
-        updateDescription.TaskDescription = taskDescription;
-        _context.Update(updateDescription);
-        _context.SaveChanges();
-        return taskDescription;
-    }
-
-    public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID)
-    {
-        var BusinessOptions = _context.vActivePlanBusinessUnit.Where(i => i.ContractID == ContractID).ToList();
-        return BusinessOptions;
-    }
-
-    public List<HoursExecutor> ExecutorHourForPeriod(HoursExecutorDTO executors)
-    {
-        string executorTeamIDs = executors.ExecutorsTeamID;
-        DateTime startDate = executors.StartDate;
-        DateTime endDate = executors.EndDate;
-        double Hours = executors.Hours;
-
-        var listData = _context.GetActivityPlanByExecutorTeamIDAndPeriod(executorTeamIDs, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"), Hours.ToString());
-
-        foreach (var obj in listData)
-        {
-        
-            string[] partesNome = obj.Executor.Split(' ');
-
-        
-            if (partesNome.Length > 1)
+            if (identifier == "E")
             {
-             
-                string novoNome = partesNome[0] + " " + partesNome[partesNome.Length - 1];
+                var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
+                updateNotes.NotesFromExecutor = notesExecut;
+                _context.Update(updateNotes);
+                _context.SaveChanges();
+                return true;
 
-                obj.Executor = novoNome;
             }
+            if (identifier == "P")
+            {
+                var updateNotes = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
+                updateNotes.NotesFromPlanner = notesPlanned;
+                _context.Update(updateNotes);
+                _context.SaveChanges();
+                return true;
+            }
+
+
+            else
+            {
+                return false;
+            }
+
         }
 
-        return listData;
 
+        public string UpdateTaskDescription(int taskID, string taskDescription)
+        {
+            var updateDescription = _context.ActivityPlan.Where(i => i.ID == taskID).FirstOrDefault();
+            updateDescription.TaskDescription = taskDescription;
+            _context.Update(updateDescription);
+            _context.SaveChanges();
+            return taskDescription;
+        }
+
+        public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID)
+        {
+            var BusinessOptions = _context.vActivePlanBusinessUnit.Where(i => i.ContractID == ContractID).ToList();
+            return BusinessOptions;
+        }
+
+
+
+
+        public List<HoursDTO> ExecutorHourForPeriod(HoursExecutorDTO executors)
+        {
+            string executorTeamIDs = executors.ExecutorsTeamID;
+            DateTime startDate = executors.StartDate;
+            DateTime endDate = executors.EndDate;
+            double Hours = executors.Hours;
+            bool IsOverAllocated = executors.IsOverAllocated;
+
+
+
+            List<HoursDTO> hoursDto = new List<HoursDTO>();
+
+            var hoursExecutorsList = _context.GetActivityPlanByExecutorTeamIDAndPeriod(executorTeamIDs, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"), Hours.ToString());
+
+            var executorDataList = hoursExecutorsList.Select(s => s.Executor).Distinct().ToList();
+
+            var scheduleDataList = hoursExecutorsList.Select(s => s.ScheduledDate).Distinct().ToList();
+
+ 
+            foreach (var schedule in scheduleDataList)
+            {
+                var executorList = hoursExecutorsList.Where(s => s.ScheduledDate == schedule).Select(s => s.Executor).Distinct().ToList();
+
+                foreach (var executor in executorList)
+                {
+                    List<HoursByDay> hoursByDays = new List<HoursByDay>();
+
+                    var hoursOnDateForExecutor = hoursExecutorsList
+                        .Where(h => h.ScheduledDate == schedule && h.Executor == executor);
+
+                    Dictionary<string, TimeSpan> totalPlannedHoursByProject = new Dictionary<string, TimeSpan>();
 
             
+                    foreach (var hourOnDate in hoursOnDateForExecutor)
+                    {
+                        if (totalPlannedHoursByProject.ContainsKey(hourOnDate.Project))
+                        {
+                            totalPlannedHoursByProject[hourOnDate.Project] += TimeSpan.Parse(hourOnDate.PlannedManHours);
+                        }
+                        else
+                        {
+                            totalPlannedHoursByProject[hourOnDate.Project] = TimeSpan.Parse(hourOnDate.PlannedManHours);
+                        }
+                    }
+
+            
+                    foreach (var kvp in totalPlannedHoursByProject)
+                    {
+                        hoursByDays.Add(new HoursByDay
+                        {
+                            PlannedManHours = $"{(int)kvp.Value.TotalHours:00}:{kvp.Value.Minutes:00}",
+                            Project = kvp.Key,
+                       
+
+                        });
+                    }
+
+                    TimeSpan totalHours = totalPlannedHoursByProject.Values
+                        .Aggregate(TimeSpan.Zero, (total, time) => total.Add(time));
+
+                    string resultTotalHours = $"{(int)totalHours.TotalHours:00}:{totalHours.Minutes:00}";
+
+                    hoursDto.Add(new HoursDTO
+                    {
+                        Executor = executor,
+                        ScheduledDate = schedule,
+                        TotalPlannedHours = resultTotalHours,
+                        Hours = hoursByDays,
+                      
+
+
+
+
+                    });
+                }
+
+
+            }
+            return hoursDto;
+        }
+
+
 
     }
-}
 }
