@@ -31,11 +31,11 @@ namespace TaskPlannerMetrum.Model
 
         public int ContractID { get; set; }
 
-        public int WorkSpaceID { get; set; }
+        public int? WorkSpaceID { get; set; }
 
         public string invoice { get; set; }
 
-        public string paymentCondition { get; set; }
+        public string? paymentCondition { get; set; }
 
         public string? BusinessUnit { get; set; }
 

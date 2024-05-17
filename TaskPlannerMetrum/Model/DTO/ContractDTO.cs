@@ -38,5 +38,10 @@ namespace TaskPlannerMetrum.Model.DTO
         public DateTime ValidityStartDate { get; set; }
 
         public DateTime ValidityEndDate { get; set; }
+
+        public string? PaymentCondition { get; set; }
+
+        public int WorkSpaceID { get; set; }
+
     }
 }

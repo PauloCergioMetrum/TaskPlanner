@@ -17,6 +17,8 @@ namespace TaskPlannerMetrum.Controllers
 
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
+    [Authorize(Roles = "4,1")]
+
     public class ProjectsController : ControllerBase
     {
         private readonly ILogger<ProjectsController> _logger;

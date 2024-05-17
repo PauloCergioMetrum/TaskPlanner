@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.ActivityPlan
@@ -38,6 +39,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public string UpdateTaskDescription(int taskID, string taskDescription);
 
         public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID);
+
+        public List<HoursDTO> ExecutorHourForPeriod(HoursExecutorDTO executors);
 
 
     }

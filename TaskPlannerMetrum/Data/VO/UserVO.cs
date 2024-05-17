@@ -16,7 +16,7 @@ namespace TaskPlannerMetrum.Data.VO
         public string PhoneNumber { get; set; }
         public int WorkspaceID { get; set; }
         public int DepartmentId { get; set; }
-        public int PermissionId { get; set; }
+        public string role { get; set; }
         public string Password { get; set; }
         public string RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
@@ -27,6 +27,8 @@ namespace TaskPlannerMetrum.Data.VO
         public bool IsActive { get; set; }
 
         public string PermissionName { get; set; }
+
+        public int  PermissionId { get; set; }   
 
 
 
