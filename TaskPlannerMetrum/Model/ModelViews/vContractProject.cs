@@ -28,7 +28,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public int Delayed { get; set; }
 
-        public string Status {  get; set; }
+        public int Status {  get; set; }
 
 
 

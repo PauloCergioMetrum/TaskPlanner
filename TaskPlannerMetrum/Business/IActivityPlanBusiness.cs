@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Business
@@ -36,6 +37,9 @@ namespace TaskPlannerMetrum.Business
 
         public string UpdateTaskDescription(int taskID, string taskDescription);
         public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID);
+
+
+        public List<HoursDTO> ExecutorHourForPeriod(HoursExecutorDTO activityPlan);
 
 
 

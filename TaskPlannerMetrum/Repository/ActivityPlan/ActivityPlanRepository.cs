@@ -8,15 +8,20 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using MySqlConnector;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Repository.Generic;
+using static TaskPlannerMetrum.Model.DTO.HoursDTO;
 
 namespace TaskPlannerMetrum.Repository.ActivityPlan
 {
@@ -177,41 +182,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public List<vActivePlans> FindAllTaskByProject(string projectId)
         {
             return _context.vActivePlans.Where(c => c.ContractID == Convert.ToInt32(projectId)).OrderBy(d => d.ScheduledDate).ToList();
-
-            //List<vActivityPlan> _activityPlans = new List<vActivityPlan>();
-            //var taskPlans = _context.ActivityPlan.Where(a => a.ContractID == Convert.ToInt32(projectId)).ToList().OrderBy(d => d.ScheduledDate);
-
-
-
-            //foreach (var taskPlan in taskPlans)
-            //{
-
-            //    var userid = _context.Team.Where(t => t.ID == taskPlan.ExecutorTeamID).Select(s => s.UserID).FirstOrDefault();
-            //    _activityPlans.Add(new vActivityPlan
-            //    {
-            //        ActivitiesScopeListID = taskPlan.ActivitiesScopeListID,
-            //        Description = _context.ActivitiesScopeList.Where(d => d.ID == Convert.ToInt32(taskPlan.ActivitiesScopeListID)).Select(s => s.Description).FirstOrDefault(),
-            //        ExecutedManHour = taskPlan.ExecutedManHour,
-            //        ExecutorName = _context.Users.Where(u => u.Id == userid).Select(s => s.FullName).FirstOrDefault(),
-            //        ExecutorTeamID = taskPlan.ExecutorTeamID,
-            //        NotesFromExecutor = taskPlan.NotesFromExecutor,
-            //        NotesFromPlanner = taskPlan.NotesFromPlanner,
-            //        TaskDescription = taskPlan.TaskDescription,
-            //        PlannedManHour = taskPlan.PlannedManHour,
-            //        PlannerTeamID = taskPlan.PlannerTeamID,
-            //        ContractID = taskPlan.ContractID,
-            //        ScheduledDate = taskPlan.ScheduledDate,
-            //        Status = taskPlan.Status,
-            //        ID = taskPlan.ID,
-            //        statusName = GetStatusName(taskPlan.Status.ToString(), taskPlan.ScheduledDate),
-            //        IsRework = taskPlan.IsRework,
-            //        ProjectName = _context.Projects.Where(p => p.ID == taskPlan.ContractID).Select(p => p.Name).FirstOrDefault(),
-            //        UserID = _context.Team.Where(u => u.ID == taskPlan.ExecutorTeamID).Select(u => u.UserID).FirstOrDefault()
-
-            //    }); ;
-            //}
-
-            //return _activityPlans;
         }
 
 
@@ -230,36 +200,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public List<vActivePlans> FindAllTaskByUser(string userId)
         {
             return _context.vActivePlans.Where(u => u.ExecutorTeamID == Convert.ToInt32(userId)).ToList();
-            //List<vActivityPlan> _activityPlans = new List<vActivityPlan>();
-            //var pmTeamId = _context.Team.Where(t => t.UserID == Convert.ToInt32(userId)).Select(s => s.ID).FirstOrDefault();
-
-
-            //foreach (var taskPlan in _context.ActivityPlan.Where(t => t.ExecutorTeamID == pmTeamId).ToList())
-            //{
-            //    _activityPlans.Add(new vActivityPlan
-            //    {
-            //        ActivitiesScopeListID = taskPlan.ActivitiesScopeListID,
-            //        Description = _context.ActivitiesScopeList.Where(d => d.ID == Convert.ToInt32(taskPlan.ActivitiesScopeListID)).Select(s => s.Description).FirstOrDefault(),
-            //        ExecutedManHour = taskPlan.ExecutedManHour,
-            //        ExecutorName = _context.Users.Where(u => u.Id == Convert.ToInt32(userId)).Select(s => s.FullName).FirstOrDefault(),
-            //        ExecutorTeamID = taskPlan.ExecutorTeamID,
-            //        NotesFromExecutor = taskPlan.NotesFromExecutor,
-            //        NotesFromPlanner = taskPlan.NotesFromPlanner,
-            //        TaskDescription = taskPlan.TaskDescription,
-            //        PlannedManHour = taskPlan.PlannedManHour,
-            //        PlannerTeamID = taskPlan.PlannerTeamID,
-            //        ContractID = taskPlan.ContractID,
-            //        ScheduledDate = taskPlan.ScheduledDate,
-            //        Status = taskPlan.Status,
-            //        ID = taskPlan.ID,
-            //        statusName = GetStatusName(taskPlan.Status.ToString(), taskPlan.ScheduledDate),
-            //        ProjectName = _context.Projects.Where(p => p.ID == taskPlan.ContractID).Select(p => p.Name).FirstOrDefault(),
-            //        IsRework = taskPlan.IsRework,
-
-
-            //    });
-            //}
-            //return _activityPlans;
         }
 
 
@@ -407,27 +347,25 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 updateRatingExecutor(activityPlan.ExecutorTeamID, newActivityPlan.ExecutorTeamID, newActivityPlan.ContractID);
             }
 
-            if (activityPlan.ExecutedManHour == 0 && (activityPlan.Status != "4" && activityPlan.Status != "3"))
+            if (activityPlan.ExecutedManHour == 0 && (activityPlan.Status != "4" && activityPlan.Status != "3" && activityPlan.Status != "9"))
             {
-                
+
                 activityPlan.Status = "5";
             }
-            
+
 
             newActivityPlan.ExecutedManHour = activityPlan.ExecutedManHour;
             newActivityPlan.ScheduledDate = activityPlan.ScheduledDate;
             newActivityPlan.NotesFromExecutor = activityPlan.NotesFromExecutor;
             newActivityPlan.NotesFromPlanner = activityPlan.NotesFromPlanner;
             newActivityPlan.TaskDescription = activityPlan.TaskDescription;
-            newActivityPlan.PlannedManHour = activityPlan.PlannedManHour;
-            newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID;
             newActivityPlan.Status = activityPlan.Status;
             newActivityPlan.BusinessUnit = activityPlan.BusinessUnit;
 
             _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
 
-         
+
 
             return true;
         }
@@ -585,31 +523,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public dynamic GetDepTask(UserDepForTask deptask)
         {
-            List<dynamic> Users = new List<dynamic>();
-            var userid = _context.Users.Where(a => a.IsActive == true).OrderBy(i => i.FullName).ToList();
-            foreach (var user in userid)
-            {
-                var raiting = _context.UserTask.Where(i => i.ActivitiesScopeListID == deptask.taskID && i.UserID == user.Id).Select(r => r.Rating).Sum();
-                double allTask = _context.UserTask.Where(a => a.ActivitiesScopeListID == deptask.taskID && user.Id == a.UserID).Count();
-                double media = raiting / allTask;
-                if (raiting == 0 && allTask == 0)
-                {
-                    media = 0;
-                }
+            return _context.Users.Where(a => a.IsActive == true).OrderBy(i => i.FullName).Select(u => new { UserName = u.FullName, UserID = u.Id, ContractID = 0, IsActive = u.IsActive }).ToList();
 
-                var users = new
-                {
-                    UserName = user.FullName,
-                    UserID = user.Id,
-                    Rating = Convert.ToDouble(media.ToString("0.0")),
-                    ContractID = deptask.ContractID,
-                    IsActive = user.IsActive
-
-                };
-                Users.Add(users);
-
-            }
-            return Users;
         }
 
         public bool DuplicateTask(Model.DuplicatTask activityPlan)
@@ -663,60 +578,22 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         }
 
-
-
         public dynamic GetUserforTask(int id)
         {
-            List<dynamic> retorno = new List<dynamic>();
+
             id = _context.Team.Where(i => i.UserID == id).Select(u => u.ID).FirstOrDefault();
-            var alltasks = _context.ActivityPlan.Where(i => i.ExecutorTeamID == id).ToList();
-
-
-
-
-
-
-            foreach (var task in alltasks)
-            {
-
-                var Task = new
-                {
-                    id = task.ID,
-                    contractID = task.ContractID,
-                    projectName = _context.Contracts.Where(i => i.id == task.ContractID).Select(i => i.InternalCode).FirstOrDefault(),
-                    description = _context.ActivitiesScopeList.Where(i => i.ID == task.ActivitiesScopeListID).Select(d => d.Description).FirstOrDefault(),
-                    activitiesScopeListID = task.ActivitiesScopeListID,
-                    scheduledDate = task.ScheduledDate,
-                    plannedManHour = task.PlannedManHour,
-                    plannerTeamID = task.PlannerTeamID,
-                    notesFromPlanner = task.NotesFromPlanner,
-                    executorTeamID = task.ExecutorTeamID,
-                    status = GetStatus(task),
-                    executedManHour = task.ExecutedManHour,
-                    taskDescription = task.TaskDescription,
-                    notesFromExecutor = task.NotesFromExecutor,
-                    userID = task.ExecutorTeamID,
-
-                    clientName = _context.Clients.Where(i => i.Id == _context.Contracts.Where(a => a.id == task.ContractID).Select(c => c.ClientID).FirstOrDefault()).Select(n => n.Name).FirstOrDefault(),
-
-                    executorName = _context.Users.Where(i => i.Id == _context.Team.Where(i => i.ID == id).Select(i => i.UserID).FirstOrDefault()).Select(n => n.FullName).FirstOrDefault(),
-                    isRework = task.IsRework,
-
-
-
-
-                };
-                retorno.Add(Task);
-
-
-
-            }
-            return retorno;
-
-
+            return _context.GetActivityPlanDetailsByExecutorID(id);
 
 
         }
+
+
+
+
+
+
+
+
 
         public string getClientName(int id)
         {
@@ -751,39 +628,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         }
 
-        private string GetStatus(Model.ActivityPlan task)
-        {
-            if (task.ExecutedManHour > 0 && (task.Status != "1" && task.Status != "6" && task.Status != "4" && task.Status != "3"))
-            {
-                return "2";
-            }
-            return task.Status;
-        }
-
-
-
-        // Ao cadastrar outro fiscal, o fiscal já cadastrado será removido
-
-        /* public void managerRemover(int ContractID, int UserID)
-        {
-            var removerManager = _context.RatingProject.Where(f => f.UserID == UserID && f.ID == ContractID).FirstOrDefault();
-            if (removerManager != null)
-            {
-                var ratingGet = _context.Rating.Where(r => r.RatingProjectID == removerManager.ID).ToList();
-
-                foreach (var rating in ratingGet)
-                {
-                    _context.Rating.Remove(rating);
-                    _context.SaveChanges();
-
-
-                }
-                _context.SaveChanges();
-                _context.RatingProject.Remove(removerManager);
-            }
-
-        }
-        */
 
         public string UpdateTaskDescription(int taskID, string taskDescription)
         {
@@ -799,5 +643,92 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             var BusinessOptions = _context.vActivePlanBusinessUnit.Where(i => i.ContractID == ContractID).ToList();
             return BusinessOptions;
         }
+
+
+
+
+        public List<HoursDTO> ExecutorHourForPeriod(HoursExecutorDTO executors)
+        {
+            string executorTeamIDs = executors.ExecutorsTeamID;
+            DateTime startDate = executors.StartDate;
+            DateTime endDate = executors.EndDate;
+            double Hours = executors.Hours;
+            bool IsOverAllocated = executors.IsOverAllocated;
+
+
+
+            List<HoursDTO> hoursDto = new List<HoursDTO>();
+
+            var hoursExecutorsList = _context.GetActivityPlanByExecutorTeamIDAndPeriod(executorTeamIDs, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"), Hours.ToString());
+
+            var executorDataList = hoursExecutorsList.Select(s => s.Executor).Distinct().ToList();
+
+            var scheduleDataList = hoursExecutorsList.Select(s => s.ScheduledDate).Distinct().ToList();
+
+ 
+            foreach (var schedule in scheduleDataList)
+            {
+                var executorList = hoursExecutorsList.Where(s => s.ScheduledDate == schedule).Select(s => s.Executor).Distinct().ToList();
+
+                foreach (var executor in executorList)
+                {
+                    List<HoursByDay> hoursByDays = new List<HoursByDay>();
+
+                    var hoursOnDateForExecutor = hoursExecutorsList
+                        .Where(h => h.ScheduledDate == schedule && h.Executor == executor);
+
+                    Dictionary<string, TimeSpan> totalPlannedHoursByProject = new Dictionary<string, TimeSpan>();
+
+            
+                    foreach (var hourOnDate in hoursOnDateForExecutor)
+                    {
+                        if (totalPlannedHoursByProject.ContainsKey(hourOnDate.Project))
+                        {
+                            totalPlannedHoursByProject[hourOnDate.Project] += TimeSpan.Parse(hourOnDate.PlannedManHours);
+                        }
+                        else
+                        {
+                            totalPlannedHoursByProject[hourOnDate.Project] = TimeSpan.Parse(hourOnDate.PlannedManHours);
+                        }
+                    }
+
+            
+                    foreach (var kvp in totalPlannedHoursByProject)
+                    {
+                        hoursByDays.Add(new HoursByDay
+                        {
+                            PlannedManHours = $"{(int)kvp.Value.TotalHours:00}:{kvp.Value.Minutes:00}",
+                            Project = kvp.Key,
+                       
+
+                        });
+                    }
+
+                    TimeSpan totalHours = totalPlannedHoursByProject.Values
+                        .Aggregate(TimeSpan.Zero, (total, time) => total.Add(time));
+
+                    string resultTotalHours = $"{(int)totalHours.TotalHours:00}:{totalHours.Minutes:00}";
+
+                    hoursDto.Add(new HoursDTO
+                    {
+                        Executor = executor,
+                        ScheduledDate = schedule,
+                        TotalPlannedHours = resultTotalHours,
+                        Hours = hoursByDays,
+                      
+
+
+
+
+                    });
+                }
+
+
+            }
+            return hoursDto;
+        }
+
+
+
     }
 }

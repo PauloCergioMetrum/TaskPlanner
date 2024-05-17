@@ -8,6 +8,7 @@ using System.Linq;
 using TaskPlannerMetrum.Data.Converter.Implementations;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
+using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Repository.ActiviesScope;
 using TaskPlannerMetrum.Repository.ActivityPlan;
@@ -221,6 +222,13 @@ namespace TaskPlannerMetrum.Business.Implementations
         public List<vActivePlanBusinessUnit> GetBusinessUnitByContract(int ContractID)
         {
             return _activiesRepository.GetBusinessUnitByContract(ContractID);
+        }
+
+        public List<HoursDTO> ExecutorHourForPeriod(HoursExecutorDTO executors)
+        {
+         
+            return  _activiesRepository.ExecutorHourForPeriod(executors);
+
         }
     }
 }

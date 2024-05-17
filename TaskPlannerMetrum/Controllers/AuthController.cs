@@ -21,6 +21,7 @@ namespace TaskPlannerMetrum.Controllers
 
         [HttpPost]
         [Route("signin")]
+        [AllowAnonymous]
         public IActionResult Signin([FromBody] UserVO user)
         {
             try

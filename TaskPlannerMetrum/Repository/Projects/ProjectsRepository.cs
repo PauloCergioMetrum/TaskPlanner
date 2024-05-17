@@ -324,8 +324,12 @@ namespace TaskPlannerMetrum.Repository.Projects
 
             foreach (var item in info)
             {
-                var users = _context.Users
-                     .Where(i => (i.DepartmentId == item.DepartmentID && i.PermissionId != null) || (i.PermissionId == 1 || i.PermissionId == 4))
+                var users = _context.Users .Where(u => (u.PermissionId == 1 || u.PermissionId == 4) && u.IsActive == true)
+
+              //.Where(i => ((i.DepartmentId == item.DepartmentID && i.PermissionId != null) || (i.PermissionId == 1 || i.PermissionId == 4)) && i.IsActive)
+
+               
+
 
 
                     .Select(u => new
@@ -342,10 +346,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                     .FirstOrDefault()
                     .ToString();
 
-                var TechLeaderName = _context.Users
-                    .Where(i => i.Id == item.TechLeaderID)
-                    .Select(n => n.FullName)
-                    .FirstOrDefault();
+                var TechLeaderName = _context.Users.Where(i => i.Id == item.TechLeaderID).Select(n => n.FullName).FirstOrDefault();
 
                 var result = new
                 {
@@ -645,7 +646,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                             Progress = reader.GetString(index++),
                             Expectedhour = reader.GetString(index++),
                             Delayed = reader.GetInt32(index++),
-                            Status = reader.GetString(index++)
+                            Status = reader.GetInt32(index++)
                         };
                         if (register.EnableProject)
                         {
