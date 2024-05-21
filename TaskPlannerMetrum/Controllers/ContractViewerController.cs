@@ -12,7 +12,7 @@ namespace TaskPlannerMetrum.Controllers
 
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
-    [Authorize(Roles = "4")]
+    [Authorize(Roles = "4,1")]
     public class ContractViewerController:ControllerBase
     {
 
@@ -20,7 +20,9 @@ namespace TaskPlannerMetrum.Controllers
 
         public ContractViewerController(IContractViewerBusiness contractViewerBusiness)
         {
-            _contractViewerBusiness = contractViewerBusiness;   
+            _contractViewerBusiness = contractViewerBusiness;
+            
+            // subindo
         }
 
         [HttpGet("GetAllContractsView")]
