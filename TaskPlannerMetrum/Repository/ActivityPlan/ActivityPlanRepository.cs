@@ -581,7 +581,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public dynamic GetUserforTask(int id)
         {
 
-            id = _context.Team.Where(i => i.UserID == id).Select(u => u.ID).FirstOrDefault();
+            //id = _context.Team.Where(i => i.UserID == id).Select(u => u.ID).FirstOrDefault();
             return _context.GetActivityPlanDetailsByExecutorID(id);
 
 
