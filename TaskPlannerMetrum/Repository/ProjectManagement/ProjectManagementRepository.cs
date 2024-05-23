@@ -181,22 +181,38 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public int CreateMilestonesItem(MilestonesItem milestones)
         {
-
-            var existMilesTones = _context.MilestonesItem.Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID).FirstOrDefault();
-            if (existMilesTones == null)
+            if (milestones == null)
             {
-                _context.MilestonesItem.Add(milestones);
-                _context.SaveChanges();
-                return _context.MilestonesItem.Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID).Select(i => i.ID).FirstOrDefault();
-            }
-            else
-            {
-                return existMilesTones.ID;
+                throw new ArgumentNullException(nameof(milestones));
             }
 
+            try
+            {
+                var existMilesTones = _context.MilestonesItem
+                    .FirstOrDefault(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID);
 
+                if (existMilesTones == null)
+                {
+                    _context.MilestonesItem.Add(milestones);
+                    _context.SaveChanges();
 
+                    return _context.MilestonesItem
+                        .Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID)
+                        .Select(i => i.ID)
+                        .FirstOrDefault();
+                }
+                else
+                {
+                    return existMilesTones.ID;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("An error occurred while creating the MilestonesItem.", ex);
+            }
         }
+
 
         public bool CreateMilestonesValue(MilestonesValue milestones)
         {
