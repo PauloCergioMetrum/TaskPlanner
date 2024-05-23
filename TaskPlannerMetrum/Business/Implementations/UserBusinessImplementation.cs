@@ -91,6 +91,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             userEntity.Password = userPassword.Password;
             userEntity.UserEmail = user.UserEmail;
             userEntity.UserName = user.UserName;
+            userEntity.PermissionId = user.PermissionId;
+            //userEntity.PermissionName = user.PermissionName;    
+
+
 
             userEntity = _repository.Update(userEntity);
             return _converter.Parse(userEntity);

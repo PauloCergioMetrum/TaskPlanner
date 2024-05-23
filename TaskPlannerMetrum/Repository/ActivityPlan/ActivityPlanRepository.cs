@@ -318,6 +318,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 Status = activity.Status,
                 TaskDescription = activity.TaskDescription,
                 ScheduledDate = activity.ScheduledDate,
+               
                 BusinessUnit = activity.BusinessUnit,
                 ProjectName = _context.Projects
                     .Where(p => p.ID == activity.ContractID)
@@ -332,8 +333,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
 
 
-
-        public bool UpdateActivityPlan(vActivityPlan activityPlan)
+       public bool UpdateActivityPlan(vActivityPlan activityPlan)
         {
             var newActivityPlan = _context.ActivityPlan.FirstOrDefault(a => a.ID == activityPlan.ID);
 
@@ -361,6 +361,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPlan.TaskDescription = activityPlan.TaskDescription;
             newActivityPlan.Status = activityPlan.Status;
             newActivityPlan.BusinessUnit = activityPlan.BusinessUnit;
+            newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID;    
 
             _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
@@ -369,6 +370,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
             return true;
         }
+
 
 
 

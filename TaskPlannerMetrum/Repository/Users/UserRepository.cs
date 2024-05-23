@@ -166,8 +166,9 @@ namespace TaskPlannerMetrum.Repository.Users
         }
 
 
-        public dynamic GetAllUsers ()
+        public dynamic GetAllUsers()
         {
+
             var users = _context.Users.ToList();
 
             return users.Select(u => new
@@ -182,9 +183,28 @@ namespace TaskPlannerMetrum.Repository.Users
                 u.CreationDate,
                 u.IsActive,
             }).ToList();
-
-
-            
         }
+
+
+
+
+        //var users = _context.Users.ToList();
+
+        //return users.Select(u => new
+        //{
+        //    u.UserName,
+        //    Id = _context.Team.Where(i => i.UserID == u.Id).Select(i => i.ID).FirstOrDefault(),
+        //    u.PhoneNumber,
+        //    u.UserEmail,
+        //    u.WorkspaceID,
+        //    u.DepartmentId,
+        //    u.FullName,
+        //    u.CreationDate,
+        //    u.IsActive,
+        //}).ToList();
+
+
+
+
     }
 }
