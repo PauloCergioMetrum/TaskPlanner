@@ -23,7 +23,7 @@ namespace TaskPlannerMetrum.Model.DTO
         public string StatusName { get; set; }
         public bool IsRework { get; set; }
         public string BusinessUnit { get; set; }
-         public string PhysicalProgress { get; set; }
+     
 
     }
 }
