@@ -40,7 +40,7 @@ using System.ComponentModel.DataAnnotations;
 
         public string BusinessUnit {  get; set; }
 
-        public string PhysicalProgress { get; set; }
+        public string MilestonesID { get; set; }
 
     }
 
