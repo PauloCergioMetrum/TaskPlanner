@@ -55,7 +55,8 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.IsRework = activityPlan.IsRework;
                     task.DepartamentID = activityPlan.DepartamentID;
                     task.TaskDescription = activityPlan.TaskDescription;
-                    task.BusinessUnit = activityPlan.BusinessUnit;
+                    task.BusinessUnit = activityPlan.BusinessUnit;               
+                    task.PhysicalProgress = activityPlan.PhysicalProgress;
                     _activiesRepository.Create(task);
                 }
                 return true;

@@ -42,6 +42,8 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string BusinessUnit { get; set; }
 
+           public string PhysicalProgress { get; set; }
+
 
 
 

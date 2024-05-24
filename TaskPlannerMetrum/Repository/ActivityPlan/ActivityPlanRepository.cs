@@ -56,7 +56,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     IsRework = activityPlan.IsRework,
                     DepartamentID = activityPlan.DepartamentID,
                     BusinessUnit = activityPlan.BusinessUnit,
-                });
+                   PhysicalProgress = activityPlan.PhysicalProgress,    
+    });
                 _context.SaveChanges();
 
 
@@ -318,7 +319,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 Status = activity.Status,
                 TaskDescription = activity.TaskDescription,
                 ScheduledDate = activity.ScheduledDate,
-               
+               PhysicalProgress = activity.PhysicalProgress,
                 BusinessUnit = activity.BusinessUnit,
                 ProjectName = _context.Projects
                     .Where(p => p.ID == activity.ContractID)
@@ -363,6 +364,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPlan.BusinessUnit = activityPlan.BusinessUnit;
             newActivityPlan.PlannedManHour = activityPlan.PlannedManHour;
             newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID == 0 ? newActivityPlan.ExecutorTeamID : activityPlan.ExecutorTeamID;
+            newActivityPlan.PhysicalProgress = activityPlan.PhysicalProgress;   
 
             _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
@@ -549,7 +551,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 NotesFromPlanner = taskforduplicate.NotesFromPlanner,
                 TaskDescription = taskforduplicate.TaskDescription,
                 IsRework = taskforduplicate.IsRework,
-                NotesFromExecutor = taskforduplicate.NotesFromExecutor
+                NotesFromExecutor = taskforduplicate.NotesFromExecutor,
+                PhysicalProgress = taskforduplicate.PhysicalProgress,   
             });
             _context.SaveChanges();
 
