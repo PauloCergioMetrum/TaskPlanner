@@ -107,6 +107,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     ExecutedDate = milesTonesDTO.DatePerformed,
                     RescheduledDate = milesTonesDTO.ReplannedDate,
                     ScheduledDate = milesTonesDTO.PlannedDate,
+                    TypeID = milesTonesDTO.TypeID,  
 
                 });
                 return true;
@@ -123,15 +124,24 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         }
 
+        public bool DeleteMilestones(MilesTonesDTO ID)
+        {
+            return _projectmanagementRepository.DeleteMilestones(ID);
+        }
+
+
+
+
 
         public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO)
         {
             var MalesTonesValues = _projectmanagementRepository.GetMilestonesValueByID(milesTonesDTO.ID);
-            if (milesTonesDTO.ReplannedDate.Date != MalesTonesValues.RescheduledDate.Value.Date || milesTonesDTO.DatePerformed.Date != MalesTonesValues.ExecutedDate.Value.Date)
+            if (MalesTonesValues != null)
             {
                 MalesTonesValues.RescheduledDate = milesTonesDTO.ReplannedDate;
                 MalesTonesValues.ExecutedDate = milesTonesDTO.DatePerformed;
                 MalesTonesValues.Description = milesTonesDTO.Detail;
+                milesTonesDTO.TypeID = milesTonesDTO.TypeID;    
                 MalesTonesValues.Baseline = MalesTonesValues.Baseline + 1;
                 return _projectmanagementRepository.UpdateMilesTones(MalesTonesValues);
             }
@@ -141,9 +151,11 @@ namespace TaskPlannerMetrum.Business.Implementations
                 MalesTonesValues.ExecutedDate = milesTonesDTO.DatePerformed;
                 MalesTonesValues.Description = milesTonesDTO.Detail;
                 MalesTonesValues.Baseline = MalesTonesValues.Baseline;
+                milesTonesDTO.TypeID = milesTonesDTO.TypeID;
                 return _projectmanagementRepository.UpdateMilesTones(MalesTonesValues);
             }
         }
+
 
         public List<string> GetMilestonesNames(int contractID)
         {

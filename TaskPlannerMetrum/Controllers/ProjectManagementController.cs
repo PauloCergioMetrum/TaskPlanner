@@ -134,6 +134,28 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
+        [HttpDelete("DeleteMilestones")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteMilestones(Model.DTO .MilesTonesDTO ID)
+        {
+            try
+            {
+
+
+                return Ok(_projectManagementBusiness.DeleteMilestones(ID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
         [HttpGet("GetPositionsByGrup")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]

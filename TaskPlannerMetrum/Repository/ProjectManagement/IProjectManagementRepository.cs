@@ -21,7 +21,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         List<string> GetMilestonesNames(int contractID);
 
-        public void DeleteMilestones(int contractID);
+        public bool  DeleteMilestones(MilesTonesDTO ID);
 
 
 
@@ -65,9 +65,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
 
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
-
-
-
-
+       
     }
 }

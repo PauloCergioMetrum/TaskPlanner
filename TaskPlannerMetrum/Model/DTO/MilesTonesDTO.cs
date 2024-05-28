@@ -18,6 +18,7 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public DateTime DatePerformed { get; set; }
 
-        public string Detail { get; set; }  
+        public string Detail { get; set; }
+        public int TypeID { get; set; }
     }
 }

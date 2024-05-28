@@ -228,10 +228,19 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-        public void DeleteMilestones(int contractID)
+        public bool DeleteMilestones(MilesTonesDTO ID)
         {
-
+            var milestone = _context.MilestonesValue.FirstOrDefault(m => m.ID == m.ID);
+            if (milestone != null)
+            {
+                _context.MilestonesValue.Remove(milestone);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+            
         }
+
 
         public Model.Contracts GetForecastByID(int id)
         {

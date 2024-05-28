@@ -20,5 +20,7 @@ namespace TaskPlannerMetrum.Model
 
         public string? Description { get; set;}
 
+        public int TypeID { get; set; }
+
     }
 }
