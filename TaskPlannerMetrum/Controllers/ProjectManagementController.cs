@@ -91,6 +91,28 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetAllMilestonesItem")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAllMilestonesItem(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllMilestonesItem(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
         [HttpPut("UpdateMilesTones")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]

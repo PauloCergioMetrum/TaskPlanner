@@ -178,7 +178,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-
         public int CreateMilestonesItem(MilestonesItem milestones)
         {
             if (milestones == null)
@@ -188,30 +187,77 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
             try
             {
-                var existMilesTones = _context.MilestonesItem
+                var existingMilestones = _context.MilestonesItem
                     .FirstOrDefault(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID);
 
-                if (existMilesTones == null)
+                if (existingMilestones == null)
                 {
                     _context.MilestonesItem.Add(milestones);
-                    _context.SaveChanges();
-
-                    return _context.MilestonesItem
-                        .Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID)
-                        .Select(i => i.ID)
-                        .FirstOrDefault();
                 }
                 else
                 {
-                    return existMilesTones.ID;
+                   
+                    existingMilestones.Name = milestones.Name;
+                    existingMilestones.ID = milestones.ID;
+                    existingMilestones.ContractID = milestones.ContractID;
+                   
                 }
+
+                _context.SaveChanges();
+
+                return milestones.ID; 
             }
             catch (Exception ex)
             {
-
-                throw new Exception("An error occurred while creating the MilestonesItem.", ex);
+                throw new Exception("Ocorreu um erro ao criar ou atualizar o MilestonesItem.", ex);
             }
         }
+
+        //public int CreateMilestonesItem(MilestonesItem milestones)
+        //{
+        //    if (milestones == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(milestones));
+        //    }
+
+        //    try
+        //    {
+        //        var existMilesTones = _context.MilestonesItem
+        //            .FirstOrDefault(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID);
+
+        //        if (existMilesTones == null)
+        //        {
+        //            _context.MilestonesItem.Add(milestones);
+        //            _context.SaveChanges();
+
+        //            return _context.MilestonesItem
+        //                .Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID)
+        //                .Select(i => i.ID)
+        //                .FirstOrDefault();
+        //        }
+        //        else
+        //        {
+        //           _context.MilestonesItem.Update(existMilesTones);
+        //            _context.SaveChanges();
+
+
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw new Exception("An error occurred while creating the MilestonesItem.", ex);
+        //    }
+        //}
+
+        public bool UpdateMilesTones(MilestonesValue milestonesValue)
+        {
+            _context.MilestonesValue.Update(milestonesValue);
+            _context.SaveChanges();
+            return true;
+        }
+
 
 
         public bool CreateMilestonesValue(MilestonesValue milestones)
@@ -287,12 +333,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.MilestonesValue.Where(i => i.MilestonesID == milestonesID).FirstOrDefault();
         }
 
-        public bool UpdateMilesTones(MilestonesValue milestonesValue)
-        {
-            _context.MilestonesValue.Update(milestonesValue);
-            _context.SaveChanges();
-            return true;
-        }
+     
 
         public List<Positions> GetPositionsByGrup()
         {
@@ -498,6 +539,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
         {
             throw new NotImplementedException();
+        }
+
+        public List<vMilestonesItem> GetAllMilestonesItem(int ContractID)
+        {
+            var GetAllMileStones = _context.vMilestonesItem.Where(i => i.ContractID ==ContractID).ToList();
+
+            return GetAllMileStones;
         }
     }
 }

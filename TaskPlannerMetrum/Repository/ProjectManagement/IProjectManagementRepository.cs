@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -65,6 +66,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
 
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
-       
+
+        public List<vMilestonesItem> GetAllMilestonesItem(int ContractID);
     }
 }

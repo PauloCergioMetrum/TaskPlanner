@@ -358,7 +358,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllContractProjectByTechLeader(TechLeaderID, InspectorName);
         }
 
-       
+        public List<vMilestonesItem> GetAllMilestonesItem(int ContractID)
+        {
+            return _projectmanagementRepository.GetAllMilestonesItem(ContractID);
+        }
     }
 }
 
