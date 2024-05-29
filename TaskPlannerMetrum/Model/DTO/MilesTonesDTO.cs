@@ -12,6 +12,7 @@ namespace TaskPlannerMetrum.Model.DTO
         public string ID { get; set; }
         public int Baseline { get; set; }
 
+        public string Name { get; set; }    
         public int MilestonesID {  get; set; }
         public int ContractID { get; set; }
         public string Description { get; set; }

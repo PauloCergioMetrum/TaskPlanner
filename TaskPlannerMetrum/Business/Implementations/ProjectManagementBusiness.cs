@@ -95,7 +95,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 int milestonesID = _projectmanagementRepository.CreateMilestonesItem(new MilestonesItem
                 {
                     ContractID = milesTonesDTO.ContractID,
-                    Name = milesTonesDTO.Description
+                    Name = milesTonesDTO.Name,  
                 });
 
               
