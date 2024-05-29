@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TaskPlannerMetrum.Model.ModelViews
 {
-    public class vMilestonesItem
+    public class vMileStonesValue
     {
         [Key]
-        public Guid ID { get; set; }
+        public string ID { get; set; }
         public int ContractID { get; set; }
 
-        public string MilestonesName { get; set; }
+        //public string MilestonesName { get; set; }
 
         public DateTime ScheduledDate { get; set; }
 

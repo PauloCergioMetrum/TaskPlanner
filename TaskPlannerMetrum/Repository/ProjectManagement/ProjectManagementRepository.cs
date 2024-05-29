@@ -193,71 +193,20 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 if (existingMilestones == null)
                 {
                     _context.MilestonesItem.Add(milestones);
+                    _context.SaveChanges();
+
+                    return milestones.ID; 
                 }
                 else
                 {
-                   
-                    existingMilestones.Name = milestones.Name;
-                    existingMilestones.ID = milestones.ID;
-                    existingMilestones.ContractID = milestones.ContractID;
-                   
+                    return existingMilestones.ID;
                 }
-
-                _context.SaveChanges();
-
-                return milestones.ID; 
             }
             catch (Exception ex)
             {
                 throw new Exception("Ocorreu um erro ao criar ou atualizar o MilestonesItem.", ex);
             }
         }
-
-        //public int CreateMilestonesItem(MilestonesItem milestones)
-        //{
-        //    if (milestones == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(milestones));
-        //    }
-
-        //    try
-        //    {
-        //        var existMilesTones = _context.MilestonesItem
-        //            .FirstOrDefault(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID);
-
-        //        if (existMilesTones == null)
-        //        {
-        //            _context.MilestonesItem.Add(milestones);
-        //            _context.SaveChanges();
-
-        //            return _context.MilestonesItem
-        //                .Where(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID)
-        //                .Select(i => i.ID)
-        //                .FirstOrDefault();
-        //        }
-        //        else
-        //        {
-        //           _context.MilestonesItem.Update(existMilesTones);
-        //            _context.SaveChanges();
-
-
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw new Exception("An error occurred while creating the MilestonesItem.", ex);
-        //    }
-        //}
-
-        public bool UpdateMilesTones(MilestonesValue milestonesValue)
-        {
-            _context.MilestonesValue.Update(milestonesValue);
-            _context.SaveChanges();
-            return true;
-        }
-
 
 
         public bool CreateMilestonesValue(MilestonesValue milestones)
@@ -273,6 +222,19 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return false;
             }
         }
+
+
+
+        public bool UpdateMilesTones(MilestonesValue milestonesValue)
+        {
+            _context.MilestonesValue.Update(milestonesValue);
+            _context.SaveChanges();
+            return true;
+        }
+
+
+
+  
 
         public bool DeleteMilestones(MilesTonesDTO ID)
         {
@@ -541,11 +503,20 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             throw new NotImplementedException();
         }
 
-        public List<vMilestonesItem> GetAllMilestonesItem(int ContractID)
+        public List<vMileStonesValue> GetAllMilestonesItem(int ContractID)
         {
-            var GetAllMileStones = _context.vMilestonesItem.Where(i => i.ContractID ==ContractID).ToList();
+            var GetAllMileStones = _context.vMileStonesValue.Where(i => i.ContractID ==ContractID).ToList();
 
             return GetAllMileStones;
+        }
+
+        public bool IsExistMilesStone(MilesTonesDTO milesTonesDTO)
+        {
+            
+            return _context.MilestonesItem.Any(i => i.ContractID == milesTonesDTO.ContractID && i.Name == milesTonesDTO.Description);
+
+
+
         }
     }
 }

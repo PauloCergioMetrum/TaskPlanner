@@ -51,7 +51,7 @@ namespace TaskPlannerMetrum.Model.Context
 
 
         //Views
-        public DbSet<vMilestonesItem> vMilestonesItem { get; set; }
+        public DbSet<vMileStonesValue>vMileStonesValue { get; set; }
         public DbSet<vProjectList> vProjectList { get; set; }
         public DbSet<vUserList> vUserList { get; set; }
 
