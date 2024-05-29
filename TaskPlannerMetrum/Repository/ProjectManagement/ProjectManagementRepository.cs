@@ -238,7 +238,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeleteMilestones(string ID)
         {
-            var milestone = _context.MilestonesValue.FirstOrDefault(m => m.ID == m.ID);
+            var milestone = _context.MilestonesValue.FirstOrDefault(m => m.ID == ID);
             if (milestone != null)
             {
                 _context.MilestonesValue.Remove(milestone);
