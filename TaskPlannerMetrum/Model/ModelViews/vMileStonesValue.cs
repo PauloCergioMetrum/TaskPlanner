@@ -9,7 +9,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string ID { get; set; }
         public int ContractID { get; set; }
 
-        //public string MilestonesName { get; set; }
+        public string MilestonesName { get; set; }
 
         public DateTime ScheduledDate { get; set; }
 
