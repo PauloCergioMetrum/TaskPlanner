@@ -23,4 +23,6 @@ namespace TaskPlannerMetrum.Model.DTO
    
         public int TypeID { get; set; }
     }
+
+
 }

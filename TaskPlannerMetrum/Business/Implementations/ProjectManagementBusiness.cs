@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using TaskPlannerMetrum.Repository.ProjectManagement;
 using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Model.ModelViews;
+using System.Diagnostics.Contracts;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -91,6 +92,9 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             try
             {
+
+
+              
               
                 int milestonesID = _projectmanagementRepository.CreateMilestonesItem(new MilestonesItem
                 {
@@ -98,7 +102,6 @@ namespace TaskPlannerMetrum.Business.Implementations
                     Name = milesTonesDTO.Name,  
                 });
 
-              
                 _projectmanagementRepository.CreateMilestonesValue(new MilestonesValue
                 {
                     ID = milesTonesDTO.ID,
@@ -132,39 +135,31 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-
-
-
         public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO)
         {
-            if (int.TryParse(milesTonesDTO.ID, out int milestoneId))
+            if (milesTonesDTO != null)
             {
-                var MalesTonesValues = _projectmanagementRepository.GetMilestonesValueByID(milestoneId);
-                if (MalesTonesValues != null)
+                _projectmanagementRepository.UpdateMilesTones(new MilestonesValue
                 {
-                    MalesTonesValues.RescheduledDate = milesTonesDTO.RescheduledDate;
-                    MalesTonesValues.ExecutedDate = milesTonesDTO.ExecutedDate;
-                    MalesTonesValues.Description = milesTonesDTO.Description;
-                    milesTonesDTO.TypeID = milesTonesDTO.TypeID;
-                    MalesTonesValues.Baseline = MalesTonesValues.Baseline + 1;
-                    return _projectmanagementRepository.UpdateMilesTones(MalesTonesValues);
-                }
-                else
-                {
-                    MalesTonesValues.RescheduledDate = milesTonesDTO.RescheduledDate;
-                    MalesTonesValues.ExecutedDate = milesTonesDTO.ExecutedDate;
-                    MalesTonesValues.Description = milesTonesDTO.Description;
-                    MalesTonesValues.Baseline = MalesTonesValues.Baseline;
-                    milesTonesDTO.TypeID = milesTonesDTO.TypeID;
-                    return _projectmanagementRepository.UpdateMilesTones(MalesTonesValues);
-                }
-            }
-            else
-            {
+                    MilestonesID = milesTonesDTO.MilestonesID,
+                    ID = milesTonesDTO.ID,
+                    Baseline = milesTonesDTO.Baseline,
+                    Description = milesTonesDTO.Description,
+                    ExecutedDate = milesTonesDTO.ExecutedDate,
+                    RescheduledDate = milesTonesDTO.RescheduledDate,
+                    ScheduledDate = milesTonesDTO.ScheduledDate,
+                    TypeID = milesTonesDTO.TypeID,
+                   
 
-                throw new ArgumentException("ID is not a valid integer");
+                    
+
+                });
+
+                return true;
+
             }
-        }
+            return false;
+        } 
 
 
 

@@ -227,9 +227,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool UpdateMilesTones(MilestonesValue milestonesValue)
         {
-            _context.MilestonesValue.Update(milestonesValue);
-            _context.SaveChanges();
-            return true;
+           if (milestonesValue != null)
+            {
+                _context.MilestonesValue.Update(milestonesValue);
+                _context.SaveChanges();
+                return true;
+            }
+           return false;
         }
 
 
