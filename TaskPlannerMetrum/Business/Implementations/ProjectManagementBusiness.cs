@@ -126,7 +126,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public bool DeleteMilestones(MilesTonesDTO ID)
+        public bool DeleteMilestones(string ID)
         {
             return _projectmanagementRepository.DeleteMilestones(ID);
         }

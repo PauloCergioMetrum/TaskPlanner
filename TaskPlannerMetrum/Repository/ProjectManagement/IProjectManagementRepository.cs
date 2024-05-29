@@ -22,7 +22,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         List<string> GetMilestonesNames(int contractID);
 
-        public bool  DeleteMilestones(MilesTonesDTO ID);
+        public bool  DeleteMilestones( string ID);
 
 
 

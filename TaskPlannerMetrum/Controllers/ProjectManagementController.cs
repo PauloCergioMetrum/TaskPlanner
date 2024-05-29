@@ -161,7 +161,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult DeleteMilestones(Model.DTO .MilesTonesDTO ID)
+        public IActionResult DeleteMilestones( string ID)
         {
             try
             {
