@@ -546,8 +546,17 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             var teste = _context.MilestonesItem.Where(a => a.ID == ID).FirstOrDefault();
             teste.Name =  milesTonesDTO.Name ;
-          
             _context.Update(teste);
+            _context.SaveChanges();
+
+
+
+             var UpdateMilesStonesValue  = _context.MilestonesValue.Where(a => a.MilestonesID == ID).FirstOrDefault();
+            UpdateMilesStonesValue.ScheduledDate = milesTonesDTO.ScheduledDate;
+            UpdateMilesStonesValue.Description = milesTonesDTO.Description;
+            UpdateMilesStonesValue.RescheduledDate = milesTonesDTO.RescheduledDate;
+            UpdateMilesStonesValue.Description = milesTonesDTO.Description;
+            _context.Update(UpdateMilesStonesValue);
             _context.SaveChanges();
             return true;
 
