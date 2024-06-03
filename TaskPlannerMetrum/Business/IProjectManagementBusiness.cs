@@ -60,8 +60,10 @@ namespace TaskPlannerMetrum.Business
 
         public List<vMileStonesValue> GetAllMilestonesItem(int ContractID);
 
-  
 
+
+        public int existMilesStonesValue(string ID);
+        public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
 
 
 

@@ -522,5 +522,38 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
         }
+
+        public int  existMilesStonesValue(  string ID)
+             
+        {
+
+            var teste = _context.MilestonesValue.Where(a => a.ID == ID).FirstOrDefault();
+           
+             
+            if (teste != null)
+            {
+                return teste.MilestonesID;
+            }
+            else
+            {
+                return 0;
+            }
+
+
+        }
+
+        public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO , int ID)
+        {
+            var teste = _context.MilestonesItem.Where(a => a.ID == ID).FirstOrDefault();
+            teste.Name =  milesTonesDTO.Name ;
+          
+            _context.Update(teste);
+            _context.SaveChanges();
+            return true;
+
+
+
+        }
+
     }
 }

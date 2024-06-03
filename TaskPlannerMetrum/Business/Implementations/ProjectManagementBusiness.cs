@@ -88,36 +88,53 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
+
+        public int existMilesStonesValue(string ID)
+        {
+            return _projectmanagementRepository.existMilesStonesValue(ID);
+        }
+
+        public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID)
+        {
+            return _projectmanagementRepository.UpdateMilesValue( milesTonesDTO ,ID);
+        }
+
+
         public bool CreateMilesTones(MilesTonesDTO milesTonesDTO)
         {
             try
             {
 
+                var ExixteValue = _projectmanagementRepository.existMilesStonesValue(milesTonesDTO.ID);
 
-              
-              
-                int milestonesID = _projectmanagementRepository.CreateMilestonesItem(new MilestonesItem
+                if (ExixteValue ==0 )
                 {
-                    ContractID = milesTonesDTO.ContractID,
-                    Name = milesTonesDTO.Name,  
-                });
+                    int milestonesID = _projectmanagementRepository.CreateMilestonesItem(new MilestonesItem
+                    {
+                        ContractID = milesTonesDTO.ContractID,
+                        Name = milesTonesDTO.Name,
+                    });
 
-                _projectmanagementRepository.CreateMilestonesValue(new MilestonesValue
+                    _projectmanagementRepository.CreateMilestonesValue(new MilestonesValue
+                    {
+                        ID = milesTonesDTO.ID,
+                        MilestonesID = milestonesID,
+                        Baseline = milesTonesDTO.Baseline,
+                        Description = milesTonesDTO.Description,
+                        ExecutedDate = milesTonesDTO.ExecutedDate,
+                        RescheduledDate = milesTonesDTO.RescheduledDate,
+                        ScheduledDate = milesTonesDTO.ScheduledDate,
+                        TypeID = milesTonesDTO.TypeID,
+
+
+
+                    });
+                }
+                else
                 {
-                    ID = milesTonesDTO.ID,
-                    MilestonesID = milestonesID,
-                    Baseline = milesTonesDTO.Baseline,
-                    Description = milesTonesDTO.Description,
-                    ExecutedDate = milesTonesDTO.ExecutedDate,
-                    RescheduledDate = milesTonesDTO.RescheduledDate,
-                    ScheduledDate = milesTonesDTO.ScheduledDate,
-                    TypeID = milesTonesDTO.TypeID,
-                   
-                    
-                    
-                });
+                    _projectmanagementRepository.UpdateMilesValue(milesTonesDTO, ExixteValue);
+                }
 
-               
                 return true;
             }
             catch
@@ -125,6 +142,8 @@ namespace TaskPlannerMetrum.Business.Implementations
                 return false;
             }
         }
+
+
 
 
 
@@ -149,9 +168,9 @@ namespace TaskPlannerMetrum.Business.Implementations
                     RescheduledDate = milesTonesDTO.RescheduledDate,
                     ScheduledDate = milesTonesDTO.ScheduledDate,
                     TypeID = milesTonesDTO.TypeID,
-                   
 
-                    
+
+
 
                 });
 
@@ -159,7 +178,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             }
             return false;
-        } 
+        }
 
 
 
@@ -368,6 +387,8 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetAllMilestonesItem(ContractID);
         }
+
+
     }
 }
 

@@ -69,7 +69,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vMileStonesValue> GetAllMilestonesItem(int ContractID);
         public bool IsExistMilesStone (MilesTonesDTO milesTonesDTO);
-     
+
+        public int existMilesStonesValue(string ID);
+        public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
+
+
+
 
     }
 }
