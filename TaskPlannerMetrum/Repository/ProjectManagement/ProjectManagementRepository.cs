@@ -564,5 +564,14 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         }
 
+
+        // MOBILIZAÇÃO
+        public List<vpm_combination_Mobilization> GetMobilization(int contractID)
+        {
+            return _context.vpm_combination_Mobilization.Where(a => a.ContractID == contractID).ToList();
+        }
+
+
+
     }
 }

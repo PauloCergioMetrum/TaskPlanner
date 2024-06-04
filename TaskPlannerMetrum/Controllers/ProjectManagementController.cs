@@ -493,5 +493,28 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        // MOBILIZAÇÃO
+
+        [HttpGet("GetMobilization")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetMobilization(int contractID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetMobilization(contractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

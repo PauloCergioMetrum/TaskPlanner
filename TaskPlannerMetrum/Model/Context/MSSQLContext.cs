@@ -51,6 +51,9 @@ namespace TaskPlannerMetrum.Model.Context
 
 
         //Views
+
+
+        public DbSet<vpm_combination_Mobilization>vpm_combination_Mobilization{ get; set; }
         public DbSet<vMileStonesValue>vMileStonesValue { get; set; }
         public DbSet<vProjectList> vProjectList { get; set; }
         public DbSet<vUserList> vUserList { get; set; }

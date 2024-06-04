@@ -66,7 +66,7 @@ namespace TaskPlannerMetrum.Business
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
 
 
-
-
+        //MOBILIZAÇÃO 
+        public List<vpm_combination_Mobilization> GetMobilization(int contractID);
     }
 }

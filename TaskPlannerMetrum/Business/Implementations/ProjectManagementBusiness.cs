@@ -389,6 +389,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
+        // MOBILIZAÇÃO
+        public List<vpm_combination_Mobilization> GetMobilization(int contractID)
+        {
+            return _projectmanagementRepository.GetMobilization(contractID);
+        }
     }
 }
 
