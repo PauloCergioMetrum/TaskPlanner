@@ -1,6 +1,7 @@
 ﻿using Memt.Logger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -576,22 +577,96 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
-        // CREATE Mobilization_Planed
+
+
+
+
+
+
+        //Atualiza se existir, caso contrário, cria um novo registro de Mobilization Planned
+        public bool UpdateMobilization(string ID)
+        {
+            var mobilizationToUpdate = _context.PM_Mobilization_Planned.FirstOrDefault(a => a.ID == ID);
+            if (mobilizationToUpdate != null)
+            {
+                _context.PM_Mobilization_Planned.Update(mobilizationToUpdate);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned)
         {
-            _context.PM_Mobilization_Planned.Add(mobilizationPlanned);
+            var existingMobilization = _context.PM_Mobilization_Planned.FirstOrDefault(a => a.ID == mobilizationPlanned.ID);
+            if (existingMobilization != null)
+            {
+
+                existingMobilization.CountMobilization = mobilizationPlanned.CountMobilization;
+                existingMobilization.CountAccommodation = mobilizationPlanned.CountAccommodation;
+                existingMobilization.CountFood = mobilizationPlanned.CountFood;
+                existingMobilization.CountAirTransport = mobilizationPlanned.CountAirTransport;
+                existingMobilization.CountGroundTransport = mobilizationPlanned.CountGroundTransport;
+                existingMobilization.CountOthers = mobilizationPlanned.CountOthers;
+                _context.PM_Mobilization_Planned.Update(existingMobilization);
+            }
+            else
+            {
+
+                _context.PM_Mobilization_Planned.Add(mobilizationPlanned);
+            }
+
             _context.SaveChanges();
             return true;
         }
-        // CREATE Mobilization_Made
+
+
+
+
+        //Atualiza se existir, caso contrário, cria um novo registro de Mobilization Made
         public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade)
         {
-           _context .PM_Mobilization_Made.Add(mobilizationMade);
+
+            var exixtMolizationMade = _context.PM_Mobilization_Made.FirstOrDefault(a => a.ID == mobilizationMade.ID);
+
+            if (exixtMolizationMade != null)
+            {
+                exixtMolizationMade.CountMobilization = mobilizationMade.CountMobilization;
+                exixtMolizationMade.CountAccommodation = mobilizationMade.CountAccommodation;
+
+                exixtMolizationMade.CountFood = mobilizationMade.CountFood;
+                exixtMolizationMade.CountAirTransport = mobilizationMade.CountAirTransport;
+                exixtMolizationMade.CountGroundTransport = mobilizationMade.CountGroundTransport;
+                exixtMolizationMade.CountOthers = mobilizationMade.CountOthers;
+                exixtMolizationMade.DateStart = mobilizationMade.DateStart;
+                exixtMolizationMade.DateEnd = mobilizationMade.DateEnd;
+                exixtMolizationMade.Description = mobilizationMade.Description;
+                exixtMolizationMade.MobilizationPlannedID = mobilizationMade.MobilizationPlannedID;
+            }
+            else
+            {
+                _context.PM_Mobilization_Made.Add(mobilizationMade);
+            }
             _context.SaveChanges();
             return true;
         }
 
-       
+        public bool UpdateMobilizationMaded(string ID)
+        {
 
+            var mobilizationToUpdatMade = _context.PM_Mobilization_Made.FirstOrDefault(a => a.ID == ID);
+            if (mobilizationToUpdatMade != null)
+            {
+                _context.PM_Mobilization_Made.Update(mobilizationToUpdatMade);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

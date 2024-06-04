@@ -402,12 +402,23 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned)
         {
+
             return _projectmanagementRepository.CreateMobilizationPlanned(mobilizationPlanned);
         }
 
         public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade)
         {
             return _projectmanagementRepository.CreateMobilizationMade(mobilizationMade);
+        }
+
+        public bool UpdateMobilization(string ID)
+        {  
+            return _projectmanagementRepository.UpdateMobilization(ID);
+        }
+
+        public bool UpdateMobilizationMaded(string ID)
+        {
+           return _projectmanagementRepository.UpdateMobilizationMaded(ID);
         }
     }
 }

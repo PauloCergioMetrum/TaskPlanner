@@ -82,7 +82,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);   
 
         public bool CreateMobilizationMade (PM_Mobilization_Made mobilizationMade);
-
-
+        public bool UpdateMobilization(string ID);
+        public bool UpdateMobilizationMaded(string ID);
     }
 }
