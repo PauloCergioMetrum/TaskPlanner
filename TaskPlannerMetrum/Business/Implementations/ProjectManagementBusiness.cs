@@ -394,6 +394,21 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetMobilization(contractID);
         }
+
+          public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID)
+        {
+            return _projectmanagementRepository.GetMobilizationMade(mobilizationPlannedID);
+        }
+
+        public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned)
+        {
+            return _projectmanagementRepository.CreateMobilizationPlanned(mobilizationPlanned);
+        }
+
+        public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade)
+        {
+            return _projectmanagementRepository.CreateMobilizationMade(mobilizationMade);
+        }
     }
 }
 

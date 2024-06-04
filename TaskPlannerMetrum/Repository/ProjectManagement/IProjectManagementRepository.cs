@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore.Query.Internal;
+using System.Collections.Generic;
 using System.Globalization;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
@@ -73,12 +74,14 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public int existMilesStonesValue(string ID);
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
 
+
         // MOBILIZAÇÃO 
-
-
-
         public List<vpm_combination_Mobilization> GetMobilization(int contractID);
+        public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
 
+        public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);   
+
+        public bool CreateMobilizationMade (PM_Mobilization_Made mobilizationMade);
 
 
     }

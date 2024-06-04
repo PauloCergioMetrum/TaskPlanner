@@ -515,6 +515,66 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+       [HttpGet("GetMobilizationMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetMobilizationMade(string mobilizationPlannedID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.GetMobilizationMade(mobilizationPlannedID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+        [HttpPost("CreateMobilizationPlanned")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.CreateMobilizationPlanned(mobilizationPlanned));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPost("CreateMobilizationMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateMobilizationMade(PM_Mobilization_Made mobilizationMade)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.CreateMobilizationMade(mobilizationMade));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }

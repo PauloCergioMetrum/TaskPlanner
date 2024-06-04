@@ -195,7 +195,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     _context.MilestonesItem.Add(milestones);
                     _context.SaveChanges();
 
-                    return milestones.ID; 
+                    return milestones.ID;
                 }
                 else
                 {
@@ -227,18 +227,18 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool UpdateMilesTones(MilestonesValue milestonesValue)
         {
-           if (milestonesValue != null)
+            if (milestonesValue != null)
             {
                 _context.MilestonesValue.Update(milestonesValue);
                 _context.SaveChanges();
                 return true;
             }
-           return false;
+            return false;
         }
 
 
 
-  
+
 
         public bool DeleteMilestones(string ID)
         {
@@ -250,7 +250,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return true;
             }
             return false;
-            
+
         }
 
 
@@ -299,7 +299,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.MilestonesValue.Where(i => i.MilestonesID == milestonesID).FirstOrDefault();
         }
 
-     
+
 
         public List<Positions> GetPositionsByGrup()
         {
@@ -383,7 +383,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeleteTypeOfCost(string ID)
         {
-            var typeOfCostToRemove = _context.Pm_Type_Cost.SingleOrDefault( t => t.ID == ID);
+            var typeOfCostToRemove = _context.Pm_Type_Cost.SingleOrDefault(t => t.ID == ID);
 
             if (typeOfCostToRemove != null)
             {
@@ -437,12 +437,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return false;
         }
 
-        public List<PmCostPlanned> GetPmCostPlanned( int ContractID )
+        public List<PmCostPlanned> GetPmCostPlanned(int ContractID)
         {
             var ListPmCostPlanned = _context.Pm_Cost_Planned.Where(i => i.ContractID == ContractID).ToList();
 
             //var ListPmCostPlanned = _context.Pm_Cost_Planned.ToList();
-           return ListPmCostPlanned;
+            return ListPmCostPlanned;
         }
 
 
@@ -459,7 +459,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
                     existingCostMade.Pm_Cost_PlannedID = pmCostMade.Pm_Cost_PlannedID;
-                   //existingCostMade.TypeCostID = pmCostMade.TypeCostID = "sjkbgdhufgsdhf";
+                    //existingCostMade.TypeCostID = pmCostMade.TypeCostID = "sjkbgdhufgsdhf";
 
                     _context.SaveChanges();
                     return true;
@@ -509,27 +509,27 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vMileStonesValue> GetAllMilestonesItem(int ContractID)
         {
-            var GetAllMileStones = _context.vMileStonesValue.Where(i => i.ContractID ==ContractID).ToList();
+            var GetAllMileStones = _context.vMileStonesValue.Where(i => i.ContractID == ContractID).ToList();
 
             return GetAllMileStones;
         }
 
         public bool IsExistMilesStone(MilesTonesDTO milesTonesDTO)
         {
-            
+
             return _context.MilestonesItem.Any(i => i.ContractID == milesTonesDTO.ContractID && i.Name == milesTonesDTO.Description);
 
 
 
         }
 
-        public int  existMilesStonesValue(  string ID)
-             
+        public int existMilesStonesValue(string ID)
+
         {
 
             var teste = _context.MilestonesValue.Where(a => a.ID == ID).FirstOrDefault();
-           
-             
+
+
             if (teste != null)
             {
                 return teste.MilestonesID;
@@ -542,16 +542,16 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         }
 
-        public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO , int ID)
+        public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID)
         {
             var teste = _context.MilestonesItem.Where(a => a.ID == ID).FirstOrDefault();
-            teste.Name =  milesTonesDTO.Name ;
+            teste.Name = milesTonesDTO.Name;
             _context.Update(teste);
             _context.SaveChanges();
 
 
 
-             var UpdateMilesStonesValue  = _context.MilestonesValue.Where(a => a.MilestonesID == ID).FirstOrDefault();
+            var UpdateMilesStonesValue = _context.MilestonesValue.Where(a => a.MilestonesID == ID).FirstOrDefault();
             UpdateMilesStonesValue.ScheduledDate = milesTonesDTO.ScheduledDate;
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
             UpdateMilesStonesValue.RescheduledDate = milesTonesDTO.RescheduledDate;
@@ -565,13 +565,33 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
-        // MOBILIZAÇÃO
+        // MOBILIZAÇÃO  PLANNED
         public List<vpm_combination_Mobilization> GetMobilization(int contractID)
         {
             return _context.vpm_combination_Mobilization.Where(a => a.ContractID == contractID).ToList();
         }
+        public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID)
+        {
+            return _context.PM_Mobilization_Made.Where(a => a.MobilizationPlannedID == mobilizationPlannedID).ToList();
+        }
 
 
+        // CREATE Mobilization_Planed
+        public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned)
+        {
+            _context.PM_Mobilization_Planned.Add(mobilizationPlanned);
+            _context.SaveChanges();
+            return true;
+        }
+        // CREATE Mobilization_Made
+        public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade)
+        {
+           _context .PM_Mobilization_Made.Add(mobilizationMade);
+            _context.SaveChanges();
+            return true;
+        }
+
+       
 
     }
 }
