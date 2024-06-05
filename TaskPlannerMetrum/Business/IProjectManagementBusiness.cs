@@ -81,8 +81,7 @@ namespace TaskPlannerMetrum.Business
         public bool DeleteMobilization(string ID);
         public bool DeleteMobilizationMade(string ID);
 
-        // SERVIÇO TERCERIZADO 
-
+        public List<string> GetAllOutsourcedServiceNames();
         public bool CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned);
         public bool UpdateoutsourcedServicePlanned(string ID);
     }

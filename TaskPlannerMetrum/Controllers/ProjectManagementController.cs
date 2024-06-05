@@ -613,6 +613,25 @@ namespace TaskPlannerMetrum.Controllers
         // SERVIÇO TERCERIZADO 
 
 
+        [HttpGet("GetAllOutsourcedServiceNames")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAllOutsourcedServiceNames()
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.GetAllOutsourcedServiceNames());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
         [HttpPost("CreateoutsourcedServicePlanned")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]

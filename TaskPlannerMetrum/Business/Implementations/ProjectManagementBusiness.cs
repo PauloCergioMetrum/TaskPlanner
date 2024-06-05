@@ -449,6 +449,9 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
         // SERVIÇO TERCERIZADO
+
+
+
         public bool CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned)
         {
             try
@@ -467,12 +470,17 @@ namespace TaskPlannerMetrum.Business.Implementations
             try
             {
                 _projectmanagementRepository.UpdateoutsourcedServicePlanned(ID);
-                return true;    
+                return true;
             }
             catch (Exception ex)
             {
-                 return false ;
+                return false;
             }
+        }
+
+        public List<string> GetAllOutsourcedServiceNames()
+        {
+             return _projectmanagementRepository.GetAllOutsourcedServiceNames();
         }
     }
 }

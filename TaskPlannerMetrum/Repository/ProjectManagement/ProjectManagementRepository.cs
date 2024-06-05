@@ -706,6 +706,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
         //  SERVIÇO TERCEIRIZADO 
+
+        public List<string> GetAllOutsourcedServiceNames()
+        {
+            return _context.PM_Type_OutsourcedServices
+                           .Select(a => a.Name)
+                           .ToList();
+        }
         public bool CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned)
         {
             var OutsourcedServicePlannedCreate = _context.PM_OutsourcedServices_Planned.Where(a => a.ID == createoutsourcedServicePlanned.ID);
@@ -740,5 +747,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
         }
+
+      
+
+
     }
 }
