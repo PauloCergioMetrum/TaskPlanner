@@ -465,11 +465,11 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
         }
 
-        public bool UpdateoutsourcedServicePlanned(string ID)
+        public bool UpdateoutsourcedServicePlanned(PM_OutsourcedServices_Planned updatedService)
         {
             try
             {
-                _projectmanagementRepository.UpdateoutsourcedServicePlanned(ID);
+                _projectmanagementRepository.UpdateoutsourcedServicePlanned(updatedService);
                 return true;
             }
             catch (Exception ex)

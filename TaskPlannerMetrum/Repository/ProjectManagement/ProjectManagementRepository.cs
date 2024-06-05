@@ -637,6 +637,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 exixtMolizationMade.DateEnd = mobilizationMade.DateEnd;
                 exixtMolizationMade.Description = mobilizationMade.Description;
                 exixtMolizationMade.MobilizationPlannedID = mobilizationMade.MobilizationPlannedID;
+
+
             }
             else
             {
@@ -709,34 +711,34 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<string> GetAllOutsourcedServiceNames()
         {
-            return _context.PM_Type_OutsourcedServices
-                           .Select(a => a.Name)
-                           .ToList();
+            return _context.PM_Type_OutsourcedServices.Select(a => a.Name).ToList();
         }
+
         public bool CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned)
         {
-            var OutsourcedServicePlannedCreate = _context.PM_OutsourcedServices_Planned.Where(a => a.ID == createoutsourcedServicePlanned.ID);
-            if (OutsourcedServicePlannedCreate != null)
+            var existingService = _context.PM_OutsourcedServices_Planned.FirstOrDefault(a => a.ID == createoutsourcedServicePlanned.ID);
+            if (existingService != null)
             {
-
+                _context.Entry(existingService).CurrentValues.SetValues(createoutsourcedServicePlanned);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
                 _context.PM_OutsourcedServices_Planned.Add(createoutsourcedServicePlanned);
                 _context.SaveChanges();
                 return true;
             }
-            else
-            {
-                return false;
-            }
         }
 
-
-
-        public bool UpdateoutsourcedServicePlanned(string ID)
+        public bool UpdateoutsourcedServicePlanned(PM_OutsourcedServices_Planned updatedService)
         {
-            var outSourcedServiceUpdate = _context.PM_OutsourcedServices_Planned.FirstOrDefault(a => a.ID == ID);
-            if (outSourcedServiceUpdate != null)
+            var existingService = _context.PM_OutsourcedServices_Planned.FirstOrDefault(a => a.ID == updatedService.ID);
+            if (existingService != null)
             {
-                _context.PM_OutsourcedServices_Planned.Update(outSourcedServiceUpdate);
+                
+
+                _context.Entry(existingService).CurrentValues.SetValues(updatedService);
                 _context.SaveChanges();
                 return true;
             }
@@ -744,11 +746,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             {
                 return false;
             }
-
-
         }
 
-      
+
+
 
 
     }
