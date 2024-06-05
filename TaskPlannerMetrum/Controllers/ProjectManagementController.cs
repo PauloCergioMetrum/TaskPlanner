@@ -610,6 +610,29 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        // SERVIÇO TERCERIZADO 
+
+
+        [HttpPost("CreateoutsourcedServicePlanned")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.CreateoutsourcedServicePlanned(createoutsourcedServicePlanned));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }

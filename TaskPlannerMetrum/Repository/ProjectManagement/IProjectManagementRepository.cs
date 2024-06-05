@@ -87,5 +87,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeleteMobilization(string ID);
         public bool DeleteMobilizationMade(string ID);
+
+        // SERVIÇOES TERCEIRIZADO 
+
+        public bool CreateoutsourcedServicePlanned( PM_OutsourcedServices_Planned createoutsourcedServicePlanned);
+
+        public bool UpdateoutsourcedServicePlanned( string ID);
+
     }
 }

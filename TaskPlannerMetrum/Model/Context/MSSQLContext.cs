@@ -49,6 +49,8 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<PM_Mobilization_Made> PM_Mobilization_Made { get; set; }
         public DbSet<PM_Mobilization_Planned> PM_Mobilization_Planned { get; set; }
 
+        public DbSet<PM_OutsourcedServices_Planned> PM_OutsourcedServices_Planned { get; set; }
+
 
 
 

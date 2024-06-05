@@ -576,13 +576,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.PM_Mobilization_Made.Where(a => a.MobilizationPlannedID == mobilizationPlannedID).ToList();
         }
 
-
-
-
-
-
-
-
         //Atualiza se existir, caso contrário, cria um novo registro de Mobilization Planned
         public bool UpdateMobilization(string ID)
         {
@@ -711,6 +704,41 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             {
                 return false;
             }
+        }
+        //  SERVIÇO TERCEIRIZADO 
+        public bool CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned)
+        {
+            var OutsourcedServicePlannedCreate = _context.PM_OutsourcedServices_Planned.Where(a => a.ID == createoutsourcedServicePlanned.ID);
+            if (OutsourcedServicePlannedCreate != null)
+            {
+
+                _context.PM_OutsourcedServices_Planned.Add(createoutsourcedServicePlanned);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+
+        public bool UpdateoutsourcedServicePlanned(string ID)
+        {
+            var outSourcedServiceUpdate = _context.PM_OutsourcedServices_Planned.FirstOrDefault(a => a.ID == ID);
+            if (outSourcedServiceUpdate != null)
+            {
+                _context.PM_OutsourcedServices_Planned.Update(outSourcedServiceUpdate);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
         }
     }
 }
