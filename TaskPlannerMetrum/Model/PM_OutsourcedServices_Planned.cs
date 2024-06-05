@@ -8,5 +8,7 @@
         public double TypeID { get; set; }
         public string Description { get; set; }
         public int ContractID { get; set; }
+
+        public bool Subcontracting { get; set; }
     }
 }
