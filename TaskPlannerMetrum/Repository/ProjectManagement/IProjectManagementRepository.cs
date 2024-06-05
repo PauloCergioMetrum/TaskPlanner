@@ -94,8 +94,14 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<string> GetAllOutsourcedServiceNames();
         public bool CreateoutsourcedServicePlanned( PM_OutsourcedServices_Planned createoutsourcedServicePlanned);
+        public bool CreateoutsourcedServiceMade(PM_OutsourcedServices_Made createoutsourcedServiceMade);
+
+
 
         public bool UpdateoutsourcedServicePlanned(PM_OutsourcedServices_Planned updatedService);
+
+        public bool UpdateoutsourcedServiceMade(PM_OutsourcedServices_Made updatedServiceMade);
+
 
     }
 }

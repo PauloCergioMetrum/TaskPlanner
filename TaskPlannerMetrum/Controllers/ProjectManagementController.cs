@@ -653,5 +653,27 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+
+        [HttpPost("CreateoutsourcedServiceMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateoutsourcedServiceMade(PM_OutsourcedServices_Made createoutsourcedServiceMade)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.CreateoutsourcedServiceMade(createoutsourcedServiceMade));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

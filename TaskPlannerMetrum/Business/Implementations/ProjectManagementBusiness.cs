@@ -482,6 +482,29 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
              return _projectmanagementRepository.GetAllOutsourcedServiceNames();
         }
+
+        public bool UpdateoutsourcedServiceMade(PM_OutsourcedServices_Made updatedServiceMade)
+        {
+            try
+            {
+                 return  _projectmanagementRepository.UpdateoutsourcedServiceMade(updatedServiceMade);
+            }  catch (Exception ex)
+            {
+                return false;   
+            }
+        }
+
+        public bool CreateoutsourcedServiceMade(PM_OutsourcedServices_Made createoutsourcedServiceMade)
+        {
+            try
+            {
+                 return _projectmanagementRepository.CreateoutsourcedServiceMade(createoutsourcedServiceMade);
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
 

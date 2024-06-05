@@ -736,7 +736,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             var existingService = _context.PM_OutsourcedServices_Planned.FirstOrDefault(a => a.ID == updatedService.ID);
             if (existingService != null)
             {
-                
+
 
                 _context.Entry(existingService).CurrentValues.SetValues(updatedService);
                 _context.SaveChanges();
@@ -748,6 +748,44 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
+
+
+
+
+        public bool CreateoutsourcedServiceMade(PM_OutsourcedServices_Made createoutsourcedServiceMade)
+        {
+            var existingService = _context.PM_OutsourcedServices_Made.FirstOrDefault(a => a.ID == createoutsourcedServiceMade.ID);
+            if (existingService != null)
+            {
+
+                _context.Entry(existingService).CurrentValues.SetValues(createoutsourcedServiceMade);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                _context.PM_OutsourcedServices_Made.Add(createoutsourcedServiceMade);
+                _context.SaveChanges();
+                return true;
+            }
+        }
+
+
+        public bool UpdateoutsourcedServiceMade(PM_OutsourcedServices_Made updatedServiceMade)
+        {
+            var existingService = _context.PM_OutsourcedServices_Made.FirstOrDefault(a => a.ID == updatedServiceMade.ID);
+            if (existingService != null)
+            {
+
+                _context.Entry(existingService).CurrentValues.SetValues(updatedServiceMade);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
 

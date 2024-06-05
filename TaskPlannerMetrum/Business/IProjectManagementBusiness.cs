@@ -85,6 +85,8 @@ namespace TaskPlannerMetrum.Business
         public bool CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned);
         public bool UpdateoutsourcedServicePlanned(PM_OutsourcedServices_Planned updatedService);
 
+        public bool UpdateoutsourcedServiceMade(PM_OutsourcedServices_Made updatedServiceMade);
+        public bool CreateoutsourcedServiceMade(PM_OutsourcedServices_Made createoutsourcedServiceMade);
 
     }
 
