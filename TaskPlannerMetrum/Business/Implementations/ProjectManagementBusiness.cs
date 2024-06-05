@@ -96,7 +96,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID)
         {
-            return _projectmanagementRepository.UpdateMilesValue( milesTonesDTO ,ID);
+            return _projectmanagementRepository.UpdateMilesValue(milesTonesDTO, ID);
         }
 
 
@@ -107,7 +107,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
                 var ExixteValue = _projectmanagementRepository.existMilesStonesValue(milesTonesDTO.ID);
 
-                if (ExixteValue ==0 )
+                if (ExixteValue == 0)
                 {
                     int milestonesID = _projectmanagementRepository.CreateMilestonesItem(new MilestonesItem
                     {
@@ -390,12 +390,12 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
         // MOBILIZAÇÃO
-        public List<vpm_combination_Mobilization> GetMobilization(int contractID)
+        public List<vPM_Mobilization_Combined> GetMobilization(int contractID)
         {
             return _projectmanagementRepository.GetMobilization(contractID);
         }
 
-          public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID)
+        public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID)
         {
             return _projectmanagementRepository.GetMobilizationMade(mobilizationPlannedID);
         }
@@ -412,13 +412,39 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
         public bool UpdateMobilization(string ID)
-        {  
+        {
             return _projectmanagementRepository.UpdateMobilization(ID);
         }
 
         public bool UpdateMobilizationMaded(string ID)
         {
-           return _projectmanagementRepository.UpdateMobilizationMaded(ID);
+            return _projectmanagementRepository.UpdateMobilizationMaded(ID);
+        }
+
+        public bool DeleteMobilization(string ID)
+        {
+            try
+            {
+                _projectmanagementRepository.DeleteMobilization(ID);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteMobilizationMade(string ID)
+        {
+            try
+            {
+                _projectmanagementRepository.DeleteMobilizationMade(ID);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

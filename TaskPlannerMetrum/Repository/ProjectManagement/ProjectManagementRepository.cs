@@ -567,9 +567,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
         // MOBILIZAÇÃO  PLANNED
-        public List<vpm_combination_Mobilization> GetMobilization(int contractID)
+        public List<vPM_Mobilization_Combined> GetMobilization(int contractID)
         {
-            return _context.vpm_combination_Mobilization.Where(a => a.ContractID == contractID).ToList();
+            return _context.vPM_Mobilization_Combined.Where(a => a.ContractID == contractID).ToList();
         }
         public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID)
         {
@@ -664,6 +664,50 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return true;
             }
             else
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteMobilization(string ID)
+        {
+            try
+            {
+                var MobilizationItem = _context.PM_Mobilization_Planned.Where(u => u.ID == ID).FirstOrDefault();
+                if (MobilizationItem != null)
+                {
+                    _context.PM_Mobilization_Planned.Remove(MobilizationItem);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteMobilizationMade(string ID)
+        {
+            try
+            {
+                var MobilizationMadeItem = _context.PM_Mobilization_Made.Where(u => u.ID == ID).FirstOrDefault();
+                if (MobilizationMadeItem != null)
+                {
+                    _context.PM_Mobilization_Made.Remove(MobilizationMadeItem);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
             {
                 return false;
             }

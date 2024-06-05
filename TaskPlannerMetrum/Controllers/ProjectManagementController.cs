@@ -161,7 +161,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult DeleteMilestones( string ID)
+        public IActionResult DeleteMilestones(string ID)
         {
             try
             {
@@ -349,7 +349,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetTypeOfCost( int ContractID)
+        public IActionResult GetTypeOfCost(int ContractID)
         {
 
             try
@@ -418,7 +418,7 @@ namespace TaskPlannerMetrum.Controllers
             try
             {
 
-                return Ok(_projectManagementBusiness.GetPmCostPlanned(ContractID ));
+                return Ok(_projectManagementBusiness.GetPmCostPlanned(ContractID));
 
             }
             catch (Exception ex)
@@ -515,7 +515,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-       [HttpGet("GetMobilizationMade")]
+        [HttpGet("GetMobilizationMade")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -574,6 +574,41 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("DeleteMobilizationPlanned")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteMobilization(string ID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.DeleteMobilization(ID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("DeleteMobilizationMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteMobilizationMade(string ID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.DeleteMobilizationMade(ID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
 
     }

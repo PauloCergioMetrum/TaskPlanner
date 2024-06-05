@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TaskPlannerMetrum.Model.ModelViews
 {
-    public class vpm_combination_Mobilization
+    public class vPM_Mobilization_Combined
     {
         public string ID { get; set; }
 
@@ -15,8 +15,9 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public double CountOthers { get; set; }
 
         public int ContractID { get; set; }
-        public double CountAccommodationMade { get; set; }
-        public double CountFoodMade { get; set; }
-        public double CountAirTransportMade { get; set; }
+
+        public double TotalMade { get; set; }
+        public double TotalPlanned { get; set; }
+        public double Difference { get; set; }
     }
 }

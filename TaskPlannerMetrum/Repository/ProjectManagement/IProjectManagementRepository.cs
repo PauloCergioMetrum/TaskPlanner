@@ -23,7 +23,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         List<string> GetMilestonesNames(int contractID);
 
-        public bool  DeleteMilestones( string ID);
+        public bool DeleteMilestones(string ID);
 
 
 
@@ -57,7 +57,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
 
         public bool DeleteTypeOfCost(string ID);
-        public List<PmTypeCost> GetTypeOfCost(int ContractID );
+        public List<PmTypeCost> GetTypeOfCost(int ContractID);
         public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public bool DeletePredictedCost(string ID);
         public List<PmCostPlanned> GetPmCostPlanned(int ContractID);
@@ -69,20 +69,23 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
         public List<vMileStonesValue> GetAllMilestonesItem(int ContractID);
-        public bool IsExistMilesStone (MilesTonesDTO milesTonesDTO);
+        public bool IsExistMilesStone(MilesTonesDTO milesTonesDTO);
 
         public int existMilesStonesValue(string ID);
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
 
 
         // MOBILIZAÇÃO 
-        public List<vpm_combination_Mobilization> GetMobilization(int contractID);
+        public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
         public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
 
-        public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);   
+        public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);
 
-        public bool CreateMobilizationMade (PM_Mobilization_Made mobilizationMade);
+        public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade);
         public bool UpdateMobilization(string ID);
         public bool UpdateMobilizationMaded(string ID);
+
+        public bool DeleteMobilization(string ID);
+        public bool DeleteMobilizationMade(string ID);
     }
 }
