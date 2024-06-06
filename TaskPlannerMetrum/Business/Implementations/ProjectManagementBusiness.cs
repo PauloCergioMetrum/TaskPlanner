@@ -457,6 +457,16 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllOutsourcedServiceNames();
         }
 
+        public List<vPM_OutsourcedServices_Combined> GetOutsourcedServicesCombined(int ContractID)
+        {
+            return _projectmanagementRepository.GetOutsourcedServicesCombined(ContractID);
+        }
+
+
+        public List<vPM_OutsourcedServices_Made_Combined> GetOutsourcedServicesCombinedMade(string ID_OutsourcedServices_Planned)
+        {
+            return _projectmanagementRepository.GetOutsourcedServicesCombinedMade(ID_OutsourcedServices_Planned);
+        }
 
         public bool CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned)
         {
@@ -517,6 +527,8 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.DeleteOutsourcedServicesMade(ID);
         }
+
+       
     }
 }
 

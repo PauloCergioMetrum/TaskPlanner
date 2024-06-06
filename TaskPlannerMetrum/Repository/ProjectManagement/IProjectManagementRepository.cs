@@ -93,6 +93,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         // SERVIÇOES TERCEIRIZADO 
 
         public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames();
+        public List<vPM_OutsourcedServices_Combined> GetOutsourcedServicesCombined( int ContractID);
+        public List<vPM_OutsourcedServices_Made_Combined> GetOutsourcedServicesCombinedMade(string ID_OutsourcedServices_Planned);
         public bool CreateoutsourcedServicePlanned( PM_OutsourcedServices_Planned createoutsourcedServicePlanned);
         public bool CreateoutsourcedServiceMade(PM_OutsourcedServices_Made createoutsourcedServiceMade);
 

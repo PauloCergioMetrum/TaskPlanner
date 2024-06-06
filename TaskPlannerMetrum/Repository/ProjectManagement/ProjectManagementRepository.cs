@@ -571,6 +571,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             return _context.vPM_Mobilization_Combined.Where(a => a.ContractID == contractID).ToList();
         }
+
         public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID)
         {
             return _context.PM_Mobilization_Made.Where(a => a.MobilizationPlannedID == mobilizationPlannedID).ToList();
@@ -726,6 +727,17 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
+        public List<vPM_OutsourcedServices_Combined> GetOutsourcedServicesCombined(int ContractID)
+        {
+            return  _context.vPM_OutsourcedServices_Combined.Where(a => a.ContractID == ContractID).ToList();
+        }
+
+
+        public List<vPM_OutsourcedServices_Made_Combined> GetOutsourcedServicesCombinedMade(string ID_OutsourcedServices_Planned)
+        {
+            return _context.vPM_OutsourcedServices_Made_Combined.Where(a => a.ID_OutsourcedServices_Planned == ID_OutsourcedServices_Planned).ToList();
+        }
+
 
         public bool CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned)
         {
@@ -852,10 +864,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-
-
-
-
+        
     }
 
 }

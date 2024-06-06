@@ -630,6 +630,42 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        [HttpGet("GetOutsourcedServicesCombined")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetOutsourcedServicesCombined( int ContractID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.GetOutsourcedServicesCombined(ContractID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetOutsourcedServicesCombinedMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetOutsourcedServicesCombinedMade(string ID_OutsourcedServices_Planned)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.GetOutsourcedServicesCombinedMade(ID_OutsourcedServices_Planned));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
 
 
         [HttpPost("CreateoutsourcedServicePlanned")]
