@@ -709,10 +709,23 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
         //  SERVIÇO TERCEIRIZADO 
 
-        public List<string> GetAllOutsourcedServiceNames()
+        public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames()
         {
-            return _context.PM_Type_OutsourcedServices.Select(a => a.Name).ToList();
+            try
+            {
+                var result = _context.PM_Type_OutsourcedServices
+                                     .Select(a => new Pm_Type_OutsourcedServicesDTO { Name = a.Name, ID = a.ID })
+                                     .ToList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+      
+                return new List<Pm_Type_OutsourcedServicesDTO>();
+            }
         }
+
 
         public bool CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned)
         {
@@ -787,8 +800,62 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
+        public bool DeleteOutsourcedServicesPlanned(string ID)
+        {
+            try
+            {
+                var OutsourcedServicesPlannedDelete = _context.PM_OutsourcedServices_Planned.Where(a => a.ID == ID).FirstOrDefault();
+
+                if (OutsourcedServicesPlannedDelete != null)
+                {
+                    
+                    var relatedRecords = _context.PM_OutsourcedServices_Made.Where(a => a.ID_OutsourcedServices_Planned == ID).ToList();
+                    _context.PM_OutsourcedServices_Made.RemoveRange(relatedRecords);
+
+                   
+                    _context.PM_OutsourcedServices_Planned.Remove(OutsourcedServicesPlannedDelete);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+        public bool DeleteOutsourcedServicesMade(string ID)
+        {
+            try
+            {
+                var OutsourcedServicesPlannedDelete = _context.PM_OutsourcedServices_Made.Where(a => a.ID == ID).FirstOrDefault();
+
+                if (OutsourcedServicesPlannedDelete != null)
+                {
+                    _context.PM_OutsourcedServices_Made.Remove(OutsourcedServicesPlannedDelete);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
 
 
 
     }
+
 }

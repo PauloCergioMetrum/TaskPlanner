@@ -675,5 +675,46 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+
+        [HttpDelete("DeleteOutsourcedServicesPlanned")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteOutsourcedServicesPlanned(string ID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.DeleteOutsourcedServicesPlanned(ID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpDelete("DeleteOutsourcedServicesMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteOutsourcedServicesMade(string ID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.DeleteOutsourcedServicesMade(ID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

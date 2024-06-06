@@ -81,12 +81,18 @@ namespace TaskPlannerMetrum.Business
         public bool DeleteMobilization(string ID);
         public bool DeleteMobilizationMade(string ID);
 
-        public List<string> GetAllOutsourcedServiceNames();
+
+
+        public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames();
         public bool CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned);
         public bool UpdateoutsourcedServicePlanned(PM_OutsourcedServices_Planned updatedService);
 
         public bool UpdateoutsourcedServiceMade(PM_OutsourcedServices_Made updatedServiceMade);
         public bool CreateoutsourcedServiceMade(PM_OutsourcedServices_Made createoutsourcedServiceMade);
+
+        public bool DeleteOutsourcedServicesPlanned(string ID);
+
+        public bool DeleteOutsourcedServicesMade(string ID);
 
     }
 

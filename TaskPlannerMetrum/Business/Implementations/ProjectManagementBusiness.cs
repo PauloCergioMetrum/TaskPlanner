@@ -452,6 +452,12 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
+        public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames()
+        {
+            return _projectmanagementRepository.GetAllOutsourcedServiceNames();
+        }
+
+
         public bool CreateoutsourcedServicePlanned(PM_OutsourcedServices_Planned createoutsourcedServicePlanned)
         {
             try
@@ -478,11 +484,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
         }
 
-        public List<string> GetAllOutsourcedServiceNames()
-        {
-             return _projectmanagementRepository.GetAllOutsourcedServiceNames();
-        }
-
+     
         public bool UpdateoutsourcedServiceMade(PM_OutsourcedServices_Made updatedServiceMade)
         {
             try
@@ -504,6 +506,16 @@ namespace TaskPlannerMetrum.Business.Implementations
             {
                 return false;
             }
+        }
+
+        public bool DeleteOutsourcedServicesPlanned(string ID)
+        {
+            return _projectmanagementRepository.DeleteOutsourcedServicesPlanned(ID);
+        }
+
+        public bool DeleteOutsourcedServicesMade(string ID)
+        {
+            return _projectmanagementRepository.DeleteOutsourcedServicesMade(ID);
         }
     }
 }

@@ -92,7 +92,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         // SERVIÇOES TERCEIRIZADO 
 
-        public List<string> GetAllOutsourcedServiceNames();
+        public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames();
         public bool CreateoutsourcedServicePlanned( PM_OutsourcedServices_Planned createoutsourcedServicePlanned);
         public bool CreateoutsourcedServiceMade(PM_OutsourcedServices_Made createoutsourcedServiceMade);
 
@@ -102,6 +102,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool UpdateoutsourcedServiceMade(PM_OutsourcedServices_Made updatedServiceMade);
 
+
+        public bool DeleteOutsourcedServicesPlanned(string ID);
+
+        public bool DeleteOutsourcedServicesMade(string ID);
 
     }
 }
