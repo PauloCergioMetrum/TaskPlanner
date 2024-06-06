@@ -528,7 +528,32 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.DeleteOutsourcedServicesMade(ID);
         }
 
-       
+
+        //HH
+        public List<PM_Type_Hours> GetpmTypeHH()
+        {
+            return _projectmanagementRepository.GetpmTypeHH();
+        }
+
+        public List<PM_Function_HH> GetPMFunctionHHs()
+        {
+            return  _projectmanagementRepository.GetPMFunctionHHs();
+        }
+
+        public bool CreateHH(PM_Hours createHH)
+        {
+            return _projectmanagementRepository.CreateHH(createHH); 
+        }
+
+        public bool UpdateHH(PM_Hours updateHH)
+        {
+           return _projectmanagementRepository.UpdateHH(updateHH);  
+        }
+
+        public bool DeleteHH(string ID)
+        {
+             return _projectmanagementRepository.DeleteHH(ID);
+        }
     }
 }
 

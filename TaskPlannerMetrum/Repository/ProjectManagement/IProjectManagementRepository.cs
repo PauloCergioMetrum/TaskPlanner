@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Identity.Client;
 using System.Collections.Generic;
 using System.Globalization;
 using TaskPlannerMetrum.Model;
@@ -108,6 +109,19 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool DeleteOutsourcedServicesPlanned(string ID);
 
         public bool DeleteOutsourcedServicesMade(string ID);
+
+        // HH
+
+        public List<PM_Type_Hours> GetpmTypeHH();
+
+        public List<PM_Function_HH> GetPMFunctionHHs();
+
+        public bool  CreateHH (PM_Hours createHH);  
+
+        public bool UpdateHH (PM_Hours updateHH);  
+        
+        public bool DeleteHH (string ID);   
+       
 
     }
 }

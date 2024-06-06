@@ -54,6 +54,16 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<PM_OutsourcedServices_Made> PM_OutsourcedServices_Made { get; set; }
 
+        public DbSet<PM_Type_Hours> PM_Type_Hours { get; set; }
+
+        public DbSet<PM_Function_HH> PM_Function_HH { get; set; }
+
+        public DbSet<PM_Hours> PM_Hours {  get; set; }  
+
+
+
+
+
 
 
 

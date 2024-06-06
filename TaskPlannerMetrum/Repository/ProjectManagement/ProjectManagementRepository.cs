@@ -1,4 +1,5 @@
 ﻿using Memt.Logger;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
@@ -10,6 +11,7 @@ using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskPlannerMetrum.Repository.ProjectManagement
 {
@@ -722,14 +724,14 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
             catch (Exception ex)
             {
-      
+
                 return new List<Pm_Type_OutsourcedServicesDTO>();
             }
         }
 
         public List<vPM_OutsourcedServices_Combined> GetOutsourcedServicesCombined(int ContractID)
         {
-            return  _context.vPM_OutsourcedServices_Combined.Where(a => a.ContractID == ContractID).ToList();
+            return _context.vPM_OutsourcedServices_Combined.Where(a => a.ContractID == ContractID).ToList();
         }
 
 
@@ -820,11 +822,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
                 if (OutsourcedServicesPlannedDelete != null)
                 {
-                    
+
                     var relatedRecords = _context.PM_OutsourcedServices_Made.Where(a => a.ID_OutsourcedServices_Planned == ID).ToList();
                     _context.PM_OutsourcedServices_Made.RemoveRange(relatedRecords);
 
-                   
+
                     _context.PM_OutsourcedServices_Planned.Remove(OutsourcedServicesPlannedDelete);
                     _context.SaveChanges();
                     return true;
@@ -863,8 +865,95 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return false;
             }
         }
+        //HH
+        public List<PM_Type_Hours> GetpmTypeHH()
+        {
+            var resultHH = _context.PM_Type_Hours.Select(a => new PM_Type_Hours { Type = a.Type, ID = a.ID }).ToList();
+            return resultHH;
 
-        
+        }
+
+        public List<PM_Function_HH> GetPMFunctionHHs()
+        {
+            var resiultFunctionHH = _context.PM_Function_HH.Select(a => new PM_Function_HH
+            {
+
+                ID = a.ID,
+                FunctionHH = a.FunctionHH,
+            }).ToList();
+            return resiultFunctionHH;   
+        }
+
+
+
+
+
+
+
+
+
+        public bool CreateHH(PM_Hours createHH)
+        {
+            var existingHH = _context.PM_Hours.FirstOrDefault(a => a.ID == createHH.ID);
+
+            if (existingHH != null)
+            {
+               
+                existingHH.Departmemt = createHH.Departmemt;
+                existingHH.FunctionHH = createHH.FunctionHH;
+                existingHH.Type = createHH.Type;
+                existingHH.Quantity = createHH.Quantity;
+
+                _context.SaveChanges();
+            }
+            else
+            {
+               
+                _context.PM_Hours.Add(createHH);
+                _context.SaveChanges();
+            }
+
+            return true;
+        }
+
+        public bool UpdateHH(PM_Hours updateHH)
+        {
+            var existingHH = _context.PM_Hours.FirstOrDefault(a => a.ID == updateHH.ID);
+            if (existingHH != null)
+            {
+             
+                existingHH.Departmemt = updateHH.Departmemt;
+                existingHH.FunctionHH = updateHH.FunctionHH;
+                existingHH.Type = updateHH.Type;
+                existingHH.Quantity = updateHH.Quantity;
+
+             
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteHH(string ID)
+        {
+             var RemoveHH = _context.PM_Hours.Where(a => a.ID == ID).FirstOrDefault();
+            if(RemoveHH != null)
+            {
+                _context.PM_Hours.Remove(RemoveHH);
+                _context.SaveChanges();  
+                return true;
+            }
+            else
+            {
+                return false; 
+            }
+        }
     }
-
 }
+
+
+
+

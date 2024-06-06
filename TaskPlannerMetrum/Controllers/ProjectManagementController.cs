@@ -752,5 +752,84 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        // HH
+
+        [HttpGet("GetpmTypeHH")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetpmTypeHH()
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.GetpmTypeHH());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetPMFunctionHHs")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetPMFunctionHHs()
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.GetPMFunctionHHs());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("CreateHH")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateHH(PM_Hours createHH)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.CreateHH(createHH));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpDelete("DeleteHH")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteHH(string ID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.DeleteHH(ID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
     }
 }
