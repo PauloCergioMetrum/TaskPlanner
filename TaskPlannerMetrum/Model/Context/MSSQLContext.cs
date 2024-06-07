@@ -58,7 +58,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<PM_Function_HH> PM_Function_HH { get; set; }
 
-        public DbSet<PM_Hours> PM_Hours {  get; set; }  
+        public DbSet<PM_Hours> PM_Hours {  get; set; }
 
 
 
@@ -71,13 +71,11 @@ namespace TaskPlannerMetrum.Model.Context
 
         //Views
 
-
+     
         public DbSet<vPM_OutsourcedServices_Combined> vPM_OutsourcedServices_Combined { get; set; }
 
         public DbSet<vPM_OutsourcedServices_Made_Combined> vPM_OutsourcedServices_Made_Combined { get; set; }
-
-
-
+        public DbSet<v_PM_Hours> v_PM_Hours { get; set; }
 
         public DbSet<vPM_Mobilization_Combined> vPM_Mobilization_Combined { get; set; }
         public DbSet<vMileStonesValue>vMileStonesValue { get; set; }

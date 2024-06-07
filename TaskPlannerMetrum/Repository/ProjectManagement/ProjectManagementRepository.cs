@@ -951,6 +951,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return false; 
             }
         }
+
+       
+        public List<v_PM_Hours> GetpmHours(int ContractID)
+        {
+           return _context.v_PM_Hours.Where(a => a.ContractID == ContractID).ToList();  
+
+        }
     }
 }
 

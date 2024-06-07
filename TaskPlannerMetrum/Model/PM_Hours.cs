@@ -9,5 +9,7 @@
         public int Type {  get; set; }  
 
         public double Quantity { get; set; }
+
+        public int ContractID { get; set; } 
     }
 }

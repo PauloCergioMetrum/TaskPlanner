@@ -110,6 +110,7 @@ namespace TaskPlannerMetrum.Business
 
         public bool UpdateHH(PM_Hours updateHH);
         public bool DeleteHH(string ID);
+        public List<v_PM_Hours> GetpmHours( int ContractID);
 
 
 
