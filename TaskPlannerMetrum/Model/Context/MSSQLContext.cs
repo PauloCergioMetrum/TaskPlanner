@@ -60,7 +60,11 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<PM_Man_Hours> PM_Man_Hours {  get; set; }
 
+        // ACOMPANHAMENTO DE ESCOPO 
 
+        public DbSet<PM_Scope_Traking> PM_Scope_Traking { get; set; }
+
+  
 
 
 
@@ -71,7 +75,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         //Views
 
-     
+
         public DbSet<vPM_OutsourcedServices_Combined> vPM_OutsourcedServices_Combined { get; set; }
 
         public DbSet<vPM_OutsourcedServices_Made_Combined> vPM_OutsourcedServices_Made_Combined { get; set; }

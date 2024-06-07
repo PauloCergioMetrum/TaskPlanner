@@ -852,6 +852,52 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        // ACOMPANHAMENTO DE ESCOPO 
+
+
+        [HttpPost("CreatScopeTraking")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreatScopeTraking(PM_Scope_Traking pMScopeTraking)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.CreatScopeTraking(pMScopeTraking));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPost("UpdatepMScopeTraking")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult UpdatepMScopeTraking(PM_Scope_Traking pMScopeTraking)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.UpdatepMScopeTraking(pMScopeTraking));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
 
     }
 }

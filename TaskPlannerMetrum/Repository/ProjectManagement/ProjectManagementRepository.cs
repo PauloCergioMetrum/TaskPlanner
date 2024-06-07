@@ -958,6 +958,66 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
            return _context.vPM_Mam_Hours.Where(a => a.ContractID == ContractID).ToList();  
 
         }
+
+        // ACOMPANHAMENTO DE ESCOPO 
+
+
+
+
+
+        public bool CreatScopeTraking(PM_Scope_Traking pMScopeTraking)
+        {
+            var existingScopeTracking = _context.PM_Scope_Traking.FirstOrDefault(a => a.ID == pMScopeTraking.ID);
+
+
+
+            if (existingScopeTracking != null)
+            {
+                existingScopeTracking.Local = pMScopeTraking.Local;
+                existingScopeTracking.ProjectReviewsPlanned = pMScopeTraking.ProjectReviewsPlanned;
+                existingScopeTracking.Item = pMScopeTraking.Item;
+                existingScopeTracking.Remote = pMScopeTraking.Remote;
+                existingScopeTracking.ProjectReviewsMade = pMScopeTraking.ProjectReviewsMade;
+                existingScopeTracking.PeportReviewsPlanned = pMScopeTraking.PeportReviewsPlanned;
+                existingScopeTracking.PeportReviewsMade = pMScopeTraking.PeportReviewsMade;
+                existingScopeTracking.DevelopSystemReviewsPlanned = pMScopeTraking.DevelopSystemReviewsPlanned;
+                existingScopeTracking.DevelopSystemReviewsMade = pMScopeTraking.DevelopSystemReviewsMade;
+                _context.SaveChanges();
+
+            }
+            else
+            {
+                _context.PM_Scope_Traking.Add(pMScopeTraking);
+                _context.SaveChanges();
+            }
+            return true;
+        }
+
+        public bool UpdatepMScopeTraking(PM_Scope_Traking pMScopeTraking)
+        {
+             var existingScopeTracking  = _context.PM_Scope_Traking.FirstOrDefault(r => r.ID == pMScopeTraking.ID);
+
+            if (existingScopeTracking != null)
+            {
+                existingScopeTracking.Local = pMScopeTraking.Local;
+                existingScopeTracking.ProjectReviewsPlanned = pMScopeTraking.ProjectReviewsPlanned;
+                existingScopeTracking.Item = pMScopeTraking.Item;
+                existingScopeTracking.Remote = pMScopeTraking.Remote;
+                existingScopeTracking.ProjectReviewsMade = pMScopeTraking.ProjectReviewsMade;
+                existingScopeTracking.PeportReviewsPlanned = pMScopeTraking.PeportReviewsPlanned;
+                existingScopeTracking.PeportReviewsMade = pMScopeTraking.PeportReviewsMade;
+                existingScopeTracking.DevelopSystemReviewsPlanned = pMScopeTraking.DevelopSystemReviewsPlanned;
+                existingScopeTracking.DevelopSystemReviewsMade = pMScopeTraking.DevelopSystemReviewsMade;
+                _context.SaveChanges();
+
+            }
+            else
+            {
+                _context.PM_Scope_Traking.Add(pMScopeTraking);
+                _context.SaveChanges();
+            }
+            return true;
+        }
     }
 }
 

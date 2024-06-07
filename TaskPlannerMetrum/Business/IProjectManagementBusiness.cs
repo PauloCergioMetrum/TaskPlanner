@@ -113,6 +113,12 @@ namespace TaskPlannerMetrum.Business
         public List<vPM_Mam_Hours> GetpmHours( int ContractID);
 
 
+        // ACOMPANHAMENTO DE ESCOPO 
+
+        public bool CreatScopeTraking(PM_Scope_Traking pMScopeTraking);
+        public bool UpdatepMScopeTraking(PM_Scope_Traking pMScopeTraking);
+
+
 
 
     }

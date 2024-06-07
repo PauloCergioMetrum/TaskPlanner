@@ -559,6 +559,18 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetpmHours(ContractID);
         }
+
+
+        // ACOMPNHAMENTO DE ESCOPO 
+        public bool CreatScopeTraking(PM_Scope_Traking pMScopeTraking)
+        {
+            return _projectmanagementRepository.CreatScopeTraking(pMScopeTraking);
+        }
+
+        public bool UpdatepMScopeTraking(PM_Scope_Traking pMScopeTraking)
+        {
+            return _projectmanagementRepository.UpdatepMScopeTraking(pMScopeTraking);
+        }
     }
 }
 
