@@ -722,7 +722,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
                 return new List<Pm_Type_OutsourcedServicesDTO>();
@@ -836,7 +836,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return false;
             }
@@ -860,7 +860,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return false;
             }

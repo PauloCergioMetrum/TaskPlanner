@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
-using System.Collections.Generic;
+
 using TaskPlannerMetrum.Repository.ProjectManagement;
 using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -25,7 +25,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             try
             {
                 var UpdateForecast = _projectmanagementRepository.GetForecastByID(forecast.id);
-                if (UpdateForecast.id != null)
+                if (UpdateForecast != null)
                 {
                     UpdateForecast.ValidityEndDate = forecast.ValidityEndDate;
                     UpdateForecast.ValidityStartDate = forecast.ValidityStartDate;
@@ -221,7 +221,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return false;
@@ -235,7 +235,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _projectmanagementRepository.UpdateAcquisition(acquisitionsDTO);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
                 return false;
@@ -272,7 +272,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return false;
@@ -286,7 +286,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _projectmanagementRepository.UpdateAcquisitionMadeItem(acquisitionMade);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return false;
@@ -300,7 +300,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _projectmanagementRepository.DeleteAcquisitionMade(ID, AquisitionPlannedID);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return false;
@@ -314,7 +314,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _projectmanagementRepository.DeleteAcquisition(ID);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return false;
@@ -428,7 +428,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _projectmanagementRepository.DeleteMobilization(ID);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -441,7 +441,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _projectmanagementRepository.DeleteMobilizationMade(ID);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -475,7 +475,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _projectmanagementRepository.CreateoutsourcedServicePlanned(createoutsourcedServicePlanned);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -488,7 +488,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _projectmanagementRepository.UpdateoutsourcedServicePlanned(updatedService);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -500,7 +500,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             try
             {
                  return  _projectmanagementRepository.UpdateoutsourcedServiceMade(updatedServiceMade);
-            }  catch (Exception ex)
+            }  catch (Exception )
             {
                 return false;   
             }

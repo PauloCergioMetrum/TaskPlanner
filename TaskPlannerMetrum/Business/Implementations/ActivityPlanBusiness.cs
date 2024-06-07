@@ -59,11 +59,12 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.MilestonesID = activityPlan.MilestonesID;
                     _activiesRepository.Create(task);
                 }
+                _context.SaveChanges();
                 return true;
 
-                _context.SaveChanges();
+             
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 return false;
             }
