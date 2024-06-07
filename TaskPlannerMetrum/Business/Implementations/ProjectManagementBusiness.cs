@@ -235,7 +235,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _projectmanagementRepository.UpdateAcquisition(acquisitionsDTO);
                 return true;
             }
-            catch (Exception )
+            catch (Exception)
             {
 
                 return false;
@@ -494,15 +494,16 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
         }
 
-     
+
         public bool UpdateoutsourcedServiceMade(PM_OutsourcedServices_Made updatedServiceMade)
         {
             try
             {
-                 return  _projectmanagementRepository.UpdateoutsourcedServiceMade(updatedServiceMade);
-            }  catch (Exception )
+                return _projectmanagementRepository.UpdateoutsourcedServiceMade(updatedServiceMade);
+            }
+            catch (Exception)
             {
-                return false;   
+                return false;
             }
         }
 
@@ -510,7 +511,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             try
             {
-                 return _projectmanagementRepository.CreateoutsourcedServiceMade(createoutsourcedServiceMade);
+                return _projectmanagementRepository.CreateoutsourcedServiceMade(createoutsourcedServiceMade);
             }
             catch
             {
@@ -537,22 +538,22 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public List<PM_Function_HH> GetPMFunctionHHs()
         {
-            return  _projectmanagementRepository.GetPMFunctionHHs();
+            return _projectmanagementRepository.GetPMFunctionHHs();
         }
 
         public bool CreateHH(PM_Man_Hours createHH)
         {
-            return _projectmanagementRepository.CreateHH(createHH); 
+            return _projectmanagementRepository.CreateHH(createHH);
         }
 
         public bool UpdateHH(PM_Man_Hours updateHH)
         {
-           return _projectmanagementRepository.UpdateHH(updateHH);  
+            return _projectmanagementRepository.UpdateHH(updateHH);
         }
 
         public bool DeleteHH(string ID)
         {
-             return _projectmanagementRepository.DeleteHH(ID);
+            return _projectmanagementRepository.DeleteHH(ID);
         }
 
         public List<vPM_Mam_Hours> GetpmHours(int ContractID)
@@ -571,7 +572,19 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.UpdatepMScopeTraking(pMScopeTraking);
         }
+
+        public bool DeletepMScopeTraking(string ID)
+        {
+            return _projectmanagementRepository.DeletepMScopeTraking(ID);
+        }
+
+        public List<PM_Scope_Traking> GetScopeTrajing(int ContractID)
+        {
+            return  _projectmanagementRepository.GetScopeTrajing(ContractID);
     }
+    }
+   
+
 }
 
 

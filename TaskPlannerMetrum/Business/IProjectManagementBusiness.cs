@@ -118,6 +118,9 @@ namespace TaskPlannerMetrum.Business
         public bool CreatScopeTraking(PM_Scope_Traking pMScopeTraking);
         public bool UpdatepMScopeTraking(PM_Scope_Traking pMScopeTraking);
 
+        public bool DeletepMScopeTraking(string ID);
+        public List<PM_Scope_Traking> GetScopeTrajing(int ContractID);
+
 
 
 

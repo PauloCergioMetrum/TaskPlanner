@@ -1,6 +1,7 @@
 ﻿using Memt.Logger;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using System;
@@ -621,7 +622,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-        //Atualiza se existir, caso contrário, cria um novo registro de Mobilization Made
         public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade)
         {
 
@@ -1017,6 +1017,26 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 _context.SaveChanges();
             }
             return true;
+        }
+
+        public bool DeletepMScopeTraking(string ID)
+        {
+             var RemovepMScopeTraking = _context.PM_Scope_Traking.Where(e => e.ID == ID).FirstOrDefault();
+            if (RemovepMScopeTraking != null)
+            {
+                _context.PM_Scope_Traking.Remove(RemovepMScopeTraking);
+                _context.SaveChanges();
+                return true;    
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public List<PM_Scope_Traking> GetScopeTrajing(int ContractID)
+        {
+            return _context.PM_Scope_Traking.Where(a => a.ContractID == ContractID).ToList();   
         }
     }
 }

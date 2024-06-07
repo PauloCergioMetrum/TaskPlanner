@@ -897,6 +897,49 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpDelete("DeletepMScopeTraking")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeletepMScopeTraking(string ID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.DeletepMScopeTraking(ID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+        [HttpGet("GetScopeTrajing")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetScopeTrajing( int  ContractID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetScopeTrajing(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
 
     }
