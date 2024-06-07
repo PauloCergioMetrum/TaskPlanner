@@ -58,7 +58,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<PM_Function_HH> PM_Function_HH { get; set; }
 
-        public DbSet<PM_Hours> PM_Hours {  get; set; }
+        public DbSet<PM_Man_Hours> PM_Man_Hours {  get; set; }
 
 
 

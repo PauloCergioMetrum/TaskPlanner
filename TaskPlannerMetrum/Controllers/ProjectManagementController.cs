@@ -793,7 +793,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult CreateHH(PM_Hours createHH)
+        public IActionResult CreateHH(PM_Man_Hours createHH)
         {
 
             try

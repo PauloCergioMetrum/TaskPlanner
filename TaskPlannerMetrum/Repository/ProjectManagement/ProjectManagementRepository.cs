@@ -892,9 +892,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-        public bool CreateHH(PM_Hours createHH)
+        public bool CreateHH(PM_Man_Hours createHH)
         {
-            var existingHH = _context.PM_Hours.FirstOrDefault(a => a.ID == createHH.ID);
+            var existingHH = _context.PM_Man_Hours.FirstOrDefault(a => a.ID == createHH.ID);
 
             if (existingHH != null)
             {
@@ -902,30 +902,30 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 existingHH.Departmemt = createHH.Departmemt;
                 existingHH.FunctionHH = createHH.FunctionHH;
                 existingHH.Type = createHH.Type;
-                existingHH.Quantity = createHH.Quantity;
+                existingHH.QuantityHH = createHH.QuantityHH;
 
                 _context.SaveChanges();
             }
             else
             {
                
-                _context.PM_Hours.Add(createHH);
+                _context.PM_Man_Hours.Add(createHH);
                 _context.SaveChanges();
             }
 
             return true;
         }
 
-        public bool UpdateHH(PM_Hours updateHH)
+        public bool UpdateHH(PM_Man_Hours updateHH)
         {
-            var existingHH = _context.PM_Hours.FirstOrDefault(a => a.ID == updateHH.ID);
+            var existingHH = _context.PM_Man_Hours.FirstOrDefault(a => a.ID == updateHH.ID);
             if (existingHH != null)
             {
              
                 existingHH.Departmemt = updateHH.Departmemt;
                 existingHH.FunctionHH = updateHH.FunctionHH;
                 existingHH.Type = updateHH.Type;
-                existingHH.Quantity = updateHH.Quantity;
+                existingHH.QuantityHH = updateHH.QuantityHH;
 
              
                 _context.SaveChanges();
@@ -939,10 +939,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeleteHH(string ID)
         {
-             var RemoveHH = _context.PM_Hours.Where(a => a.ID == ID).FirstOrDefault();
+             var RemoveHH = _context.PM_Man_Hours.Where(a => a.ID == ID).FirstOrDefault();
             if(RemoveHH != null)
             {
-                _context.PM_Hours.Remove(RemoveHH);
+                _context.PM_Man_Hours.Remove(RemoveHH);
                 _context.SaveChanges();  
                 return true;
             }

@@ -116,9 +116,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<PM_Function_HH> GetPMFunctionHHs();
 
-        public bool  CreateHH (PM_Hours createHH);  
+        public bool  CreateHH (PM_Man_Hours createHH);  
 
-        public bool UpdateHH (PM_Hours updateHH);  
+        public bool UpdateHH (PM_Man_Hours updateHH);  
         
         public bool DeleteHH (string ID);   
 

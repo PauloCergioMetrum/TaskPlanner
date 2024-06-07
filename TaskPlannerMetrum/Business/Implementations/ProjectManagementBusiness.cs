@@ -540,12 +540,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             return  _projectmanagementRepository.GetPMFunctionHHs();
         }
 
-        public bool CreateHH(PM_Hours createHH)
+        public bool CreateHH(PM_Man_Hours createHH)
         {
             return _projectmanagementRepository.CreateHH(createHH); 
         }
 
-        public bool UpdateHH(PM_Hours updateHH)
+        public bool UpdateHH(PM_Man_Hours updateHH)
         {
            return _projectmanagementRepository.UpdateHH(updateHH);  
         }
