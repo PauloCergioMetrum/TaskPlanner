@@ -1,6 +1,6 @@
 ﻿namespace TaskPlannerMetrum.Model.ModelViews
 {
-    public class v_PM_Hours
+    public class vPM_Mam_Hours
     {
         public string ID { get; set; }
         public string Departmemt { get; set; }

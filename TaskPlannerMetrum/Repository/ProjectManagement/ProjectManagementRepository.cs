@@ -953,9 +953,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
        
-        public List<v_PM_Hours> GetpmHours(int ContractID)
+        public List<vPM_Mam_Hours> GetpmHours(int ContractID)
         {
-           return _context.v_PM_Hours.Where(a => a.ContractID == ContractID).ToList();  
+           return _context.vPM_Mam_Hours.Where(a => a.ContractID == ContractID).ToList();  
 
         }
     }

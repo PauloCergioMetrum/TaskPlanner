@@ -122,7 +122,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         
         public bool DeleteHH (string ID);   
 
-        public List<v_PM_Hours> GetpmHours(int ContractID);
+        public List<vPM_Mam_Hours> GetpmHours(int ContractID);
        
 
     }

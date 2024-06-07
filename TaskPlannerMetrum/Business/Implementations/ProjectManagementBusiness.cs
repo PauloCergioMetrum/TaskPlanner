@@ -555,7 +555,7 @@ namespace TaskPlannerMetrum.Business.Implementations
              return _projectmanagementRepository.DeleteHH(ID);
         }
 
-        public List<v_PM_Hours> GetpmHours(int ContractID)
+        public List<vPM_Mam_Hours> GetpmHours(int ContractID)
         {
             return _projectmanagementRepository.GetpmHours(ContractID);
         }
