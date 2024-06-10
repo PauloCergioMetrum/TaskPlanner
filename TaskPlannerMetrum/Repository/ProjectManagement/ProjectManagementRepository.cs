@@ -1160,7 +1160,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<PM_Scope_Change> GetScopeChanges(int ContractID)
         {
-            return _context.PM_Scope_Change.Where(g => g.ContractID == g.ContractID).ToList();
+            return _context.PM_Scope_Change.Where(g => g.ContractID == ContractID).ToList();
 
         }
     }
