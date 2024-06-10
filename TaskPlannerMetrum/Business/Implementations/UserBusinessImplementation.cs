@@ -108,7 +108,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _repository.Update(userEntity);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
@@ -722,7 +723,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
                 return result;
             }
-            catch (Exception )
+            catch (Exception)
             {
 
                 return new List<Pm_Type_OutsourcedServicesDTO>();
@@ -836,7 +837,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     return false;
                 }
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return false;
             }
@@ -860,7 +861,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     return false;
                 }
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return false;
             }
@@ -881,7 +882,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 ID = a.ID,
                 FunctionHH = a.FunctionHH,
             }).ToList();
-            return resiultFunctionHH;   
+            return resiultFunctionHH;
         }
 
 
@@ -898,7 +899,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
             if (existingHH != null)
             {
-               
+
                 existingHH.Departmemt = createHH.Departmemt;
                 existingHH.FunctionHH = createHH.FunctionHH;
                 existingHH.Type = createHH.Type;
@@ -908,7 +909,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
             else
             {
-               
+
                 _context.PM_Man_Hours.Add(createHH);
                 _context.SaveChanges();
             }
@@ -921,13 +922,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             var existingHH = _context.PM_Man_Hours.FirstOrDefault(a => a.ID == updateHH.ID);
             if (existingHH != null)
             {
-             
+
                 existingHH.Departmemt = updateHH.Departmemt;
                 existingHH.FunctionHH = updateHH.FunctionHH;
                 existingHH.Type = updateHH.Type;
                 existingHH.QuantityHH = updateHH.QuantityHH;
 
-             
+
                 _context.SaveChanges();
                 return true;
             }
@@ -939,23 +940,23 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeleteHH(string ID)
         {
-             var RemoveHH = _context.PM_Man_Hours.Where(a => a.ID == ID).FirstOrDefault();
-            if(RemoveHH != null)
+            var RemoveHH = _context.PM_Man_Hours.Where(a => a.ID == ID).FirstOrDefault();
+            if (RemoveHH != null)
             {
                 _context.PM_Man_Hours.Remove(RemoveHH);
-                _context.SaveChanges();  
+                _context.SaveChanges();
                 return true;
             }
             else
             {
-                return false; 
+                return false;
             }
         }
 
-       
+
         public List<vPM_Mam_Hours> GetpmHours(int ContractID)
         {
-           return _context.vPM_Mam_Hours.Where(a => a.ContractID == ContractID).ToList();  
+            return _context.vPM_Mam_Hours.Where(a => a.ContractID == ContractID).ToList();
 
         }
 
@@ -995,7 +996,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool UpdatepMScopeTraking(PM_Scope_Traking pMScopeTraking)
         {
-             var existingScopeTracking  = _context.PM_Scope_Traking.FirstOrDefault(r => r.ID == pMScopeTraking.ID);
+            var existingScopeTracking = _context.PM_Scope_Traking.FirstOrDefault(r => r.ID == pMScopeTraking.ID);
 
             if (existingScopeTracking != null)
             {
@@ -1021,12 +1022,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeletepMScopeTraking(string ID)
         {
-             var RemovepMScopeTraking = _context.PM_Scope_Traking.Where(e => e.ID == ID).FirstOrDefault();
+            var RemovepMScopeTraking = _context.PM_Scope_Traking.Where(e => e.ID == ID).FirstOrDefault();
             if (RemovepMScopeTraking != null)
             {
                 _context.PM_Scope_Traking.Remove(RemovepMScopeTraking);
                 _context.SaveChanges();
-                return true;    
+                return true;
             }
             else
             {
@@ -1036,11 +1037,77 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<PM_Scope_Traking> GetScopeTrajing(int ContractID)
         {
-            return _context.PM_Scope_Traking.Where(a => a.ContractID == ContractID).ToList();   
+            return _context.PM_Scope_Traking.Where(a => a.ContractID == ContractID).ToList();
+        }
+
+        public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change)
+        {
+            var ExistiScopeChange = _context.PM_Scope_Change.FirstOrDefault(a => a.ID == pM_Scope_Change.ID);
+            if (ExistiScopeChange != null)
+            {
+
+                ExistiScopeChange.ID = pM_Scope_Change.ID;
+                ExistiScopeChange.ContractID = pM_Scope_Change.ContractID;
+                ExistiScopeChange.Description = pM_Scope_Change.Description;
+                ExistiScopeChange.Reason = pM_Scope_Change.Reason;
+                ExistiScopeChange.Coin = pM_Scope_Change.Coin;
+                ExistiScopeChange.Value = pM_Scope_Change.Value;
+                ExistiScopeChange.Date = pM_Scope_Change.Date;
+                _context.SaveChanges();
+
+            }
+            else
+            {
+                _context.PM_Scope_Change.Add(pM_Scope_Change);
+                _context.SaveChanges();
+            }
+            return true;
+        }
+
+        public bool UpdateScopeChange(PM_Scope_Change pM_Scope_Change)
+        {
+            var ExistiScopeChangeUpdate = _context.PM_Scope_Change.FirstOrDefault(a => a.ID == pM_Scope_Change.ID);
+            if (ExistiScopeChangeUpdate != null)
+            {
+
+                ExistiScopeChangeUpdate.ID = pM_Scope_Change.ID;
+                ExistiScopeChangeUpdate.ContractID = pM_Scope_Change.ContractID;
+                ExistiScopeChangeUpdate.Description = pM_Scope_Change.Description;
+                ExistiScopeChangeUpdate.Reason = pM_Scope_Change.Reason;
+                ExistiScopeChangeUpdate.Coin = pM_Scope_Change.Coin;
+                ExistiScopeChangeUpdate.Value = pM_Scope_Change.Value;
+                ExistiScopeChangeUpdate.Date = pM_Scope_Change.Date;
+                _context.SaveChanges();
+
+            }
+            else
+            {
+                _context.PM_Scope_Change.Add(pM_Scope_Change);
+                _context.SaveChanges();
+            }
+            return true;
+        }
+
+
+        public bool DeleteScopeChange(string ID)
+        {
+            var RemoveScopeChange = _context.PM_Scope_Change.FirstOrDefault(r => r.ID == ID);
+            if (RemoveScopeChange != null)
+            {
+                _context.PM_Scope_Change.Remove(RemoveScopeChange);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public List<PM_Scope_Change> GetScopeChanges(int ContractID)
+        {
+            return _context.PM_Scope_Change.Where(g => g.ContractID ==  g.ContractID).ToList(); 
+
         }
     }
 }
-
 
 
 

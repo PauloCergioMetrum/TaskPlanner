@@ -125,7 +125,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vPM_Mam_Hours> GetpmHours(int ContractID);
 
-        // ACOMPANHAMENTO DE ESCOPO 
+        // ACOMPANHAMENTO DE ESCOPO  CASDASTRADO DE ACOMPANHAMENTO
 
         public bool CreatScopeTraking( PM_Scope_Traking pMScopeTraking);
 
@@ -134,6 +134,16 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool DeletepMScopeTraking(string ID);    
 
        public List<PM_Scope_Traking> GetScopeTrajing(int ContractID);
+
+
+        //  ACOMPANHAMENTO DE ESCOPO  Mudança de Escopo 
+
+        public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change);
+        public bool UpdateScopeChange(PM_Scope_Change pM_Scope_Change);
+        public bool DeleteScopeChange(string ID);
+
+        public List<PM_Scope_Change> GetScopeChanges(int ContractID);
+
 
 
 

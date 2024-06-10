@@ -582,6 +582,29 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return  _projectmanagementRepository.GetScopeTrajing(ContractID);
     }
+
+
+
+        //  ACOMPANHAMENTO DE ESCOPO  Mudança de Escopo 
+        public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change)
+        {
+          return _projectmanagementRepository.CreateScopeChange(pM_Scope_Change);   
+        }
+
+        public bool UpdateScopeChange(PM_Scope_Change pM_Scope_Change)
+        {
+             return _projectmanagementRepository.UpdateScopeChange(pM_Scope_Change);
+        }
+
+        public bool DeleteScopeChange(string ID)
+        {
+           return _projectmanagementRepository.DeleteScopeChange(ID);  
+        }
+
+        public List<PM_Scope_Change> GetScopeChanges(int ContractID)
+        {
+            return _projectmanagementRepository.GetScopeChanges(ContractID);
+        }
     }
    
 

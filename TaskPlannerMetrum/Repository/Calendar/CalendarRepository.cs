@@ -157,72 +157,22 @@ namespace TaskPlannerMetrum.Repository.Calendar
 
         public string setColor(double valor)
         {
-
-            switch (valor)
+            if (valor <= 5)
             {
-
-                case <= 5:
-                    return "#629763";
-                    break;
-                case <= 7:
-                    return "#efbf4d";
-                    break;
-                case >= 8:
-                    return "#a32638";
-                    break;
-                default:
-                    return "#a32638";
+                return "#629763";
             }
-
-
+            else if (valor <= 7)
+            {
+                return "#efbf4d";
+            }
+            else
+            {
+                return "#a32638";
+            }
         }
 
 
 
-        //public dynamic GetAllContracts()
-        //{
-        //    var matchedClientNames = _context.Contracts
-        //        .Join(_context.vContractList,
-        //            contract => contract.InternalCode,
-        //            vContract => vContract.InternalCode,
-        //            (contract, vContract) => new
-        //            {
-        //                ContractID = contract.id,
-        //                internalCode = contract.InternalCode,
-        //                ClientName = vContract.ClientName
-        //            })
-        //        .Where(joinResult => joinResult.internalCode != null && joinResult.ClientName != null)
-        //        .Select(joinResult => joinResult.ClientName)
-        //        .ToList();
-
-        //    return matchedClientNames;
-        //}
-
-
-
-
-
-        //public dynamic GetAllContracts()
-        //{
-
-        //    var teste = _context.vContractList.Where(i => i.InternalCode == i.InternalCode).ToList();
-        //    {
-
-        //    }
-
-        //    var contracts = _context.Contracts
-        //        .Where(e => true)
-        //        .Select(c => new
-        //        {
-        //            contractID = c.id,
-        //            internalCode = c.InternalCode,
-        //            StatusID = c.StatusID,
-        //            DateRetroactive = c.DateRetroactive,
-        //        })
-        //        .ToList();
-
-        //    return contracts;
-        //}
 
 
 

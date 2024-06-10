@@ -939,6 +939,72 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        //  ACOMPANHAMENTO DE ESCOPO  Mudança de Escopo 
+
+
+        [HttpPost("CreateScopeChange")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateScopeChange(PM_Scope_Change pM_Scope_Change)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.CreateScopeChange(pM_Scope_Change));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpDelete("DeleteScopeChange")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteScopeChange(string ID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.DeleteScopeChange(ID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("GetScopeChanges")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetScopeChanges(int ContracID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetScopeChanges(ContracID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
 
 

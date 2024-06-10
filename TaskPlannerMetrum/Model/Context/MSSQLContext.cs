@@ -64,7 +64,11 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<PM_Scope_Traking> PM_Scope_Traking { get; set; }
 
+         public DbSet<PM_Scope_Change> PM_Scope_Change { get; set; }
+
   
+
+
 
 
 

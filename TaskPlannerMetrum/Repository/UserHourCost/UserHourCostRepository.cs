@@ -69,7 +69,7 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
         
                 return userHourCostList;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
                 throw;

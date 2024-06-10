@@ -35,7 +35,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 
                
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
                 return false;
@@ -50,7 +50,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _repository.DeleteUserHourCost(id);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return false;
@@ -66,7 +66,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 _repository.UpdateUserHourCost(userHourCost);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
                 return false;
@@ -79,7 +79,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             {
                 return _repository.GetAllUserHourCost(userID);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
                 throw;

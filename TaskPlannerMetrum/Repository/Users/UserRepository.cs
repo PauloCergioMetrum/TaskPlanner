@@ -126,7 +126,7 @@ namespace TaskPlannerMetrum.Repository.Users
                 _context.SaveChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -154,7 +154,7 @@ namespace TaskPlannerMetrum.Repository.Users
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
