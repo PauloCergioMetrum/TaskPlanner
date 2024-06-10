@@ -6,7 +6,7 @@ namespace TaskPlannerMetrum.Model
     {
 
         public string ID { get; set; }
-        public string ContractID { get; set; }
+        public int ContractID { get; set; }
         public string Description { get; set; }
         public string Reason { get; set; }
         public string Coin { get; set; }
