@@ -514,45 +514,66 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vMileStonesValue> GetAllMilestonesItem(int ContractID)
         {
-          
+           
+           
             var milestones = _context.vMileStonesValue
-               .Where(i => i.ContractID == ContractID)
-               .ToList();
+              .Where(i => i.ContractID == ContractID)
+              .ToList();
+
 
             var transformedMilestones = milestones.Select(milestone =>
             {
-                if (milestone.RescheduledDate.HasValue && milestone.RescheduledDate.Value.Date == new DateTime(1901, 1, 1))
+
+                DateTime? rescheduledDate = milestone.RescheduledDate;
+                DateTime? executedDate = milestone.ExecutedDate;
+
+
+                if (rescheduledDate.HasValue)
                 {
-                
-                    var copy = new vMileStonesValue
+                    if (rescheduledDate.Value.Date == new DateTime(1901, 01, 01))
                     {
-                        
-                        ID = milestone.ID,
-                       ContractID=milestone.ContractID,
-                        MilestonesName = milestone.MilestonesName,
-                        ScheduledDate = milestone.ScheduledDate,
-
-                        
-                        Description = milestone.Description,
-                        MilestonesTypeID = milestone .MilestonesTypeID,
-
-               
-                        RescheduledDate = null,
-                        ExecutedDate = null 
-
-                    };
-
-                    return copy;
+                        rescheduledDate = null;
+                    }
+                    else if (rescheduledDate.Value.Date <= new DateTime(2000, 01, 01))
+                    {
+                        rescheduledDate = milestone.RescheduledDate;
+                    }
                 }
-                else
+
+
+                if (executedDate.HasValue)
                 {
-            
-                    return milestone;
+                    if (executedDate.Value.Date == new DateTime(1901, 01, 01))
+                    {
+                        executedDate = null;
+                    }
+                    else if (executedDate.Value.Date <= new DateTime(2000, 01, 01))
+                    {
+                        executedDate = milestone.ExecutedDate;
+                    }
                 }
+
+
+                var copy = new vMileStonesValue
+                {
+                    ID = milestone.ID,
+                    ContractID = milestone.ContractID,
+                    MilestonesName = milestone.MilestonesName,
+                    ScheduledDate = milestone.ScheduledDate,
+                    Description = milestone.Description,
+                    MilestonesTypeID = milestone.MilestonesTypeID,
+                    RescheduledDate = rescheduledDate,
+                    ExecutedDate = executedDate
+                };
+
+                return copy;
             }).ToList();
 
             return transformedMilestones;
         }
+
+
+
 
 
         public bool IsExistMilesStone(MilesTonesDTO milesTonesDTO)
@@ -1139,7 +1160,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<PM_Scope_Change> GetScopeChanges(int ContractID)
         {
-            return _context.PM_Scope_Change.Where(g => g.ContractID ==  g.ContractID).ToList(); 
+            return _context.PM_Scope_Change.Where(g => g.ContractID == g.ContractID).ToList();
 
         }
     }
