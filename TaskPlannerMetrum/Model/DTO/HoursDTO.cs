@@ -14,6 +14,7 @@ namespace TaskPlannerMetrum.Model.DTO
         public List<HoursByDay> Hours { get; set; }
 
         public bool IsOverAllocated { get; set; }
+  
 
 
         public class HoursByDay
@@ -22,7 +23,9 @@ namespace TaskPlannerMetrum.Model.DTO
             public string Project { get; set; }
 
             public bool IsOverAllocated { get; set; }
+             public string ClientName { get; set; } 
 
+          
         }
     }
 }

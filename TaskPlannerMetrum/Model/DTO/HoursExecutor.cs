@@ -13,6 +13,8 @@ namespace TaskPlannerMetrum.Model.DTO
         public DateTime ScheduledDate { get; set; }
         public string PlannedManHours { get; set; }
         public string Project { get; set; }
+        public string ClientName { get; set; }
+      
         
     
     }

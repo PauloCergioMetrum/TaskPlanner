@@ -685,7 +685,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
                     Dictionary<string, TimeSpan> totalPlannedHoursByProject = new Dictionary<string, TimeSpan>();
 
-            
                     foreach (var hourOnDate in hoursOnDateForExecutor)
                     {
                         if (totalPlannedHoursByProject.ContainsKey(hourOnDate.Project))
@@ -698,17 +697,17 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                         }
                     }
 
-            
+                    
                     foreach (var kvp in totalPlannedHoursByProject)
                     {
                         hoursByDays.Add(new HoursByDay
                         {
                             PlannedManHours = $"{(int)kvp.Value.TotalHours:00}:{kvp.Value.Minutes:00}",
                             Project = kvp.Key,
-                       
-
+                            ClientName = hoursOnDateForExecutor.FirstOrDefault().ClientName, 
                         });
                     }
+
 
                     TimeSpan totalHours = totalPlannedHoursByProject.Values
                         .Aggregate(TimeSpan.Zero, (total, time) => total.Add(time));
