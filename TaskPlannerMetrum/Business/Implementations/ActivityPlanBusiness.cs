@@ -234,7 +234,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         }
 
-        public List<Equipment_ActivityPlan> GetAllEquipment()
+        public List<Equipment> GetAllEquipment()
         {
            return _activiesRepository.GetAllEquipment();
         }

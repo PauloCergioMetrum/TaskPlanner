@@ -65,13 +65,13 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<PM_Scope_Traking> PM_Scope_Traking { get; set; }
 
          public DbSet<PM_Scope_Change> PM_Scope_Change { get; set; }
-        public DbSet <Equipment_ActivityPlan> Equipment_ActivityPlan { get; set; }  
+
 
 
         // Equipamentos Alocados
+        public DbSet<Equipment> Equipment { get; set; }
 
 
-        //Views
 
 
         public DbSet<vPM_OutsourcedServices_Combined> vPM_OutsourcedServices_Combined { get; set; }

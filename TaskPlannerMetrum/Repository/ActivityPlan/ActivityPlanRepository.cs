@@ -729,9 +729,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             return hoursDto;
         }
 
-        public List<Equipment_ActivityPlan> GetAllEquipment()
+        public List<Equipment> GetAllEquipment()
         {
-            return _context.Equipment_ActivityPlan.ToList();
+            return _context.Equipment.ToList();
         }
     }
 }

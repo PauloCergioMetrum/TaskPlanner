@@ -1,6 +1,6 @@
 ﻿namespace TaskPlannerMetrum.Model
 {
-    public class Equipment_ActivityPlan
+    public class Equipment
     {
 
         public int ID { get; set; } 
