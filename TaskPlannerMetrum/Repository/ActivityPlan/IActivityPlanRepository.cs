@@ -42,6 +42,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public List<HoursDTO> ExecutorHourForPeriod(HoursExecutorDTO executors);
 
+        // LOCAÇÃO DE EQUIPAMENTOS
+        public List<Equipment_ActivityPlan> GetAllEquipment();
+
 
     }
 }

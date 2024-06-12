@@ -42,7 +42,7 @@ namespace TaskPlannerMetrum.Business
         public List<HoursDTO> ExecutorHourForPeriod(HoursExecutorDTO activityPlan);
 
 
-
+        public List<Equipment_ActivityPlan> GetAllEquipment();
 
 
     }

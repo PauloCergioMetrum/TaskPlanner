@@ -233,5 +233,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             return  _activiesRepository.ExecutorHourForPeriod(executors);
 
         }
+
+        public List<Equipment_ActivityPlan> GetAllEquipment()
+        {
+           return _activiesRepository.GetAllEquipment();
+        }
     }
 }
