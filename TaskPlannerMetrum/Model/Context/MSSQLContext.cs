@@ -158,6 +158,7 @@ namespace TaskPlannerMetrum.Model.Context
         {
             modelBuilder.Entity<HoursExecutor>().HasNoKey();
             modelBuilder.Entity<ActivePlansByExecutor>().HasNoKey();
+            modelBuilder.Entity<GetEquipamentAvaibilaity>().HasNoKey();
         }
 
 
@@ -171,6 +172,22 @@ namespace TaskPlannerMetrum.Model.Context
             return this.Set<HoursExecutor>().FromSqlRaw(query).ToList();
         }
 
+
+
+
+        public List<GetEquipamentAvaibilaity> GetEquipmentAvailability(int EquipamentID, DateTime StartDate, DateTime EndDate)
+        {
+            // Usar parâmetros em vez de interpolação de string
+            var sql = "EXEC [dbo].[GetEquipamentAvaibilaity] @EquipamentID, @StartDate, @EndDate";
+
+            // Passando os parâmetros de forma segura
+            return this.Set<GetEquipamentAvaibilaity>()
+                        .FromSqlRaw(sql,
+                            new SqlParameter("@EquipamentID", EquipamentID),
+                            new SqlParameter("@StartDate", StartDate),
+                            new SqlParameter("@EndDate", EndDate))
+                        .ToList();
+        }
 
 
 

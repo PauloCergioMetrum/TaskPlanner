@@ -238,5 +238,10 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
            return _activiesRepository.GetAllEquipment();
         }
+
+        public List<GetEquipamentAvaibilaity> GetEquipamentAvaibilaities(int EquipamentID, DateTime StartDate, DateTime EndDate)
+        {
+           return _activiesRepository.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate); 
+        }
     }
 }

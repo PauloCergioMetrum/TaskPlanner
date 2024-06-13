@@ -733,5 +733,12 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         {
             return _context.Equipment.ToList();
         }
+
+        public List<GetEquipamentAvaibilaity> GetEquipamentAvaibilaities(int EquipamentID, DateTime StartDate, DateTime EndDate)
+        {
+            return _context.GetEquipmentAvailability(EquipamentID, StartDate, EndDate);
+        }
     }
 }
+
+

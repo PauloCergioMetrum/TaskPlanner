@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
@@ -44,6 +45,8 @@ namespace TaskPlannerMetrum.Business
 
         public List<Equipment> GetAllEquipment();
 
+
+        public List<GetEquipamentAvaibilaity> GetEquipamentAvaibilaities(int EquipamentID, DateTime StartDate, DateTime EndDate);
 
     }
 }

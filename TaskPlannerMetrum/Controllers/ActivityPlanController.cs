@@ -389,6 +389,26 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetEquipamentAvaibilaities")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetEquipamentAvaibilaities(int EquipamentID, DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+
+                return Ok(_activityPlanBusiness.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
 
 

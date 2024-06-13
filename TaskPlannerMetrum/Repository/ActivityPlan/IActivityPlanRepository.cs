@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -45,6 +46,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         // LOCAÇÃO DE EQUIPAMENTOS
         public List<Equipment> GetAllEquipment();
 
-
+     public List<GetEquipamentAvaibilaity> GetEquipamentAvaibilaities(int EquipamentID , DateTime StartDate , DateTime EndDate);    
     }
 }
