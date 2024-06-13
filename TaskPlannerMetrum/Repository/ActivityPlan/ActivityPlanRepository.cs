@@ -57,6 +57,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     DepartamentID = activityPlan.DepartamentID,
                     BusinessUnit = activityPlan.BusinessUnit,
                     MilestonesID = activityPlan.MilestonesID,
+                    EquipmentID =activityPlan.EquipmentID,
                 });
                 _context.SaveChanges();
 

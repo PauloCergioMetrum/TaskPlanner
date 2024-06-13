@@ -57,6 +57,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.TaskDescription = activityPlan.TaskDescription;
                     task.BusinessUnit = activityPlan.BusinessUnit;               
                     task.MilestonesID = activityPlan.MilestonesID;
+                    task.EquipmentID = activityPlan.EquipmentID;
                     _activiesRepository.Create(task);
                 }
                 return true;
