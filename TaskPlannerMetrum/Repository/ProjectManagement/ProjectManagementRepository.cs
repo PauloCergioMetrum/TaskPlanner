@@ -563,7 +563,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     Description = milestone.Description,
                     MilestonesTypeID = milestone.MilestonesTypeID,
                     RescheduledDate = rescheduledDate,
-                    ExecutedDate = executedDate
+                    ExecutedDate = executedDate,
+                    Value = milestone.Value,
                 };
 
                 return copy;
