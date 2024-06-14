@@ -21,5 +21,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public int MilestonesTypeID { get; set; }
 
+        public double Value { get; set; }
+
     }
 }
