@@ -366,6 +366,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPlan.PlannedManHour = activityPlan.PlannedManHour;
             newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID == 0 ? newActivityPlan.ExecutorTeamID : activityPlan.ExecutorTeamID;
             newActivityPlan.MilestonesID = activityPlan.MilestonesID;
+            newActivityPlan.EquipmentID = activityPlan.ExecutorTeamID;
 
             _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
