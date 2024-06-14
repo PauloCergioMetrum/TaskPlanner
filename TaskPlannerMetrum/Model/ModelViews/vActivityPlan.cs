@@ -44,5 +44,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string BusinessUnit {  get; set; }
         public string MilestonesID { get; set; }
+
+        public int EquipmentID { get; set; }    
     }
 }
