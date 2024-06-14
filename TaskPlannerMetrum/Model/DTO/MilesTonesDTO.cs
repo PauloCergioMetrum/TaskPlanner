@@ -22,6 +22,8 @@ namespace TaskPlannerMetrum.Model.DTO
         public DateTime ExecutedDate { get; set; }
    
         public int TypeID { get; set; }
+
+        public double Value { get; set; }   
     }
 
 

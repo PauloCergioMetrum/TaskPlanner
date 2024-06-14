@@ -100,6 +100,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
+
         public bool CreateMilesTones(MilesTonesDTO milesTonesDTO)
         {
             try
@@ -125,7 +126,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                         RescheduledDate = milesTonesDTO.RescheduledDate,
                         ScheduledDate = milesTonesDTO.ScheduledDate,
                         TypeID = milesTonesDTO.TypeID,
-
+                        Value = milesTonesDTO.Value,    
 
 
                     });
