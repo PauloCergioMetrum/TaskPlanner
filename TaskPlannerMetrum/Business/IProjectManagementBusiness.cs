@@ -58,7 +58,7 @@ namespace TaskPlannerMetrum.Business
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
-        public List<vMileStonesValue> GetAllMilestonesItem(int ContractID);
+        //public List<vMileStonesValue> GetAllMilestonesItem(int ContractID);
 
 
 
@@ -134,7 +134,7 @@ namespace TaskPlannerMetrum.Business
         public List<PM_Scope_Change> GetScopeChanges(int ContractID);
 
 
-        public List<GetFinanceMilestones> GetFinanceMilestones(int contractID);
+        public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
     }
 
 

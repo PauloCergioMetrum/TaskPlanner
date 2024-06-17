@@ -70,7 +70,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
-        public List<vMileStonesValue> GetAllMilestonesItem(int ContractID);
+        //public List<vMileStonesValue> GetAllMilestonesItem(int ContractID);
         public bool IsExistMilesStone(MilesTonesDTO milesTonesDTO);
 
         public int existMilesStonesValue(string ID);
@@ -144,7 +144,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<PM_Scope_Change> GetScopeChanges(int ContractID);
 
-       public List<GetFinanceMilestones> GetFinanceMilestones(int contractID);
+       public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
 
 
 

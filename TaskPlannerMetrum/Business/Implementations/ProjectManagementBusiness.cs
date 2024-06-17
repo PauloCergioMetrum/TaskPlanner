@@ -384,10 +384,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllContractProjectByTechLeader(TechLeaderID, InspectorName);
         }
 
-        public List<vMileStonesValue> GetAllMilestonesItem(int ContractID)
-        {
-            return _projectmanagementRepository.GetAllMilestonesItem(ContractID);
-        }
+        //public List<vMileStonesValue> GetAllMilestonesItem(int ContractID)
+        //{
+        //    return _projectmanagementRepository.GetAllMilestonesItem(ContractID);
+        //}
 
 
         // MOBILIZAÇÃO
@@ -607,9 +607,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetScopeChanges(ContractID);
         }
 
-        public List<GetFinanceMilestones> GetFinanceMilestones(int contractID)
+        public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID)
         {
-            return _projectmanagementRepository.GetFinanceMilestones(contractID);
+            return _projectmanagementRepository.GetAllMilestonesItem(contractID);
         }
     }
    

@@ -514,66 +514,66 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             throw new NotImplementedException();
         }
 
-        public List<vMileStonesValue> GetAllMilestonesItem(int ContractID)
-        {
+        //public List<vMileStonesValue> GetAllMilestonesItem(int ContractID)
+        //{
            
            
-            var milestones = _context.vMileStonesValue
-              .Where(i => i.ContractID == ContractID)
-              .ToList();
+        //    var milestones = _context.vMileStonesValue
+        //      .Where(i => i.ContractID == ContractID)
+        //      .ToList();
 
 
-            var transformedMilestones = milestones.Select(milestone =>
-            {
+        //    var transformedMilestones = milestones.Select(milestone =>
+        //    {
 
-                DateTime? rescheduledDate = milestone.RescheduledDate;
-                DateTime? executedDate = milestone.ExecutedDate;
-
-
-                if (rescheduledDate.HasValue)
-                {
-                    if (rescheduledDate.Value.Date == new DateTime(1901, 01, 01))
-                    {
-                        rescheduledDate = null;
-                    }
-                    else if (rescheduledDate.Value.Date <= new DateTime(2000, 01, 01))
-                    {
-                        rescheduledDate = milestone.RescheduledDate;
-                    }
-                }
+        //        DateTime? rescheduledDate = milestone.RescheduledDate;
+        //        DateTime? executedDate = milestone.ExecutedDate;
 
 
-                if (executedDate.HasValue)
-                {
-                    if (executedDate.Value.Date == new DateTime(1901, 01, 01))
-                    {
-                        executedDate = null;
-                    }
-                    else if (executedDate.Value.Date <= new DateTime(2000, 01, 01))
-                    {
-                        executedDate = milestone.ExecutedDate;
-                    }
-                }
+        //        if (rescheduledDate.HasValue)
+        //        {
+        //            if (rescheduledDate.Value.Date == new DateTime(1901, 01, 01))
+        //            {
+        //                rescheduledDate = null;
+        //            }
+        //            else if (rescheduledDate.Value.Date <= new DateTime(2000, 01, 01))
+        //            {
+        //                rescheduledDate = milestone.RescheduledDate;
+        //            }
+        //        }
 
 
-                var copy = new vMileStonesValue
-                {
-                    ID = milestone.ID,
-                    ContractID = milestone.ContractID,
-                    MilestonesName = milestone.MilestonesName,
-                    ScheduledDate = milestone.ScheduledDate,
-                    Description = milestone.Description,
-                    MilestonesTypeID = milestone.MilestonesTypeID,
-                    RescheduledDate = rescheduledDate,
-                    ExecutedDate = executedDate,
-                    Value = milestone.Value,
-                };
+        //        if (executedDate.HasValue)
+        //        {
+        //            if (executedDate.Value.Date == new DateTime(1901, 01, 01))
+        //            {
+        //                executedDate = null;
+        //            }
+        //            else if (executedDate.Value.Date <= new DateTime(2000, 01, 01))
+        //            {
+        //                executedDate = milestone.ExecutedDate;
+        //            }
+        //        }
 
-                return copy;
-            }).ToList();
 
-            return transformedMilestones;
-        }
+        //        var copy = new vMileStonesValue
+        //        {
+        //            ID = milestone.ID,
+        //            ContractID = milestone.ContractID,
+        //            MilestonesName = milestone.MilestonesName,
+        //            ScheduledDate = milestone.ScheduledDate,
+        //            Description = milestone.Description,
+        //            MilestonesTypeID = milestone.MilestonesTypeID,
+        //            RescheduledDate = rescheduledDate,
+        //            ExecutedDate = executedDate,
+        //            Value = milestone.Value,
+        //        };
+
+        //        return copy;
+        //    }).ToList();
+
+        //    return transformedMilestones;
+        //}
 
 
 
@@ -1168,7 +1168,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
-        public List<GetFinanceMilestones> GetFinanceMilestones(int contractID)
+        public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID)
         {
             return _context.GetFinanceMilestones(contractID).ToList();
         }

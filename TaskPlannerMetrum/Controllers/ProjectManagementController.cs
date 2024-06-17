@@ -91,25 +91,7 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
-        [HttpGet("GetAllMilestonesItem")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        public IActionResult GetAllMilestonesItem(int ContractID)
-        {
-            try
-            {
-
-                return Ok(_projectManagementBusiness.GetAllMilestonesItem(ContractID));
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-        }
+      
 
 
 
@@ -1006,26 +988,48 @@ namespace TaskPlannerMetrum.Controllers
 
         //MARCO  FATURADO 
 
-
         [HttpGet("GetFinanceMilestones")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetFinanceMilestones(int ContracID)
+        public IActionResult GetFinanceMilestones(int ContractID)
         {
-
             try
             {
 
-                return Ok(_projectManagementBusiness.GetFinanceMilestones(ContracID));
+                return Ok(_projectManagementBusiness.GetAllMilestonesItem(ContractID));
 
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+
         }
+
+
+
+
+        //[HttpGet("GetFinanceMilestones")]
+        //[ProducesResponseType(200)]
+        //[ProducesResponseType(204)]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(401)]
+        //public IActionResult GetFinanceMilestones(int ContracID)
+        //{
+
+        //    try
+        //    {
+
+        //        return Ok(_projectManagementBusiness.GetFinanceMilestones(ContracID));
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
 
 
