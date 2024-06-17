@@ -144,6 +144,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<PM_Scope_Change> GetScopeChanges(int ContractID);
 
+       public List<GetFinanceMilestones> GetFinanceMilestones(int contractID);
+
 
 
 

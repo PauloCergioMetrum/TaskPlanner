@@ -606,6 +606,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetScopeChanges(ContractID);
         }
+
+        public List<GetFinanceMilestones> GetFinanceMilestones(int contractID)
+        {
+            return _projectmanagementRepository.GetFinanceMilestones(contractID);
+        }
     }
    
 

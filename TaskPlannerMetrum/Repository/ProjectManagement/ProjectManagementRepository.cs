@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using System;
@@ -13,6 +14,7 @@ using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Repository.ActiviesScope;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskPlannerMetrum.Repository.ProjectManagement
@@ -1164,6 +1166,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.PM_Scope_Change.Where(g => g.ContractID == ContractID).ToList();
 
         }
+
+
+        public List<GetFinanceMilestones> GetFinanceMilestones(int contractID)
+        {
+            return _context.GetFinanceMilestones(contractID).ToList();
+        }
+
     }
 }
 

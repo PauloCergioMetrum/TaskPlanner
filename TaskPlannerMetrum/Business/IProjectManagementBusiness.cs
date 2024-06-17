@@ -133,6 +133,8 @@ namespace TaskPlannerMetrum.Business
         public bool DeleteScopeChange(string ID);
         public List<PM_Scope_Change> GetScopeChanges(int ContractID);
 
+
+        public List<GetFinanceMilestones> GetFinanceMilestones(int contractID);
     }
 
 

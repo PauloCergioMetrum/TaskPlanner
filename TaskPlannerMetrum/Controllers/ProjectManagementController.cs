@@ -1004,6 +1004,30 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        //MARCO  FATURADO 
+
+
+        [HttpGet("GetFinanceMilestones")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetFinanceMilestones(int ContracID)
+        {
+
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetFinanceMilestones(ContracID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
 
 
