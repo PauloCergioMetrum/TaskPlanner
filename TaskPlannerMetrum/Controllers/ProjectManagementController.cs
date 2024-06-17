@@ -988,12 +988,12 @@ namespace TaskPlannerMetrum.Controllers
 
         //MARCO  FATURADO 
 
-        [HttpGet("GetFinanceMilestones")]
+        [HttpGet("GetAllMilestonesItem")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetFinanceMilestones(int ContractID)
+        public IActionResult GetAllMilestonesItem(int ContractID)
         {
             try
             {
