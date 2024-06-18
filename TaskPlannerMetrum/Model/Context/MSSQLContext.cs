@@ -129,7 +129,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<vActivePlans> vActivePlans { get; set; }
         public DbSet<Observation> Observation { get; set; }
-        public DbSet<vBusinessUnit> vBusinessUnit { get; set; }
+        public DbSet<BusinessUnit> BusinessUnit { get; set; }
 
            
 

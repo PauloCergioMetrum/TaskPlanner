@@ -13,9 +13,10 @@ namespace TaskPlannerMetrum.Repository.BusinessUnit
             _context = context;
         }
 
-        public IEnumerable<vBusinessUnit> GetAllBuninesUnit()
+        public dynamic GetBusinessUnit()
         {
-            return _context.vBusinessUnit.ToList();
+             return _context.BusinessUnit;
         }
     }
 }
+ 
