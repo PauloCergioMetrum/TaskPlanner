@@ -12,7 +12,8 @@ namespace TaskPlannerMetrum.Model
         public string Description { get; set; }
         public int? MilestonesTypeID { get; set; }
         public int? Baseline { get; set; }
-        public string? ID { get; set; }
+        public Guid ID { get; set; }
+
         public double? Value { get; set; }
         public int ContractID { get; set; }
     }
