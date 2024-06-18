@@ -46,6 +46,7 @@ using TaskPlannerMetrum.Repository.ProjectManagement;
 using TaskPlannerMetrum.Repository.BusinessUnit;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TaskPlannerMetrum.Repository.TechnicialLeader;
 
 namespace TaskPlannerMetrum
 {
@@ -172,6 +173,12 @@ namespace TaskPlannerMetrum
             services.AddScoped<IActiviesScopeBusiness, ActivesScopeBusinessImplementation>();
             services.AddScoped<IActivityPlanBusiness, ActivityPlanBusiness>();
             services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
+            services.AddScoped<IBusinessUnitRepository, BusinessUnitRepository>();
+            services.AddScoped<ITechnicalLeaderBusiness, TechnicalLeaderImplementation>();
+
+
+
+
             services.AddTransient<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IActivityPlanRepository, ActivityPlanRepository>();
@@ -191,7 +198,9 @@ namespace TaskPlannerMetrum
             services.AddScoped<IClientsRepository, ClientsRepository>();
             services.AddScoped<IRatingRepository, RatingRepository>();
             services.AddScoped<IUserHourCostRepository, UserHourCostRepository>();
-            services.AddScoped<IBusinessUnitRepository ,BusinessUnitRepository>();
+;
+
+             services.AddScoped<ITechnicalLeaderRepository, TechnicalLeaderRepository>();
 
         }
 

@@ -71,6 +71,10 @@ namespace TaskPlannerMetrum.Model.Context
         // Equipamentos Alocados
         public DbSet<Equipment> Equipment { get; set; }
 
+ 
+
+
+
 
 
 
