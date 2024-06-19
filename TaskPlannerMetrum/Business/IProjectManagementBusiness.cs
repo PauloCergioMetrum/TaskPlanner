@@ -142,6 +142,8 @@ namespace TaskPlannerMetrum.Business
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID);
 
         public bool DeleteFunctionID(string ID);
+
+        public bool UpdateFunctionID(string ID, PM_Functions_MilestoneType dto);
     }
 
 

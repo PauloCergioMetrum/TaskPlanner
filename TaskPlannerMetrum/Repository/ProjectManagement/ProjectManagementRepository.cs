@@ -1178,23 +1178,59 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.Functions.ToList();
         }
 
+
+        public bool UpdateFunctionID(string ID, PM_Functions_MilestoneType dto)
+        {
+           
+            var existingFunction = _context.PM_Functions_MilestoneType.FirstOrDefault(f => f.ID == ID);
+
+            if (existingFunction != null)
+            {
+             
+                existingFunction.FunctionID = dto.FunctionID;
+                existingFunction.MilesstoneTypeID = dto.MilesstoneTypeID;
+                _context.PM_Functions_MilestoneType.Update(existingFunction);
+            }
+            else
+            {
+            
+                var newFunction = new PM_Functions_MilestoneType
+                {
+                    FunctionID = dto.FunctionID,
+                    MilesstoneTypeID = dto.MilesstoneTypeID,
+                    ID = dto.ID,
+                };
+
+                _context.PM_Functions_MilestoneType.Add(newFunction);
+            }
+
+         
+            _context.SaveChanges();
+
+            return true;
+        }
+
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto)
         {
             var existingFunction = _context.PM_Functions_MilestoneType
                 .FirstOrDefault(f => f.FunctionID == dto.FunctionID && f.MilesstoneTypeID == dto.MilesstoneTypeID);
 
-
-            var newFunction = new PM_Functions_MilestoneType
+            if (existingFunction != null)
             {
-                FunctionID = dto.FunctionID,
-                MilesstoneTypeID = dto.MilesstoneTypeID,
-                ID = dto.ID,
-            };
+                var newFunction = new PM_Functions_MilestoneType
+                {
+                    FunctionID = dto.FunctionID,
+                    MilesstoneTypeID = dto.MilesstoneTypeID,
+                    ID = dto.ID,
+                };
 
-            _context.PM_Functions_MilestoneType.Add(newFunction);
-            _context.SaveChanges();
+                _context.PM_Functions_MilestoneType.Add(newFunction);
+                _context.SaveChanges();
 
-            return true;
+                return true;
+            }
+
+            return false; 
         }
 
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID)
@@ -1218,6 +1254,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return false;
             }
         }
+
 
     }
 }

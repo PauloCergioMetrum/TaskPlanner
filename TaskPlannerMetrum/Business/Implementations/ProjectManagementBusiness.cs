@@ -631,6 +631,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
            return _projectmanagementRepository.DeleteFunctionID(ID);
         }
+
+        public bool UpdateFunctionID(string ID, PM_Functions_MilestoneType dto)
+        {
+            return _projectmanagementRepository.UpdateFunctionID(ID, dto);   
+        }
     }
    
 
