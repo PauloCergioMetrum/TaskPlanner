@@ -1009,6 +1009,28 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetAllFunctions")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAllFunctions()
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllFunctions());
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
 
 
         //[HttpGet("GetFinanceMilestones")]

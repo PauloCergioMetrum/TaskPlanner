@@ -1173,6 +1173,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.GetFinanceMilestones(contractID).ToList();
         }
 
+        public List<Functions> GetAllFunctions()
+        {
+           return _context.Functions.ToList();   
+        }
     }
 }
 
