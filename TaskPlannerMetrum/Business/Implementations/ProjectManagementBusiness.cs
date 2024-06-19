@@ -626,6 +626,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetAllFunctionsMilesstoneType(MilesstoneTypeID);
         }
+
+        public bool DeleteFunctionID(string ID)
+        {
+           return _projectmanagementRepository.DeleteFunctionID(ID);
+        }
     }
    
 

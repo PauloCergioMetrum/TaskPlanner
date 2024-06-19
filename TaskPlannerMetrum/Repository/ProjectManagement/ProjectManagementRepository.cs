@@ -1204,6 +1204,21 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                            .ToList();
         }
 
+        public bool DeleteFunctionID(string ID)
+        {
+            var removeFunctions = _context.PM_Functions_MilestoneType.SingleOrDefault(a => a.ID == ID);
+            if (removeFunctions != null)
+            {
+                _context.PM_Functions_MilestoneType.Remove(removeFunctions);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
 

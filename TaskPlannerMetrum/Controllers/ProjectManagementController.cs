@@ -1069,6 +1069,26 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
+        [HttpDelete("DeleteFunctionID")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteFunctionID(string ID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.DeleteFunctionID(ID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
 
 
         //[HttpGet("GetFinanceMilestones")]

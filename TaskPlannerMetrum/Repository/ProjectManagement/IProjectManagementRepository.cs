@@ -155,6 +155,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType (string MilesstoneTypeID);    
 
+        public bool DeleteFunctionID(string ID); 
 
 
 
