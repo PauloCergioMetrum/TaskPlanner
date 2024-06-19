@@ -636,6 +636,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.UpdateFunctionID(ID, dto);   
         }
+
+        public List<DisplacementServices> GetAllDisplacementServices()
+        {
+            return _projectmanagementRepository.GetAllDisplacementServices();
+        }
     }
    
 

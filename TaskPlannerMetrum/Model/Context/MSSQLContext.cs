@@ -128,8 +128,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<vRating> vRating { get; set; }
 
-        
-
+        public DbSet <DisplacementServices> DisplacementServices {  get; set; } 
         public DbSet<vActivePlans> vActivePlans { get; set; }
         public DbSet<Observation> Observation { get; set; }
         public DbSet<BusinessUnit> BusinessUnit { get; set; }

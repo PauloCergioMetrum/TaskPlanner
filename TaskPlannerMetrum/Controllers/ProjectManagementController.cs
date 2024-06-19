@@ -1090,6 +1090,27 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetAllDisplacementServices")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAllDisplacementServices()
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllDisplacementServices());
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
 
         //[HttpGet("GetFinanceMilestones")]
         //[ProducesResponseType(200)]

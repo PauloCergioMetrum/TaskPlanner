@@ -158,7 +158,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeleteFunctionID(string ID);
 
-   
+
+        // DESLOCAMENTO E SERVIÇO 
+
+        public List<DisplacementServices> GetAllDisplacementServices();
+
+
 
 
 

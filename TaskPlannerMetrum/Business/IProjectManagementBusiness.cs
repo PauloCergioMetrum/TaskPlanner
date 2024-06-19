@@ -144,6 +144,8 @@ namespace TaskPlannerMetrum.Business
         public bool DeleteFunctionID(string ID);
 
         public bool UpdateFunctionID(string ID, PM_Functions_MilestoneType dto);
+
+        public List<DisplacementServices> GetAllDisplacementServices();
     }
 
 
