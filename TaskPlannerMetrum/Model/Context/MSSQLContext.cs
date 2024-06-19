@@ -75,12 +75,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<Functions> Functions { get; set; } 
 
- 
-
-
-
-
-
+        public DbSet<PM_Functions_MilestoneType> PM_Functions_MilestoneType {  get; set; }  
 
         public DbSet<vPM_OutsourcedServices_Combined> vPM_OutsourcedServices_Combined { get; set; }
 

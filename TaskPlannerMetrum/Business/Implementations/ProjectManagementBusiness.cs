@@ -616,6 +616,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
              return _projectmanagementRepository.GetAllFunctions();   
         }
+
+        public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto)
+        {
+            return _projectmanagementRepository.CreateFunctions_MilestoneType(dto);
+        }
     }
    
 

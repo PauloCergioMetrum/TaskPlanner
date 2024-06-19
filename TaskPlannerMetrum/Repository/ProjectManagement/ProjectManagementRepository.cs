@@ -1177,6 +1177,26 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
            return _context.Functions.ToList();   
         }
+
+        public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto)
+        {
+            var existingFunction = _context.PM_Functions_MilestoneType
+                .FirstOrDefault(f => f.FunctionID == dto.FunctionID && f.MilesstoneTypeID == dto.MilesstoneTypeID);
+
+      
+            var newFunction = new PM_Functions_MilestoneType
+            {
+                FunctionID = dto.FunctionID,
+                MilesstoneTypeID = dto.MilesstoneTypeID,
+                ID = dto.ID,
+            };
+
+            _context.PM_Functions_MilestoneType.Add(newFunction);
+            _context.SaveChanges();
+
+            return true;
+        }
+
     }
 }
 

@@ -151,6 +151,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<Functions> GetAllFunctions();
 
+        public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto);
+
 
 
 

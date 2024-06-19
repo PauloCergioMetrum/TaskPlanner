@@ -1030,6 +1030,25 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpPost("CreateFunctions_MilestoneType")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.CreateFunctions_MilestoneType(dto));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
 
 
 

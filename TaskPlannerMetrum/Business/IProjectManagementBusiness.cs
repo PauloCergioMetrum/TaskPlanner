@@ -138,6 +138,7 @@ namespace TaskPlannerMetrum.Business
 
         //LISTA DE FUNÇÃO , 
         public List<Functions> GetAllFunctions();
+        public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto);
     }
 
 
