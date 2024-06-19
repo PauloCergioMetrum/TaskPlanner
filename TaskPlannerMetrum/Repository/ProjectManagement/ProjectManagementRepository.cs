@@ -1197,10 +1197,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return true;
         }
 
-        public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(int MilesstoneTypeID)
+        public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID)
         {
-            return _context.vPM_Functions_MilestoneType.Where(m => m.MilesstoneTypeID == MilesstoneTypeID).ToList();     
+            return _context.vPM_Functions_MilestoneType
+                           .Where(a => a.MilesstoneTypeID == MilesstoneTypeID)
+                           .ToList();
         }
+
     }
 }
 

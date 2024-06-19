@@ -128,7 +128,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<vRating> vRating { get; set; }
 
-        public DbSet<vPM_Functions_MilestoneType> vPM_Functions_MilestoneType {  get; set; }        
+        
 
         public DbSet<vActivePlans> vActivePlans { get; set; }
         public DbSet<Observation> Observation { get; set; }
@@ -142,8 +142,8 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPMAcquisitionCombined> vPM_Acquisition_Combined { get; set; }
 
         public DbSet<vPMAcquisitionCost> vPM_Acquisition_Cost { get; set; }
-
-
+        
+        public DbSet<vPM_Functions_MilestoneType> vPM_Functions_MilestoneType { get; set; } 
 
 
 
