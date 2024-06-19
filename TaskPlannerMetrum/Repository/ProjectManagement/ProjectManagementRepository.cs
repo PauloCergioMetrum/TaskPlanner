@@ -516,8 +516,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         //public List<vMileStonesValue> GetAllMilestonesItem(int ContractID)
         //{
-           
-           
+
+
         //    var milestones = _context.vMileStonesValue
         //      .Where(i => i.ContractID == ContractID)
         //      .ToList();
@@ -1175,7 +1175,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<Functions> GetAllFunctions()
         {
-           return _context.Functions.ToList();   
+            return _context.Functions.ToList();
         }
 
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto)
@@ -1183,7 +1183,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             var existingFunction = _context.PM_Functions_MilestoneType
                 .FirstOrDefault(f => f.FunctionID == dto.FunctionID && f.MilesstoneTypeID == dto.MilesstoneTypeID);
 
-      
+
             var newFunction = new PM_Functions_MilestoneType
             {
                 FunctionID = dto.FunctionID,
@@ -1197,6 +1197,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return true;
         }
 
+        public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(int MilesstoneTypeID)
+        {
+            return _context.vPM_Functions_MilestoneType.Where(m => m.MilesstoneTypeID == MilesstoneTypeID).ToList();     
+        }
     }
 }
 

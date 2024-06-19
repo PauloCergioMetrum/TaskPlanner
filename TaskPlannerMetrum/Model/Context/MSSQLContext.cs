@@ -128,21 +128,11 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<vRating> vRating { get; set; }
 
-
+        public DbSet<vPM_Functions_MilestoneType> vPM_Functions_MilestoneType {  get; set; }        
 
         public DbSet<vActivePlans> vActivePlans { get; set; }
         public DbSet<Observation> Observation { get; set; }
         public DbSet<BusinessUnit> BusinessUnit { get; set; }
-
-           
-
-
-
-
-
-
-
-
 
         public DbSet<MilestonesItem> MilestonesItem { get; set; }
 

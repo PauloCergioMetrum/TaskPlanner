@@ -1049,6 +1049,25 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
+        [HttpGet("GetAllFunctionsMilesstoneType")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAllFunctionsMilesstoneType(int MilesstoneTypeID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllFunctionsMilesstoneType(MilesstoneTypeID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
 
 
 
