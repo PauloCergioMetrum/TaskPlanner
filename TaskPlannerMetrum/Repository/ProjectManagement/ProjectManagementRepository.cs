@@ -1297,10 +1297,22 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.PM_MilestonesType.Where(f => f.ID ==  ID).ToList();
         }
 
+        public bool DeletePM_MilestonesType(string ID)
+        {
+            var DeleteMilestonesType = _context.PM_MilestonesType.Where(a => a.ID == ID).FirstOrDefault();  
 
-       
+            if (DeleteMilestonesType != null)
+            {
+                _context.PM_MilestonesType.Remove(DeleteMilestonesType);
+                _context.SaveChanges();
+                return true;
 
-
+            }
+            else
+            {
+                return false;   
+            }
+        }
     }
 }
 

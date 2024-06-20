@@ -651,6 +651,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetAllPM_MilestonesType(ID);
         }
+
+        public bool DeletePM_MilestonesType(string ID)
+        {
+            return _projectmanagementRepository.DeletePM_MilestonesType(ID);
+        }
     }
    
 

@@ -1151,6 +1151,27 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpDelete("DeletePM_MilestonesType")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeletePM_MilestonesType(string ID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.DeletePM_MilestonesType(ID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
 
     }
 }

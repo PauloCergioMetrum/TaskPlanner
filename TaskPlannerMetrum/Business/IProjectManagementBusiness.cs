@@ -150,6 +150,8 @@ namespace TaskPlannerMetrum.Business
         public bool CreatePM_MilestonesType(PM_MilestonesType dto);
         public List<PM_MilestonesType> GetAllPM_MilestonesType(string ID);
 
+        public bool DeletePM_MilestonesType(string ID);
+
     }
 
 

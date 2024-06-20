@@ -32,8 +32,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change);
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto);
         public bool CreatePM_MilestonesType(PM_MilestonesType dto);
-
         public List<PM_MilestonesType> GetAllPM_MilestonesType(string ID);
+
+        public bool DeletePM_MilestonesType( string ID );   
         //public bool PM_DisplacementService_MilestonesType(PM_DisplacementService_MilestonesType pM_DisplacementService_MilestonesType);
 
 
