@@ -1151,7 +1151,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             var existingFunction = _context.PM_Functions_MilestoneType
                 .FirstOrDefault(f => f.FunctionID == dto.FunctionID && f.MilesstoneTypeID == dto.MilesstoneTypeID);
 
-            if (existingFunction != null)
+            if (existingFunction == null)
             {
                 var newFunction = new PM_Functions_MilestoneType
                 {
@@ -1172,7 +1172,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID)
         {
             return _context.vPM_Functions_MilestoneType
-                           .Where(a => a.MilesstoneTypeID == MilesstoneTypeID)
+                           .Where(a => a.MilesstoneTypeID == a.MilesstoneTypeID)
                            .ToList();
         }
 
