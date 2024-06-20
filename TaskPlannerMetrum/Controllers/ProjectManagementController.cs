@@ -1109,17 +1109,17 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
-        [HttpPost("PM_MilestonesType")]
+        [HttpPost("CreatePM_MilestonesType")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult PM_MilestonesType(PM_MilestonesType dto)
+        public IActionResult CreatePM_MilestonesType(PM_MilestonesType dto)
         {
             try
             {
 
-                return Ok(_projectManagementBusiness.PM_MilestonesType(dto));
+                return Ok(_projectManagementBusiness.CreatePM_MilestonesType(dto));
 
             }
             catch (Exception ex)

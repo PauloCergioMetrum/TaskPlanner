@@ -642,9 +642,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllDisplacementServices();
         }
 
-        public bool PM_MilestonesType(PM_MilestonesType dto)
+        public bool CreatePM_MilestonesType(PM_MilestonesType dto)
         {
-            return _projectmanagementRepository.PM_MilestonesType(dto);
+            return _projectmanagementRepository.CreatePM_MilestonesType(dto);
         }
 
         public List<PM_MilestonesType> GetAllPM_MilestonesType(string ID)

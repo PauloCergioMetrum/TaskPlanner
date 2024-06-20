@@ -1263,7 +1263,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
    
-        public bool PM_MilestonesType(PM_MilestonesType dto)
+        public bool CreatePM_MilestonesType(PM_MilestonesType dto)
         {
             var existingMilesType = _context.PM_MilestonesType.FirstOrDefault(f => f.ID == dto.ID);
 
@@ -1280,7 +1280,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 {
                     ID = dto.ID,
                     DepartmentID = dto.DepartmentID,
-                    Hours = dto.Hours
+                    Hours = dto.Hours,
+                    DisplacementServicesID = dto.DepartmentID,
+                    MilestonesValueID = dto.MilestonesValueID,
                 };
                 _context.PM_MilestonesType.Add(newMilesType);
             }
