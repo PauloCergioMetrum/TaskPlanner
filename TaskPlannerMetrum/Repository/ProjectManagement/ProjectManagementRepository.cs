@@ -1234,9 +1234,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
-        public List<PM_MilestonesType> GetAllPM_MilestonesType(string ID)
+        public List<PM_MilestonesType> GetAllPM_MilestonesType(string MilestonesValueID)
         {
-            return _context.PM_MilestonesType.Where(f => f.ID ==  ID).ToList();
+            return _context.PM_MilestonesType.Where(f => f.MilestonesValueID == MilestonesValueID).ToList();
         }
 
         public bool DeletePM_MilestonesType(string ID)

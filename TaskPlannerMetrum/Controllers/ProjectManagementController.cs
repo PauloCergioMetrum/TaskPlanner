@@ -1135,12 +1135,12 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetAllPM_MilestonesType(string ID)
+        public IActionResult GetAllPM_MilestonesType(string MilestonesValueID)
         {
             try
             {
 
-                return Ok(_projectManagementBusiness.GetAllPM_MilestonesType(ID));
+                return Ok(_projectManagementBusiness.GetAllPM_MilestonesType(MilestonesValueID));
 
             }
             catch (Exception ex)

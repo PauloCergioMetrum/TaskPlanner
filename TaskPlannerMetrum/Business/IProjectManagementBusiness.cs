@@ -148,7 +148,7 @@ namespace TaskPlannerMetrum.Business
         public List<DisplacementServices> GetAllDisplacementServices();
 
         public bool CreatePM_MilestonesType(PM_MilestonesType dto);
-        public List<PM_MilestonesType> GetAllPM_MilestonesType(string ID);
+        public List<PM_MilestonesType> GetAllPM_MilestonesType(string MilestonesValueID);
 
         public bool DeletePM_MilestonesType(string ID);
 
