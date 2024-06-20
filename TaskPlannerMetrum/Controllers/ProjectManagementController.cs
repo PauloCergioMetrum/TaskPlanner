@@ -1109,31 +1109,25 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
+        [HttpPost("PM_MilestonesType")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult PM_MilestonesType(PM_MilestonesType dto)
+        {
+            try
+            {
 
+                return Ok(_projectManagementBusiness.PM_MilestonesType(dto));
 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
-        //[HttpGet("GetFinanceMilestones")]
-        //[ProducesResponseType(200)]
-        //[ProducesResponseType(204)]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(401)]
-        //public IActionResult GetFinanceMilestones(int ContracID)
-        //{
-
-        //    try
-        //    {
-
-        //        return Ok(_projectManagementBusiness.GetFinanceMilestones(ContracID));
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
-
-
+        }
 
 
 

@@ -1259,6 +1259,38 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             return _context.DisplacementServices.ToList();  
         }
+
+
+
+   
+        public bool PM_MilestonesType(PM_MilestonesType dto)
+        {
+            var existingMilesType = _context.PM_MilestonesType.FirstOrDefault(f => f.ID == dto.ID);
+
+            if (existingMilesType != null)
+            {
+             
+                existingMilesType.DepartmentID = dto.DepartmentID;
+                existingMilesType.Hours = dto.Hours;
+            }
+            else
+            {
+              
+                var newMilesType = new PM_MilestonesType
+                {
+                    ID = dto.ID,
+                    DepartmentID = dto.DepartmentID,
+                    Hours = dto.Hours
+                };
+                _context.PM_MilestonesType.Add(newMilesType);
+            }
+
+            _context.SaveChanges(); 
+
+            return true; 
+        }
+
+       
     }
 }
 
