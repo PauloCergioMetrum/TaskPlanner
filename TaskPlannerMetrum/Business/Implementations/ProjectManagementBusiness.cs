@@ -126,7 +126,11 @@ namespace TaskPlannerMetrum.Business.Implementations
                         RescheduledDate = milesTonesDTO.RescheduledDate,
                         ScheduledDate = milesTonesDTO.ScheduledDate,
                         TypeID = milesTonesDTO.TypeID,
-                        Value = milesTonesDTO.Value,    
+                        Value = milesTonesDTO.Value,  
+                        TypeMilestonesID = milesTonesDTO.TypeMilestonesID,
+                        TechLeadID = milesTonesDTO.TechLeadID,
+                        BusinessUnitID = milesTonesDTO.BusinessUnitID,  
+
 
 
                     });
@@ -169,6 +173,10 @@ namespace TaskPlannerMetrum.Business.Implementations
                     RescheduledDate = milesTonesDTO.RescheduledDate,
                     ScheduledDate = milesTonesDTO.ScheduledDate,
                     TypeID = milesTonesDTO.TypeID,
+                        TypeMilestonesID = milesTonesDTO.TypeMilestonesID,
+                        TechLeadID = milesTonesDTO.TechLeadID,
+                        BusinessUnitID = milesTonesDTO.BusinessUnitID,  
+
 
 
 
@@ -384,10 +392,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllContractProjectByTechLeader(TechLeaderID, InspectorName);
         }
 
-        //public List<vMileStonesValue> GetAllMilestonesItem(int ContractID)
-        //{
-        //    return _projectmanagementRepository.GetAllMilestonesItem(ContractID);
-        //}
+  
 
 
         // MOBILIZAÇÃO
