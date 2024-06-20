@@ -1262,35 +1262,41 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-   
+
         public bool CreatePM_MilestonesType(PM_MilestonesType dto)
         {
+           
             var existingMilesType = _context.PM_MilestonesType.FirstOrDefault(f => f.ID == dto.ID);
 
             if (existingMilesType != null)
             {
-             
+              
                 existingMilesType.DepartmentID = dto.DepartmentID;
                 existingMilesType.Hours = dto.Hours;
+                existingMilesType.ID = dto.ID;
+                existingMilesType.MilestonesValueID = dto.MilestonesValueID;
+                existingMilesType.DisplacementServicesID = dto.DisplacementServicesID;  
             }
             else
             {
-              
+                
                 var newMilesType = new PM_MilestonesType
                 {
                     ID = dto.ID,
                     DepartmentID = dto.DepartmentID,
                     Hours = dto.Hours,
-                    DisplacementServicesID = dto.DepartmentID,
+                    DisplacementServicesID = dto.DisplacementServicesID,
                     MilestonesValueID = dto.MilestonesValueID,
                 };
                 _context.PM_MilestonesType.Add(newMilesType);
             }
 
-            _context.SaveChanges(); 
+        
+            _context.SaveChanges();
 
-            return true; 
+            return true;
         }
+
 
         public List<PM_MilestonesType> GetAllPM_MilestonesType(string ID)
         {
