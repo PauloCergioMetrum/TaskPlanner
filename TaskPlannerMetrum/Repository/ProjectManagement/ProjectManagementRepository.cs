@@ -1172,7 +1172,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID)
         {
             return _context.vPM_Functions_MilestoneType
-                           .Where(a => a.MilesstoneTypeID == a.MilesstoneTypeID)
+                           .Where(a => a.MilesstoneTypeID == MilesstoneTypeID)
                            .ToList();
         }
 
