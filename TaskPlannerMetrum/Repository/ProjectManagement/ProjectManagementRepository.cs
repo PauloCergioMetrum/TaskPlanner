@@ -1290,7 +1290,15 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return true; 
         }
 
+        public List<PM_MilestonesType> GetAllPM_MilestonesType(string ID)
+        {
+            return _context.PM_MilestonesType.Where(f => f.ID ==  ID).ToList();
+        }
+
+
        
+
+
     }
 }
 

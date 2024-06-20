@@ -61,7 +61,7 @@ namespace TaskPlannerMetrum.Business
         //public List<vMileStonesValue> GetAllMilestonesItem(int ContractID);
 
 
-
+  
         public int existMilesStonesValue(string ID);
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
 
@@ -148,6 +148,8 @@ namespace TaskPlannerMetrum.Business
         public List<DisplacementServices> GetAllDisplacementServices();
 
         public bool PM_MilestonesType(PM_MilestonesType dto);
+        public List<PM_MilestonesType> GetAllPM_MilestonesType(string ID);
+
     }
 
 

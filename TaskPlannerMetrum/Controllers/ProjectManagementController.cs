@@ -1130,6 +1130,27 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetAllPM_MilestonesType")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAllPM_MilestonesType(string ID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllPM_MilestonesType(ID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
 
     }
 }

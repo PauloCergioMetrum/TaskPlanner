@@ -646,6 +646,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.PM_MilestonesType(dto);
         }
+
+        public List<PM_MilestonesType> GetAllPM_MilestonesType(string ID)
+        {
+            return _projectmanagementRepository.GetAllPM_MilestonesType(ID);
+        }
     }
    
 
