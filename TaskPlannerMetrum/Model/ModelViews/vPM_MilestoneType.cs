@@ -1,6 +1,6 @@
 ﻿namespace TaskPlannerMetrum.Model.ModelViews
 {
-    public class vPM_MilestonesType
+    public class vPM_MilestoneType
     {
         public string DepartmentName { get; set; }
         public string DisplacementServiceName { get; set; }
