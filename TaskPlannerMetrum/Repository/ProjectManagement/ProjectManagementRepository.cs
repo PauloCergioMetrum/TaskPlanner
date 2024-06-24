@@ -1194,6 +1194,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<DisplacementServices> GetAllDisplacementServices()
         {
             return _context.DisplacementServices.ToList();  
+            //apagardepois
         }
 
 
