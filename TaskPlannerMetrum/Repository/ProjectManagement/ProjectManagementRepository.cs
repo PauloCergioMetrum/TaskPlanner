@@ -1211,6 +1211,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 existingMilesType.MilestonesValueID = dto.MilestonesValueID;
                 existingMilesType.DisplacementServicesID = dto.DisplacementServicesID;
                 existingMilesType.FunctionID = dto.FunctionID;
+                existingMilesType.ValueHour = dto.Hours; 
+
+
             }
             else
             {
@@ -1223,6 +1226,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     DisplacementServicesID = dto.DisplacementServicesID,
                     MilestonesValueID = dto.MilestonesValueID,
                     FunctionID = dto.FunctionID,
+                    ValueHour = dto.ValueHour,  
                 };
                 _context.PM_MilestonesType.Add(newMilesType);
             }

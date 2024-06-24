@@ -10,5 +10,10 @@
         public string MilestonesValueID { get; set; }
         public int DisplacementServicesID { get; set; }
         public int FunctionID {  get; set; } 
+
+        public double ValueHour {  get; set; }  
+
+
+
     }
 }
