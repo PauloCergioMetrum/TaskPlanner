@@ -38,7 +38,7 @@ namespace TaskPlannerMetrum.Model
         public string TaskDescription { get; set; }
 
         public string BusinessUnit { get; set; }
-        public string MilestonesID { get; set; }
+        public int MilestonesID { get; set; }
 
         public int ?EquipmentID { get; set; }    
     }

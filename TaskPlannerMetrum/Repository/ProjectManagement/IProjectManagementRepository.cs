@@ -32,7 +32,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change);
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto);
         public bool CreatePM_MilestonesType(PM_MilestonesType dto);
-        public List<vPM_MilestonesType> GetAllPM_MilestonesType(string MilestonesValueID);
+       
 
         public bool DeletePM_MilestonesType( string ID );   
         //public bool PM_DisplacementService_MilestonesType(PM_DisplacementService_MilestonesType pM_DisplacementService_MilestonesType);
@@ -83,6 +83,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<Functions> GetAllFunctions();
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID);
         public List<DisplacementServices> GetAllDisplacementServices();
+        public List<vPM_MilestonesType> GetAllPM_MilestonesType(string MilestonesValueID);
 
         // DELETE Methods
         public bool DeleteMilestones(string ID);
