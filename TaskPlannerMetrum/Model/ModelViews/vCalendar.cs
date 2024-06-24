@@ -28,5 +28,9 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string Status { get; set; }
 
+        public int? EquipmentID { get; set; }
+
+        public string EquipamentName { get; set; }
+
     }
 }

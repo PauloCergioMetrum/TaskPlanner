@@ -72,7 +72,6 @@ namespace TaskPlannerMetrum.Repository.Users
 
         public List<UserVO> FindAll()
         {
-
             List<UserVO> retorno = new List<UserVO>();
             var users = _context.Users.ToList().OrderBy(n => n.UserName);
             foreach (var user in users)
@@ -95,7 +94,6 @@ namespace TaskPlannerMetrum.Repository.Users
                 });
 
             }
-
             return retorno;
         }
         public string GetDepartament(int id)

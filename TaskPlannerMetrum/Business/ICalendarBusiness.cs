@@ -1,4 +1,6 @@
-﻿using TaskPlannerMetrum.Model;
+﻿using System.Collections.Generic;
+using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Business
 {
@@ -12,6 +14,11 @@ namespace TaskPlannerMetrum.Business
         public dynamic UsersForProjects(int contractID);
 
         public dynamic GetAllContracts();
+
+
+        public List<CalendarEquipament> GetEquipamentCalendar(List<int> equipaments);
+
+        public List<Equipment> GetAllEquipament();
 
     }
 
