@@ -3,6 +3,7 @@ using Microsoft.VisualBasic;
 using System.Collections.Generic;
 using System.Linq;
 using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Repository.Calendar;
 using TaskPlannerMetrum.Repository.Generic;
@@ -25,7 +26,6 @@ namespace TaskPlannerMetrum.Business.Implementations
         public dynamic TaskforUsers(AllUserCalendar userID)
         {
             return _repository.TaskforUsers(userID);
-
 
 
 
@@ -130,19 +130,19 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         }
 
-        public dynamic GetEquipamentCalendar(List<int> equipaments)
+        public List<CalendarEquipament> GetEquipamentCalendar(List<int> equipaments)
         {
             List<vCalendar> ListEquipaments = _repository.GetEquipaments(equipaments);
 
             // Dictionary para rastrear elementos únicos
-            var taskDict = new Dictionary<(int userID, string start), dynamic>();
-            var distinctTasks = new List<dynamic>();
+            var EquipmanetUser = new Dictionary<(int userID, string start), dynamic>();
+            var uniqEquipaments = new List<CalendarEquipament>();
 
             foreach (var u in ListEquipaments)
             {
                 var key = (u.UserID, u.ScheduledDate.ToString("yyyy-MM-dd"));
 
-                if (!taskDict.ContainsKey(key))
+                if (!EquipmanetUser.ContainsKey(key))
                 {
                     var taskItems = ListEquipaments
                         .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
@@ -152,7 +152,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
                     var backgroundColor = setColor(taskItems.Sum(s => s.PlannedManHour));
 
-                    var taskUser = new
+                    var taskUser = new CalendarEquipament
                     {
                         userID = u.UserID,
                         titleUser = u.UserName,
@@ -168,12 +168,12 @@ namespace TaskPlannerMetrum.Business.Implementations
                         equipamentName = u.EquipamentName?? "Nenhum equipamento alocado"
                     };
 
-                    taskDict[key] = taskUser;
-                    distinctTasks.Add(taskUser);
+                    EquipmanetUser[key] = taskUser;
+                    uniqEquipaments.Add(taskUser);
                 }
             }
 
-            return distinctTasks;
+            return uniqEquipaments;
         }
 
         public List<Equipment> GetAllEquipament()
