@@ -191,7 +191,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public List<string> GetMilestonesNames(int contractID)
+        public List<MilestonesItem> GetMilestonesNames(int contractID)
         {
             return _projectmanagementRepository.GetMilestonesNames(contractID);
         }
@@ -652,7 +652,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.CreatePM_MilestonesType(dto);
         }
 
-        public List<PM_MilestonesType> GetAllPM_MilestonesType(string MilestonesValueID)
+        public List<vPM_MilestonesType> GetAllPM_MilestonesType(string MilestonesValueID)
         {
             return _projectmanagementRepository.GetAllPM_MilestonesType(MilestonesValueID);
         }

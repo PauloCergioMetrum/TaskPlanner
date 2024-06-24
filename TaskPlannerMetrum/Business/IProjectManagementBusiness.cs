@@ -19,8 +19,10 @@ namespace TaskPlannerMetrum.Business
 
         public bool CreateMilesTones(MilesTonesDTO milesTones);
 
-        List<string> GetMilestonesNames(int contractID);
+        // List<int> GetMilestonesNames(MilestonesItem ,int contractID);
 
+
+        public List<MilestonesItem> GetMilestonesNames(int contractID);
 
 
         public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO);
@@ -148,7 +150,7 @@ namespace TaskPlannerMetrum.Business
         public List<DisplacementServices> GetAllDisplacementServices();
 
         public bool CreatePM_MilestonesType(PM_MilestonesType dto);
-        public List<PM_MilestonesType> GetAllPM_MilestonesType(string MilestonesValueID);
+        public List<vPM_MilestonesType> GetAllPM_MilestonesType(string MilestonesValueID);
 
         public bool DeletePM_MilestonesType(string ID);
 

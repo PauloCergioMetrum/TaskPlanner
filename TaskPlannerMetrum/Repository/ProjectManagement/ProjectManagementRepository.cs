@@ -276,10 +276,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-        public List<string> GetMilestonesNames(int contractID)
-        {
-            return _context.MilestonesItem.Where(c => c.ContractID == contractID).OrderBy(c => c.Name).Select(c => c.Name).ToList();
-        }
+    
 
 
 
@@ -885,7 +882,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-
+        public List<MilestonesItem> GetMilestonesNames(int contractID)
+        {
+            return _context.MilestonesItem.Where(a =>a.ContractID == contractID).ToList();  
+        }
 
 
 
@@ -1201,21 +1201,20 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool CreatePM_MilestonesType(PM_MilestonesType dto)
         {
-           
             var existingMilesType = _context.PM_MilestonesType.FirstOrDefault(f => f.ID == dto.ID);
 
             if (existingMilesType != null)
             {
-              
+             
                 existingMilesType.DepartmentID = dto.DepartmentID;
                 existingMilesType.Hours = dto.Hours;
-                existingMilesType.ID = dto.ID;
                 existingMilesType.MilestonesValueID = dto.MilestonesValueID;
-                existingMilesType.DisplacementServicesID = dto.DisplacementServicesID;  
+                existingMilesType.DisplacementServicesID = dto.DisplacementServicesID;
+                existingMilesType.FunctionID = dto.FunctionID;
             }
             else
             {
-                
+              
                 var newMilesType = new PM_MilestonesType
                 {
                     ID = dto.ID,
@@ -1223,20 +1222,20 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     Hours = dto.Hours,
                     DisplacementServicesID = dto.DisplacementServicesID,
                     MilestonesValueID = dto.MilestonesValueID,
+                    FunctionID = dto.FunctionID,
                 };
                 _context.PM_MilestonesType.Add(newMilesType);
             }
 
-        
             _context.SaveChanges();
 
             return true;
         }
 
 
-        public List<PM_MilestonesType> GetAllPM_MilestonesType(string MilestonesValueID)
+        public List<vPM_MilestonesType> GetAllPM_MilestonesType(string MilestonesValueID)
         {
-            return _context.PM_MilestonesType.Where(f => f.MilestonesValueID == MilestonesValueID).ToList();
+            return _context.vPM_MilestonesType.Where(f => f.MilestonesValueID == MilestonesValueID).ToList();
         }
 
         public bool DeletePM_MilestonesType(string ID)
@@ -1255,6 +1254,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return false;   
             }
         }
+
+       
     }
 }
 
