@@ -154,6 +154,9 @@ namespace TaskPlannerMetrum.Business
 
         public bool DeletePM_MilestonesType(string ID);
 
+        //hh
+        public List<HH> GetHHByID(string id);
+
     }
 
 

@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Linq;
 using TaskPlannerMetrum.Model;
@@ -276,7 +277,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-    
+
 
 
 
@@ -511,7 +512,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             throw new NotImplementedException();
         }
 
-      
+
         public bool IsExistMilesStone(MilesTonesDTO milesTonesDTO)
         {
 
@@ -884,7 +885,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<MilestonesItem> GetMilestonesNames(int contractID)
         {
-            return _context.MilestonesItem.Where(a =>a.ContractID == contractID).ToList();  
+            return _context.MilestonesItem.Where(a => a.ContractID == contractID).ToList();
         }
 
 
@@ -1117,19 +1118,19 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool UpdateFunctionID(string ID, PM_Functions_MilestoneType dto)
         {
-           
+
             var existingFunction = _context.PM_Functions_MilestoneType.FirstOrDefault(f => f.ID == ID);
 
             if (existingFunction != null)
             {
-             
+
                 existingFunction.FunctionID = dto.FunctionID;
                 existingFunction.MilesstoneTypeID = dto.MilesstoneTypeID;
                 _context.PM_Functions_MilestoneType.Update(existingFunction);
             }
             else
             {
-            
+
                 var newFunction = new PM_Functions_MilestoneType
                 {
                     FunctionID = dto.FunctionID,
@@ -1140,7 +1141,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 _context.PM_Functions_MilestoneType.Add(newFunction);
             }
 
-         
+
             _context.SaveChanges();
 
             return true;
@@ -1166,7 +1167,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return true;
             }
 
-            return false; 
+            return false;
         }
 
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID)
@@ -1193,7 +1194,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<DisplacementServices> GetAllDisplacementServices()
         {
-            return _context.DisplacementServices.ToList();  
+            return _context.DisplacementServices.ToList();
             //apagardepois
         }
 
@@ -1206,19 +1207,19 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
             if (existingMilesType != null)
             {
-             
+
                 existingMilesType.DepartmentID = dto.DepartmentID;
                 existingMilesType.Hours = dto.Hours;
                 existingMilesType.MilestonesValueID = dto.MilestonesValueID;
                 existingMilesType.DisplacementServicesID = dto.DisplacementServicesID;
                 existingMilesType.FunctionID = dto.FunctionID;
-                existingMilesType.ValueHour = dto.Hours; 
+                existingMilesType.ValueHour = dto.Hours;
 
 
             }
             else
             {
-              
+
                 var newMilesType = new PM_MilestonesType
                 {
                     ID = dto.ID,
@@ -1227,7 +1228,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     DisplacementServicesID = dto.DisplacementServicesID,
                     MilestonesValueID = dto.MilestonesValueID,
                     FunctionID = dto.FunctionID,
-                    ValueHour = dto.ValueHour,  
+                    ValueHour = dto.ValueHour,
                 };
                 _context.PM_MilestonesType.Add(newMilesType);
             }
@@ -1245,7 +1246,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeletePM_MilestonesType(string ID)
         {
-            var DeleteMilestonesType = _context.PM_MilestonesType.Where(a => a.ID == ID).FirstOrDefault();  
+            var DeleteMilestonesType = _context.PM_MilestonesType.Where(a => a.ID == ID).FirstOrDefault();
 
             if (DeleteMilestonesType != null)
             {
@@ -1256,12 +1257,21 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
             else
             {
-                return false;   
+                return false;
             }
-        }
 
+        }
+        public List<HH> GetHHByID(string id)
+        {
+            return _context.HH(id);
+        }  
        
-    }
+
+
+
+
+
+}
 }
 
 

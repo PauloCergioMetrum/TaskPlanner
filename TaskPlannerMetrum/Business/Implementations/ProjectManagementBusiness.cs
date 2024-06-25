@@ -126,10 +126,10 @@ namespace TaskPlannerMetrum.Business.Implementations
                         RescheduledDate = milesTonesDTO.RescheduledDate,
                         ScheduledDate = milesTonesDTO.ScheduledDate,
                         TypeID = milesTonesDTO.TypeID,
-                        Value = milesTonesDTO.Value,  
+                        Value = milesTonesDTO.Value,
                         TypeMilestonesID = milesTonesDTO.TypeMilestonesID,
                         TechLeadID = milesTonesDTO.TechLeadID,
-                        BusinessUnitID = milesTonesDTO.BusinessUnitID,  
+                        BusinessUnitID = milesTonesDTO.BusinessUnitID,
 
 
 
@@ -173,9 +173,9 @@ namespace TaskPlannerMetrum.Business.Implementations
                     RescheduledDate = milesTonesDTO.RescheduledDate,
                     ScheduledDate = milesTonesDTO.ScheduledDate,
                     TypeID = milesTonesDTO.TypeID,
-                        TypeMilestonesID = milesTonesDTO.TypeMilestonesID,
-                        TechLeadID = milesTonesDTO.TechLeadID,
-                        BusinessUnitID = milesTonesDTO.BusinessUnitID,  
+                    TypeMilestonesID = milesTonesDTO.TypeMilestonesID,
+                    TechLeadID = milesTonesDTO.TechLeadID,
+                    BusinessUnitID = milesTonesDTO.BusinessUnitID,
 
 
 
@@ -392,7 +392,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllContractProjectByTechLeader(TechLeaderID, InspectorName);
         }
 
-  
+
 
 
         // MOBILIZAÇÃO
@@ -586,25 +586,25 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public List<PM_Scope_Traking> GetScopeTrajing(int ContractID)
         {
-            return  _projectmanagementRepository.GetScopeTrajing(ContractID);
-    }
+            return _projectmanagementRepository.GetScopeTrajing(ContractID);
+        }
 
 
 
         //  ACOMPANHAMENTO DE ESCOPO  Mudança de Escopo 
         public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change)
         {
-          return _projectmanagementRepository.CreateScopeChange(pM_Scope_Change);   
+            return _projectmanagementRepository.CreateScopeChange(pM_Scope_Change);
         }
 
         public bool UpdateScopeChange(PM_Scope_Change pM_Scope_Change)
         {
-             return _projectmanagementRepository.UpdateScopeChange(pM_Scope_Change);
+            return _projectmanagementRepository.UpdateScopeChange(pM_Scope_Change);
         }
 
         public bool DeleteScopeChange(string ID)
         {
-           return _projectmanagementRepository.DeleteScopeChange(ID);  
+            return _projectmanagementRepository.DeleteScopeChange(ID);
         }
 
         public List<PM_Scope_Change> GetScopeChanges(int ContractID)
@@ -619,7 +619,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public List<Functions> GetAllFunctions()
         {
-             return _projectmanagementRepository.GetAllFunctions();   
+            return _projectmanagementRepository.GetAllFunctions();
         }
 
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto)
@@ -634,12 +634,12 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool DeleteFunctionID(string ID)
         {
-           return _projectmanagementRepository.DeleteFunctionID(ID);
+            return _projectmanagementRepository.DeleteFunctionID(ID);
         }
 
         public bool UpdateFunctionID(string ID, PM_Functions_MilestoneType dto)
         {
-            return _projectmanagementRepository.UpdateFunctionID(ID, dto);   
+            return _projectmanagementRepository.UpdateFunctionID(ID, dto);
         }
 
         public List<DisplacementServices> GetAllDisplacementServices()
@@ -661,9 +661,13 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.DeletePM_MilestonesType(ID);
         }
-    }
-   
 
+        public List<HH> GetHHByID(string id)
+        {
+            return _projectmanagementRepository.GetHHByID(id);
+        }
+
+    }
 }
 
 

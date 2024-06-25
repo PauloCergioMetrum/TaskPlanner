@@ -1173,6 +1173,26 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
+        // HH
+        [HttpGet("GetHHByID")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetHHByID(string id)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetHHByID(id));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
 
 
     }

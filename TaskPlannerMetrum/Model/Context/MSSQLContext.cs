@@ -99,6 +99,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<ActivePlansByExecutor>().HasNoKey();
             modelBuilder.Entity<GetEquipamentAvaibilaity>().HasNoKey();
             modelBuilder.Entity<GetFinanceMilestones>().HasNoKey();
+            modelBuilder.Entity<HH>().HasNoKey();
         }
 
 
@@ -143,16 +144,24 @@ namespace TaskPlannerMetrum.Model.Context
 
         public List<ActivePlansByExecutor> GetActivityPlanDetailsByExecutorID(int executorID)
         {
-
-
-
             var query = $"EXECUTE [dbo].[GetActivityPlanDetailsByExecutorID] @ExecutorID={executorID}";
-
-
             return this.Set<ActivePlansByExecutor>()
                        .FromSqlRaw(query)
                        .ToList();
         }
+
+
+        public List<HH> HH(string id)
+        {
+            var query = $"EXECUTE [dbo].[HH] @ID='{id}'";  
+            return this.Set<HH>()
+                       .FromSqlRaw(query)
+                       .ToList();
+        }
+
+
+
+
 
 
 
