@@ -1264,14 +1264,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<HH> GetHHByID(string id)
         {
             return _context.HH(id);
-        }  
-       
+        }
 
-
-
-
-
-}
+        public List<vMileStonesValue> GetAllMileStonesValue(int ContractID)
+        {
+            return _context.vMileStonesValue.Where(a => a.ContractID == ContractID).ToList();   
+        }
+    }
 }
 
 

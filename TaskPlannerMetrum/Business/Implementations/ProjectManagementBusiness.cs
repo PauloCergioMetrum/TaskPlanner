@@ -667,6 +667,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetHHByID(id);
         }
 
+        public List<vMileStonesValue> GetAllMileStonesValue(int ContractID)
+        {
+           return _projectmanagementRepository.GetAllMileStonesValue(ContractID);
+        }
     }
 }
 

@@ -85,6 +85,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<DisplacementServices> GetAllDisplacementServices();
         public List<vPM_MilestoneType> GetAllPM_MilestonesType(string MilestonesValueID);
 
+        public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
+
+
         public List<HH> GetHHByID(string id);
 
         // DELETE Methods

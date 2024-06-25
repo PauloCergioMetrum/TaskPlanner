@@ -156,6 +156,7 @@ namespace TaskPlannerMetrum.Business
 
         //hh
         public List<HH> GetHHByID(string id);
+        public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
 
     }
 
