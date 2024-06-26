@@ -555,6 +555,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
             UpdateMilesStonesValue.RescheduledDate = milesTonesDTO.RescheduledDate;
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
+            UpdateMilesStonesValue.TechLeadID =milesTonesDTO.TechLeadID;    
             _context.Update(UpdateMilesStonesValue);
             _context.SaveChanges();
             return true;
