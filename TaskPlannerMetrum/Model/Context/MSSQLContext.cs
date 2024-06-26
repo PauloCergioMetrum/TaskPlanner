@@ -92,7 +92,13 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vUserList> vUserList { get; set; }
         public DbSet<vContractList> vContractList { get; set; }
         public DbSet<vActivePlanBusinessUnit> vActivePlanBusinessUnit { get; set; }
-        public DbSet<vPM_MilestoneType> vPM_MilestoneType {  get; set; }  
+        public DbSet<vPM_MilestoneType> vPM_MilestoneType {  get; set; }
+
+        public DbSet<Management> Management { get; set; }
+
+
+
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HoursExecutor>().HasNoKey();

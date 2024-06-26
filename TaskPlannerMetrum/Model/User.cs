@@ -47,5 +47,9 @@ namespace TaskPlannerMetrum.Model
 
         public bool IsDarkMode { get; set; }
 
+        public int? ManagementID { get; set; }
+
+        public int? FunctionID { get; set; }
+
     }
 }
