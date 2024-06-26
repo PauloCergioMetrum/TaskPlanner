@@ -1261,15 +1261,17 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
 
         }
-        public List<HH> GetHHByID(string id)
+        public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID)
         {
-            return _context.HH(id);
+            return _context.GetMilestoneType_HH_Details(MilestonesValueID).ToList();    
         }
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID)
         {
             return _context.vMileStonesValue.Where(a => a.ContractID == ContractID).ToList();   
         }
+
+       
     }
 }
 

@@ -662,14 +662,16 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.DeletePM_MilestonesType(ID);
         }
 
-        public List<HH> GetHHByID(string id)
-        {
-            return _projectmanagementRepository.GetHHByID(id);
-        }
+    
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID)
         {
            return _projectmanagementRepository.GetAllMileStonesValue(ContractID);
+        }
+
+        public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID)
+        {
+            return _projectmanagementRepository.GetHHByID(MilestonesValueID);   
         }
     }
 }

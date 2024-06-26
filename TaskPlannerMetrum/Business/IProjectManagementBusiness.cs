@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
@@ -60,10 +61,10 @@ namespace TaskPlannerMetrum.Business
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
-   
 
 
-  
+
+
         public int existMilesStonesValue(string ID);
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
 
@@ -112,7 +113,7 @@ namespace TaskPlannerMetrum.Business
 
         public bool UpdateHH(PM_Man_Hours updateHH);
         public bool DeleteHH(string ID);
-        public List<vPM_Mam_Hours> GetpmHours( int ContractID);
+        public List<vPM_Mam_Hours> GetpmHours(int ContractID);
 
 
         // ACOMPANHAMENTO DE ESCOPO 
@@ -155,10 +156,15 @@ namespace TaskPlannerMetrum.Business
         public bool DeletePM_MilestonesType(string ID);
 
         //hh
-        public List<HH> GetHHByID(string id);
-        public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
 
+        public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
+        public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
     }
+  
+
 
 
 }
+
+
+

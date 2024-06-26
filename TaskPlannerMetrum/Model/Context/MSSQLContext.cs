@@ -99,7 +99,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<ActivePlansByExecutor>().HasNoKey();
             modelBuilder.Entity<GetEquipamentAvaibilaity>().HasNoKey();
             modelBuilder.Entity<GetFinanceMilestones>().HasNoKey();
-            modelBuilder.Entity<HH>().HasNoKey();
+            modelBuilder.Entity<GetMilestoneType_HH_Details>().HasNoKey();
         }
 
 
@@ -151,10 +151,10 @@ namespace TaskPlannerMetrum.Model.Context
         }
 
 
-        public List<HH> HH(string id)
+        public List<GetMilestoneType_HH_Details> GetMilestoneType_HH_Details(string MilestonesValueID)
         {
-            var query = $"EXECUTE [dbo].[HH] @ID='{id}'";  
-            return this.Set<HH>()
+            var query = $"EXECUTE [dbo].[GetMilestoneType_HH_Details] @MilestonesValueID='{MilestonesValueID}'";  
+            return this.Set<GetMilestoneType_HH_Details>()
                        .FromSqlRaw(query)
                        .ToList();
         }

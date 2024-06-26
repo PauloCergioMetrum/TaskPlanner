@@ -1179,12 +1179,12 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetHHByID(string id)
+        public IActionResult GetHHByID(string MilestonesValueID)
         {
             try
             {
 
-                return Ok(_projectManagementBusiness.GetHHByID(id));
+                return Ok(_projectManagementBusiness.GetHHByID(MilestonesValueID));
 
             }
             catch (Exception ex)

@@ -88,7 +88,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
 
 
-        public List<HH> GetHHByID(string id);
+        public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
 
         // DELETE Methods
         public bool DeleteMilestones(string ID);
