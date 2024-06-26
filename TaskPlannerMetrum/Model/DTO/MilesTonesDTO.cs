@@ -24,7 +24,7 @@ namespace TaskPlannerMetrum.Model.DTO
         public int TypeID { get; set; }
 
         public double Value { get; set; }
-        public string TypeMilestonesID { get; set; }
+        public string? TypeMilestonesID { get; set; }
         public int TechLeadID { get; set; }
 
         public int BusinessUnitID { get; set; }

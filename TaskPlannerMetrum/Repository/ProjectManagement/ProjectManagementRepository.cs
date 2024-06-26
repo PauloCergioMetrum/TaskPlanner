@@ -555,7 +555,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
             UpdateMilesStonesValue.RescheduledDate = milesTonesDTO.RescheduledDate;
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
-            UpdateMilesStonesValue.TechLeadID =milesTonesDTO.TechLeadID;    
+           
+
+            UpdateMilesStonesValue.TechLeadID =milesTonesDTO.TechLeadID;  
+            UpdateMilesStonesValue.BusinessUnitID =milesTonesDTO.BusinessUnitID;
+         
+
             _context.Update(UpdateMilesStonesValue);
             _context.SaveChanges();
             return true;
@@ -1214,7 +1219,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 existingMilesType.MilestonesValueID = dto.MilestonesValueID;
                 existingMilesType.DisplacementServicesID = dto.DisplacementServicesID;
                 existingMilesType.FunctionID = dto.FunctionID;
-                existingMilesType.ValueHour = dto.Hours;
+                existingMilesType.ValueHour = dto.ValueHour;
 
 
             }
