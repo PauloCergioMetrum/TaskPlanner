@@ -118,7 +118,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
                     _projectmanagementRepository.CreateMilestonesValue(new MilestonesValue
                     {
-                        ID = milesTonesDTO.ID, 
+                        ID = milesTonesDTO.ID,
                         MilestonesID = milestonesID,
                         Baseline = milesTonesDTO.Baseline,
                         Description = milesTonesDTO.Description,
@@ -662,17 +662,48 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.DeletePM_MilestonesType(ID);
         }
 
-    
+
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID)
         {
-           return _projectmanagementRepository.GetAllMileStonesValue(ContractID);
+            return _projectmanagementRepository.GetAllMileStonesValue(ContractID);
         }
 
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID)
         {
-            return _projectmanagementRepository.GetHHByID(MilestonesValueID);   
+            return _projectmanagementRepository.GetHHByID(MilestonesValueID);
         }
+        // TAP
+        public bool CreateProjectWithScopes(ProjectCreationRequestDTO request)
+        {
+            return _projectmanagementRepository.CreateProjectWithScopes(request);
+        }
+
+        public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope)
+        {
+            return _projectmanagementRepository.CreateTapScope(pM_TAP_Scope);
+        }
+
+        public List<PM_TAP_RiskLevel> GetAllProjectCharter()
+        {
+            return _projectmanagementRepository.GetAllProjectCharter();
+        }
+
+        public bool UpdateProjectGeneralInfo(int ID, ProjectCreationRequestDTO projectCreationRequestDTO)
+        {
+            return _projectmanagementRepository.UpdateProjectGeneralInfo(ID, projectCreationRequestDTO);
+        }
+
+        public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO)
+        {
+            return _projectmanagementRepository.UpdateProjectScope(ID, projectCreationRequestDTO);
+        }
+
+        //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId)
+        //{
+        //    return _projectmanagementRepository.GetAllProjectCharter(contractId);   
+        //}
+
     }
 }
 

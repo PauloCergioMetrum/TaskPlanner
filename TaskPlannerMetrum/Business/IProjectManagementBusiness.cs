@@ -159,6 +159,18 @@ namespace TaskPlannerMetrum.Business
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
+
+
+        //TAP
+
+        public bool CreateProjectWithScopes(ProjectCreationRequestDTO request);
+        public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
+
+        public List<PM_TAP_RiskLevel> GetAllProjectCharter();
+        public bool UpdateProjectGeneralInfo(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
+        public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
+
+       //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId);
     }
   
 

@@ -555,11 +555,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
             UpdateMilesStonesValue.RescheduledDate = milesTonesDTO.RescheduledDate;
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
-           
 
-            UpdateMilesStonesValue.TechLeadID =milesTonesDTO.TechLeadID;  
-            UpdateMilesStonesValue.BusinessUnitID =milesTonesDTO.BusinessUnitID;
-         
+
+            UpdateMilesStonesValue.TechLeadID = milesTonesDTO.TechLeadID;
+            UpdateMilesStonesValue.BusinessUnitID = milesTonesDTO.BusinessUnitID;
+
 
             _context.Update(UpdateMilesStonesValue);
             _context.SaveChanges();
@@ -1269,15 +1269,102 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID)
         {
-            return _context.GetMilestoneType_HH_Details(MilestonesValueID).ToList();    
+            return _context.GetMilestoneType_HH_Details(MilestonesValueID).ToList();
         }
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID)
         {
-            return _context.vMileStonesValue.Where(a => a.ContractID == ContractID).ToList();   
+            return _context.vMileStonesValue.Where(a => a.ContractID == ContractID).ToList();
         }
 
-       
+
+
+        public bool UpdateProjectGeneralInfo(int ID, ProjectCreationRequestDTO projectCreationRequestDTO)
+        {
+            var project = _context.PM_TAP_General_Info.FirstOrDefault(p => p.Id == ID);
+            if (project != null)
+            {
+                _context.Entry(project).CurrentValues.SetValues(projectCreationRequestDTO.ProjectInfo);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+
+        public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO)
+        {
+            var scope = _context.PM_TAP_Scope.FirstOrDefault(s => s.ID == ID);
+            if (scope != null)
+            {
+                _context.Entry(scope).CurrentValues.SetValues(projectCreationRequestDTO.Scopes);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+
+
+        public bool CreateProjectWithScopes(ProjectCreationRequestDTO request)
+        {
+            var existingProject = _context.PM_TAP_General_Info.FirstOrDefault(p => p.Id == request.ProjectInfo.Id);
+            if (existingProject != null)
+            {
+                _context.Entry(existingProject).CurrentValues.SetValues(request.ProjectInfo);
+            }
+            else
+            {
+                _context.PM_TAP_General_Info.Add(request.ProjectInfo);
+            }
+
+            var existingScope = _context.PM_TAP_Scope.FirstOrDefault(s => s.ID == request.Scopes.ID);
+            if (existingScope != null)
+            {
+                _context.Entry(existingScope).CurrentValues.SetValues(request.Scopes);
+            }
+            else
+            {
+                _context.PM_TAP_Scope.Add(request.Scopes);
+            }
+
+            _context.SaveChanges(true);
+
+            return true;
+        }
+
+
+
+
+
+        public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId)
+        {
+            var projects = _context.PM_TAP_General_Info
+                .Where(p => p.ContractID == contractId)
+                .Select(p => new ProjectCreationRequestDTO
+                {
+                    ProjectInfo = p,
+                    Scopes = _context.PM_TAP_Scope.FirstOrDefault(s => s.ContractID == contractId), 
+                })
+                .ToList();
+
+            return projects;
+        }
+
+
+        public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope)
+        {
+            _context.PM_TAP_Scope.Add(pM_TAP_Scope);
+            _context.SaveChanges(true);
+            return true;
+        }
+
+        public List<PM_TAP_RiskLevel> GetAllProjectCharter()
+        {
+            return _context.PM_TAP_RiskLevel.ToList();
+        }
+
+        
     }
 }
 

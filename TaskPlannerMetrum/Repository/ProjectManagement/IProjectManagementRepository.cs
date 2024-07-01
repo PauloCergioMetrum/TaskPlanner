@@ -32,10 +32,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change);
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto);
         public bool CreatePM_MilestonesType(PM_MilestonesType dto);
-       
 
-        public bool DeletePM_MilestonesType( string ID );   
-        //public bool PM_DisplacementService_MilestonesType(PM_DisplacementService_MilestonesType pM_DisplacementService_MilestonesType);
+        public bool CreateProjectWithScopes(ProjectCreationRequestDTO request);
+
+        public bool CreateTapScope (PM_TAP_Scope pM_TAP_Scope);
 
 
         // UPDATE Methods
@@ -52,6 +52,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool UpdateScopeChange(PM_Scope_Change pM_Scope_Change);
         public bool UpdateFunctionID(string ID, PM_Functions_MilestoneType dto);
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
+
+        public bool UpdateProjectGeneralInfo(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
+        public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
 
         // LIST Methods
         public Model.Contracts GetForecastByID(int id);
@@ -86,9 +89,15 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vPM_MilestoneType> GetAllPM_MilestonesType(string MilestonesValueID);
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
-
-
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
+
+        public List<PM_TAP_RiskLevel>GetAllProjectCharter();
+        public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractID);
+
+
+        //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int ContractID);
+
+
 
         // DELETE Methods
         public bool DeleteMilestones(string ID);
@@ -105,6 +114,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool DeletepMScopeTraking(string ID);
         public bool DeleteScopeChange(string ID);
         public bool DeleteFunctionID(string ID);
+        public bool DeletePM_MilestonesType(string ID);
 
 
 

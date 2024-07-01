@@ -1214,6 +1214,76 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
+        //TAP
+        [HttpPost("CreateProjectChart")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateProjectWithScopes([FromBody] ProjectCreationRequestDTO request)
+        {
+            try
+            {
+                var result = _projectManagementBusiness.CreateProjectWithScopes(request);
+                if (result)
+                {
+                    return Ok(result); 
+                }
+                else
+                {
+                    return BadRequest("Failed to create project.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+        [HttpGet("GetAllProjectCharter")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult GetAllProjectCharter()
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllProjectCharter());
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        //[HttpGet("GetAllProjectCharter")]
+        //[ProducesResponseType(200)]
+        //[ProducesResponseType(204)]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(401)]
+
+        //public IActionResult GetAllProjectCharter(int contractId)
+        //{
+        //    try
+        //    {
+
+        //        return Ok(_projectManagementBusiness.GetAllProjectCharter(contractId));
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+
+        //}
+
 
     }
 }
