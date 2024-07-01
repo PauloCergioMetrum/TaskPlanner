@@ -94,6 +94,11 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vActivePlanBusinessUnit> vActivePlanBusinessUnit { get; set; }
         public DbSet<vPM_MilestoneType> vPM_MilestoneType {  get; set; }
 
+        public DbSet<vUsersView> vUsersView { get; set; }
+
+
+        
+
         public DbSet<Management> Management { get; set; }
 
 

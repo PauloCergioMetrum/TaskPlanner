@@ -7,6 +7,8 @@ using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Repository.Users;
 using System.Security.Cryptography;
+using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -28,7 +30,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
         // Method responsible for returning all people,
-        public List<UserVO> FindAll()
+        public List<UserViewDto> FindAll()
         {
             return _userRepository.FindAll();
         }

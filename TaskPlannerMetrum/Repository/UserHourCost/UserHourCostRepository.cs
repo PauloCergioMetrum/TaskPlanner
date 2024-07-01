@@ -137,7 +137,7 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
             User UserUpdate = _context.Users.FirstOrDefault(i => i.Id == UserID);
             if (UserUpdate == null)
             {
-                // Lógica de tratamento se o usuário não for encontrado
+           
                 return false;
             }
 

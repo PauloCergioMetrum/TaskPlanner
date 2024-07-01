@@ -8,6 +8,10 @@ using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Data;
 using System.Collections.Immutable;
+using TaskPlannerMetrum.Model.ModelViews;
+using DocumentFormat.OpenXml.Spreadsheet;
+using OfficeOpenXml.Utils;
+using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Repository.Users
 {
@@ -23,7 +27,7 @@ namespace TaskPlannerMetrum.Repository.Users
         {
             var pass = ComputeHash(user.Password, new SHA256CryptoServiceProvider());
             var ActiveUser = _context.Users.FirstOrDefault(u => (u.UserEmail == user.UserEmail) && (u.Password == pass));
-            if (ActiveUser.IsActive == true) { return ActiveUser; } 
+            if (ActiveUser.IsActive == true) { return ActiveUser; }
             else { return null; }
         }
 
@@ -70,31 +74,55 @@ namespace TaskPlannerMetrum.Repository.Users
             return BitConverter.ToString(hashedBytes);
         }
 
-        public List<UserVO> FindAll()
+        public List<UserViewDto> FindAll()
         {
-            List<UserVO> retorno = new List<UserVO>();
-            var users = _context.Users.ToList().OrderBy(n => n.UserName);
-            foreach (var user in users)
-            {
-                retorno.Add(new UserVO
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    FullName = user.FullName,
-                    UserEmail = user.UserEmail,
-                    DepartmentId = user.DepartmentId,
-                    DepartamentName = GetDepartament(user.DepartmentId),
-                    role = user.PermissionId.ToString(),
-                    PermissionId = user.PermissionId,
-                    PhoneNumber = user.PhoneNumber,
-                    WorkspaceID = user.WorkspaceID,
-                    IsActive = user.IsActive,
-                    CreationDate = user.CreationDate,
-                    PermissionName = _context.Permissions.Where(i => i.id == user.PermissionId).Select(d => d.Description).FirstOrDefault(),
-                });
+            var users = _context.vUsersView.ToList();
 
-            }
-            return retorno;
+            var userList = users.Select(u => new UserViewDto
+            {
+                Id = u.Id,
+                UserName = u.UserName,
+                FullName = u.FullName,
+                UserEmail = u.UserEmail,
+                DepartmentId = u.DepartmentId,
+                DepartamentName = u.DepartamentName,
+                Role = u.role.ToString(),
+                PermissionId = u.PermissionID,
+                PhoneNumber = u.PhoneNumber,
+                WorkspaceID = u.WorkspaceID,
+                IsActive=   u.IsActive,
+                CreationDate = u.CreationDate,
+                PermissionName = u.PermissionName,
+
+                ManagementID = u.ManagementID,
+                ManagementName =u.ManagementName
+            }).ToList();
+            return userList;
+
+
+            //List<UserVO> retorno = new List<UserVO>();
+            //var users = _context.Users.ToList().OrderBy(n => n.UserName);
+            //foreach (var user in users)
+            //{
+            //    retorno.Add(new UserVO
+            //    {
+            //        Id = user.Id,
+            //        UserName = user.UserName,
+            //        FullName = user.FullName,
+            //        UserEmail = user.UserEmail,
+            //        DepartmentId = user.DepartmentId,
+            //        DepartamentName = GetDepartament(user.DepartmentId),
+            //        role = user.PermissionId.ToString(),
+            //        PermissionId = user.PermissionId,
+            //        PhoneNumber = user.PhoneNumber,
+            //        WorkspaceID = user.WorkspaceID,
+            //        IsActive = user.IsActive,
+            //        CreationDate = user.CreationDate,
+            //        PermissionName = _context.Permissions.Where(i => i.id == user.PermissionId).Select(d => d.Description).FirstOrDefault(),
+            //    });
+
+            //}
+            //return retorno;
         }
         public string GetDepartament(int id)
         {
@@ -109,8 +137,8 @@ namespace TaskPlannerMetrum.Repository.Users
             _context.Users.Add(user);
             _context.SaveChanges();
 
-           
-            
+
+
 
             return _context.Users.Where(u => u.UserEmail == user.UserEmail).Select(u => u.Id).FirstOrDefault();
 
@@ -168,6 +196,8 @@ namespace TaskPlannerMetrum.Repository.Users
         {
 
             var users = _context.Users.ToList();
+
+
 
             return users.Select(u => new
             {

@@ -4,6 +4,8 @@ using TaskPlannerMetrum.Model;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Repository.Users
 {
@@ -17,7 +19,7 @@ namespace TaskPlannerMetrum.Repository.Users
 
         User RefreshUserInfo(User user);
 
-       public List<UserVO> FindAll();
+        public List<UserViewDto> FindAll();
 
         public  string sha256(string randomString);
 

@@ -4,6 +4,7 @@ using CsvHelper.Configuration.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
+using SixLabors.ImageSharp.Processing.Processors.Filters;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -135,10 +136,6 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
             return true;
         }
-
-
-
-
         public async Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate)
         {
             List<Functions> allFunction = _repository.GetAllFunction();
@@ -155,7 +152,6 @@ namespace TaskPlannerMetrum.Business.Implementations
                         {
                             throw new Exception("Planilha não encontrada no arquivo Excel.");
                         }
-
                         List<User> allUsers = _repository.GetAllUsers();
                         int rowCount = worksheet.RowsUsed().Count();
                         for (int row = 3; row <= rowCount; row++)
@@ -198,6 +194,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 Console.WriteLine($"Erro ao processar arquivo: {ex.Message}");
                 return false;
             }
+           
         }
 
         public bool CreateOrUpdate(UserHourCosts userHourCost)
