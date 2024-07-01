@@ -59,7 +59,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         // LIST Methods
         public Model.Contracts GetForecastByID(int id);
         public vContractList GetForecastByIDView(int id);
-        public List<MilestonesItem> GetMilestonesNames( int contractID);
+        public List<GetMilestones> GetMilestonesNames(int contractID);
         public MilestonesValue GetMilestonesValueByID(int milestonesID);
         public List<Positions> GetPositionsByGrup();
         public bool ExistAcquisition(string ID);

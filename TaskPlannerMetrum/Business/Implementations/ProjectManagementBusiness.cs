@@ -191,7 +191,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public List<MilestonesItem> GetMilestonesNames(int contractID)
+        public List<GetMilestones> GetMilestonesNames(int contractID)
         {
             return _projectmanagementRepository.GetMilestonesNames(contractID);
         }

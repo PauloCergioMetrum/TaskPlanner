@@ -23,7 +23,7 @@ namespace TaskPlannerMetrum.Business
         // List<int> GetMilestonesNames(MilestonesItem ,int contractID);
 
 
-        public List<MilestonesItem> GetMilestonesNames(int contractID);
+        public List<GetMilestones> GetMilestonesNames(int contractID);
 
 
         public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO);

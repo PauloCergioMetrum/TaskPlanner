@@ -889,11 +889,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-        public List<MilestonesItem> GetMilestonesNames(int contractID)
+        public List<GetMilestones> GetMilestonesNames(int contractID)
         {
-            return _context.MilestonesItem.Where(a => a.ContractID == contractID).ToList();
-        }
 
+            return _context.GetMilestones(contractID).ToList();
+        }
 
 
         public bool CreateHH(PM_Man_Hours createHH)

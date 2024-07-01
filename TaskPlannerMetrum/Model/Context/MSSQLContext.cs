@@ -105,6 +105,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetEquipamentAvaibilaity>().HasNoKey();
             modelBuilder.Entity<GetFinanceMilestones>().HasNoKey();
             modelBuilder.Entity<GetMilestoneType_HH_Details>().HasNoKey();
+            modelBuilder.Entity<GetMilestones>().HasNoKey();
         }
 
 
@@ -165,7 +166,14 @@ namespace TaskPlannerMetrum.Model.Context
         }
 
 
+        public List<GetMilestones> GetMilestones(int contractID)
+        {
+            var sql = "EXEC [dbo].[GetMilestones] @ContractID";
 
+            return this.Set<GetMilestones>()
+                       .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
+                       .ToList();
+        }
 
 
 
