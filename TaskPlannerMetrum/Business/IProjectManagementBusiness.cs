@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -169,8 +170,8 @@ namespace TaskPlannerMetrum.Business
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();
         public bool UpdateProjectGeneralInfo(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
         public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
+        public List<UserVO> GetAllUsersGercon();
 
-       //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId);
     }
   
 

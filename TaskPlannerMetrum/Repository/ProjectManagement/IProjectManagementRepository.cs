@@ -3,6 +3,7 @@ using Microsoft.Identity.Client;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -35,7 +36,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool CreateProjectWithScopes(ProjectCreationRequestDTO request);
 
-        public bool CreateTapScope (PM_TAP_Scope pM_TAP_Scope);
+        public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
 
 
         // UPDATE Methods
@@ -52,14 +53,20 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool UpdateScopeChange(PM_Scope_Change pM_Scope_Change);
         public bool UpdateFunctionID(string ID, PM_Functions_MilestoneType dto);
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
-
+        public bool IsExistMilesStone(MilesTonesDTO milesTonesDTO);
+        public int existMilesStonesValue(string ID);
         public bool UpdateProjectGeneralInfo(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
         public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
+        public Model.Contracts GetForecastByID(int id);
+
+
 
         // LIST Methods
-        public Model.Contracts GetForecastByID(int id);
+
+
+   
         public vContractList GetForecastByIDView(int id);
-        public List<MilestonesItem> GetMilestonesNames( int contractID);
+        public List<MilestonesItem> GetMilestonesNames(int contractID);
         public MilestonesValue GetMilestonesValueByID(int milestonesID);
         public List<Positions> GetPositionsByGrup();
         public bool ExistAcquisition(string ID);
@@ -70,8 +77,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<PmCostPlanned> GetPmCostPlanned(int ContractID);
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
-        public bool IsExistMilesStone(MilesTonesDTO milesTonesDTO);
-        public int existMilesStonesValue(string ID);
+
         public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
         public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
         public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames();
@@ -91,11 +97,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
 
-        public List<PM_TAP_RiskLevel>GetAllProjectCharter();
+        public List<PM_TAP_RiskLevel> GetAllProjectCharter();
         public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractID);
+        public List<UserVO> GetAllUsersGercon();
 
-
-        //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int ContractID);
 
 
 

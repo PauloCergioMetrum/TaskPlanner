@@ -11,6 +11,7 @@ using System.Diagnostics.Contracts;
 using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Linq;
+using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
@@ -1369,6 +1370,24 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             return _context.PM_TAP_RiskLevel.ToList();
         }
+
+
+
+
+        public List<UserVO> GetAllUsersGercon()
+        {
+            var filteredUsers = _context.Users.Where(a => a.DepartmentId == 14).Select(a => new UserVO
+            {
+                Id = a.Id,
+                UserName = a.UserName,
+
+
+            }).ToList();
+
+            return filteredUsers;
+        }
+
+
 
 
     }

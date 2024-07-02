@@ -1263,26 +1263,29 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-        //[HttpGet("GetAllProjectCharter")]
-        //[ProducesResponseType(200)]
-        //[ProducesResponseType(204)]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(401)]
 
-        //public IActionResult GetAllProjectCharter(int contractId)
-        //{
-        //    try
-        //    {
+        [HttpGet("GetAllUsersGercon")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
 
-        //        return Ok(_projectManagementBusiness.GetAllProjectCharter(contractId));
+        public IActionResult GetAllUsersGercon()
+        {
+            try
+            {
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
+                return Ok(_projectManagementBusiness.GetAllUsersGercon());
 
-        //}
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
 
 
     }

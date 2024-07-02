@@ -8,6 +8,7 @@ using TaskPlannerMetrum.Repository.ProjectManagement;
 using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Model.ModelViews;
 using System.Diagnostics.Contracts;
+using TaskPlannerMetrum.Data.VO;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -697,6 +698,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO)
         {
             return _projectmanagementRepository.UpdateProjectScope(ID, projectCreationRequestDTO);
+        }
+
+        public List<UserVO> GetAllUsersGercon()
+        {
+            return _projectmanagementRepository.GetAllUsersGercon();
         }
 
         //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId)
