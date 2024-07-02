@@ -9,6 +9,7 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public PM_TAP_Scope Scopes { get; set; }
 
+        public ProjectManagementDTO Forecast { get; set; }
 
 
     }

@@ -262,26 +262,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
-        public Model.Contracts GetForecastByID(int id)
-        {
 
-            return _context.Contracts.Where(i => i.id == id).FirstOrDefault();
-        }
 
         public vContractList GetForecastByIDView(int id)
         {
             return _context.vContractList.Where(i => i.ContractID == id).FirstOrDefault();
         }
-
-
-
-
-
-
-
-
-
-
 
         public bool UpdateForecast(Model.Contracts forecast)
         {
@@ -446,7 +432,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             var ListPmCostPlanned = _context.Pm_Cost_Planned.Where(i => i.ContractID == ContractID).ToList();
 
-            //var ListPmCostPlanned = _context.Pm_Cost_Planned.ToList();
+
             return ListPmCostPlanned;
         }
 
@@ -464,7 +450,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
                     existingCostMade.Pm_Cost_PlannedID = pmCostMade.Pm_Cost_PlannedID;
-                    //existingCostMade.TypeCostID = pmCostMade.TypeCostID = "sjkbgdhufgsdhf";
+
 
                     _context.SaveChanges();
                     return true;
@@ -1306,8 +1292,17 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
+        public Model.Contracts GetForecastByID(int id)
+        {
+
+            return _context.Contracts.Where(i => i.id == id).FirstOrDefault();
+        }
+
+
+
         public bool CreateProjectWithScopes(ProjectCreationRequestDTO request)
         {
+
             var existingProject = _context.PM_TAP_General_Info.FirstOrDefault(p => p.Id == request.ProjectInfo.Id);
             if (existingProject != null)
             {
@@ -1317,6 +1312,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             {
                 _context.PM_TAP_General_Info.Add(request.ProjectInfo);
             }
+
 
             var existingScope = _context.PM_TAP_Scope.FirstOrDefault(s => s.ID == request.Scopes.ID);
             if (existingScope != null)
@@ -1328,11 +1324,21 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 _context.PM_TAP_Scope.Add(request.Scopes);
             }
 
+
+            if (request.Forecast != null && _context.Contracts.Any(c => c.id == request.Forecast.id))
+            {
+                var updateForecast = _context.Contracts.FirstOrDefault(c => c.id == request.Forecast.id);
+                updateForecast.ValidityEndDate = request.Forecast.ValidityEndDate;
+                updateForecast.ValidityStartDate = request.Forecast.ValidityStartDate;
+                updateForecast.PredictedMarkup = request.Forecast.PredictedMarkup;
+                updateForecast.PredictedSavings = request.Forecast.PredictedSavings;
+                _context.SaveChanges();
+            }
+
             _context.SaveChanges(true);
 
             return true;
         }
-
 
 
 
@@ -1344,7 +1350,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 .Select(p => new ProjectCreationRequestDTO
                 {
                     ProjectInfo = p,
-                    Scopes = _context.PM_TAP_Scope.FirstOrDefault(s => s.ContractID == contractId), 
+                    Scopes = _context.PM_TAP_Scope.FirstOrDefault(s => s.ContractID == contractId),
                 })
                 .ToList();
 
@@ -1364,7 +1370,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.PM_TAP_RiskLevel.ToList();
         }
 
-        
+
     }
 }
 
