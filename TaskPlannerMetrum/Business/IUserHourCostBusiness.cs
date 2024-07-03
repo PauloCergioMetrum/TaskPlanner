@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 
@@ -16,16 +19,7 @@ namespace TaskPlannerMetrum.Business
 
 
 
-
-
-
-
-
-
-
-
-      
-
+        Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate);
 
 
 
