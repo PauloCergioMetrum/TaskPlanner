@@ -100,7 +100,18 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vUserList> vUserList { get; set; }
         public DbSet<vContractList> vContractList { get; set; }
         public DbSet<vActivePlanBusinessUnit> vActivePlanBusinessUnit { get; set; }
-        public DbSet<vPM_MilestoneType> vPM_MilestoneType {  get; set; }  
+        public DbSet<vPM_MilestoneType> vPM_MilestoneType {  get; set; }
+
+        public DbSet<vUsersView> vUsersView { get; set; }
+
+
+        
+
+        public DbSet<Management> Management { get; set; }
+
+
+
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HoursExecutor>().HasNoKey();
@@ -108,6 +119,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetEquipamentAvaibilaity>().HasNoKey();
             modelBuilder.Entity<GetFinanceMilestones>().HasNoKey();
             modelBuilder.Entity<GetMilestoneType_HH_Details>().HasNoKey();
+            modelBuilder.Entity<GetMilestones>().HasNoKey();
         }
 
 
@@ -168,7 +180,14 @@ namespace TaskPlannerMetrum.Model.Context
         }
 
 
+        public List<GetMilestones> GetMilestones(int contractID)
+        {
+            var sql = "EXEC [dbo].[GetMilestones] @ContractID";
 
+            return this.Set<GetMilestones>()
+                       .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
+                       .ToList();
+        }
 
 
 
