@@ -8,6 +8,7 @@ using TaskPlannerMetrum.Repository.ProjectManagement;
 using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Model.ModelViews;
 using System.Diagnostics.Contracts;
+using TaskPlannerMetrum.Data.VO;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -20,11 +21,11 @@ namespace TaskPlannerMetrum.Business.Implementations
             _projectmanagementRepository = projectmanagementBusiness;
         }
 
-        public bool UpdateForecast(ProjectManagementDTO forecast)
+        public bool UpdateForecast(ProjectManagementGeneralInfo forecast)
         {
             try
             {
-                var UpdateForecast = _projectmanagementRepository.GetForecastByID(forecast.id);
+                var UpdateForecast = _projectmanagementRepository.GetForecastByID(forecast.Id);
                 if (UpdateForecast != null)
                 {
                     UpdateForecast.ValidityEndDate = forecast.ValidityEndDate;
@@ -674,9 +675,19 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetHHByID(MilestonesValueID);
         }
         // TAP
-        public bool CreateProjectWithScopes(ProjectCreationRequestDTO request)
+        public bool UpdateInfoGeneral(ProjectInfoGeneralDTO infoGneral)
         {
-            return _projectmanagementRepository.CreateProjectWithScopes(request);
+            //atualizar escopo
+            if(_projectmanagementRepository.UpdateScopeInfo(infoGneral.ContractID, infoGneral.Scopes ) == false) return false;
+            //Atualizar informações gerais do contrato
+            if (_projectmanagementRepository.UpdateInfoContract(infoGneral.ContractID, infoGneral.ProjectInfo) == false) return false;
+            //Atualizar informações gerais da TAP
+            if (_projectmanagementRepository.UpdateInfoTap(infoGneral.ContractID, infoGneral.ProjectInfo) == false) return false;
+            //Atualizar informações gerais Partes Interesadas
+            if (_projectmanagementRepository.UpdateInfoGenralClients(infoGneral.ContractID, infoGneral.ProjectInfo.ContactClients) == false) return false;
+
+
+            return true;
         }
 
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope)
@@ -689,14 +700,15 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllProjectCharter();
         }
 
-        public bool UpdateProjectGeneralInfo(int ID, ProjectCreationRequestDTO projectCreationRequestDTO)
+
+        public List<UserVO> GetAllUsersGercon()
         {
-            return _projectmanagementRepository.UpdateProjectGeneralInfo(ID, projectCreationRequestDTO);
+            return _projectmanagementRepository.GetAllUsersGercon();
         }
 
-        public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO)
+        public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope)
         {
-            return _projectmanagementRepository.UpdateProjectScope(ID, projectCreationRequestDTO);
+            return _projectmanagementRepository.UpdateProjectScope(ID, updatedScope);   
         }
 
         //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId)

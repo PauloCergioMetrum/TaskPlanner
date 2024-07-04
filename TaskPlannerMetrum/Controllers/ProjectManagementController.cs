@@ -27,25 +27,25 @@ namespace TaskPlannerMetrum.Controllers
             _projectManagementBusiness = projectManagementBusiness;
         }
 
-        [HttpPut("UpdateForCast")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        public IActionResult UpdateForCast(Model.DTO.ProjectManagementDTO forcast)
-        {
+        //[HttpPut("UpdateForCast")]
+        //[ProducesResponseType(200)]
+        //[ProducesResponseType(204)]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(401)]
+        //public IActionResult UpdateForCast(Model.DTO.ProjectManagementGeneralInfo forcast)
+        //{
 
-            try
-            {
+        //    try
+        //    {
 
-                return Ok(_projectManagementBusiness.UpdateForecast(forcast));
+        //        return Ok(_projectManagementBusiness.UpdateForecast(forcast));
 
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
 
 
@@ -1215,24 +1215,23 @@ namespace TaskPlannerMetrum.Controllers
         }
 
         //TAP
-        [HttpPost("CreateProjectChart")]
+        [HttpPut("UpdateInfoProject")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult CreateProjectWithScopes([FromBody] ProjectCreationRequestDTO request)
+        public IActionResult UpdateInfoProject([FromBody] ProjectInfoGeneralDTO infoGenral)
         {
+
+            if (infoGenral == null)
+            {
+                return BadRequest("Payload is null");
+            }
             try
             {
-                var result = _projectManagementBusiness.CreateProjectWithScopes(request);
-                if (result)
-                {
-                    return Ok(result); 
-                }
-                else
-                {
-                    return BadRequest("Failed to create project.");
-                }
+               
+               return Ok(_projectManagementBusiness.UpdateInfoGeneral(infoGenral)); 
+           
             }
             catch (Exception ex)
             {
@@ -1263,26 +1262,29 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-        //[HttpGet("GetAllProjectCharter")]
-        //[ProducesResponseType(200)]
-        //[ProducesResponseType(204)]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(401)]
 
-        //public IActionResult GetAllProjectCharter(int contractId)
-        //{
-        //    try
-        //    {
+        [HttpGet("GetAllUsersGercon")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
 
-        //        return Ok(_projectManagementBusiness.GetAllProjectCharter(contractId));
+        public IActionResult GetAllUsersGercon()
+        {
+            try
+            {
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
+                return Ok(_projectManagementBusiness.GetAllUsersGercon());
 
-        //}
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
 
 
     }
