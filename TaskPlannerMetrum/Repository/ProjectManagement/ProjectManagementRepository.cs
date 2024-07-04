@@ -1,23 +1,13 @@
 ﻿using Memt.Logger;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Diagnostics.Eventing.Reader;
-using System.Globalization;
 using System.Linq;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
-using TaskPlannerMetrum.Repository.ActiviesScope;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskPlannerMetrum.Repository.ProjectManagement
 {
@@ -29,9 +19,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             _context = context;
         }
-
-
-
 
         public bool CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions)
         {
@@ -534,20 +521,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             teste.Name = milesTonesDTO.Name;
             _context.Update(teste);
             _context.SaveChanges();
-
-
-
             var UpdateMilesStonesValue = _context.MilestonesValue.Where(a => a.MilestonesID == ID).FirstOrDefault();
             UpdateMilesStonesValue.ScheduledDate = milesTonesDTO.ScheduledDate;
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
             UpdateMilesStonesValue.RescheduledDate = milesTonesDTO.RescheduledDate;
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
-
-
             UpdateMilesStonesValue.TechLeadID = milesTonesDTO.TechLeadID;
             UpdateMilesStonesValue.BusinessUnitID = milesTonesDTO.BusinessUnitID;
-
-
             _context.Update(UpdateMilesStonesValue);
             _context.SaveChanges();
             return true;
@@ -568,7 +548,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.PM_Mobilization_Made.Where(a => a.MobilizationPlannedID == mobilizationPlannedID).ToList();
         }
 
-        //Atualiza se existir, caso contrário, cria um novo registro de Mobilization Planned
         public bool UpdateMobilization(string ID)
         {
             var mobilizationToUpdate = _context.PM_Mobilization_Planned.FirstOrDefault(a => a.ID == ID);
@@ -763,10 +742,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-
-
-
-
         public bool CreateoutsourcedServiceMade(PM_OutsourcedServices_Made createoutsourcedServiceMade)
         {
             var existingService = _context.PM_OutsourcedServices_Made.FirstOrDefault(a => a.ID == createoutsourcedServiceMade.ID);
@@ -949,11 +924,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.vPM_Mam_Hours.Where(a => a.ContractID == ContractID).ToList();
 
         }
-
-        // ACOMPANHAMENTO DE ESCOPO 
-
-
-
 
 
         public bool CreatScopeTraking(PM_Scope_Traking pMScopeTraking)
@@ -1188,7 +1158,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<DisplacementServices> GetAllDisplacementServices()
         {
             return _context.DisplacementServices.ToList();
-            //apagardepois
+
         }
 
 
@@ -1264,30 +1234,42 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.vMileStonesValue.Where(a => a.ContractID == ContractID).ToList();
         }
 
-
-
-        public bool UpdateProjectGeneralInfo(int ID, ProjectCreationRequestDTO projectCreationRequestDTO)
+        public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope)
         {
-            var project = _context.PM_TAP_General_Info.FirstOrDefault(p => p.Id == ID);
-            if (project != null)
+            var existingScope = _context.PM_TAP_Scope.FirstOrDefault(s => s.ID == pM_TAP_Scope.ID);
+
+            if (existingScope != null)
             {
-                _context.Entry(project).CurrentValues.SetValues(projectCreationRequestDTO.ProjectInfo);
-                _context.SaveChanges();
-                return true;
+                _context.Entry(existingScope).CurrentValues.SetValues(pM_TAP_Scope);
             }
-            return false;
+            else
+            {
+                _context.PM_TAP_Scope.Add(pM_TAP_Scope);
+            }
+
+            _context.SaveChanges();
+            return true;
         }
 
 
-        public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO)
+        public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope)
         {
+            var existingScope = _context.PM_TAP_Scope.FirstOrDefault(s => s.ID == updatedScope.ID && s.ID != ID);
+
+            if (existingScope != null)
+            {
+
+                return false;
+            }
+
             var scope = _context.PM_TAP_Scope.FirstOrDefault(s => s.ID == ID);
             if (scope != null)
             {
-                _context.Entry(scope).CurrentValues.SetValues(projectCreationRequestDTO.Scopes);
+                _context.Entry(scope).CurrentValues.SetValues(updatedScope);
                 _context.SaveChanges();
                 return true;
             }
+
             return false;
         }
 
@@ -1301,77 +1283,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-        public bool CreateProjectWithScopes(ProjectCreationRequestDTO request)
-        {
 
-            var existingProject = _context.PM_TAP_General_Info.FirstOrDefault(p => p.Id == request.ProjectInfo.Id);
-            if (existingProject != null)
-            {
-                _context.Entry(existingProject).CurrentValues.SetValues(request.ProjectInfo);
-            }
-            else
-            {
-                _context.PM_TAP_General_Info.Add(request.ProjectInfo);
-            }
-
-
-            var existingScope = _context.PM_TAP_Scope.FirstOrDefault(s => s.ID == request.Scopes.ID);
-            if (existingScope != null)
-            {
-                _context.Entry(existingScope).CurrentValues.SetValues(request.Scopes);
-            }
-            else
-            {
-                _context.PM_TAP_Scope.Add(request.Scopes);
-            }
-
-
-            if (request.Forecast != null && _context.Contracts.Any(c => c.id == request.Forecast.id))
-            {
-                var updateForecast = _context.Contracts.FirstOrDefault(c => c.id == request.Forecast.id);
-                updateForecast.ValidityEndDate = request.Forecast.ValidityEndDate;
-                updateForecast.ValidityStartDate = request.Forecast.ValidityStartDate;
-                updateForecast.PredictedMarkup = request.Forecast.PredictedMarkup;
-                updateForecast.PredictedSavings = request.Forecast.PredictedSavings;
-                _context.SaveChanges();
-            }
-
-            _context.SaveChanges(true);
-
-            return true;
-        }
-
-
-
-
-        public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId)
-        {
-            var projects = _context.PM_TAP_General_Info
-                .Where(p => p.ContractID == contractId)
-                .Select(p => new ProjectCreationRequestDTO
-                {
-                    ProjectInfo = p,
-                    Scopes = _context.PM_TAP_Scope.FirstOrDefault(s => s.ContractID == contractId),
-                })
-                .ToList();
-
-            return projects;
-        }
-
-
-        public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope)
-        {
-            _context.PM_TAP_Scope.Add(pM_TAP_Scope);
-            _context.SaveChanges(true);
-            return true;
-        }
 
         public List<PM_TAP_RiskLevel> GetAllProjectCharter()
         {
             return _context.PM_TAP_RiskLevel.ToList();
         }
-
-
 
 
         public List<UserVO> GetAllUsersGercon()
@@ -1387,9 +1304,128 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return filteredUsers;
         }
 
+        // TAP
+
+        public bool UpdateScopeInfo(int contractId, PM_TAP_Scope scope)
+        {
+            try
+            {
+                PM_TAP_Scope scopeResult = _context.PM_TAP_Scope.Where(s => s.ContractID == contractId).FirstOrDefault();
+                if (scopeResult != null)
+                {
+                    scopeResult.Scope = scope.Scope;
+                    scopeResult.OutScope = scope.OutScope;
+                    scopeResult.GeneralRisks = scope.GeneralRisks;
+                    scopeResult.Premises = scope.Premises;
+                    scopeResult.Deliveries = scope.Deliveries;
+                    scopeResult.Goal = scope.Goal;
+                    _context.PM_TAP_Scope.Update(scopeResult);
+                }
+                else
+                {
+                    scope.ContractID = contractId;
+                    _context.PM_TAP_Scope.Add(scope);
+                }
+                _context.SaveChanges();
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
 
 
+        }
 
+        public bool UpdateInfoContract(int contractId, ProjectManagementGeneralInfo infoContract)
+        {
+            try
+            {
+                var contract = _context.Contracts.Where(c => c.id == contractId).FirstOrDefault();
+                contract.PredictedMarkup = infoContract.PredictedMarkup;
+                contract.PredictedSavings = infoContract.PredictedSavings;
+                contract.ValidityStartDate = infoContract.ValidityStartDate;
+                contract.ValidityEndDate = infoContract.ValidityEndDate;
+                _context.Contracts.Update(contract);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+
+        }
+
+        public bool UpdateInfoTap(int contractId, ProjectManagementGeneralInfo infoContractTap)
+        {
+            try
+            {
+                var infoTap = _context.PM_TAP_General_Info.Where(t => t.ContractID == contractId).FirstOrDefault();
+                if (infoTap != null)
+                {
+
+                    infoTap.Local = infoContractTap.Local;
+                    infoTap.RiskLevelID = infoContractTap.RiskLevelID;
+                    infoTap.ConsultantID = infoContractTap.ConsultantID;
+                    _context.Update(infoTap);
+
+
+                }
+                else
+                {
+
+                    _context.Add(new PM_TAP_General_Info { ContractID = contractId, RiskLevelID = infoContractTap.RiskLevelID, Local = infoContractTap.Local, ConsultantID = infoContractTap.ConsultantID });
+
+                }
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                {
+
+                    return false;
+                }
+            }
+
+        }
+
+        public bool UpdateInfoGenralClients(int contractId, List<PM_Information_General> contactClients)
+        {
+            try
+            {
+                foreach (var contactClient in contactClients)
+                {
+                    var client = _context.PM_Information_General.Where(c => c.ContractID == contractId && c.Type == contactClient.Type).FirstOrDefault();
+                    if (client != null)
+                    {
+                        client.Email = contactClient.Email;
+                        client.Name = contactClient.Name;
+                        client.PhoneNumber = contactClient.PhoneNumber;
+                        client.Role = contactClient.Role;
+                        _context.PM_Information_General.Update(client);
+                    }
+                    else
+                    {
+                        contactClient.ContractID = contractId;
+                        _context.PM_Information_General.Add(contactClient);
+                    }
+
+
+                }
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }
 

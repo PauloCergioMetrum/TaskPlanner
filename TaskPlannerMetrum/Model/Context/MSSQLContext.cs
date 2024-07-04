@@ -65,7 +65,10 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<Service> Service { get; set; }
         public DbSet<PM_TAP_RiskLevel> PM_TAP_RiskLevel { get; set; }
         public DbSet<PM_TAP_General_Info> PM_TAP_General_Info { get; set; }
-        public DbSet<PM_TAP_Scope> PM_TAP_Scope {  get; set; }  
+        public DbSet<PM_TAP_Scope> PM_TAP_Scope {  get; set; }
+        public DbSet<PM_Information_General> PM_Information_General { get; set; }
+
+        
 
 
         //public DbSet<PM_DisplacementService_MilestonesType> PM_DisplacementService_MilestonesType {  get; set; }  

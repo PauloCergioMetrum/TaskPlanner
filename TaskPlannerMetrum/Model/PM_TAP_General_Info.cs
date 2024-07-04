@@ -9,9 +9,10 @@ namespace TaskPlannerMetrum.Model
         public string Local { get; set; }
         public int RiskLevelID { get; set; }
         public int ContractID { get; set; }
+        public int ConsultantID { get; set; }
 
 
-        
+
 
 
 

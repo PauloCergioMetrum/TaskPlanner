@@ -12,10 +12,6 @@ namespace TaskPlannerMetrum.Business
     {
 
 
-
-        public bool UpdateForecast(ProjectManagementDTO forecast);
-
-
         public OrderInformationDTO GetOrderInformation(int id);
 
 
@@ -164,12 +160,16 @@ namespace TaskPlannerMetrum.Business
 
         //TAP
 
-        public bool CreateProjectWithScopes(ProjectCreationRequestDTO request);
+        public bool UpdateInfoGeneral(ProjectInfoGeneralDTO request);
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
 
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();
-        public bool UpdateProjectGeneralInfo(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
-        public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
+       // public bool UpdateProjectGeneralInfo(int ID, ProjectInfoGeneralDTO projectCreationRequestDTO);
+        //public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
+
+
+
+        public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope);
         public List<UserVO> GetAllUsersGercon();
 
     }

@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Query.Internal;
-using Microsoft.Identity.Client;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
@@ -33,9 +29,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change);
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto);
         public bool CreatePM_MilestonesType(PM_MilestonesType dto);
-
-        public bool CreateProjectWithScopes(ProjectCreationRequestDTO request);
-
+        
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
 
 
@@ -55,8 +49,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
         public bool IsExistMilesStone(MilesTonesDTO milesTonesDTO);
         public int existMilesStonesValue(string ID);
-        public bool UpdateProjectGeneralInfo(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
-        public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
+        public bool UpdateScopeInfo(int contractId, PM_TAP_Scope scope);
+        public bool UpdateInfoContract(int contractId, ProjectManagementGeneralInfo infoContract);
+        public bool UpdateInfoTap(int contractId, ProjectManagementGeneralInfo infoContractTap);
+
+        public bool UpdateInfoGenralClients(int contractId, List<PM_Information_General> contactClients );
+        public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope);
         public Model.Contracts GetForecastByID(int id);
 
 
@@ -64,7 +62,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         // LIST Methods
 
 
-   
+
         public vContractList GetForecastByIDView(int id);
         public List<MilestonesItem> GetMilestonesNames(int contractID);
         public MilestonesValue GetMilestonesValueByID(int milestonesID);
@@ -98,7 +96,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
 
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();
-        public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractID);
+
         public List<UserVO> GetAllUsersGercon();
 
 
