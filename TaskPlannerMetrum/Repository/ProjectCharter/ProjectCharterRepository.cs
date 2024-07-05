@@ -17,11 +17,8 @@ namespace TaskPlannerMetrum.Repository.ProjectCharter
     }
     public ProjectCharterDatails ProjectCharterDatails(int contractID)
     {
-      var sql = "[dbo].[GetProjectCharterDetails] @ContractID"; 
-      var projectCharterDetailsList = _context.Set<ProjectCharterDatails>()
-          .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID)).FirstOrDefault();         
+         return _context.GetProjectCharterDatails(contractID);
 
-      return projectCharterDetailsList;
     }
   }
 }

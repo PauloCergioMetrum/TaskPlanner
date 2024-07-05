@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Security.Cryptography;
@@ -65,14 +66,14 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<Service> Service { get; set; }
         public DbSet<PM_TAP_RiskLevel> PM_TAP_RiskLevel { get; set; }
         public DbSet<PM_TAP_General_Info> PM_TAP_General_Info { get; set; }
-        public DbSet<PM_TAP_Scope> PM_TAP_Scope {  get; set; }
+        public DbSet<PM_TAP_Scope> PM_TAP_Scope { get; set; }
         public DbSet<PM_Information_General> PM_Information_General { get; set; }
 
-        
+
 
 
         //public DbSet<PM_DisplacementService_MilestonesType> PM_DisplacementService_MilestonesType {  get; set; }  
-        public DbSet<PM_MilestonesType> PM_MilestonesType { get; set; } 
+        public DbSet<PM_MilestonesType> PM_MilestonesType { get; set; }
 
         //VIEWS
         public DbSet<vCalendar> vCalendar { get; set; }
@@ -100,18 +101,18 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vUserList> vUserList { get; set; }
         public DbSet<vContractList> vContractList { get; set; }
         public DbSet<vActivePlanBusinessUnit> vActivePlanBusinessUnit { get; set; }
-        public DbSet<vPM_MilestoneType> vPM_MilestoneType {  get; set; }
+        public DbSet<vPM_MilestoneType> vPM_MilestoneType { get; set; }
 
         public DbSet<vUsersView> vUsersView { get; set; }
 
 
-        
+
 
         public DbSet<Management> Management { get; set; }
 
 
 
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HoursExecutor>().HasNoKey();
@@ -120,6 +121,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetFinanceMilestones>().HasNoKey();
             modelBuilder.Entity<GetMilestoneType_HH_Details>().HasNoKey();
             modelBuilder.Entity<GetMilestones>().HasNoKey();
+            modelBuilder.Entity<ProjectCharterDatails>().HasNoKey();
         }
 
 
@@ -173,7 +175,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         public List<GetMilestoneType_HH_Details> GetMilestoneType_HH_Details(string MilestonesValueID)
         {
-            var query = $"EXECUTE [dbo].[GetMilestoneType_HH_Details] @MilestonesValueID='{MilestonesValueID}'";  
+            var query = $"EXECUTE [dbo].[GetMilestoneType_HH_Details] @MilestonesValueID='{MilestonesValueID}'";
             return this.Set<GetMilestoneType_HH_Details>()
                        .FromSqlRaw(query)
                        .ToList();
@@ -188,6 +190,15 @@ namespace TaskPlannerMetrum.Model.Context
                        .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
                        .ToList();
         }
+
+        public ProjectCharterDatails GetProjectCharterDatails(int contractID)
+        {
+            var sql = "[dbo].[GetProjectCharterDetails] @ContractID";
+            return this.Set<ProjectCharterDatails>()
+                .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID)).ToList().FirstOrDefault();
+
+        }
+
 
 
 
