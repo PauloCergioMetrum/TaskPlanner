@@ -8,5 +8,6 @@ namespace TaskPlannerMetrum.Repository.ProjectCharter
   {
     public ProjectCharterDatails ProjectCharterDatails(int contractID);
     public List<PM_Information_General> ClientsProjectCharter(int contractID);
+    public List<TechLeaderDTO> TechLeadersProjectCharter(int contractID);
   }
 }

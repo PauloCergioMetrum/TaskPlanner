@@ -27,5 +27,10 @@ namespace TaskPlannerMetrum.Repository.ProjectCharter
     {
       return _context.PM_Information_General.Where(P => P.ContractID == contractID).ToList();
     }
+
+    public List<TechLeaderDTO> TechLeadersProjectCharter(int contractID)
+    {
+      return _context.GetTechLeaders(contractID);
+    }
   }
 }

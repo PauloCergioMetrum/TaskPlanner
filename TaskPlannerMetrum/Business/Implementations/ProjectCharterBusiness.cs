@@ -14,13 +14,14 @@ namespace TaskPlannerMetrum.Business.Implementations
     }
     public dynamic ProjectCharterDatails(int contractID)
     {
-      var tapInfo = _projectCharterRepository.ProjectCharterDatails(contractID);    
-      var clients = _projectCharterRepository.ClientsProjectCharter(contractID);
-
+      var InfoGeneral = _projectCharterRepository.ProjectCharterDatails(contractID);    
+      var contactClients = _projectCharterRepository.ClientsProjectCharter(contractID);
+      var techLeaders =  _projectCharterRepository.TechLeadersProjectCharter(contractID);
       var tap = new
       {
-        tapInfo,
-        Clients = clients
+        InfoGeneral,
+        Clients = contactClients,
+        TechLeaders = techLeaders
       };
 
       return tap;
