@@ -12,6 +12,7 @@
     public string ValidityStartDate { get; set; }
     public string ValidityEndDate { get; set; }
     public string Local { get; set; }
+    public string ConsultantID { get; set; }
     public string RiskLevel { get; set; }
     public string Scope { get; set; }
     public string Goal { get; set; }
