@@ -200,7 +200,6 @@ namespace TaskPlannerMetrum.Business.Implementations
         public bool CreateOrUpdate(UserHourCosts userHourCost)
         {
             var allHoursCosts = _repository.GetAllHours();
-
             bool userExists = allHoursCosts.Any(u => u.UserID == userHourCost.UserID);
             bool dateExists = allHoursCosts.Any(s => s.StartDate == userHourCost.StartDate && s.EndDate == userHourCost.EndDate && userHourCost.UserID ==userHourCost.UserID);
             if (userExists && dateExists)
