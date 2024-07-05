@@ -18,6 +18,7 @@
     public string GeneralRisks { get; set; }
     public string Premises { get; set; }
     public string OutScope { get; set; }
+    public string Deliveries { get; set; }
 
   }
 }
