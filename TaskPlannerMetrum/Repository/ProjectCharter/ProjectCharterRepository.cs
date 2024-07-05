@@ -32,5 +32,10 @@ namespace TaskPlannerMetrum.Repository.ProjectCharter
     {
       return _context.GetTechLeaders(contractID);
     }
+
+    public dynamic Consualtant(int userID)
+    {
+          return _context.Users.Where( u => u.Id == userID).Select(s => new {s.UserName , s.PhoneNumber, s.UserEmail}).FirstOrDefault();
+    }
   }
 }
