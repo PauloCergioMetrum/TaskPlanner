@@ -12,9 +12,18 @@ namespace TaskPlannerMetrum.Business.Implementations
     {
       _projectCharterRepository = projectCharterRepository;
     }
-    public ProjectCharterDatails ProjectCharterDatails(int contractID)
+    public dynamic ProjectCharterDatails(int contractID)
     {
-      return _projectCharterRepository.ProjectCharterDatails(contractID);
+      var tapInfo = _projectCharterRepository.ProjectCharterDatails(contractID);    
+      var clients = _projectCharterRepository.ClientsProjectCharter(contractID);
+
+      var tap = new
+      {
+        tapInfo,
+        Clients = clients
+      };
+
+      return tap;
     }
   }
 }
