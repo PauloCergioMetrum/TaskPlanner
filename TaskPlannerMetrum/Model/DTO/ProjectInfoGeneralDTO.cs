@@ -10,10 +10,13 @@ namespace TaskPlannerMetrum.Model.DTO
         //Escopo
         public PM_TAP_Scope Scopes { get; set; }
         //Informações gerais do Contrato
-        public ProjectManagementGeneralInfo ProjectInfo { get; set; }       
-
-        //Comercial
+        public PM_TAP_Resources Resources { get; set; }
+        public ProjectManagementGeneralInfo ProjectInfo { get; set; }    
+  
+        
        
+
+        //Comercial       
 
 
 

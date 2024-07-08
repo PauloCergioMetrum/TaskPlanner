@@ -32,6 +32,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
 
+       
 
         // UPDATE Methods
         public bool UpdateForecast(Model.Contracts forecast);
@@ -55,6 +56,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool UpdateInfoGenralClients(int contractId, List<PM_Information_General> contactClients );
         public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope);
+        public bool UpdateResouces(int ContractID, PM_TAP_Resources UpdateResouces);
+
+       // public bool UpdateInfoContract(int contractId, ProjectManagementGeneralInfo infoContract)
         public Model.Contracts GetForecastByID(int id);
 
 

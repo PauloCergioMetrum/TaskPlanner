@@ -679,12 +679,19 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             //atualizar escopo
             if(_projectmanagementRepository.UpdateScopeInfo(infoGneral.ContractID, infoGneral.Scopes ) == false) return false;
+
+            if (_projectmanagementRepository.UpdateResouces(infoGneral.ContractID, infoGneral.Resources) == false) return false;
+
+
             //Atualizar informações gerais do contrato
             if (_projectmanagementRepository.UpdateInfoContract(infoGneral.ContractID, infoGneral.ProjectInfo) == false) return false;
             //Atualizar informações gerais da TAP
             if (_projectmanagementRepository.UpdateInfoTap(infoGneral.ContractID, infoGneral.ProjectInfo) == false) return false;
             //Atualizar informações gerais Partes Interesadas
             if (_projectmanagementRepository.UpdateInfoGenralClients(infoGneral.ContractID, infoGneral.ProjectInfo.ContactClients) == false) return false;
+
+   
+
 
 
             return true;

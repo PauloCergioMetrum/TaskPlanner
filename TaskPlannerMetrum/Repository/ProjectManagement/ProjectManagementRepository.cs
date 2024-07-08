@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
@@ -1360,6 +1361,42 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
 
         }
+        public bool UpdateResouces(int ContractID, PM_TAP_Resources UpdateResouces)
+        {
+            try
+            {
+                var resources = _context.PM_TAP_Resources.Where(a => a.ContractID == ContractID).FirstOrDefault();
+                if (resources != null)
+                {
+                    resources.ThirdPartyServices = UpdateResouces.ThirdPartyServices;
+                    resources.Acquitions = UpdateResouces.Acquitions;
+                    resources.ExpectedEquipment = UpdateResouces.ExpectedEquipment;
+                    resources.ExpectedEquipment = UpdateResouces.ExpectedEquipment;
+                    resources.Mobilizations = UpdateResouces.Mobilizations;
+                    
+                   
+                    return true;
+                }
+                else
+                {
+
+                    UpdateResouces.ContractID = ContractID;  
+                    _context.PM_TAP_Resources.Add(UpdateResouces);
+
+
+
+                    
+                    return true;
+                }
+
+            }
+             catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
 
         public bool UpdateInfoTap(int contractId, ProjectManagementGeneralInfo infoContractTap)
         {
@@ -1426,6 +1463,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return false;
             }
         }
+
+
     }
 }
 

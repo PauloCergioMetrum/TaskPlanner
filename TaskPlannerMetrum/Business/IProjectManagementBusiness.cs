@@ -164,8 +164,6 @@ namespace TaskPlannerMetrum.Business
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
 
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();
-       // public bool UpdateProjectGeneralInfo(int ID, ProjectInfoGeneralDTO projectCreationRequestDTO);
-        //public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
 
 
 
