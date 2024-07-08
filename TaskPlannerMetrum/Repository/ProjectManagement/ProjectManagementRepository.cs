@@ -1305,7 +1305,52 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return filteredUsers;
         }
 
+
         // TAP
+        public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId)
+        {
+            // Busca as informações do contrato
+            var contractInfo = _context.Contracts
+                .Where(c => c.id == contractId)
+                .FirstOrDefault();
+
+            // Busca as informações gerais do TAP
+            var tapInfo = _context.PM_TAP_General_Info
+                .Where(t => t.ContractID == contractId)
+                .FirstOrDefault();
+
+            // Busca os contatos relacionados ao contrato
+            var contactClients = _context.PM_Information_General
+                .Where(c => c.ContractID == contractId)
+                .ToList();
+
+            var projectInfo = new ProjectInfoGeneralDTO
+            {
+                ContractID = contractId,
+                Scopes = _context.PM_TAP_Scope.FirstOrDefault(s => s.ContractID == contractId),
+                Resources = _context.PM_TAP_Resources.FirstOrDefault(r => r.ContractID == contractId),
+                ProjectInfo = new ProjectManagementGeneralInfo
+                {
+                    Id = contractInfo?.id ?? 0,
+                    PredictedSavings = contractInfo?.PredictedSavings ?? 0,
+                    PredictedMarkup = contractInfo?.PredictedMarkup ?? 0,
+                    ValidityStartDate = contractInfo?.ValidityStartDate,
+                    ValidityEndDate = contractInfo?.ValidityEndDate,
+                    Local = tapInfo?.Local,
+                    RiskLevelID = tapInfo?.RiskLevelID ?? 0,
+                    ConsultantID = tapInfo?.ConsultantID ?? 0,
+                    ContactClients = contactClients
+                }
+            };
+
+            return projectInfo;
+        }
+
+
+
+
+
+
 
         public bool UpdateScopeInfo(int contractId, PM_TAP_Scope scope)
         {
@@ -1385,17 +1430,17 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 else
                 {
 
-                    UpdateResouces.ContractID = ContractID;  
+                    UpdateResouces.ContractID = ContractID;
                     _context.PM_TAP_Resources.Add(UpdateResouces);
 
 
 
-                    
+
                     return true;
                 }
 
             }
-             catch (Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }

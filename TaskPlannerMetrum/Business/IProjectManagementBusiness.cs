@@ -169,6 +169,8 @@ namespace TaskPlannerMetrum.Business
         // GET ALL TAP  MODAL DE CADASTRDO
 
 
+        public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId);
+
 
 
     }

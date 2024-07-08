@@ -107,6 +107,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
+        public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId);
 
 
         // DELETE Methods

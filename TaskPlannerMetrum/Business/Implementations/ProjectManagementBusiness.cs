@@ -718,6 +718,11 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.UpdateProjectScope(ID, updatedScope);   
         }
 
+        public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId)
+        {
+           return _projectmanagementRepository.GetProjectInfoByContractId(contractId);
+        }
+
         //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId)
         //{
         //    return _projectmanagementRepository.GetAllProjectCharter(contractId);   
