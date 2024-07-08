@@ -12,6 +12,7 @@ using System.Formats.Asn1;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
@@ -136,10 +137,86 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
             return true;
         }
+
+        public static string RemoveDiacritics(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return text;
+
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
         public async Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate)
         {
-            List<Functions> allFunction = _repository.GetAllFunction();
-            List<Management> allManagements = _repository.GetAllManagement();
+            //List<Functions> allFunction = _repository.GetAllFunction();
+            //List<Management> allManagements = _repository.GetAllManagement();
+            //try
+            //{
+            //    using (var stream = new MemoryStream())
+            //    {
+            //        await excelFile.CopyToAsync(stream);
+            //        using (var workbook = new XLWorkbook(stream))
+            //        {
+            //            var worksheet = workbook.Worksheets.FirstOrDefault();
+            //            if (worksheet == null)
+            //            {
+            //                return false;
+            //            }
+            //            List<User> allUsers = _repository.GetAllUsers();
+            //            int rowCount = worksheet.RowsUsed().Count();
+            //            for (int row = 3; row <= rowCount; row++)
+            //            {
+
+            //                string colaborador = worksheet.Cell(row, 2).GetValue<string>()?.Trim();
+            //                double hourCost = worksheet.Cell(row, 7).GetValue<double>();
+            //                string functionName = worksheet.Cell(row, 6).GetValue<string>();
+            //                string managementName = worksheet.Cell(row, 5).GetValue<string>();
+            //                var user = allUsers.FirstOrDefault(u => u.FullName.ToUpper() == colaborador?.ToUpper());
+            //                if (user != null)
+            //                {
+            //                    var userHourCost = new UserHourCosts
+            //                    {
+            //                        UserID = user.Id,
+            //                        HourCost = hourCost,
+            //                        StartDate = startDate,
+            //                        EndDate = endDate,
+            //                        ID = Guid.NewGuid().ToString()
+            //                    };
+            //                    bool createSuccess = CreateOrUpdate(userHourCost);
+            //                    if (createSuccess)
+            //                    {
+            //                        _repository.updateUser(userHourCost.UserID, functionName, managementName);
+            //                    }
+
+            //                    if (!createSuccess)
+            //                    {
+            //                        return false;
+            //                    }
+            //                }
+
+            //            }
+            //        }
+
+
+            //    }
+            //    return true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Erro ao processar arquivo: {ex.Message}");
+            //    return false;
+            //}
             try
             {
                 using (var stream = new MemoryStream())
@@ -150,18 +227,25 @@ namespace TaskPlannerMetrum.Business.Implementations
                         var worksheet = workbook.Worksheets.FirstOrDefault();
                         if (worksheet == null)
                         {
-                            throw new Exception("Planilha não encontrada no arquivo Excel.");
+                            return false;
                         }
                         List<User> allUsers = _repository.GetAllUsers();
                         int rowCount = worksheet.RowsUsed().Count();
                         for (int row = 3; row <= rowCount; row++)
                         {
-
                             string colaborador = worksheet.Cell(row, 2).GetValue<string>()?.Trim();
-                            double hourCost = worksheet.Cell(row, 7).GetValue<double>();
+                            double hourCost;
+                            try
+                            {
+                                hourCost = worksheet.Cell(row, 7).GetValue<double>();
+                            }
+                            catch (Exception ex)
+                            {
+                                return false;
+                            }
                             string functionName = worksheet.Cell(row, 6).GetValue<string>();
                             string managementName = worksheet.Cell(row, 5).GetValue<string>();
-                            var user = allUsers.FirstOrDefault(u => u.FullName.ToUpper() == colaborador?.ToUpper());
+                            var user = allUsers.FirstOrDefault(u => RemoveDiacritics(u.FullName).ToUpper() == RemoveDiacritics(colaborador)?.ToUpper());
                             if (user != null)
                             {
                                 var userHourCost = new UserHourCosts
@@ -177,16 +261,15 @@ namespace TaskPlannerMetrum.Business.Implementations
                                 {
                                     _repository.updateUser(userHourCost.UserID, functionName, managementName);
                                 }
-
-                                if (!createSuccess)
+                                else
                                 {
-                                    throw new Exception("Falha ao criar UserHourCost no repositório.");
+                                    return false;
                                 }
                             }
-
                         }
                     }
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -194,15 +277,15 @@ namespace TaskPlannerMetrum.Business.Implementations
                 Console.WriteLine($"Erro ao processar arquivo: {ex.Message}");
                 return false;
             }
-           
+
         }
 
         public bool CreateOrUpdate(UserHourCosts userHourCost)
         {
             var allHoursCosts = _repository.GetAllHours();
-            bool userExists = allHoursCosts.Any(u => u.UserID == userHourCost.UserID);
-            bool dateExists = allHoursCosts.Any(s => s.StartDate == userHourCost.StartDate && s.EndDate == userHourCost.EndDate && userHourCost.UserID ==userHourCost.UserID);
-            if (userExists && dateExists)
+            var  userExists = allHoursCosts.Where(u => u.UserID == userHourCost.UserID);
+            var dateExists = allHoursCosts.Where(s => s.StartDate == userHourCost.StartDate && s.EndDate == userHourCost.EndDate && s.UserID ==userHourCost.UserID).ToList().FirstOrDefault();
+            if (dateExists != null)
             {
                 return _repository.UpdateUserHourCost(userHourCost);
             }
