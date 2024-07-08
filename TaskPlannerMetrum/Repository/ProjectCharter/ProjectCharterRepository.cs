@@ -37,5 +37,12 @@ namespace TaskPlannerMetrum.Repository.ProjectCharter
     {
           return _context.Users.Where( u => u.Id == userID).Select(s => new {s.UserName , s.PhoneNumber, s.UserEmail}).FirstOrDefault();
     }
-  }
+
+
+
+        public List<PM_TAP_Resources> Resources(int contractID)
+        {
+         return _context.PM_TAP_Resources.Where(a => a.ContractID == contractID).ToList();
+        }
+    }
 }
