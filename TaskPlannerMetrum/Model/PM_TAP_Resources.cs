@@ -9,5 +9,9 @@
         public string ExpectedEquipment { get; set; }                
         public string Acquitions { get; set; }
         public string ThirdPartyServices { get; set; }
+        public string MobilizationsValue { get; set; }
+        public string ExpectedEquipmentValue { get; set; }
+        public string AcquitionsValue { get; set; }
+        public string ThirdPartyServicesValue { get; set; }
     }
 }

@@ -11,5 +11,6 @@ namespace TaskPlannerMetrum.Repository.ProjectCharter
     public List<TechLeaderDTO> TechLeadersProjectCharter(int contractID);
    public List<PM_TAP_Resources> Resources(int contractID);
     public dynamic Consualtant(int userID);
+
   }
 }

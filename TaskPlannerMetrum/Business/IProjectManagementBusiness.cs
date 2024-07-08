@@ -162,13 +162,14 @@ namespace TaskPlannerMetrum.Business
 
         public bool UpdateInfoGeneral(ProjectInfoGeneralDTO request);
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
-
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();
-
-
-
         public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope);
         public List<UserVO> GetAllUsersGercon();
+
+        // GET ALL TAP  MODAL DE CADASTRDO
+
+
+
 
     }
   

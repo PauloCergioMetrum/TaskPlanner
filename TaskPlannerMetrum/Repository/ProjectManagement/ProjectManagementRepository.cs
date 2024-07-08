@@ -1371,10 +1371,15 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     resources.ThirdPartyServices = UpdateResouces.ThirdPartyServices;
                     resources.Acquitions = UpdateResouces.Acquitions;
                     resources.ExpectedEquipment = UpdateResouces.ExpectedEquipment;
-                   // resources.ExpectedEquipment = UpdateResouces.ExpectedEquipment;
                     resources.Mobilizations = UpdateResouces.Mobilizations;
-                    
-                   
+                    resources.ThirdPartyServicesValue = UpdateResouces.ThirdPartyServicesValue;
+                    resources.AcquitionsValue = UpdateResouces.AcquitionsValue;
+                    resources.ExpectedEquipmentValue = UpdateResouces.ExpectedEquipmentValue;
+
+                    resources.Mobilizations = UpdateResouces.Mobilizations;
+
+
+
                     return true;
                 }
                 else
