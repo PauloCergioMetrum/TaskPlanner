@@ -140,11 +140,8 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
            
                 return false;
             }
-
-          
             string functionNameNormalized = NormalizeString(functionName.Replace("-", " ")).ToUpper();
             string managementNameNormalized = NormalizeString(managementName).ToUpper();
-
             var functionID = _context.Functions
                 .Where(f => EF.Functions.Collate(f.Name.ToUpper(), "SQL_Latin1_General_CP1_CI_AI") == functionNameNormalized)
                 .Select(f => f.ID)
@@ -187,9 +184,6 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
-
-
-
 
     }
 
