@@ -1232,8 +1232,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID)
         {
-            return _context.vMileStonesValue.Where(a => a.ContractID == ContractID).ToList();
+            return _context.vMileStonesValue
+                           .Where(a => a.ContractID == ContractID && a.MilestonesTypeID != 2)
+                           .ToList();
         }
+
 
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope)
         {
