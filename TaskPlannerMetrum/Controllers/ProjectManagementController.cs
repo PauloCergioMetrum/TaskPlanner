@@ -92,7 +92,7 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
-      
+
 
 
 
@@ -124,7 +124,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-      
+
         public IActionResult GetMilestonesNames(int contractID)
         {
             try
@@ -619,7 +619,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetOutsourcedServicesCombined( int ContractID)
+        public IActionResult GetOutsourcedServicesCombined(int ContractID)
         {
             try
             {
@@ -908,7 +908,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetScopeTrajing( int  ContractID)
+        public IActionResult GetScopeTrajing(int ContractID)
         {
 
             try
@@ -1056,7 +1056,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetAllFunctionsMilesstoneType( string MilesstoneTypeID)
+        public IActionResult GetAllFunctionsMilesstoneType(string MilesstoneTypeID)
         {
             try
             {
@@ -1229,15 +1229,35 @@ namespace TaskPlannerMetrum.Controllers
             }
             try
             {
-               
-               return Ok(_projectManagementBusiness.UpdateInfoGeneral(infoGenral)); 
-           
+
+                return Ok(_projectManagementBusiness.UpdateInfoGeneral(infoGenral));
+
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("GetProjectInfoByContractId")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetProjectInfoByContractId(int contractId)
+        {
+
+
+
+
+            return Ok(_projectManagementBusiness.GetProjectInfoByContractId(contractId));
+
+
+
+        }
+
+
+
 
 
 

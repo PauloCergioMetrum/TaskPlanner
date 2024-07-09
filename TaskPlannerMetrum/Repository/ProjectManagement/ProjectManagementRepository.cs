@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
@@ -1231,8 +1232,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID)
         {
-            return _context.vMileStonesValue.Where(a => a.ContractID == ContractID).ToList();
+            return _context.vMileStonesValue
+                           .Where(a => a.ContractID == ContractID && a.MilestonesTypeID != 2)
+                           .ToList();
         }
+
 
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope)
         {
@@ -1304,7 +1308,52 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return filteredUsers;
         }
 
+
         // TAP
+        public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId)
+        {
+            // Busca as informações do contrato
+            var contractInfo = _context.Contracts
+                .Where(c => c.id == contractId)
+                .FirstOrDefault();
+
+            // Busca as informações gerais do TAP
+            var tapInfo = _context.PM_TAP_General_Info
+                .Where(t => t.ContractID == contractId)
+                .FirstOrDefault();
+
+            // Busca os contatos relacionados ao contrato
+            var contactClients = _context.PM_Information_General
+                .Where(c => c.ContractID == contractId)
+                .ToList();
+
+            var projectInfo = new ProjectInfoGeneralDTO
+            {
+                ContractID = contractId,
+                Scopes = _context.PM_TAP_Scope.FirstOrDefault(s => s.ContractID == contractId),
+                Resources = _context.PM_TAP_Resources.FirstOrDefault(r => r.ContractID == contractId),
+                ProjectInfo = new ProjectManagementGeneralInfo
+                {
+                    Id = contractInfo?.id ?? 0,
+                    PredictedSavings = contractInfo?.PredictedSavings ?? 0,
+                    PredictedMarkup = contractInfo?.PredictedMarkup ?? 0,
+                    ValidityStartDate = contractInfo?.ValidityStartDate,
+                    ValidityEndDate = contractInfo?.ValidityEndDate,
+                    Local = tapInfo?.Local,
+                    RiskLevelID = tapInfo?.RiskLevelID ?? 0,
+                    ConsultantID = tapInfo?.ConsultantID ?? 0,
+                    ContactClients = contactClients
+                }
+            };
+
+            return projectInfo;
+        }
+
+
+
+
+
+
 
         public bool UpdateScopeInfo(int contractId, PM_TAP_Scope scope)
         {
@@ -1360,6 +1409,47 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
 
         }
+        public bool UpdateResouces(int ContractID, PM_TAP_Resources UpdateResouces)
+        {
+            try
+            {
+                var resources = _context.PM_TAP_Resources.Where(a => a.ContractID == ContractID).FirstOrDefault();
+                if (resources != null)
+                {
+                    resources.ThirdPartyServices = UpdateResouces.ThirdPartyServices;
+                    resources.Acquitions = UpdateResouces.Acquitions;
+                    resources.ExpectedEquipment = UpdateResouces.ExpectedEquipment;
+                    resources.Mobilizations = UpdateResouces.Mobilizations;
+                    resources.ThirdPartyServicesValue = UpdateResouces.ThirdPartyServicesValue;
+                    resources.AcquitionsValue = UpdateResouces.AcquitionsValue;
+                    resources.ExpectedEquipmentValue = UpdateResouces.ExpectedEquipmentValue;
+
+                    resources.Mobilizations = UpdateResouces.Mobilizations;
+
+
+
+                    return true;
+                }
+                else
+                {
+
+                    UpdateResouces.ContractID = ContractID;
+                    _context.PM_TAP_Resources.Add(UpdateResouces);
+
+
+
+
+                    return true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
 
         public bool UpdateInfoTap(int contractId, ProjectManagementGeneralInfo infoContractTap)
         {
@@ -1426,6 +1516,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return false;
             }
         }
+
+
     }
 }
 
