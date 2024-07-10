@@ -13,12 +13,14 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
         // CREATE Methods
+
+        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public int CreateMilestonesItem(MilestonesItem milestones);
         public bool CreateMilestonesValue(MilestonesValue milestones);
         public bool CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions);
         public bool CreateAcquisitionMadeItem(PMAcquisitionMade acquisitionMade);
         public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
-        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
+        //public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade);
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);
         public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade);
@@ -116,7 +118,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
         public bool DeleteTypeOfCost(int ID);
         public bool DeletePredictedCost(string ID);
-        public bool DeleteCostMade(string ID);
+        //public bool DeleteCostMade(string ID);
         public bool DeleteMobilization(string ID);
         public bool DeleteMobilizationMade(string ID);
         public bool DeleteOutsourcedServicesPlanned(string ID);
