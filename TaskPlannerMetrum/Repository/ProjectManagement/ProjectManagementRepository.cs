@@ -361,7 +361,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
-        public bool DeleteTypeOfCost(string ID)
+        public bool DeleteTypeOfCost(int ID)
         {
             var typeOfCostToRemove = _context.Pm_Type_Cost.SingleOrDefault(t => t.ID == ID);
 

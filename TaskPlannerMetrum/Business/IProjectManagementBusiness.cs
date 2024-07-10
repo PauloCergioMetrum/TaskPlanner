@@ -46,7 +46,7 @@ namespace TaskPlannerMetrum.Business
         public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
 
         public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
-        public bool DeleteTypeOfCost(string ID);
+        public bool DeleteTypeOfCost(int ID);
         public List<PmTypeCost> GetTypeOfCost(int ContractID);
 
         public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);

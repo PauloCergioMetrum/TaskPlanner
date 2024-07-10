@@ -347,7 +347,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.CreateTypeOfCost((PmTypeCost)pmTypeCost);
         }
 
-        public bool DeleteTypeOfCost(string ID)
+        public bool DeleteTypeOfCost(int ID)
         {
             return _projectmanagementRepository.DeleteTypeOfCost(ID);
         }
