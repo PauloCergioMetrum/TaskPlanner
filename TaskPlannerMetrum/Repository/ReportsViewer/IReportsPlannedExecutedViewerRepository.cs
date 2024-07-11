@@ -11,6 +11,21 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         public List<HoursCostModel> GetHourCost(DateTime startDate, DateTime endDate);
         public double GetHourExpectedHour(DateTime startDate, DateTime endDate, int contractID);
 
+       // public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit();
+
+        public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit();
+
+        
+
+        public List<StatusForPeriod> getStatusPerPeriod();
+
+        public List<BalancePerProject> GetBalancePerProject();
+
+
+
+        public List<OperationalRelationshipTable> GetContractDetails();
+
+
 
     }
 }

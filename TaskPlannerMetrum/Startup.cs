@@ -201,10 +201,7 @@ namespace TaskPlannerMetrum
       services.AddScoped<IRatingRepository, RatingRepository>();
       services.AddScoped<IUserHourCostRepository, UserHourCostRepository>();
       services.AddScoped<IProjectCharterRepository, ProjectCharterRepository>();
-      
-
       services.AddScoped<ITechnicalLeaderRepository, TechnicalLeaderRepository>();
-
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -51,8 +51,23 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
-
-
+        [HttpGet("OperationalProjectReport")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult OperationalProjectReport()
+        {
+            try
+            {
+                return Ok(_reportsPlannedExecutedViewerBusiness.OperationalProjectReport());
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
 

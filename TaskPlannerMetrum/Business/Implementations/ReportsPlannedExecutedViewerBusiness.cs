@@ -4,6 +4,7 @@ using System.Linq;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Repository.ReportsViewer;
 
 namespace TaskPlannerMetrum.Business.Implementations
@@ -100,6 +101,24 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
             return ExpectedHours;
 
+        }
+
+
+
+        public ProjectOperational OperationalProjectReport()
+        {
+            List<NumberOfContractsForBusinessUnit> ContractsForBusinessUnit = _repository.CountContractsPerBusinessUnit();
+
+            List<StatusForPeriod> StatusForPeriod = _repository.getStatusPerPeriod();
+            List<BalancePerProject> BalancePerProject = _repository.GetBalancePerProject();
+            List<OperationalRelationshipTable> OperationalRelationshipTable = _repository.GetContractDetails();
+            return new ProjectOperational
+            {
+                ContractsForBusinessUnit = ContractsForBusinessUnit,
+                StatusForPeriod = StatusForPeriod,
+                BalancePerProject = BalancePerProject,
+                OperationalRelationshipTable = OperationalRelationshipTable
+            };
         }
 
 

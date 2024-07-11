@@ -8,10 +8,17 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+
+
+
+
+
+
 
 namespace TaskPlannerMetrum.Repository.ReportsViewer
 {
@@ -124,6 +131,46 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 return null;
             }
         }
+
+        public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit()
+        {
+            var sql = " EXEC [dbo].[GetNumberOfContractsForBusinessUnit]";
+            return _context.Set<NumberOfContractsForBusinessUnit>().FromSqlRaw(sql).ToList();
+        }
+        public List<StatusForPeriod> getStatusPerPeriod()
+        {
+            var sql = " EXEC [dbo].[getStatusPerPeriod]";
+            return _context.Set<StatusForPeriod>().FromSqlRaw(sql).ToList();
+        }
+
+
+        public List<BalancePerProject> GetBalancePerProject()
+        {
+
+            var sql = " EXEC [dbo].[getBalancePerProject]";
+            return _context.Set<BalancePerProject>().FromSqlRaw(sql).ToList();
+          
+        }
+
+        public List<OperationalRelationshipTable> GetContractDetails()
+        {
+            var sql = " EXEC [dbo].[GetContractDetails]";
+            return _context.Set<OperationalRelationshipTable>().FromSqlRaw(sql).ToList();
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 }
