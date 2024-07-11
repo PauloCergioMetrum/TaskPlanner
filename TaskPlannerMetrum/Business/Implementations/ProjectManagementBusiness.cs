@@ -342,12 +342,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
         }
 
-        public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
-        {
-            return _projectmanagementRepository.CreateTypeOfCost((PmTypeCost)pmTypeCost);
-        }
+        //public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
+        //{
+        //    return _projectmanagementRepository.CreateTypeOfCost((PmTypeCost)pmTypeCost);
+        //}
 
-        public bool DeleteTypeOfCost(string ID)
+        public bool DeleteTypeOfCost(int ID)
         {
             return _projectmanagementRepository.DeleteTypeOfCost(ID);
         }
@@ -357,10 +357,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return (_projectmanagementRepository.GetTypeOfCost(ContractID));
         }
 
-        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned)
-        {
-            return (_projectmanagementRepository.CreateOrUpdatePredictedCost((pmCostPlanned)));
-        }
+      
         public bool DeletePredictedCost(string ID)
         {
             return _projectmanagementRepository.DeletePredictedCost(ID);
@@ -377,10 +374,10 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public bool DeleteCostMade(string ID)
-        {
-            return _projectmanagementRepository.DeleteCostMade(ID);
-        }
+        //public bool DeleteCostMade(string ID)
+        //{
+        //    return _projectmanagementRepository.DeleteCostMade(ID);
+        //}
 
 
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
@@ -721,6 +718,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId)
         {
            return _projectmanagementRepository.GetProjectInfoByContractId(contractId);
+        }
+
+        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned)
+        {
+             return _projectmanagementRepository.CreateOrUpdatePredictedCost(pmCostPlanned);
         }
 
         //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId)

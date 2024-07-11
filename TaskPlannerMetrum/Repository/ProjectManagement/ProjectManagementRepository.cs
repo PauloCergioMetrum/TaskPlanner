@@ -312,56 +312,56 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return AcquisitionsMadeList;
         }
 
-        public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
+        //public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
 
-        {
+        //{
 
-            try
+        //    try
 
-            {
+        //    {
 
-                _context.Database.OpenConnection();
+        //        _context.Database.OpenConnection();
 
-                var existingTypeOfCost = _context.Pm_Type_Cost.Find(pmTypeCost.ID);
+        //        var existingTypeOfCost = _context.Pm_Type_Cost.Find(pmTypeCost.ID);
 
-                if (existingTypeOfCost != null)
+        //        if (existingTypeOfCost != null)
 
-                {
+        //        {
 
-                    existingTypeOfCost.Name = pmTypeCost.Name;
+        //            existingTypeOfCost.Name = pmTypeCost.Name;
 
-                    existingTypeOfCost.isDefault = pmTypeCost.isDefault;
+        //            existingTypeOfCost.isDefault = pmTypeCost.isDefault;
 
-                    existingTypeOfCost.ContractID = pmTypeCost.ContractID;
+        //            existingTypeOfCost.ContractID = pmTypeCost.ContractID;
 
-                }
+        //        }
 
-                else
+        //        else
 
-                {
+        //        {
 
-                    _context.Pm_Type_Cost.Add(pmTypeCost);
+        //            _context.Pm_Type_Cost.Add(pmTypeCost);
 
-                }
+        //        }
 
-                _context.SaveChanges();
+        //        _context.SaveChanges();
 
-                return true;
+        //        return true;
 
-            }
+        //    }
 
-            finally
+        //    finally
 
-            {
+        //    {
 
-                _context.Database.CloseConnection();
+        //        _context.Database.CloseConnection();
 
-            }
+        //    }
 
-        }
+        //}
 
 
-        public bool DeleteTypeOfCost(string ID)
+        public bool DeleteTypeOfCost(int ID)
         {
             var typeOfCostToRemove = _context.Pm_Type_Cost.SingleOrDefault(t => t.ID == ID);
 
@@ -388,7 +388,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             if (existingCost != null)
             {
 
-                existingCost.TypeCostID = pmCostPlanned.TypeCostID;
+              
                 existingCost.Amount = pmCostPlanned.Amount;
                 existingCost.ValueUnit = pmCostPlanned.ValueUnit;
                 existingCost.Description = pmCostPlanned.Description;
@@ -430,7 +430,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             try
             {
-                var existingCostMade = _context.PM_Cost_Made.FirstOrDefault(c => c.Id == pmCostMade.Id);
+                var existingCostMade = _context.PmCostMade.FirstOrDefault(c => c.Id == pmCostMade.Id);
 
                 if (existingCostMade != null)
                 {
@@ -438,7 +438,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.Amount = pmCostMade.Amount;
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
-                    existingCostMade.Pm_Cost_PlannedID = pmCostMade.Pm_Cost_PlannedID;
+                    existingCostMade.Pm_Cost_Planned_Id = pmCostMade.Pm_Cost_Planned_Id; 
 
 
                     _context.SaveChanges();
@@ -447,7 +447,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 else
                 {
 
-                    _context.PM_Cost_Made.Add(pmCostMade);
+                    _context.PmCostMade.Add(pmCostMade);
                     _context.SaveChanges();
                     return true;
                 }
@@ -464,21 +464,21 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-        public bool DeleteCostMade(string ID)
-        {
-            var RemoveCost = _context.PM_Cost_Made.SingleOrDefault(t => t.Id == ID);
-            if (RemoveCost != null)
-            {
-                _context.PM_Cost_Made.Remove(RemoveCost);
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
-        }
+        //public bool DeleteCostMade(string ID)
+        //{
+        //    var RemoveCost = _context.PM_Cost_Made.SingleOrDefault(t => t.Id == ID);
+        //    if (RemoveCost != null)
+        //    {
+        //        _context.PM_Cost_Made.Remove(RemoveCost);
+        //        _context.SaveChanges();
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
         {
-            var ListGetCostMade = _context.PM_Cost_Made.Where(i => i.Pm_Cost_PlannedID == Pm_Cost_PlannedID).ToList();
+            var ListGetCostMade = _context.PmCostMade.Where(i => i.Pm_Cost_Planned_Id == Pm_Cost_PlannedID).ToList();
             return ListGetCostMade;
         }
 
@@ -1517,7 +1517,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
+        //public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
+        
     }
 }
 
