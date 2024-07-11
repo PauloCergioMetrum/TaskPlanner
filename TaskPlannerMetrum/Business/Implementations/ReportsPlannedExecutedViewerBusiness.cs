@@ -57,7 +57,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             var listExecutedID = reportPlannedExecuted.Select(e => e.ExecutorID).ToList();
             var listContractID = reportPlannedExecuted.Select(e => e.ContractID).ToList();
             var listHoursCost = _repository.GetHourCost(startDate, endDate).AsQueryable();
-            
+
 
             if (reportPlannedExecuted.Select(e => e.ExecutorID).ToList().Count != 0)
             {
@@ -66,7 +66,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             if (reportPlannedExecuted.Select(e => e.ContractID).ToList().Count != 0)
             {
-                listHoursCost = listHoursCost.Where(l => listContractID.Any(u => u == l.ContractID)).AsQueryable(); 
+                listHoursCost = listHoursCost.Where(l => listContractID.Any(u => u == l.ContractID)).AsQueryable();
             }
             return Math.Round(listHoursCost.Select(d => d.DayCost).Sum(), 2);
         }
@@ -85,17 +85,17 @@ namespace TaskPlannerMetrum.Business.Implementations
                 totalPlanned = Math.Round(listPlannedExecuted.Sum(s => s.PlannedManHour), 2),
                 totalExecuted = Math.Round(listPlannedExecuted.Sum(s => s.ExecutedManHour), 2),
                 totalCost = HoursCostSearch(listPlannedExecuted),
-                totalExpectedHour = Math.Round(HoursExpetcted(reportPlannedExecuted.startDate,reportPlannedExecuted.endDate, reportPlannedExecuted.lContractID),2)
+                totalExpectedHour = Math.Round(HoursExpetcted(reportPlannedExecuted.startDate, reportPlannedExecuted.endDate, reportPlannedExecuted.lContractID), 2)
 
             };
 
             return plannedExecuted;
         }
 
-        public double HoursExpetcted (DateTime startDate, DateTime endDate, List<int> contractID)
+        public double HoursExpetcted(DateTime startDate, DateTime endDate, List<int> contractID)
         {
             double ExpectedHours = 0;
-            foreach(var contract in contractID)
+            foreach (var contract in contractID)
             {
                 ExpectedHours += _repository.GetHourExpectedHour(startDate, endDate, contract);
             }
@@ -121,8 +121,19 @@ namespace TaskPlannerMetrum.Business.Implementations
             };
         }
 
+        public OptionsListFilter OptionsListFilter()
+        {
+            return new OptionsListFilter
+            {
+                BusinessUnits =_repository.GetAllBusinesUnit(),
+                ProjectInspector = _repository.GetAllFiscal(),
+                TechLeader = _repository.GetAllTechLeader(),
+                Status = new List<string>{ "ABERTO", "FECHADO"}
 
+            };
+        }
     }
-
-
 }
+
+
+

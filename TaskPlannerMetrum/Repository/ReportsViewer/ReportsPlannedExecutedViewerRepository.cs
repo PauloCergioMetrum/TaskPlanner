@@ -161,6 +161,35 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
 
+        public List<OptionsFilterTechLead> GetAllTechLeader()
+        {
+            var allTechLeaderID = _context.MilestonesValue.Select(t => t.TechLeadID).Distinct().ToList();
+            return _context.Users
+            .Where(u => allTechLeaderID.Contains(u.Id)).Select(u => new OptionsFilterTechLead
+            {
+                ID = u.Id,
+                Name = u.FullName
+            }).ToList();
+        }
+        public List<OptionsListFilterProjectInspector> GetAllFiscal()
+        {
+            var allProjectInspector = _context.Contracts.Select(t => t.inspectorID).Distinct().ToList();
+            return _context.Users
+            .Where(u => allProjectInspector.Contains(u.Id)).Select(u => new OptionsListFilterProjectInspector
+            {
+                id = u.Id,
+                Name = u.FullName
+            }).ToList();
+        }
+
+        public List<Model.ModelViews.BusinessUnit> GetAllBusinesUnit()
+        {
+            return _context.BusinessUnit.ToList();
+
+        }
+
+
+
 
 
 

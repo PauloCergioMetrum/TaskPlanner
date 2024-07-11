@@ -12,5 +12,8 @@ namespace TaskPlannerMetrum.Business
 
         public ProjectOperational OperationalProjectReport();
 
+        public OptionsListFilter OptionsListFilter();
+        
+
     }
 }

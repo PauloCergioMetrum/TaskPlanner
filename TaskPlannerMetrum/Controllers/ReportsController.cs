@@ -68,6 +68,27 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+
+        [HttpGet("OptionsListFilter")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult OptionsListFilter()
+        {
+            try
+            {
+                return Ok(_reportsPlannedExecutedViewerBusiness.OptionsListFilter());
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+        
     }
 }
 

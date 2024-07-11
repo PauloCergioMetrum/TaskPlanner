@@ -26,6 +26,16 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         public List<OperationalRelationshipTable> GetContractDetails();
 
 
+        public List<Model.ModelViews.BusinessUnit> GetAllBusinesUnit();
+
+        public List<OptionsFilterTechLead> GetAllTechLeader();
+
+        public List<OptionsListFilterProjectInspector> GetAllFiscal();
+
+
+
+
+
 
     }
 }
