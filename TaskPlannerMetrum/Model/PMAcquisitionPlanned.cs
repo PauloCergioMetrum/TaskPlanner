@@ -23,8 +23,8 @@ namespace TaskPlannerMetrum.Model
         public double? AmountValue { get; set; }
 
         [Required]
-        public double TotalCost { get; set; } // Adicionado para corresponder à definição da tabela
+        public double TotalCost { get; set; } 
 
-        // Se necessário, você pode adicionar relacionamentos de navegação ou outras propriedades aqui
+      
     }
 }

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Memt.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Business;
+using TaskPlannerMetrum.Business.Implementations;
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Controllers
@@ -19,20 +21,44 @@ namespace TaskPlannerMetrum.Controllers
             _businessUnitBusiness = businessUnitBusiness;
         }
 
-        [HttpGet]
-        [Route("BusinessUnit")]
-        public IActionResult GetAllBuninesUnit()
+
+        [HttpGet("GetBusinessUnit")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+
+
+        public IActionResult GetBusinessUnit()
         {
             try
             {
-                var businessUnits = _businessUnitBusiness.GetAllBusinessUnits();
-                return Ok(businessUnits);
+
+                return Ok(_businessUnitBusiness.GetBusinessUnit());
             }
             catch (Exception ex)
             {
-          
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
                 return BadRequest(ex.Message);
             }
         }
+
+        //[HttpGet]
+        //[Route("GetBusinessUni")]
+        //public IActionResult GetAllBuninesUnit()
+        //{
+        //    try
+        //    {
+        //        var businessUnits = GetBusinessUni.GetBusinessUni();
+        //        return Ok(businessUnits);
+        //    }
+        //    catch (Exception ex)
+        //    {
+          
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }

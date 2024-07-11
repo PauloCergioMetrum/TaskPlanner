@@ -16,6 +16,7 @@ namespace TaskPlannerMetrum.Model.DTO
         public string PredictedMarkup { get; set; }
         public DateTime? ValidityStartDate { get; set; }
         public DateTime? ValidityEndDate { get; set; }
+   
 
 
 

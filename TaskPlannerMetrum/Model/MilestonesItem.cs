@@ -10,7 +10,8 @@ namespace TaskPlannerMetrum.Model
         public int ContractID { get; set; }
 
         public string Name { get; set; }
+       
 
-    
+
     }
 }

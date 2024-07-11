@@ -1,21 +1,27 @@
 ﻿using System.Collections.Generic;
 using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Repository.ActiviesScope;
+using TaskPlannerMetrum.Repository.ActivityPlan;
 using TaskPlannerMetrum.Repository.BusinessUnit;
+using TaskPlannerMetrum.Repository.Calendar;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
     public class BusinessUnitImplementation : IBusinessUnitBusiness
     {
-        private readonly IBusinessUnitRepository _unitRepository;
+        private readonly IBusinessUnitRepository _repository;
 
-        public BusinessUnitImplementation(IBusinessUnitRepository businessUnitRepository)
+        public BusinessUnitImplementation(IBusinessUnitRepository repository)
         {
-            _unitRepository = businessUnitRepository;
+            _repository = repository;   
         }
 
-        public IEnumerable<vBusinessUnit> GetAllBusinessUnits()
+
+    
+
+        public dynamic GetBusinessUnit()
         {
-            return _unitRepository.GetAllBuninesUnit();
+          return _repository.GetBusinessUnit();  
         }
     }
 }

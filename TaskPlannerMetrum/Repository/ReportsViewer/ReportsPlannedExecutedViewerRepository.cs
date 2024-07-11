@@ -119,7 +119,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 return list;
 
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return null;
             }

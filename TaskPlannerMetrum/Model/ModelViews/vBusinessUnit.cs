@@ -3,10 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TaskPlannerMetrum.Model.ModelViews
 {
-    public class vBusinessUnit
+    public class BusinessUnit
     {
         [Key]
-        public string BusinessUnit { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
 
     }

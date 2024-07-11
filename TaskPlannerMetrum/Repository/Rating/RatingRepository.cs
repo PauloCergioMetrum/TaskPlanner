@@ -76,8 +76,9 @@ namespace TaskPlannerMetrum.Repository.Rating
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
+
                 return false;
             }
         }
@@ -98,7 +99,7 @@ namespace TaskPlannerMetrum.Repository.Rating
                 }
                 return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -142,7 +143,7 @@ namespace TaskPlannerMetrum.Repository.Rating
                 _context.SaveChanges();
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -159,7 +160,7 @@ namespace TaskPlannerMetrum.Repository.Rating
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -180,7 +181,7 @@ namespace TaskPlannerMetrum.Repository.Rating
                 return false;
 
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
             }
@@ -226,7 +227,7 @@ namespace TaskPlannerMetrum.Repository.Rating
                 }
                 return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
 

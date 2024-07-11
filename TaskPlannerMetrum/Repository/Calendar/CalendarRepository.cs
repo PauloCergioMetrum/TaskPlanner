@@ -63,9 +63,10 @@ namespace TaskPlannerMetrum.Repository.Calendar
                             .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
                             .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.Status) })
                             .Distinct(),
-                        backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
+                        backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum()),
+                         equipamentName = u.EquipamentName?? "Nenhum equipamento alocado"
 
-                    }).Distinct().ToList();
+                     }).Distinct().ToList();
                 var taskUserList = taskuser.ToList();
                 foreach (var task in taskUserList)
                 {
@@ -94,7 +95,7 @@ namespace TaskPlannerMetrum.Repository.Calendar
                           .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
                           .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.Status) })
                           .Distinct(),
-                      backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
+                      backgroundColor = setColor(tasksUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum()),
                   }).Distinct().ToList();
 
                 var taskUserList = taskuser.ToList();
@@ -113,116 +114,67 @@ namespace TaskPlannerMetrum.Repository.Calendar
 
         public dynamic UsersForProjects(int contractID)
         {
-            List<vCalendar> contractsUsers = _context.vCalendar.Where(i => i.contractID == contractID && i.Status != "4" && i.Status != "3").ToList();
-            try
-            {
-                //Lista de tasks de Usuarios 
-                var tasksUsers = contractsUsers.Select(u => new
-                {
-                    userID = u.UserID,
-                    titleUser = u.UserName,
-                    title = u.UserName,
-                    contractName = u.InternalCode,
-                    Taskstart = u.ScheduledDate.ToString("yyyy-MM-dd") + "T08:00:00",
-                    start = u.ScheduledDate.ToString("yyyy-MM-dd"),
-                    end = u.ScheduledDate.ToString("yyyy-MM-dd"),
-                    depNameUSER = u.UserDepartment,
-                    task = contractsUsers
-                           .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
-                           .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.Status) })
-                           .Distinct(),
-                    backgroundColor = setColor(contractsUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
-                }).Distinct().ToList();
+            return _context.vCalendar.Where(i => i.contractID == contractID && i.Status != "4" && i.Status != "3").ToList();
+            //List<vCalendar> contractsUsers = _context.vCalendar.Where(i => i.contractID == contractID && i.Status != "4" && i.Status != "3").ToList();
+            //try
+            //{
+            //    //Lista de tasks de Usuarios 
+            //    var tasksUsers = contractsUsers.Select(u => new
+            //    {
+            //        userID = u.UserID,
+            //        titleUser = u.UserName,
+            //        title = u.UserName,
+            //        contractName = u.InternalCode,
+            //        Taskstart = u.ScheduledDate.ToString("yyyy-MM-dd") + "T08:00:00",
+            //        start = u.ScheduledDate.ToString("yyyy-MM-dd"),
+            //        end = u.ScheduledDate.ToString("yyyy-MM-dd"),
+            //        depNameUSER = u.UserDepartment,
+            //        task = contractsUsers
+            //               .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
+            //               .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.Status) })
+            //               .Distinct(),
+            //        backgroundColor = setColor(contractsUsers.Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID).Select(s => s.PlannedManHour).Sum())
+            //    }).Distinct().ToList();
 
-                //Verificando se existe User Duplicado
-                //Nao foi possivel setar List<dynamic> ou <vCalendar> 
-                //Lista copia para evitar erro de AsEnumerable 
-                var userDuplicate = tasksUsers.ToList();
-                foreach (var user in userDuplicate)
-                {
-                    //Remove User Duplicado 
-                    if (tasksUsers.Where(u => u.userID == user.userID && u.start == user.start).Count() >= 2)
-                    {
-                        tasksUsers.Remove(user);
-                    }
-                }
-                return tasksUsers;
-            }
-            catch (Exception ex)
-            {
-                return ex.Message.ToString();
-            }
+            //    //Verificando se existe User Duplicado
+            //    //Nao foi possivel setar List<dynamic> ou <vCalendar> 
+            //    //Lista copia para evitar erro de AsEnumerable 
+            //    var userDuplicate = tasksUsers.ToList();
+            //    foreach (var user in userDuplicate)
+            //    {
+            //        //Remove User Duplicado 
+            //        if (tasksUsers.Where(u => u.userID == user.userID && u.start == user.start).Count() >= 2)
+            //        {
+            //            tasksUsers.Remove(user);
+            //        }
+            //    }
+            //    return tasksUsers;
+            //}
+            //catch (Exception ex)
+            //{
+            //    return ex.Message.ToString();
+            //}
 
         }
 
         public string setColor(double valor)
         {
-
-            switch (valor)
+            if (valor <= 5)
             {
-
-                case <= 5:
-                    return "#629763";
-                    break;
-                case <= 7:
-                    return "#efbf4d";
-                    break;
-                case >= 8:
-                    return "#a32638";
-                    break;
-                default:
-                    return "#a32638";
+                return "#629763";
             }
-
-
+            else if (valor <= 7)
+            {
+                return "#efbf4d";
+            }
+            else
+            {
+                return "#a32638";
+            }
         }
 
 
 
-        //public dynamic GetAllContracts()
-        //{
-        //    var matchedClientNames = _context.Contracts
-        //        .Join(_context.vContractList,
-        //            contract => contract.InternalCode,
-        //            vContract => vContract.InternalCode,
-        //            (contract, vContract) => new
-        //            {
-        //                ContractID = contract.id,
-        //                internalCode = contract.InternalCode,
-        //                ClientName = vContract.ClientName
-        //            })
-        //        .Where(joinResult => joinResult.internalCode != null && joinResult.ClientName != null)
-        //        .Select(joinResult => joinResult.ClientName)
-        //        .ToList();
-
-        //    return matchedClientNames;
-        //}
-
-
-
-
-
-        //public dynamic GetAllContracts()
-        //{
-
-        //    var teste = _context.vContractList.Where(i => i.InternalCode == i.InternalCode).ToList();
-        //    {
-
-        //    }
-
-        //    var contracts = _context.Contracts
-        //        .Where(e => true)
-        //        .Select(c => new
-        //        {
-        //            contractID = c.id,
-        //            internalCode = c.InternalCode,
-        //            StatusID = c.StatusID,
-        //            DateRetroactive = c.DateRetroactive,
-        //        })
-        //        .ToList();
-
-        //    return contracts;
-        //}
 
 
 
@@ -280,6 +232,22 @@ namespace TaskPlannerMetrum.Repository.Calendar
 
             return status;
 
+        }
+
+        public dynamic GetEquipaments(List<int> ListEquipamentID)
+        {
+
+            return _context.vCalendar
+                .Where(v => v.EquipmentID.HasValue && ListEquipamentID.Contains(v.EquipmentID.Value))
+                .ToList();
+
+
+        }
+
+        public List<Equipment> GetAllEquipament()
+        {
+           var  calendar = _context.Equipment.ToList();
+            return calendar;
         }
     }
 }

@@ -56,6 +56,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     IsRework = activityPlan.IsRework,
                     DepartamentID = activityPlan.DepartamentID,
                     BusinessUnit = activityPlan.BusinessUnit,
+                    MilestonesID = activityPlan.MilestonesID,
+                    EquipmentID =activityPlan.EquipmentID,
                 });
                 _context.SaveChanges();
 
@@ -318,7 +320,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 Status = activity.Status,
                 TaskDescription = activity.TaskDescription,
                 ScheduledDate = activity.ScheduledDate,
-               
+                MilestonesID = activity.MilestonesID,
                 BusinessUnit = activity.BusinessUnit,
                 ProjectName = _context.Projects
                     .Where(p => p.ID == activity.ContractID)
@@ -363,6 +365,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPlan.BusinessUnit = activityPlan.BusinessUnit;
             newActivityPlan.PlannedManHour = activityPlan.PlannedManHour;
             newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID == 0 ? newActivityPlan.ExecutorTeamID : activityPlan.ExecutorTeamID;
+            newActivityPlan.MilestonesID = activityPlan.MilestonesID;
+            newActivityPlan.EquipmentID = activityPlan.EquipmentID;
+            newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID;
 
             _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
@@ -549,7 +554,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 NotesFromPlanner = taskforduplicate.NotesFromPlanner,
                 TaskDescription = taskforduplicate.TaskDescription,
                 IsRework = taskforduplicate.IsRework,
-                NotesFromExecutor = taskforduplicate.NotesFromExecutor
+                NotesFromExecutor = taskforduplicate.NotesFromExecutor,
+                MilestonesID = taskforduplicate.MilestonesID,
             });
             _context.SaveChanges();
 
@@ -668,7 +674,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
             var scheduleDataList = hoursExecutorsList.Select(s => s.ScheduledDate).Distinct().ToList();
 
- 
             foreach (var schedule in scheduleDataList)
             {
                 var executorList = hoursExecutorsList.Where(s => s.ScheduledDate == schedule).Select(s => s.Executor).Distinct().ToList();
@@ -676,39 +681,41 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 foreach (var executor in executorList)
                 {
                     List<HoursByDay> hoursByDays = new List<HoursByDay>();
-
                     var hoursOnDateForExecutor = hoursExecutorsList
-                        .Where(h => h.ScheduledDate == schedule && h.Executor == executor);
+                       .Where(h => h.ScheduledDate == schedule && h.Executor == executor);
 
-                    Dictionary<string, TimeSpan> totalPlannedHoursByProject = new Dictionary<string, TimeSpan>();
 
-            
+                    Dictionary<string, (TimeSpan PlannedHours, string ClientName)> totalPlannedHoursByProject = new Dictionary<string, (TimeSpan PlannedHours, string ClientName)>();
+
                     foreach (var hourOnDate in hoursOnDateForExecutor)
                     {
-                        if (totalPlannedHoursByProject.ContainsKey(hourOnDate.Project))
+
+                        if (totalPlannedHoursByProject.TryGetValue(hourOnDate.Project, out var existingEntry))
                         {
-                            totalPlannedHoursByProject[hourOnDate.Project] += TimeSpan.Parse(hourOnDate.PlannedManHours);
+
+                            existingEntry.PlannedHours += TimeSpan.Parse(hourOnDate.PlannedManHours);
                         }
                         else
                         {
-                            totalPlannedHoursByProject[hourOnDate.Project] = TimeSpan.Parse(hourOnDate.PlannedManHours);
+
+                            totalPlannedHoursByProject.Add(hourOnDate.Project, (TimeSpan.Parse(hourOnDate.PlannedManHours), hourOnDate.ClientName));
                         }
                     }
 
-            
+
                     foreach (var kvp in totalPlannedHoursByProject)
                     {
                         hoursByDays.Add(new HoursByDay
                         {
-                            PlannedManHours = $"{(int)kvp.Value.TotalHours:00}:{kvp.Value.Minutes:00}",
+                            PlannedManHours = $"{(int)kvp.Value.PlannedHours.TotalHours:00}:{kvp.Value.PlannedHours.Minutes:00}",
                             Project = kvp.Key,
-                       
-
+                            ClientName = kvp.Value.ClientName,
                         });
                     }
 
                     TimeSpan totalHours = totalPlannedHoursByProject.Values
-                        .Aggregate(TimeSpan.Zero, (total, time) => total.Add(time));
+                       .Select(v => v.PlannedHours)
+                       .Aggregate(TimeSpan.Zero, (total, time) => total.Add(time));
 
                     string resultTotalHours = $"{(int)totalHours.TotalHours:00}:{totalHours.Minutes:00}";
 
@@ -718,20 +725,23 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                         ScheduledDate = schedule,
                         TotalPlannedHours = resultTotalHours,
                         Hours = hoursByDays,
-                      
-
-
-
-
                     });
                 }
-
-
             }
+
             return hoursDto;
         }
 
+        public List<Equipment> GetAllEquipment()
+        {
+            return _context.Equipment.ToList();
+        }
 
-
+        public List<GetEquipamentAvaibilaity> GetEquipamentAvaibilaities(int EquipamentID, DateTime StartDate, DateTime EndDate)
+        {
+            return _context.GetEquipmentAvailability(EquipamentID, StartDate, EndDate);
+        }
     }
 }
+
+

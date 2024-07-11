@@ -40,8 +40,11 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public bool? IsRework { get; set; }
 
-        public string TaskDescription { get; set; }
+        public string? TaskDescription { get; set; }
 
-        public string BusinessUnit {  get; set; }
+        public string? BusinessUnit {  get; set; }
+        public int? MilestonesID { get; set; }
+
+        public int ?EquipmentID { get; set; }    
     }
 }

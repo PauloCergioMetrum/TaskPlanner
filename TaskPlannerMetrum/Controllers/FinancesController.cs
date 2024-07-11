@@ -2,13 +2,13 @@
 using Microsoft.Extensions.Logging;
 using TaskPlannerMetrum.Business;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using TaskPlannerMetrum.Business;
+
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using Memt.Logger;
@@ -24,7 +24,7 @@ namespace TaskPlannerMetrum.Controllers
     {
         private readonly ILogger<FinancesController> _logger;
 
-        // Declaration of the service used
+     
         private IFinancesBusiness _financestBusiness;
 
         public FinancesController(ILogger<ProjectsController> logger, IFinancesBusiness financeBusiness)

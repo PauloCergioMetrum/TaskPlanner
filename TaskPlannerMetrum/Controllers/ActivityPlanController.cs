@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using TaskPlannerMetrum.Business;
+using TaskPlannerMetrum.Business.Implementations;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -364,6 +365,47 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+        //ALOCAÇÃO DE EQUIPAMENTOS
+
+        [HttpGet("GetAllEquipment")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAllEquipment()
+        {
+            try
+            {
+
+                return Ok(_activityPlanBusiness.GetAllEquipment());
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("GetEquipamentAvaibilaities")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetEquipamentAvaibilaities(int EquipamentID, DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+
+                return Ok(_activityPlanBusiness.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 

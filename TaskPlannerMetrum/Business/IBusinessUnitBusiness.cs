@@ -7,6 +7,6 @@ namespace TaskPlannerMetrum.Business
     public interface IBusinessUnitBusiness
     {
 
-        IEnumerable<vBusinessUnit> GetAllBusinessUnits();
+        public dynamic GetBusinessUnit();
     }
 }

@@ -55,14 +55,18 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.IsRework = activityPlan.IsRework;
                     task.DepartamentID = activityPlan.DepartamentID;
                     task.TaskDescription = activityPlan.TaskDescription;
-                    task.BusinessUnit = activityPlan.BusinessUnit;
+                    task.BusinessUnit = activityPlan.BusinessUnit;               
+                    task.MilestonesID = activityPlan.MilestonesID;
+                    task.EquipmentID = activityPlan.EquipmentID;
                     _activiesRepository.Create(task);
                 }
                 return true;
+              
+          
 
-                _context.SaveChanges();
+             
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 return false;
             }
@@ -229,6 +233,16 @@ namespace TaskPlannerMetrum.Business.Implementations
          
             return  _activiesRepository.ExecutorHourForPeriod(executors);
 
+        }
+
+        public List<Equipment> GetAllEquipment()
+        {
+           return _activiesRepository.GetAllEquipment();
+        }
+
+        public List<GetEquipamentAvaibilaity> GetEquipamentAvaibilaities(int EquipamentID, DateTime StartDate, DateTime EndDate)
+        {
+           return _activiesRepository.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate); 
         }
     }
 }
