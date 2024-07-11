@@ -19,7 +19,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreateMilestonesValue(MilestonesValue milestones);
         public bool CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions);
         public bool CreateAcquisitionMadeItem(PMAcquisitionMade acquisitionMade);
-        public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
+       // public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
         //public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade);
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);

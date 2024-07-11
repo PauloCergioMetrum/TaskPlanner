@@ -312,53 +312,53 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return AcquisitionsMadeList;
         }
 
-        public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
+        //public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
 
-        {
+        //{
 
-            try
+        //    try
 
-            {
+        //    {
 
-                _context.Database.OpenConnection();
+        //        _context.Database.OpenConnection();
 
-                var existingTypeOfCost = _context.Pm_Type_Cost.Find(pmTypeCost.ID);
+        //        var existingTypeOfCost = _context.Pm_Type_Cost.Find(pmTypeCost.ID);
 
-                if (existingTypeOfCost != null)
+        //        if (existingTypeOfCost != null)
 
-                {
+        //        {
 
-                    existingTypeOfCost.Name = pmTypeCost.Name;
+        //            existingTypeOfCost.Name = pmTypeCost.Name;
 
-                    existingTypeOfCost.isDefault = pmTypeCost.isDefault;
+        //            existingTypeOfCost.isDefault = pmTypeCost.isDefault;
 
-                    existingTypeOfCost.ContractID = pmTypeCost.ContractID;
+        //            existingTypeOfCost.ContractID = pmTypeCost.ContractID;
 
-                }
+        //        }
 
-                else
+        //        else
 
-                {
+        //        {
 
-                    _context.Pm_Type_Cost.Add(pmTypeCost);
+        //            _context.Pm_Type_Cost.Add(pmTypeCost);
 
-                }
+        //        }
 
-                _context.SaveChanges();
+        //        _context.SaveChanges();
 
-                return true;
+        //        return true;
 
-            }
+        //    }
 
-            finally
+        //    finally
 
-            {
+        //    {
 
-                _context.Database.CloseConnection();
+        //        _context.Database.CloseConnection();
 
-            }
+        //    }
 
-        }
+        //}
 
 
         public bool DeleteTypeOfCost(int ID)

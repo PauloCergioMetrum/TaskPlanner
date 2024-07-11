@@ -289,26 +289,26 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        [HttpPost("CreateTypeOfCost")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
+        //[HttpPost("CreateTypeOfCost")]
+        //[ProducesResponseType(200)]
+        //[ProducesResponseType(204)]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(401)]
 
-        public IActionResult CreateTypeOfCost(PmTypeCost pmTypeCost)
-        {
-            try
-            {
+        //public IActionResult CreateTypeOfCost(PmTypeCost pmTypeCost)
+        //{
+        //    try
+        //    {
 
-                return Ok(_projectManagementBusiness.CreateTypeOfCost(pmTypeCost));
+        //        return Ok(_projectManagementBusiness.CreateTypeOfCost(pmTypeCost));
 
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
 
-        }
+        //}
 
         [HttpDelete("DeleteTypeOf")]
         [ProducesResponseType(200)]
