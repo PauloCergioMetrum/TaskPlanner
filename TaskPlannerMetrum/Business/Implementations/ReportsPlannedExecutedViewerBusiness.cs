@@ -105,13 +105,13 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public ProjectOperational OperationalProjectReport()
+        public ProjectOperational OperationalProjectReport(OperationalReportReportDTO OperationalReportReportDTO)
         {
             List<NumberOfContractsForBusinessUnit> ContractsForBusinessUnit = _repository.CountContractsPerBusinessUnit();
 
             List<StatusForPeriod> StatusForPeriod = _repository.getStatusPerPeriod();
             List<BalancePerProject> BalancePerProject = _repository.GetBalancePerProject();
-            List<OperationalRelationshipTable> OperationalRelationshipTable = _repository.GetContractDetails();
+            List<OperationalRelationshipTable> OperationalRelationshipTable = _repository.GetContractDetails(OperationalReportReportDTO);
             return new ProjectOperational
             {
                 ContractsForBusinessUnit = ContractsForBusinessUnit,

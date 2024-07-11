@@ -23,8 +23,9 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
 
-        public List<OperationalRelationshipTable> GetContractDetails();
 
+
+        public List<OperationalRelationshipTable> GetContractDetails(OperationalReportReportDTO OperationalReportReportDTO);
 
         public List<Model.ModelViews.BusinessUnit> GetAllBusinesUnit();
 

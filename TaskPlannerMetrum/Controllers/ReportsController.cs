@@ -56,11 +56,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult OperationalProjectReport()
+        public IActionResult OperationalProjectReport(OperationalReportReportDTO OperationalReportReportDTO)
         {
             try
             {
-                return Ok(_reportsPlannedExecutedViewerBusiness.OperationalProjectReport());
+                return Ok(_reportsPlannedExecutedViewerBusiness.OperationalProjectReport(OperationalReportReportDTO));
             }
             catch (Exception ex)
             {

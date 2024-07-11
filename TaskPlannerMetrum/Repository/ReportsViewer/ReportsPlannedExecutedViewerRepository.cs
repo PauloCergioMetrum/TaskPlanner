@@ -152,10 +152,12 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
           
         }
 
-        public List<OperationalRelationshipTable> GetContractDetails()
+        public List<OperationalRelationshipTable> GetContractDetails(OperationalReportReportDTO OperationalReportReportDTO)
         {
-            var sql = " EXEC [dbo].[GetContractDetails]";
+          
+            var sql = $"EXEC [dbo].[GetContractDetails] @ContractIDs = '{string.Join(",", OperationalReportReportDTO.ContractIDs)}' @TechLeadIDs =' {string.Join(",", OperationalReportReportDTO.TechLeadIDs)}'";
             return _context.Set<OperationalRelationshipTable>().FromSqlRaw(sql).ToList();
+
 
         }
 
