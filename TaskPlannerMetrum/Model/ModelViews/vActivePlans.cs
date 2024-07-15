@@ -9,7 +9,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public int ID { get; set; }
         public int ActivitiesScopeListID { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public double ExecutedManHour { get; set; }
 
@@ -17,11 +17,11 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public int ExecutorTeamID { get; set; }
 
-        public string NotesFromExecutor { get; set; }
+        public string? NotesFromExecutor { get; set; }
 
         public string NotesFromPlanner { get; set; }
 
-        public string TaskDescription { get; set; }
+        public string? TaskDescription { get; set; }
 
         public double PlannedManHour { get; set; }
 
@@ -29,23 +29,23 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public int ContractID { get; set; }
 
-        public DateTime ScheduledDate { get; set; }
+        public DateTime? ScheduledDate { get; set; }
 
         public string Status { get; set; }
 
 
         public string statusName { get; set; }
 
-        public string ProjectName { get; set; }
+        public string? ProjectName { get; set; }
 
-        public bool IsRework { get; set; }
+        public bool? IsRework { get; set; }
 
-        public string BusinessUnit { get; set; }
+        public string? BusinessUnit { get; set; }
 
-        public string MilestonesID { get; set; }
-        public string EquipamentName { get; set; }  
+        public int? MilestonesID { get; set; }
+        public string? EquipamentName { get; set; }
 
-        public int ?EquipamentID { get; set; }   
+        public int? EquipamentID { get; set; }
 
 
 
