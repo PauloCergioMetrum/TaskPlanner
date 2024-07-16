@@ -223,7 +223,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             var allPermissions =_context.Permissions.ToList();  
             var idPermissions = allPermissions.Where(n=> n.Description =="Admin" || n.Description =="Supervisor").Select(i=> i.id).ToList();
             return _context.Users
-            .Where(u => idPermissions.Contains(u.PermissionId)).Select(u => new OptionsFilterTechLead
+            .Where(u => idPermissions.Contains(u.PermissionId) && u.IsActive == true).Select(u => new OptionsFilterTechLead
             {
                 ID = u.Id,
                 Name = u.FullName
@@ -233,7 +233,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         {
             var getIdSFiscalList =_context.Department.Where(d=> d.Name == "DEPCNT").Select(i=> i.ID).ToList();
             return _context.Users
-            .Where(u => getIdSFiscalList.Contains(u.Id)).Select(u => new OptionsListFilterProjectInspector
+            .Where(u => getIdSFiscalList.Contains(u.DepartmentId) && u.IsActive == true).Select(u => new OptionsListFilterProjectInspector
             {
                 id = u.Id,
                 Name = u.FullName
