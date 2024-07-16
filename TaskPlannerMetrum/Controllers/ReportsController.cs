@@ -51,7 +51,7 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
-        [HttpGet("OperationalProjectReport")]
+        [HttpPost("OperationalProjectReport")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
