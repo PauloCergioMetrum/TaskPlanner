@@ -11,5 +11,9 @@ namespace TaskPlannerMetrum.Model.DTO
         public List<int> ContractIDs { get; set; }
         public List<int> TechLeadIDs { get; set; }
         public List<int> ProjectInspectorIDs { get; set; }
+
+        public List<int> BusinessUnitIDs { get; set; }
+
+        
     }
 }

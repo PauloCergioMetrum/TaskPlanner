@@ -13,13 +13,13 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
        // public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit();
 
-        public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit();
+        public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO);
 
         
 
         public List<StatusForPeriod> getStatusPerPeriod();
 
-        public List<BalancePerProject> GetBalancePerProject();
+        public List<BalancePerProject> GetBalancePerProject(OperationalReportReportDTO operationalReportReportDTO);
 
 
 
@@ -31,7 +31,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         public List<OptionsFilterTechLead> GetAllTechLeader();
 
-        public List<OptionsListFilterProjectInspector> GetAllFiscal();
+        public List<OptionsListFilterProjectInspector> GetAllInspector();
 
 
 

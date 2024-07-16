@@ -107,10 +107,10 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public ProjectOperational OperationalProjectReport(OperationalReportReportDTO OperationalReportReportDTO)
         {
-            List<NumberOfContractsForBusinessUnit> ContractsForBusinessUnit = _repository.CountContractsPerBusinessUnit();
+            List<NumberOfContractsForBusinessUnit> ContractsForBusinessUnit = _repository.CountContractsPerBusinessUnit(OperationalReportReportDTO);
 
             List<StatusForPeriod> StatusForPeriod = _repository.getStatusPerPeriod();
-            List<BalancePerProject> BalancePerProject = _repository.GetBalancePerProject();
+            List<BalancePerProject> BalancePerProject = _repository.GetBalancePerProject(OperationalReportReportDTO);
             List<OperationalRelationshipTable> OperationalRelationshipTable = _repository.GetContractDetails(OperationalReportReportDTO);
             return new ProjectOperational
             {
@@ -126,7 +126,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return new OptionsListFilter
             {
                 BusinessUnits =_repository.GetAllBusinesUnit(),
-                ProjectInspector = _repository.GetAllFiscal(),
+                ProjectInspector = _repository.GetAllInspector(),
                 TechLeader = _repository.GetAllTechLeader(),
                 Status = new List<string>{ "ABERTO", "FECHADO"}
 

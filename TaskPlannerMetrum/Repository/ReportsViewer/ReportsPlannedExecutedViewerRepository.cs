@@ -1,6 +1,7 @@
 ﻿
 
 
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
@@ -72,9 +73,6 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
         public List<HoursCostModel> GetHourCost(DateTime startDate, DateTime endDate)
         {
-
-
-
             List<HoursCostModel> listHoursCost = new List<HoursCostModel>();
             using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
@@ -84,7 +82,6 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 command.Parameters.Add(new SqlParameter("@endDate", endDate));
                 command.Parameters.Add(new SqlParameter("@contractID", Convert.ToInt64(0)));
                 command.Parameters.Add(new SqlParameter("@userID", Convert.ToInt64(0)));
-
                 _context.Database.OpenConnection();
                 using (var reader = command.ExecuteReader())
                 {
@@ -132,9 +129,30 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             }
         }
 
-        public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit()
+        public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO)
         {
-            var sql = " EXEC [dbo].[GetNumberOfContractsForBusinessUnit]";
+            var contractIDs = string.Join(",", operationalReportReportDTO.ContractIDs);
+            var filteredBusinessUnits = _context.BusinessUnit
+                                        .Where(bu => operationalReportReportDTO.BusinessUnitIDs.Contains(bu.Id))
+                                        .ToList();
+            var businessUnitNames = string.Join(",", filteredBusinessUnits.Select(bu => bu.Name));
+
+            // Verifica se a lista de contratos está vazia e ajusta para "null" se for o caso
+            if (operationalReportReportDTO.ContractIDs.Count == 0)
+            {
+                contractIDs = "null";
+            }
+
+            // Verifica se a lista de IDs de unidades de negócio está vazia e ajusta para "null" se for o caso
+            if (operationalReportReportDTO.BusinessUnitIDs.Count == 0)
+            {
+                businessUnitNames = "null";
+            }
+
+            var sql = "EXEC [dbo].[GetNumberOfContractsForBusinessUnit] " +
+                      $"@ContractIDs = {contractIDs}, " +
+                      $"@BusinessUnitNames = {(businessUnitNames == "null" ? "null" : $"'{businessUnitNames}'")}";  // Inclui null ou os nomes das unidades de negócio
+
             return _context.Set<NumberOfContractsForBusinessUnit>().FromSqlRaw(sql).ToList();
         }
         public List<StatusForPeriod> getStatusPerPeriod()
@@ -144,40 +162,78 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
-        public List<BalancePerProject> GetBalancePerProject()
+        public List<BalancePerProject> GetBalancePerProject(OperationalReportReportDTO operationalReportReportDTO)
         {
+            var contractIDs = string.Join(",", operationalReportReportDTO.ContractIDs);
+            var startDate = operationalReportReportDTO.StartDate != null ?
+                                operationalReportReportDTO.StartDate.ToString("yyyy-MM-dd") :
+                                "null";
+            var endDate = operationalReportReportDTO.EndDate != null ?
+                                operationalReportReportDTO.EndDate.ToString("yyyy-MM-dd") :
+                                "null";
 
-            var sql = " EXEC [dbo].[getBalancePerProject]";
+            var sql = "EXEC [dbo].[getBalancePerProject] " +
+                        $"@ContractIDs = {(string.IsNullOrEmpty(contractIDs) ? "null" : $"'{contractIDs}'")}, " +
+                        $"@StartDate = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
+                        $"@EndDate = {(endDate != "null" ? $"'{endDate}'" : "null")}";
+
             return _context.Set<BalancePerProject>().FromSqlRaw(sql).ToList();
-          
         }
 
-        public List<OperationalRelationshipTable> GetContractDetails(OperationalReportReportDTO OperationalReportReportDTO)
+
+
+        public List<OperationalRelationshipTable> GetContractDetails(OperationalReportReportDTO operationalReportReportDTO)
         {
-          
-            var sql = $"EXEC [dbo].[GetContractDetails] @ContractIDs = '{string.Join(",", OperationalReportReportDTO.ContractIDs)}' @TechLeadIDs =' {string.Join(",", OperationalReportReportDTO.TechLeadIDs)}'";
+            var contractIDs = string.Join(",", operationalReportReportDTO.ContractIDs);
+            var techLeadIDs = string.Join(",", operationalReportReportDTO.TechLeadIDs);
+            var inspectorIDs = string.Join(",", operationalReportReportDTO.ProjectInspectorIDs);
+
+            var filteredBusinessUnits = _context.BusinessUnit
+                .Where(bu => operationalReportReportDTO.BusinessUnitIDs.Contains(bu.Id))
+                .ToList();
+
+            var businessUnitNames = filteredBusinessUnits.Select(bu => bu.Name).ToList();
+
+            string startDate = operationalReportReportDTO.StartDate != null ?
+                                operationalReportReportDTO.StartDate.ToString("yyyy-MM-dd") :
+                                "null";
+
+            string endDate = operationalReportReportDTO.EndDate != null ?
+                                operationalReportReportDTO.EndDate.ToString("yyyy-MM-dd") :
+                                "null";
+
+            var sql = $"EXEC [dbo].[GetContractDetails] " +
+                      $"@ContractIDs = {(string.IsNullOrEmpty(contractIDs) ? "null" : $"'{contractIDs}'")}, " +
+                      $"@TechLeadIDs = {(string.IsNullOrEmpty(techLeadIDs) ? "null" : $"'{techLeadIDs}'")}, " +
+                      $"@InspectorIDs = {(string.IsNullOrEmpty(inspectorIDs) ? "null" : $"'{inspectorIDs}'")}, " +
+                      $"@BusinessUnitIDs = {(businessUnitNames.Count > 0 ? $"'{string.Join(",", businessUnitNames)}'" : "null")}, " +
+                      $"@StartDate = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
+                      $"@EndDate = {(endDate != "null" ? $"'{endDate}'" : "null")}";
+
             return _context.Set<OperationalRelationshipTable>().FromSqlRaw(sql).ToList();
-
-
         }
+
+
 
 
 
         public List<OptionsFilterTechLead> GetAllTechLeader()
         {
-            var allTechLeaderID = _context.MilestonesValue.Select(t => t.TechLeadID).Distinct().ToList();
+
+            var allPermissions =_context.Permissions.ToList();  
+            var idPermissions = allPermissions.Where(n=> n.Description =="Admin" || n.Description =="Supervisor").Select(i=> i.id).ToList();
             return _context.Users
-            .Where(u => allTechLeaderID.Contains(u.Id)).Select(u => new OptionsFilterTechLead
+            .Where(u => idPermissions.Contains(u.PermissionId)).Select(u => new OptionsFilterTechLead
             {
                 ID = u.Id,
                 Name = u.FullName
             }).ToList();
         }
-        public List<OptionsListFilterProjectInspector> GetAllFiscal()
+        public List<OptionsListFilterProjectInspector> GetAllInspector()
         {
-            var allProjectInspector = _context.Contracts.Select(t => t.inspectorID).Distinct().ToList();
+            var getIdSFiscalList =_context.Department.Where(d=> d.Name == "DEPCNT").Select(i=> i.ID).ToList();
             return _context.Users
-            .Where(u => allProjectInspector.Contains(u.Id)).Select(u => new OptionsListFilterProjectInspector
+            .Where(u => getIdSFiscalList.Contains(u.Id)).Select(u => new OptionsListFilterProjectInspector
             {
                 id = u.Id,
                 Name = u.FullName
