@@ -115,7 +115,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 balanceDetailsFullList.Add(new PreparetBalancePerProject
                 {
                     BusinessUnit =  businessUnit.BusinessUnit,
-                    Details = allBalancePerProject.Where(b => b.BusinessUnit ==  businessUnit.BusinessUnit && b.Period == businessUnit.Period).Select(b => new BalancePerProject
+                    Details = allBalancePerProject.Where(b => b.BusinessUnit ==  businessUnit.BusinessUnit).Select(b => new BalancePerProject
                     {
                         BusinessUnit = b.BusinessUnit,  
                         Period = b.Period,
