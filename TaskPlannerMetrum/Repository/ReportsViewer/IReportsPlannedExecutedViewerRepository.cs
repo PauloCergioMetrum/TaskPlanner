@@ -17,7 +17,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         
 
-        public List<StatusForPeriod> getStatusPerPeriod();
+        public List<StatusForPeriod> getStatusPerPeriod(OperationalReportReportDTO OperationalReportReportDTO);
 
         public List<BalancePerProject> GetBalancePerProject(OperationalReportReportDTO operationalReportReportDTO);
 

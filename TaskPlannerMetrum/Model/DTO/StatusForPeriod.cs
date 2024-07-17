@@ -2,7 +2,7 @@
 {
     public class StatusForPeriod
     {
-        public string StartDate { get; set; }
+        public string Period { get; set; }
 
         public int AmountStart { get; set; }
 

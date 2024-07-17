@@ -10,7 +10,7 @@ namespace TaskPlannerMetrum.Model.DTO
 
        public List<StatusForPeriod> StatusForPeriod { get; set; } 
         
-        public List<BalancePerProject> BalancePerProject { get; set; }  
+        public List<PreparetBalancePerProject> BalancePerProject { get; set; }  
 
         public List<OperationalRelationshipTable> OperationalRelationshipTable { get; set; }    
 

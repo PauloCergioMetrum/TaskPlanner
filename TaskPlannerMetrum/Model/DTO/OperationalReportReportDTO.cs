@@ -7,6 +7,7 @@ namespace TaskPlannerMetrum.Model.DTO
     public class OperationalReportReportDTO
     {
         public DateTime StartDate { get; set; }
+
         public DateTime EndDate { get; set; }
         public List<int> ContractIDs { get; set; }
         public List<int> TechLeadIDs { get; set; }
@@ -15,5 +16,12 @@ namespace TaskPlannerMetrum.Model.DTO
         public List<int> BusinessUnitIDs { get; set; }
 
         
+    }
+
+    public class PreparetBalancePerProject
+    {
+        public string BusinessUnit { get; set; }
+
+        public List<BalancePerProject> Details { get; set; } 
     }
 }

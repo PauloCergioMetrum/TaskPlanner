@@ -104,14 +104,38 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
+        public List<PreparetBalancePerProject> PreparetBalancePerProject(OperationalReportReportDTO OperationalReportReportDTO)
+        {
+            List<BalancePerProject> allBalancePerProject = _repository.GetBalancePerProject(OperationalReportReportDTO);
+            var distinctBalanceProjects = allBalancePerProject.ToList().Distinct();
+            List<PreparetBalancePerProject> balanceDetailsFullList = new List<PreparetBalancePerProject>();
+         
+            foreach (var businessUnit in distinctBalanceProjects)
+            {
+                balanceDetailsFullList.Add(new PreparetBalancePerProject
+                {
+                    BusinessUnit =  businessUnit.BusinessUnit,
+                    Details = allBalancePerProject.Where(b => b.BusinessUnit ==  businessUnit.BusinessUnit && b.Period == businessUnit.Period).Select(b => new BalancePerProject
+                    {
+                        BusinessUnit = b.BusinessUnit,  
+                        Period = b.Period,
+                        Close = b.Close,
+                        Open = b.Open,
+                    }).ToList()
+
+                });
+            }
+            return balanceDetailsFullList;
+
+        }
+
 
         public ProjectOperational OperationalProjectReport(OperationalReportReportDTO OperationalReportReportDTO)
         {
             List<NumberOfContractsForBusinessUnit> ContractsForBusinessUnit = _repository.CountContractsPerBusinessUnit(OperationalReportReportDTO);
-
-            List<StatusForPeriod> StatusForPeriod = _repository.getStatusPerPeriod();
-            List<BalancePerProject> BalancePerProject = _repository.GetBalancePerProject(OperationalReportReportDTO);
             List<OperationalRelationshipTable> OperationalRelationshipTable = _repository.GetContractDetails(OperationalReportReportDTO);
+            List<StatusForPeriod> StatusForPeriod = _repository.getStatusPerPeriod(OperationalReportReportDTO);
+            List<PreparetBalancePerProject> BalancePerProject = PreparetBalancePerProject(OperationalReportReportDTO);
             return new ProjectOperational
             {
                 ContractsForBusinessUnit = ContractsForBusinessUnit,

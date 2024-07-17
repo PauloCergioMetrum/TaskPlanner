@@ -4,9 +4,11 @@
     {
         public string BusinessUnit { get; set; }    
 
-        public int Amount { get; set; } 
+        public int? Open { get; set; }
 
-        public string StartDate { get; set; }   
+        public int? Close { get; set; }
+
+        public string Period { get; set; }   
 
     }
 }

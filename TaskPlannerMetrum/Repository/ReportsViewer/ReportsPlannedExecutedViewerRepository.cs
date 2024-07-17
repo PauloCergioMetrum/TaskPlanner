@@ -155,9 +155,17 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
             return _context.Set<NumberOfContractsForBusinessUnit>().FromSqlRaw(sql).ToList();
         }
-        public List<StatusForPeriod> getStatusPerPeriod()
+        public List<StatusForPeriod> getStatusPerPeriod( OperationalReportReportDTO OperationalReportReportDTO)
         {
-            var sql = " EXEC [dbo].[getStatusPerPeriod]";
+            var startDate = OperationalReportReportDTO.StartDate != null ?
+                                OperationalReportReportDTO.StartDate.ToString("yyyy-MM-dd") :
+                                "null";
+            var endDate = OperationalReportReportDTO.EndDate != null ?
+                                OperationalReportReportDTO.EndDate.ToString("yyyy-MM-dd") :
+                                "null";
+            var sql = "EXEC [dbo].[getStatusPerPeriod]" +
+                        $"@StartDate = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
+                        $"@EndDate = {(endDate != "null" ? $"'{endDate}'" : "null")}";
             return _context.Set<StatusForPeriod>().FromSqlRaw(sql).ToList();
         }
 
