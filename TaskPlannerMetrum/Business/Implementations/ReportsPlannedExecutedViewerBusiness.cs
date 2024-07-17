@@ -119,8 +119,8 @@ namespace TaskPlannerMetrum.Business.Implementations
                     {
                         BusinessUnit = b.BusinessUnit,  
                         Period = b.Period,
-                        Close = b.Close,
-                        Open = b.Open,
+                        AumontClose = b.AumontClose,
+                        AumontOpen = b.AumontOpen,
                     }).ToList()
 
                 });

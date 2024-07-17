@@ -4,9 +4,9 @@
     {
         public string BusinessUnit { get; set; }    
 
-        public int? Open { get; set; }
+        public int? AumontOpen { get; set; }
 
-        public int? Close { get; set; }
+        public int? AumontClose { get; set; }
 
         public string Period { get; set; }   
 

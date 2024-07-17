@@ -4,9 +4,9 @@
     {
         public string Period { get; set; }
 
-        public int AmountStart { get; set; }
+        public int AumountStart { get; set; }
 
-        public int AmountEnd { get; set; }
+        public int AumountEnd { get; set; }
 
     }
 }
