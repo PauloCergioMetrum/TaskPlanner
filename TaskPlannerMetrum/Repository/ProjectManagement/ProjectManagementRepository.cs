@@ -1335,8 +1335,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 ProjectInfo = new ProjectManagementGeneralInfo
                 {
                     Id = contractInfo?.id ?? 0,
-                    PredictedSavings = contractInfo?.PredictedSavings ?? 0,
-                    PredictedMarkup = contractInfo?.PredictedMarkup ?? 0,
+                    PredictedSavings = contractInfo?.PredictedSavings ,
+                    PredictedMarkup = contractInfo?.PredictedMarkup ,
                     ValidityStartDate = contractInfo?.ValidityStartDate,
                     ValidityEndDate = contractInfo?.ValidityEndDate,
                     Local = tapInfo?.Local,
