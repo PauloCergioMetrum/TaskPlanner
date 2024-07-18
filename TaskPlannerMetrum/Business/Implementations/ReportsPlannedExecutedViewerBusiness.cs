@@ -121,7 +121,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                         Period = b.Period,
                         AumontClose = b.AumontClose,
                         AumontOpen = b.AumontOpen,
-                    }).ToList()
+                    }).Distinct().ToList()
 
                 });
             }
