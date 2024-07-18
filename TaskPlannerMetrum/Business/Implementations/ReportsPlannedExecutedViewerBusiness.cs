@@ -112,18 +112,22 @@ namespace TaskPlannerMetrum.Business.Implementations
          
             foreach (var businessUnit in distinctBalanceProjects)
             {
-                balanceDetailsFullList.Add(new PreparetBalancePerProject
+                if(balanceDetailsFullList.Where(b=> b.BusinessUnit == businessUnit.BusinessUnit).Count()<1)
                 {
-                    BusinessUnit =  businessUnit.BusinessUnit,
-                    Details = allBalancePerProject.Where(b => b.BusinessUnit ==  businessUnit.BusinessUnit).Select(b => new BalancePerProject
+                    balanceDetailsFullList.Add(new PreparetBalancePerProject
                     {
-                        BusinessUnit = b.BusinessUnit,  
-                        Period = b.Period,
-                        AumontClose = b.AumontClose,
-                        AumontOpen = b.AumontOpen,
-                    }).Distinct().ToList()
+                        BusinessUnit =  businessUnit.BusinessUnit,
+                        Details = allBalancePerProject.Where(b => b.BusinessUnit ==  businessUnit.BusinessUnit).Select(b => new BalancePerProject
+                        {
+                            BusinessUnit = b.BusinessUnit,
+                            Period = b.Period,
+                            AumontClose = b.AumontClose,
+                            AumontOpen = b.AumontOpen,
+                        }).Distinct().ToList()
 
-                });
+                    });
+                }
+                
             }
             return balanceDetailsFullList;
 
