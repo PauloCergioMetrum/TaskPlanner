@@ -269,7 +269,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     var CreateAcquisitionsItem = _projectmanagementRepository.CreateAcquisitionMadeItem(new PMAcquisitionMade
                     {
                         ID = acquisitionMade.ID,
-                        StatusAcquistionID = acquisitionMade.StatusAcquistionID,
+                        //StatusAcquistionID = acquisitionMade.StatusAcquistionID,
                         Amount = acquisitionMade.Amount,
                         AquisitionPlannedID = acquisitionMade.AquisitionPlannedID,
                         Value = acquisitionMade.Value,
