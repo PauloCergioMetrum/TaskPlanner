@@ -374,10 +374,10 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        //public bool DeleteCostMade(string ID)
-        //{
-        //    return _projectmanagementRepository.DeleteCostMade(ID);
-        //}
+        public bool DeleteCostMade(string ID)
+        {
+            return _projectmanagementRepository.DeleteCostMade(ID);
+        }
 
 
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)

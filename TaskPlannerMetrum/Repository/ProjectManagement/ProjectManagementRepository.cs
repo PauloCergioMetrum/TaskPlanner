@@ -464,17 +464,17 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-        //public bool DeleteCostMade(string ID)
-        //{
-        //    var RemoveCost = _context.PM_Cost_Made.SingleOrDefault(t => t.Id == ID);
-        //    if (RemoveCost != null)
-        //    {
-        //        _context.PM_Cost_Made.Remove(RemoveCost);
-        //        _context.SaveChanges();
-        //        return true;
-        //    }
-        //    return false;
-        //}
+        public bool DeleteCostMade(string ID)
+        {
+            var RemoveCost = _context.PmCostMade.SingleOrDefault(t => t.Id == ID);
+            if (RemoveCost != null)
+            {
+                _context.PmCostMade.Remove(RemoveCost);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
 
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
         {
