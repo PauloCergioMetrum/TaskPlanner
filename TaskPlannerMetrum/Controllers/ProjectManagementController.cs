@@ -438,23 +438,23 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        //[HttpDelete("DeleteCostMade")]
-        //[ProducesResponseType(200)]
-        //[ProducesResponseType(204)]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(401)]
-        //public IActionResult DeleteCostMade(string ID)
-        //{
-        //    try
-        //    {
-        //        return Ok(_projectManagementBusiness.DeleteCostMade(ID));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.Log(ex.Message, ELoggerType.Debug);
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+        [HttpDelete("DeleteCostMade")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteCostMade(string ID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.DeleteCostMade(ID));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
 
 
         [HttpGet("GetPmCostMade")]

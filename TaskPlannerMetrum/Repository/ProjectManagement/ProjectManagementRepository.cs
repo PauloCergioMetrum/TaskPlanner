@@ -157,7 +157,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             {
                 var acquisitionMadeEntity = _context.PM_Acquisition_Made.Find(acquisitionMade.ID);
                 acquisitionMadeEntity.ID = acquisitionMade.ID;
-                acquisitionMadeEntity.StatusAcquistionID = acquisitionMade.StatusAcquistionID;
+                //acquisitionMadeEntity.StatusAcquistionID = acquisitionMade.StatusAcquistionID;
                 acquisitionMadeEntity.Amount = acquisitionMade.Amount;
                 acquisitionMadeEntity.Value = acquisitionMade.Value;
                 acquisitionMadeEntity.DateAcquisition = acquisitionMade.DateAcquisition;
@@ -464,17 +464,17 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-        //public bool DeleteCostMade(string ID)
-        //{
-        //    var RemoveCost = _context.PM_Cost_Made.SingleOrDefault(t => t.Id == ID);
-        //    if (RemoveCost != null)
-        //    {
-        //        _context.PM_Cost_Made.Remove(RemoveCost);
-        //        _context.SaveChanges();
-        //        return true;
-        //    }
-        //    return false;
-        //}
+        public bool DeleteCostMade(string ID)
+        {
+            var RemoveCost = _context.PmCostMade.SingleOrDefault(t => t.Id == ID);
+            if (RemoveCost != null)
+            {
+                _context.PmCostMade.Remove(RemoveCost);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
 
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
         {
@@ -529,6 +529,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
             UpdateMilesStonesValue.TechLeadID = milesTonesDTO.TechLeadID;
             UpdateMilesStonesValue.BusinessUnitID = milesTonesDTO.BusinessUnitID;
+            UpdateMilesStonesValue.Value = milesTonesDTO.Value;  
+            UpdateMilesStonesValue.ExecutedDate = milesTonesDTO.ExecutedDate;       
             _context.Update(UpdateMilesStonesValue);
             _context.SaveChanges();
             return true;

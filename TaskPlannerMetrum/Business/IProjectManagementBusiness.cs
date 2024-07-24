@@ -54,7 +54,7 @@ namespace TaskPlannerMetrum.Business
         public List<PmCostPlanned> GetPmCostPlanned(int ContractID);
 
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade);
-        //public bool DeleteCostMade(string ID);
+        public bool DeleteCostMade(string ID);
 
         public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);

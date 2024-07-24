@@ -269,7 +269,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     var CreateAcquisitionsItem = _projectmanagementRepository.CreateAcquisitionMadeItem(new PMAcquisitionMade
                     {
                         ID = acquisitionMade.ID,
-                        StatusAcquistionID = acquisitionMade.StatusAcquistionID,
+                        //StatusAcquistionID = acquisitionMade.StatusAcquistionID,
                         Amount = acquisitionMade.Amount,
                         AquisitionPlannedID = acquisitionMade.AquisitionPlannedID,
                         Value = acquisitionMade.Value,
@@ -374,10 +374,10 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        //public bool DeleteCostMade(string ID)
-        //{
-        //    return _projectmanagementRepository.DeleteCostMade(ID);
-        //}
+        public bool DeleteCostMade(string ID)
+        {
+            return _projectmanagementRepository.DeleteCostMade(ID);
+        }
 
 
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
