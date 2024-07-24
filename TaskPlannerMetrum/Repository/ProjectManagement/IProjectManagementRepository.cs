@@ -118,7 +118,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
         public bool DeleteTypeOfCost(int ID);
         public bool DeletePredictedCost(string ID);
-        //public bool DeleteCostMade(string ID);
+        public bool DeleteCostMade(string ID);
         public bool DeleteMobilization(string ID);
         public bool DeleteMobilizationMade(string ID);
         public bool DeleteOutsourcedServicesPlanned(string ID);
