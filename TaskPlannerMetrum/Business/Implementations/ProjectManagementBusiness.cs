@@ -269,7 +269,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     var CreateAcquisitionsItem = _projectmanagementRepository.CreateAcquisitionMadeItem(new PMAcquisitionMade
                     {
                         ID = acquisitionMade.ID,
-                        StatusAcquistionID = acquisitionMade.StatusAcquistionID,
+                        //StatusAcquistionID = acquisitionMade.StatusAcquistionID,
                         Amount = acquisitionMade.Amount,
                         AquisitionPlannedID = acquisitionMade.AquisitionPlannedID,
                         Value = acquisitionMade.Value,
@@ -342,12 +342,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
         }
 
-        public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
-        {
-            return _projectmanagementRepository.CreateTypeOfCost((PmTypeCost)pmTypeCost);
-        }
+        //public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
+        //{
+        //    return _projectmanagementRepository.CreateTypeOfCost((PmTypeCost)pmTypeCost);
+        //}
 
-        public bool DeleteTypeOfCost(string ID)
+        public bool DeleteTypeOfCost(int ID)
         {
             return _projectmanagementRepository.DeleteTypeOfCost(ID);
         }
@@ -357,10 +357,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return (_projectmanagementRepository.GetTypeOfCost(ContractID));
         }
 
-        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned)
-        {
-            return (_projectmanagementRepository.CreateOrUpdatePredictedCost((pmCostPlanned)));
-        }
+      
         public bool DeletePredictedCost(string ID)
         {
             return _projectmanagementRepository.DeletePredictedCost(ID);
@@ -679,12 +676,19 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             //atualizar escopo
             if(_projectmanagementRepository.UpdateScopeInfo(infoGneral.ContractID, infoGneral.Scopes ) == false) return false;
+
+            if (_projectmanagementRepository.UpdateResouces(infoGneral.ContractID, infoGneral.Resources) == false) return false;
+
+
             //Atualizar informações gerais do contrato
             if (_projectmanagementRepository.UpdateInfoContract(infoGneral.ContractID, infoGneral.ProjectInfo) == false) return false;
             //Atualizar informações gerais da TAP
             if (_projectmanagementRepository.UpdateInfoTap(infoGneral.ContractID, infoGneral.ProjectInfo) == false) return false;
             //Atualizar informações gerais Partes Interesadas
             if (_projectmanagementRepository.UpdateInfoGenralClients(infoGneral.ContractID, infoGneral.ProjectInfo.ContactClients) == false) return false;
+
+   
+
 
 
             return true;
@@ -709,6 +713,16 @@ namespace TaskPlannerMetrum.Business.Implementations
         public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope)
         {
             return _projectmanagementRepository.UpdateProjectScope(ID, updatedScope);   
+        }
+
+        public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId)
+        {
+           return _projectmanagementRepository.GetProjectInfoByContractId(contractId);
+        }
+
+        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned)
+        {
+             return _projectmanagementRepository.CreateOrUpdatePredictedCost(pmCostPlanned);
         }
 
         //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId)

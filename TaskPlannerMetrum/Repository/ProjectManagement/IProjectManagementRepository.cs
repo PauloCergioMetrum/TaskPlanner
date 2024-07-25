@@ -13,12 +13,14 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
         // CREATE Methods
+
+        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public int CreateMilestonesItem(MilestonesItem milestones);
         public bool CreateMilestonesValue(MilestonesValue milestones);
         public bool CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions);
         public bool CreateAcquisitionMadeItem(PMAcquisitionMade acquisitionMade);
-        public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
-        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
+       // public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
+        //public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade);
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);
         public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade);
@@ -32,6 +34,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
 
+       
 
         // UPDATE Methods
         public bool UpdateForecast(Model.Contracts forecast);
@@ -55,6 +58,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool UpdateInfoGenralClients(int contractId, List<PM_Information_General> contactClients );
         public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope);
+        public bool UpdateResouces(int ContractID, PM_TAP_Resources UpdateResouces);
+
+       // public bool UpdateInfoContract(int contractId, ProjectManagementGeneralInfo infoContract)
         public Model.Contracts GetForecastByID(int id);
 
 
@@ -103,12 +109,14 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
+        public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId);
+
 
         // DELETE Methods
         public bool DeleteMilestones(string ID);
         public bool DeleteAcquisition(string ID);
         public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
-        public bool DeleteTypeOfCost(string ID);
+        public bool DeleteTypeOfCost(int ID);
         public bool DeletePredictedCost(string ID);
         public bool DeleteCostMade(string ID);
         public bool DeleteMobilization(string ID);

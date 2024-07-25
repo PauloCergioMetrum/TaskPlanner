@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
@@ -156,7 +157,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             {
                 var acquisitionMadeEntity = _context.PM_Acquisition_Made.Find(acquisitionMade.ID);
                 acquisitionMadeEntity.ID = acquisitionMade.ID;
-                acquisitionMadeEntity.StatusAcquistionID = acquisitionMade.StatusAcquistionID;
+                //acquisitionMadeEntity.StatusAcquistionID = acquisitionMade.StatusAcquistionID;
                 acquisitionMadeEntity.Amount = acquisitionMade.Amount;
                 acquisitionMadeEntity.Value = acquisitionMade.Value;
                 acquisitionMadeEntity.DateAcquisition = acquisitionMade.DateAcquisition;
@@ -311,56 +312,56 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return AcquisitionsMadeList;
         }
 
-        public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
+        //public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
 
-        {
+        //{
 
-            try
+        //    try
 
-            {
+        //    {
 
-                _context.Database.OpenConnection();
+        //        _context.Database.OpenConnection();
 
-                var existingTypeOfCost = _context.Pm_Type_Cost.Find(pmTypeCost.ID);
+        //        var existingTypeOfCost = _context.Pm_Type_Cost.Find(pmTypeCost.ID);
 
-                if (existingTypeOfCost != null)
+        //        if (existingTypeOfCost != null)
 
-                {
+        //        {
 
-                    existingTypeOfCost.Name = pmTypeCost.Name;
+        //            existingTypeOfCost.Name = pmTypeCost.Name;
 
-                    existingTypeOfCost.isDefault = pmTypeCost.isDefault;
+        //            existingTypeOfCost.isDefault = pmTypeCost.isDefault;
 
-                    existingTypeOfCost.ContractID = pmTypeCost.ContractID;
+        //            existingTypeOfCost.ContractID = pmTypeCost.ContractID;
 
-                }
+        //        }
 
-                else
+        //        else
 
-                {
+        //        {
 
-                    _context.Pm_Type_Cost.Add(pmTypeCost);
+        //            _context.Pm_Type_Cost.Add(pmTypeCost);
 
-                }
+        //        }
 
-                _context.SaveChanges();
+        //        _context.SaveChanges();
 
-                return true;
+        //        return true;
 
-            }
+        //    }
 
-            finally
+        //    finally
 
-            {
+        //    {
 
-                _context.Database.CloseConnection();
+        //        _context.Database.CloseConnection();
 
-            }
+        //    }
 
-        }
+        //}
 
 
-        public bool DeleteTypeOfCost(string ID)
+        public bool DeleteTypeOfCost(int ID)
         {
             var typeOfCostToRemove = _context.Pm_Type_Cost.SingleOrDefault(t => t.ID == ID);
 
@@ -387,7 +388,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             if (existingCost != null)
             {
 
-                existingCost.TypeCostID = pmCostPlanned.TypeCostID;
+              
                 existingCost.Amount = pmCostPlanned.Amount;
                 existingCost.ValueUnit = pmCostPlanned.ValueUnit;
                 existingCost.Description = pmCostPlanned.Description;
@@ -429,7 +430,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             try
             {
-                var existingCostMade = _context.PM_Cost_Made.FirstOrDefault(c => c.Id == pmCostMade.Id);
+                var existingCostMade = _context.PmCostMade.FirstOrDefault(c => c.Id == pmCostMade.Id);
 
                 if (existingCostMade != null)
                 {
@@ -437,7 +438,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.Amount = pmCostMade.Amount;
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
-                    existingCostMade.Pm_Cost_PlannedID = pmCostMade.Pm_Cost_PlannedID;
+                    existingCostMade.Pm_Cost_Planned_Id = pmCostMade.Pm_Cost_Planned_Id; 
 
 
                     _context.SaveChanges();
@@ -446,7 +447,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 else
                 {
 
-                    _context.PM_Cost_Made.Add(pmCostMade);
+                    _context.PmCostMade.Add(pmCostMade);
                     _context.SaveChanges();
                     return true;
                 }
@@ -465,10 +466,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeleteCostMade(string ID)
         {
-            var RemoveCost = _context.PM_Cost_Made.SingleOrDefault(t => t.Id == ID);
+            var RemoveCost = _context.PmCostMade.SingleOrDefault(t => t.Id == ID);
             if (RemoveCost != null)
             {
-                _context.PM_Cost_Made.Remove(RemoveCost);
+                _context.PmCostMade.Remove(RemoveCost);
                 _context.SaveChanges();
                 return true;
             }
@@ -477,7 +478,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
         {
-            var ListGetCostMade = _context.PM_Cost_Made.Where(i => i.Pm_Cost_PlannedID == Pm_Cost_PlannedID).ToList();
+            var ListGetCostMade = _context.PmCostMade.Where(i => i.Pm_Cost_Planned_Id == Pm_Cost_PlannedID).ToList();
             return ListGetCostMade;
         }
 
@@ -528,6 +529,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
             UpdateMilesStonesValue.TechLeadID = milesTonesDTO.TechLeadID;
             UpdateMilesStonesValue.BusinessUnitID = milesTonesDTO.BusinessUnitID;
+            UpdateMilesStonesValue.Value = milesTonesDTO.Value;  
+            UpdateMilesStonesValue.ExecutedDate = milesTonesDTO.ExecutedDate;       
             _context.Update(UpdateMilesStonesValue);
             _context.SaveChanges();
             return true;
@@ -1231,8 +1234,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID)
         {
-            return _context.vMileStonesValue.Where(a => a.ContractID == ContractID).ToList();
+            return _context.vMileStonesValue
+                           .Where(a => a.ContractID == ContractID && a.MilestonesTypeID != 2)
+                           .ToList();
         }
+
 
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope)
         {
@@ -1304,7 +1310,52 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return filteredUsers;
         }
 
+
         // TAP
+        public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId)
+        {
+            // Busca as informações do contrato
+            var contractInfo = _context.Contracts
+                .Where(c => c.id == contractId)
+                .FirstOrDefault();
+
+            // Busca as informações gerais do TAP
+            var tapInfo = _context.PM_TAP_General_Info
+                .Where(t => t.ContractID == contractId)
+                .FirstOrDefault();
+
+            // Busca os contatos relacionados ao contrato
+            var contactClients = _context.PM_Information_General
+                .Where(c => c.ContractID == contractId)
+                .ToList();
+
+            var projectInfo = new ProjectInfoGeneralDTO
+            {
+                ContractID = contractId,
+                Scopes = _context.PM_TAP_Scope.FirstOrDefault(s => s.ContractID == contractId),
+                Resources = _context.PM_TAP_Resources.FirstOrDefault(r => r.ContractID == contractId),
+                ProjectInfo = new ProjectManagementGeneralInfo
+                {
+                    Id = contractInfo?.id ?? 0,
+                    PredictedSavings = contractInfo?.PredictedSavings ,
+                    PredictedMarkup = contractInfo?.PredictedMarkup ,
+                    ValidityStartDate = contractInfo?.ValidityStartDate,
+                    ValidityEndDate = contractInfo?.ValidityEndDate,
+                    Local = tapInfo?.Local,
+                    RiskLevelID = tapInfo?.RiskLevelID ?? 0,
+                    ConsultantID = tapInfo?.ConsultantID ?? 0,
+                    ContactClients = contactClients
+                }
+            };
+
+            return projectInfo;
+        }
+
+
+
+
+
+
 
         public bool UpdateScopeInfo(int contractId, PM_TAP_Scope scope)
         {
@@ -1360,6 +1411,47 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
 
         }
+        public bool UpdateResouces(int ContractID, PM_TAP_Resources UpdateResouces)
+        {
+            try
+            {
+                var resources = _context.PM_TAP_Resources.Where(a => a.ContractID == ContractID).FirstOrDefault();
+                if (resources != null)
+                {
+                    resources.ThirdPartyServices = UpdateResouces.ThirdPartyServices;
+                    resources.Acquitions = UpdateResouces.Acquitions;
+                    resources.ExpectedEquipment = UpdateResouces.ExpectedEquipment;
+                    resources.Mobilizations = UpdateResouces.Mobilizations;
+                    resources.ThirdPartyServicesValue = UpdateResouces.ThirdPartyServicesValue;
+                    resources.AcquitionsValue = UpdateResouces.AcquitionsValue;
+                    resources.ExpectedEquipmentValue = UpdateResouces.ExpectedEquipmentValue;
+
+                    resources.Mobilizations = UpdateResouces.Mobilizations;
+
+
+
+                    return true;
+                }
+                else
+                {
+
+                    UpdateResouces.ContractID = ContractID;
+                    _context.PM_TAP_Resources.Add(UpdateResouces);
+
+
+
+
+                    return true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
 
         public bool UpdateInfoTap(int contractId, ProjectManagementGeneralInfo infoContractTap)
         {
@@ -1426,6 +1518,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return false;
             }
         }
+
+        //public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        
     }
 }
 

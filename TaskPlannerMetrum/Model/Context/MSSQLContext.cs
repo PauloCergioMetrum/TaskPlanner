@@ -14,6 +14,7 @@ namespace TaskPlannerMetrum.Model.Context
 {
     public class MSSQLContext : DbContext
     {
+
         public MSSQLContext()
         {
 
@@ -191,6 +192,7 @@ namespace TaskPlannerMetrum.Model.Context
                 .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID)).ToList();
 
         }
+
     }
 
 

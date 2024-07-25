@@ -45,16 +45,18 @@ namespace TaskPlannerMetrum.Business
 
         public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
 
-        public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
-        public bool DeleteTypeOfCost(string ID);
+        //public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
+        public bool DeleteTypeOfCost(int ID);
         public List<PmTypeCost> GetTypeOfCost(int ContractID);
 
-        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
+        //public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public bool DeletePredictedCost(string ID);
         public List<PmCostPlanned> GetPmCostPlanned(int ContractID);
 
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade);
         public bool DeleteCostMade(string ID);
+
+        public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
@@ -162,15 +164,16 @@ namespace TaskPlannerMetrum.Business
 
         public bool UpdateInfoGeneral(ProjectInfoGeneralDTO request);
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
-
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();
-       // public bool UpdateProjectGeneralInfo(int ID, ProjectInfoGeneralDTO projectCreationRequestDTO);
-        //public bool UpdateProjectScope(int ID, ProjectCreationRequestDTO projectCreationRequestDTO);
-
-
-
         public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope);
         public List<UserVO> GetAllUsersGercon();
+
+        // GET ALL TAP  MODAL DE CADASTRDO
+
+
+        public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId);
+
+
 
     }
   
