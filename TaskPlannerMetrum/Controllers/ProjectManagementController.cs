@@ -1305,6 +1305,27 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetAllBussinesUnit")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult GetAllBussinesUnit(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllBussinesUnit(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
 
 
     }

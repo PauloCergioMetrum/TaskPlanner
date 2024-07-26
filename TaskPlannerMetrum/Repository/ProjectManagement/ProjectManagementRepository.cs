@@ -388,7 +388,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             if (existingCost != null)
             {
 
-              
+
                 existingCost.Amount = pmCostPlanned.Amount;
                 existingCost.ValueUnit = pmCostPlanned.ValueUnit;
                 existingCost.Description = pmCostPlanned.Description;
@@ -430,7 +430,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             try
             {
-                var existingCostMade = _context.PmCostMade.FirstOrDefault(c => c.Id == pmCostMade.Id);
+                var existingCostMade = _context.PM_Cost_Made.FirstOrDefault(c => c.Id == pmCostMade.Id);
 
                 if (existingCostMade != null)
                 {
@@ -438,7 +438,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.Amount = pmCostMade.Amount;
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
-                    existingCostMade.Pm_Cost_Planned_Id = pmCostMade.Pm_Cost_Planned_Id; 
+                    existingCostMade.Pm_Cost_Planned_Id = pmCostMade.Pm_Cost_Planned_Id;
 
 
                     _context.SaveChanges();
@@ -447,7 +447,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 else
                 {
 
-                    _context.PmCostMade.Add(pmCostMade);
+                    _context.PM_Cost_Made.Add(pmCostMade);
                     _context.SaveChanges();
                     return true;
                 }
@@ -466,10 +466,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeleteCostMade(string ID)
         {
-            var RemoveCost = _context.PmCostMade.SingleOrDefault(t => t.Id == ID);
+            var RemoveCost = _context.PM_Cost_Made.SingleOrDefault(t => t.Id == ID);
             if (RemoveCost != null)
             {
-                _context.PmCostMade.Remove(RemoveCost);
+                _context.PM_Cost_Made.Remove(RemoveCost);
                 _context.SaveChanges();
                 return true;
             }
@@ -478,7 +478,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
         {
-            var ListGetCostMade = _context.PmCostMade.Where(i => i.Pm_Cost_Planned_Id == Pm_Cost_PlannedID).ToList();
+            var ListGetCostMade = _context.PM_Cost_Made.Where(i => i.Pm_Cost_Planned_Id == Pm_Cost_PlannedID).ToList();
             return ListGetCostMade;
         }
 
@@ -529,8 +529,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
             UpdateMilesStonesValue.TechLeadID = milesTonesDTO.TechLeadID;
             UpdateMilesStonesValue.BusinessUnitID = milesTonesDTO.BusinessUnitID;
-            UpdateMilesStonesValue.Value = milesTonesDTO.Value;  
-            UpdateMilesStonesValue.ExecutedDate = milesTonesDTO.ExecutedDate;       
+            UpdateMilesStonesValue.Value = milesTonesDTO.Value;
+            UpdateMilesStonesValue.ExecutedDate = milesTonesDTO.ExecutedDate;
             _context.Update(UpdateMilesStonesValue);
             _context.SaveChanges();
             return true;
@@ -1314,21 +1314,16 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         // TAP
         public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId)
         {
-            // Busca as informações do contrato
+
             var contractInfo = _context.Contracts
                 .Where(c => c.id == contractId)
                 .FirstOrDefault();
-
-            // Busca as informações gerais do TAP
             var tapInfo = _context.PM_TAP_General_Info
                 .Where(t => t.ContractID == contractId)
                 .FirstOrDefault();
-
-            // Busca os contatos relacionados ao contrato
             var contactClients = _context.PM_Information_General
                 .Where(c => c.ContractID == contractId)
                 .ToList();
-
             var projectInfo = new ProjectInfoGeneralDTO
             {
                 ContractID = contractId,
@@ -1337,8 +1332,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 ProjectInfo = new ProjectManagementGeneralInfo
                 {
                     Id = contractInfo?.id ?? 0,
-                    PredictedSavings = contractInfo?.PredictedSavings ,
-                    PredictedMarkup = contractInfo?.PredictedMarkup ,
+                    PredictedSavings = contractInfo?.PredictedSavings,
+                    PredictedMarkup = contractInfo?.PredictedMarkup,
                     ValidityStartDate = contractInfo?.ValidityStartDate,
                     ValidityEndDate = contractInfo?.ValidityEndDate,
                     Local = tapInfo?.Local,
@@ -1384,9 +1379,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
                 return false;
             }
+
 
 
         }
@@ -1406,7 +1402,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
                 return false;
             }
 
@@ -1425,7 +1421,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     resources.ThirdPartyServicesValue = UpdateResouces.ThirdPartyServicesValue;
                     resources.AcquitionsValue = UpdateResouces.AcquitionsValue;
                     resources.ExpectedEquipmentValue = UpdateResouces.ExpectedEquipmentValue;
-
+                    resources.MobilizationsValue = UpdateResouces.MobilizationsValue;
                     resources.Mobilizations = UpdateResouces.Mobilizations;
 
 
@@ -1447,6 +1443,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
 
@@ -1479,10 +1476,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
             catch (Exception ex)
             {
-                {
-
-                    return false;
-                }
+                Console.WriteLine(ex.Message);
+                return false;
             }
 
         }
@@ -1515,16 +1510,26 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
 
-        //public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID)
+        {
+            return _context.Finances
+                .Where(f => f.ContractID == ContractID)
+                .GroupBy(f => f.BusinessUnit)
+                .Select(g => new BusinessUnitDto
+                {
+                    ContractID = g.First().ContractID,
+                    ID = g.First().id,
+                    BusinessUnit = g.First().BusinessUnit
+                })
+                .ToList();
+        }
 
-        
+
     }
 }
 

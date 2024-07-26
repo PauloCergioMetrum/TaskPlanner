@@ -725,10 +725,10 @@ namespace TaskPlannerMetrum.Business.Implementations
              return _projectmanagementRepository.CreateOrUpdatePredictedCost(pmCostPlanned);
         }
 
-        //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId)
-        //{
-        //    return _projectmanagementRepository.GetAllProjectCharter(contractId);   
-        //}
+        public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID)
+        {
+            return _projectmanagementRepository.GetAllBussinesUnit(ContractID);
+        }
 
     }
 }

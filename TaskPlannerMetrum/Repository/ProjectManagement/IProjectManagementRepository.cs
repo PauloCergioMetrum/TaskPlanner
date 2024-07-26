@@ -99,17 +99,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID);
         public List<DisplacementServices> GetAllDisplacementServices();
         public List<vPM_MilestoneType> GetAllPM_MilestonesType(string MilestonesValueID);
-
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
-
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();
-
         public List<UserVO> GetAllUsersGercon();
-
-
-
         public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId);
+        public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID);
+
 
 
         // DELETE Methods
