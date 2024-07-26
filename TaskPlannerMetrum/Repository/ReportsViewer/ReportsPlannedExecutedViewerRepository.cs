@@ -250,12 +250,52 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
+        public List<PredictedInvoiced> GetMaterialAndService(ReportInvoice parameters)
+        {
+            // Converte listas para strings, ou nulo se a lista estiver vazia
+            string businessUnits = parameters.BusinessUnits.Any() ? string.Join(",", parameters.BusinessUnits) : null;
+            string inspectorIDs = parameters.InspectorIDs.Any() ? string.Join(",", parameters.InspectorIDs) : null;
+
+            // Cria a string SQL para a chamada da stored procedure
+            var sql = "EXEC [dbo].[GetPredictedInvoiced] " +
+                      "@startDate, " +
+                      "@endDate, " +
+                      "@businessUnits, " +
+                      "@inspectorIDs";
+
+            // Chama a stored procedure passando os parâmetros
+            return _context.Set<PredictedInvoiced>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@startDate", (object)parameters.StartDate ?? DBNull.Value),
+                    new SqlParameter("@endDate", (object)parameters.EndDate ?? DBNull.Value),
+                    new SqlParameter("@businessUnits", (object)businessUnits ?? DBNull.Value),
+                    new SqlParameter("@inspectorIDs", (object)inspectorIDs ?? DBNull.Value))
+                .ToList();
+        }
 
 
+        public List<MaterialServices> GetPredictedInvoicedReport(ReportInvoice parameters)
+        {
+            // Converte listas para strings, ou nulo se a lista estiver vazia
+            string businessUnits = parameters.BusinessUnits != null && parameters.BusinessUnits.Any()
+                ? string.Join(",", parameters.BusinessUnits)
+                : null;
+            string inspectorIDs = parameters.InspectorIDs != null && parameters.InspectorIDs.Any()
+                ? string.Join(",", parameters.InspectorIDs)
+                : null;
 
+            // Prepara o comando SQL com os parâmetros
+            var sql = "EXEC [dbo].[GetMaterialAndServiceCount] @startDate, @endDate, @BusinessUnits, @InspectorIDs";
 
-
-
+            // Chama a stored procedure passando os parâmetros
+            return _context.Set<MaterialServices>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@startDate", parameters.StartDate.HasValue ? (object)parameters.StartDate.Value : DBNull.Value),
+                    new SqlParameter("@endDate", parameters.EndDate.HasValue ? (object)parameters.EndDate.Value : DBNull.Value),
+                    new SqlParameter("@BusinessUnits", businessUnits ?? (object)DBNull.Value),
+                    new SqlParameter("@InspectorIDs", inspectorIDs ?? (object)DBNull.Value))
+                .ToList();
+        }
 
 
 

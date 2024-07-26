@@ -5,6 +5,7 @@ using Memt.Logger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
@@ -88,7 +89,31 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
+
+
+        [HttpPost("InvoiceReport")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult InvoiceReport(ReportInvoice reportInvoice)
+        {
+            try
+            {
+                return Ok(_reportsPlannedExecutedViewerBusiness.InvoiceReport(reportInvoice));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
+
     }
 }
 

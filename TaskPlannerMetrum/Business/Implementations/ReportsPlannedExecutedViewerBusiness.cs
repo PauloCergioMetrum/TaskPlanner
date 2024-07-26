@@ -160,8 +160,24 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             };
         }
+
+        public ReportInvoiceDetails InvoiceReport(ReportInvoice parameters)
+        {
+
+            List<PredictedInvoiced> PredictedInvoiced = _repository.GetMaterialAndService(parameters);
+            List<MaterialServices> MaterialServices = _repository.GetPredictedInvoicedReport(parameters);
+            return new ReportInvoiceDetails
+            {
+                PredictedInvoiced = PredictedInvoiced,
+                MaterialAndService = MaterialServices,
+            };
+        }
+
+
+
     }
 }
+
 
 
 

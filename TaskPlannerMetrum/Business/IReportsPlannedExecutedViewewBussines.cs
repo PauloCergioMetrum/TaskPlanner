@@ -13,7 +13,11 @@ namespace TaskPlannerMetrum.Business
         public ProjectOperational OperationalProjectReport(OperationalReportReportDTO OperationalReportReportDTO);
 
         public OptionsListFilter OptionsListFilter();
-        
+
+
+        public ReportInvoiceDetails InvoiceReport(ReportInvoice parameters);
+
+
 
     }
 }
