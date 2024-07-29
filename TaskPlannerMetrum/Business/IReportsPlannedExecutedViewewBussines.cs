@@ -15,7 +15,7 @@ namespace TaskPlannerMetrum.Business
         public OptionsListFilter OptionsListFilter();
 
 
-        public ReportInvoiceDetails InvoiceReport(ReportInvoice parameters);
+        public ReportInvoiceDetails InvoiceReport(ReportInvoice filters);
 
 
 

@@ -9,5 +9,9 @@ namespace TaskPlannerMetrum.Model
         public List<PredictedInvoiced> PredictedInvoiced{ get; set; }
 
         public List<MaterialServices> MaterialAndService { get; set; }
+
+        public List<BillingPerBusinessUnit> BillingPerBusinessUnit { get; set; }    
+
+        public List<ReportDetailsTable> ReportDetailsTable { get; set; }    
     }
 }

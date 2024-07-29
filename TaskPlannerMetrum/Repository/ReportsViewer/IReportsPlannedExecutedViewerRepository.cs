@@ -40,5 +40,10 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         public List<MaterialServices> GetPredictedInvoicedReport(ReportInvoice parameters);
 
 
+        public List<BillingPerBusinessUnit> GetBillingPerBusinessUnit(ReportInvoice filter);
+
+
+        public List<ReportDetailsTable> GetReportDetailsTable(ReportInvoice filter);
+
     }
 }

@@ -83,9 +83,7 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return Ok(_reportsPlannedExecutedViewerBusiness.OptionsListFilter());
             }
-            catch (Exception ex)
-            {
-                Logger.Log(ex.Message, ELoggerType.Debug);
+            catch (Exception ex) { 
                 return BadRequest(ex.Message);
             }
         }

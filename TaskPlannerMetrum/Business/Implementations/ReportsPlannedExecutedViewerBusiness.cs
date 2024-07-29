@@ -161,15 +161,19 @@ namespace TaskPlannerMetrum.Business.Implementations
             };
         }
 
-        public ReportInvoiceDetails InvoiceReport(ReportInvoice parameters)
+        public ReportInvoiceDetails InvoiceReport(ReportInvoice filters)
         {
 
-            List<PredictedInvoiced> PredictedInvoiced = _repository.GetMaterialAndService(parameters);
-            List<MaterialServices> MaterialServices = _repository.GetPredictedInvoicedReport(parameters);
+            List<PredictedInvoiced> PredictedInvoiced = _repository.GetMaterialAndService(filters);
+            List<MaterialServices> MaterialServices = _repository.GetPredictedInvoicedReport(filters);
+            List<BillingPerBusinessUnit> BillingPerBusinessUnit  =_repository.GetBillingPerBusinessUnit(filters);
+            List<ReportDetailsTable> ReportDetailsTable = _repository.GetReportDetailsTable(filters);       
             return new ReportInvoiceDetails
             {
                 PredictedInvoiced = PredictedInvoiced,
                 MaterialAndService = MaterialServices,
+                BillingPerBusinessUnit = BillingPerBusinessUnit,
+                ReportDetailsTable = ReportDetailsTable 
             };
         }
 
