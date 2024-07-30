@@ -12,6 +12,8 @@ namespace TaskPlannerMetrum.Model
 
         public List<BillingPerBusinessUnit> BillingPerBusinessUnit { get; set; }    
 
-        public List<ReportDetailsTable> ReportDetailsTable { get; set; }    
+        public List<ReportDetailsTable> ReportDetailsTable { get; set; }
+
+        public GoalRealizationReport GoalRealizationReport { get; set; }
     }
 }

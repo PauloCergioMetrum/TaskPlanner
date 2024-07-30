@@ -45,5 +45,11 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         public List<ReportDetailsTable> GetReportDetailsTable(ReportInvoice filter);
 
+
+        public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter);
+
+
+
+
     }
 }

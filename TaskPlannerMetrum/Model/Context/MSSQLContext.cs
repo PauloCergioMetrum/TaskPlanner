@@ -124,6 +124,9 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<MaterialServices>().HasNoKey();
             modelBuilder.Entity<BillingPerBusinessUnit>().HasNoKey();
             modelBuilder.Entity<ReportDetailsTable>().HasNoKey();
+            modelBuilder.Entity<GoalRealizationReport>().HasNoKey();
+
+            
         }
 
 

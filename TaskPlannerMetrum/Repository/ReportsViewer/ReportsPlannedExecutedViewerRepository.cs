@@ -351,6 +351,33 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
 
+        public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter)
+        {
+            // Verifica se o StartDate tem valor, se não, lança uma exceção ou lida de outra forma
+            if (!filter.StartDate.HasValue)
+                throw new ArgumentException("StartDate is required.");
+
+            // Extrair o ano do StartDate como string
+            string year = filter.StartDate.Value.Year.ToString();
+
+            var sql = "EXEC [dbo].[GetGoalsAndRealized] @year, @startDate, @endDate";
+
+            var result = _context.Set<GoalRealizationReport>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@year", year),
+                    new SqlParameter("@startDate", filter.StartDate ?? (object)DBNull.Value),
+                    new SqlParameter("@endDate", filter.EndDate ?? (object)DBNull.Value))
+                .AsEnumerable()
+                .FirstOrDefault();
+
+            return result ?? new GoalRealizationReport(); 
+        }
+
+
+
+
+
+
 
 
 
