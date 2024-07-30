@@ -4,6 +4,7 @@ namespace TaskPlannerMetrum.Model
 {
     public class ReportDetailsTable
     {
+        public int FinanceID { get; set; }
         public string Inspector { get; set; }         
         public string Company { get; set; }           
         public string BusinessUnit { get; set; }      
