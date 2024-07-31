@@ -1,4 +1,6 @@
-﻿namespace TaskPlannerMetrum.Model.ModelViews
+﻿using DocumentFormat.OpenXml.Office.CoverPageProps;
+
+namespace TaskPlannerMetrum.Model.ModelViews
 {
     public class vPM_MilestoneType
     {
@@ -13,5 +15,6 @@
         public string FunctionName { get; set; }
 
         public double ValueHour {  get; set; } 
+        public double? TotalMilesStone { get; set; } 
     }
 }
