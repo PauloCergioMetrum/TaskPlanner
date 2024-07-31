@@ -275,6 +275,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                         Value = acquisitionMade.Value,
                         DateAcquisition = acquisitionMade.DateAcquisition,
                         DateAcquisitionDelivery = acquisitionMade.DateAcquisitionDelivery,
+                        Description = acquisitionMade.Description,
                     });
                     return true;
 
@@ -730,6 +731,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllBussinesUnit(ContractID);
         }
 
+        public List<MilestonesItem> GetMilestoneItem(int contractID)
+        {
+            return _projectmanagementRepository.GetMilestoneItem(contractID);
+        }
     }
 }
 

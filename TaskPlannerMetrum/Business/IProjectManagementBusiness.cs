@@ -61,6 +61,7 @@ namespace TaskPlannerMetrum.Business
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
         public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID);
+        public List<MilestonesItem> GetMilestoneItem(int contractID);
 
 
 

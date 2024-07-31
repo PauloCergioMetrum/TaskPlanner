@@ -1327,6 +1327,29 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetMilestoneItem")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult GetMilestoneItem(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetMilestoneItem(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
 
     }
 }

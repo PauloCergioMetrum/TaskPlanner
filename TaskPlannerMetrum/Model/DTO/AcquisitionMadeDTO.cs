@@ -11,6 +11,7 @@ namespace TaskPlannerMetrum.Model.DTO
         public double Value { get; set; }
         public DateTime DateAcquisition { get; set; }
         public DateTime DateAcquisitionDelivery { get; set; }
+        public  string Description {  get; set; }   
 
         public int TypeID { get; set; }
     }

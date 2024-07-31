@@ -162,6 +162,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 acquisitionMadeEntity.Value = acquisitionMade.Value;
                 acquisitionMadeEntity.DateAcquisition = acquisitionMade.DateAcquisition;
                 acquisitionMadeEntity.DateAcquisitionDelivery = acquisitionMade.DateAcquisitionDelivery;
+                acquisitionMadeEntity.Description = acquisitionMade.Description;    
                 _context.SaveChanges();
 
                 return true;
@@ -1013,7 +1014,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 ExistiScopeChange.ContractID = pM_Scope_Change.ContractID;
                 ExistiScopeChange.Description = pM_Scope_Change.Description;
                 ExistiScopeChange.Reason = pM_Scope_Change.Reason;
-                ExistiScopeChange.Coin = pM_Scope_Change.Coin;
+                ExistiScopeChange.Type = pM_Scope_Change.Type;
                 ExistiScopeChange.Value = pM_Scope_Change.Value;
                 ExistiScopeChange.Date = pM_Scope_Change.Date;
                 _context.SaveChanges();
@@ -1037,7 +1038,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 ExistiScopeChangeUpdate.ContractID = pM_Scope_Change.ContractID;
                 ExistiScopeChangeUpdate.Description = pM_Scope_Change.Description;
                 ExistiScopeChangeUpdate.Reason = pM_Scope_Change.Reason;
-                ExistiScopeChangeUpdate.Coin = pM_Scope_Change.Coin;
+                ExistiScopeChangeUpdate.Type = pM_Scope_Change.Type;
                 ExistiScopeChangeUpdate.Value = pM_Scope_Change.Value;
                 ExistiScopeChangeUpdate.Date = pM_Scope_Change.Date;
                 _context.SaveChanges();
@@ -1529,7 +1530,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 .ToList();
         }
 
-
+        public List<MilestonesItem> GetMilestoneItem(int contractID)
+        {
+            return _context.MilestonesItem.Where(a=>a.ContractID== contractID).ToList();    
+        }
     }
 }
 

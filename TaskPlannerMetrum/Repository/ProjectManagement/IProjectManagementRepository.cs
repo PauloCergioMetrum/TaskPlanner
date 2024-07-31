@@ -72,6 +72,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public vContractList GetForecastByIDView(int id);
 
         public List<GetMilestones> GetMilestonesNames(int contractID);
+        public List<MilestonesItem> GetMilestoneItem(int contractID);
 
         public MilestonesValue GetMilestonesValueByID(int milestonesID);
         public List<Positions> GetPositionsByGrup();
