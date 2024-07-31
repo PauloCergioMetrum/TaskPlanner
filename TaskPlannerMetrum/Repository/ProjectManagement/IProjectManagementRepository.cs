@@ -86,7 +86,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
         public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
-        public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
+        public List<vPM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
         public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames();
         public List<vPM_OutsourcedServices_Combined> GetOutsourcedServicesCombined(int ContractID);
         public List<vPM_OutsourcedServices_Made_Combined> GetOutsourcedServicesCombinedMade(string ID_OutsourcedServices_Planned);

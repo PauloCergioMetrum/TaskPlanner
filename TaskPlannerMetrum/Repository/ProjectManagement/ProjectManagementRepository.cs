@@ -547,9 +547,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.vPM_Mobilization_Combined.Where(a => a.ContractID == contractID).ToList();
         }
 
-        public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID)
+        public List<vPM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID)
         {
-            return _context.PM_Mobilization_Made.Where(a => a.MobilizationPlannedID == mobilizationPlannedID).ToList();
+            return _context.vPM_Mobilization_Made.Where(a => a.MobilizationPlannedID == mobilizationPlannedID).ToList();
         }
 
         public bool UpdateMobilization(string ID)
@@ -611,6 +611,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 exixtMolizationMade.DateEnd = mobilizationMade.DateEnd;
                 exixtMolizationMade.Description = mobilizationMade.Description;
                 exixtMolizationMade.MobilizationPlannedID = mobilizationMade.MobilizationPlannedID;
+                //exixtMolizationMade.TotalValue = mobilizationMade.TotalValue;   
 
 
             }

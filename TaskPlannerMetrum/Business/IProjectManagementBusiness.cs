@@ -73,7 +73,7 @@ namespace TaskPlannerMetrum.Business
         //MOBILIZAÇÃO 
         public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
 
-        public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
+        public List<vPM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
 
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);
 
