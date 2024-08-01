@@ -375,11 +375,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return false;
         }
 
-        public List<PmTypeCost> GetTypeOfCost(int ContractID)
-        {
-            var ListGetTypeOfCost = _context.Pm_Type_Cost.ToList();
-            return ListGetTypeOfCost;
-        }
 
 
         public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned)
@@ -431,7 +426,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             try
             {
-                var existingCostMade = _context.PM_Cost_Made.FirstOrDefault(c => c.Id == pmCostMade.Id);
+                var existingCostMade = _context.PmCostMade.FirstOrDefault(c => c.Id == pmCostMade.Id);
 
                 if (existingCostMade != null)
                 {
@@ -448,7 +443,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 else
                 {
 
-                    _context.PM_Cost_Made.Add(pmCostMade);
+                    _context.PmCostMade.Add(pmCostMade);
                     _context.SaveChanges();
                     return true;
                 }
@@ -467,10 +462,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeleteCostMade(string ID)
         {
-            var RemoveCost = _context.PM_Cost_Made.SingleOrDefault(t => t.Id == ID);
+            var RemoveCost = _context.PmCostMade.SingleOrDefault(t => t.Id == ID);
             if (RemoveCost != null)
             {
-                _context.PM_Cost_Made.Remove(RemoveCost);
+                _context.PmCostMade.Remove(RemoveCost);
                 _context.SaveChanges();
                 return true;
             }
@@ -479,7 +474,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
         {
-            var ListGetCostMade = _context.PM_Cost_Made.Where(i => i.Pm_Cost_Planned_Id == Pm_Cost_PlannedID).ToList();
+            var ListGetCostMade = _context.PmCostMade.Where(i => i.Pm_Cost_Planned_Id == Pm_Cost_PlannedID).ToList();
             return ListGetCostMade;
         }
 

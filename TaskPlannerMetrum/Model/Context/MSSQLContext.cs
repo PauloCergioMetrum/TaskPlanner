@@ -40,7 +40,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<PMAcquisitionMade> PM_Acquisition_Made { get; set; }
         public DbSet<PmTypeCost> Pm_Type_Cost { get; set; }
         public DbSet<PmCostPlanned> Pm_Cost_Planned { get; set; }
-        public DbSet<PmCostMade> PM_Cost_Made { get; set; }
+        public DbSet<PmCostMade> PmCostMade { get; set; }
         public DbSet<ContractTechLeaders> ContractTechLeaders { get; set; }
         public DbSet<PM_Mobilization_Made> PM_Mobilization_Made { get; set; }
         public DbSet<vPM_Mobilization_Made>vPM_Mobilization_Made { get; set; } 

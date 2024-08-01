@@ -80,7 +80,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool ExistAcquisitionMade(string ID);
         public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
         public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
-        public List<PmTypeCost> GetTypeOfCost(int ContractID);
+ 
         public List<PmCostPlanned> GetPmCostPlanned(int ContractID);
         public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
