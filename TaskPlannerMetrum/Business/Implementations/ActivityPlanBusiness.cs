@@ -23,7 +23,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         private MSSQLContext _context;
 
 
-     
+
 
         public ActivityPlanBusiness(IActivityPlanRepository activiesRepository)
         {
@@ -55,19 +55,19 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.IsRework = activityPlan.IsRework;
                     task.DepartamentID = activityPlan.DepartamentID;
                     task.TaskDescription = activityPlan.TaskDescription;
-                    task.BusinessUnit = activityPlan.BusinessUnit;               
+                    task.BusinessUnit = activityPlan.BusinessUnit;
                     task.MilestonesID = activityPlan.MilestonesID;
                     task.EquipmentID = activityPlan.EquipmentID == 0 ? (int?)null : activityPlan.EquipmentID;
 
                     _activiesRepository.Create(task);
                 }
                 return true;
-              
-          
 
-             
+
+
+
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return false;
             }
@@ -87,17 +87,38 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public dynamic GetActivityPlan(string activityId)
         {
+       
             var activitList = _activiesRepository.FindAllTaskByProject(activityId);
+            if (activitList == null)
+            {
+                return new
+                {
+                    MilestonesGroups = "", 
+                    totalRecords = 0 
+                };
+            }
+
+            var groupedActivities = activitList
+                .GroupBy(
+                    a => new { MilestonesID = a.MilestonesID ?? 0, MilestoneName = a.MilestoneName ?? "Sem marco" },
+                    (key, group) => new
+                    {
+                        MilestonesID = key.MilestonesID,
+                        MilestoneName = key.MilestoneName,
+                        Activities = group.ToList()
+                    })
+                .OrderBy(g => g.MilestonesID);
+
             int totalRecords = activitList.Count();
             var result = new
             {
-                activitList = activitList,
+                MilestonesGroups = groupedActivities,
                 totalRecords = totalRecords
             };
 
-
             return result;
         }
+
 
         public dynamic GetExecutorPlan(string projectId)
         {
@@ -231,19 +252,19 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public List<HoursDTO> ExecutorHourForPeriod(HoursExecutorDTO executors)
         {
-         
-            return  _activiesRepository.ExecutorHourForPeriod(executors);
+
+            return _activiesRepository.ExecutorHourForPeriod(executors);
 
         }
 
         public List<Equipment> GetAllEquipment()
         {
-           return _activiesRepository.GetAllEquipment();
+            return _activiesRepository.GetAllEquipment();
         }
 
         public List<GetEquipamentAvaibilaity> GetEquipamentAvaibilaities(int EquipamentID, DateTime StartDate, DateTime EndDate)
         {
-           return _activiesRepository.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate); 
+            return _activiesRepository.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate);
         }
     }
 }
