@@ -4,11 +4,11 @@
     {
         public string MonthYear { get; set; }
 
-        public int InvoicedMaterial { get; set; }
+        public double InvoicedMaterial { get; set; }
 
-        public int InvoicedService { get; set; }
-        public int ExpectedMaterial { get; set; }
+        public double InvoicedService { get; set; }
+        public double ExpectedMaterial { get; set; }
 
-        public int ExpectedService { get; set; }
+        public double ExpectedService { get; set; }
     }
 }

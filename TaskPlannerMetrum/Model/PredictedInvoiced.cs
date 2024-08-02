@@ -2,9 +2,9 @@
 {
     public class PredictedInvoiced
     {
-        public int ExpectedInvoiceCount { get; set; }
+        public double ExpectedInvoiceCount { get; set; }
 
-        public int InvoicedCount { get; set; }
+        public double InvoicedCount { get; set; }
 
         public string MonthYear { get; set; }
     }
