@@ -87,34 +87,14 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public dynamic GetActivityPlan(string activityId)
         {
-       
             var activitList = _activiesRepository.FindAllTaskByProject(activityId);
-            if (activitList == null)
-            {
-                return new
-                {
-                    MilestonesGroups = "", 
-                    totalRecords = 0 
-                };
-            }
-
-            var groupedActivities = activitList
-                .GroupBy(
-                    a => new { MilestonesID = a.MilestonesID ?? 0, MilestoneName = a.MilestoneName ?? "Sem marco" },
-                    (key, group) => new
-                    {
-                        MilestonesID = key.MilestonesID,
-                        MilestoneName = key.MilestoneName,
-                        Activities = group.ToList()
-                    })
-                .OrderBy(g => g.MilestonesID);
-
             int totalRecords = activitList.Count();
             var result = new
             {
-                MilestonesGroups = groupedActivities,
+                activitList = activitList,
                 totalRecords = totalRecords
             };
+
 
             return result;
         }
