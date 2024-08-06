@@ -74,6 +74,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<PM_TAP_Resources> PM_TAP_Resources { get; set; }
         public DbSet<PM_MilestonesType> PM_MilestonesType { get; set; }
         //VIEWS
+        public DbSet<vPmCostMade> vPmCostMade { get; set; }     
         public DbSet<vCalendar> vCalendar { get; set; }
         public DbSet<vPlannedHours> VPlannedHours { get; set; }
         public DbSet<UserProjects> UserProjects { get; set; }
@@ -102,6 +103,9 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPM_MilestoneType> vPM_MilestoneType { get; set; }
         public DbSet<vUsersView> vUsersView { get; set; }
         public DbSet<Management> Management { get; set; }
+        public DbSet<vPmCostPlanned> vPmCostPlanned {  get; set; }
+        public DbSet<vPm_Cost_Planned> vPm_Cost_Planned { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HoursExecutor>().HasNoKey();

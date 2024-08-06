@@ -413,13 +413,25 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return false;
         }
 
-        public List<PmCostPlanned> GetPmCostPlanned(int ContractID)
+        public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID)
         {
-            var ListPmCostPlanned = _context.Pm_Cost_Planned.Where(i => i.ContractID == ContractID).ToList();
+            var listPmCostPlanned = _context.vPm_Cost_Planned
+                .Where(i => i.ContractID == ContractID)
+                .Select(pm => new vPm_Cost_Planned
+                {
+                    Id = pm.Id,
+                    TypeID = pm.TypeID,
+                    Amount = pm.Amount,
+                    ValueUnit = pm.ValueUnit,
+                    Description = pm.Description,
+                    ContractID = pm.ContractID,
+                    Total = pm.Total ?? 0
+                })
+                .ToList();
 
-
-            return ListPmCostPlanned;
+            return listPmCostPlanned;
         }
+
 
 
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade)
@@ -435,6 +447,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
                     existingCostMade.Pm_Cost_Planned_Id = pmCostMade.Pm_Cost_Planned_Id;
+      
 
 
                     _context.SaveChanges();
@@ -472,9 +485,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return false;
         }
 
-        public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
+        public List<vPmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
         {
-            var ListGetCostMade = _context.PmCostMade.Where(i => i.Pm_Cost_Planned_Id == Pm_Cost_PlannedID).ToList();
+            var ListGetCostMade = _context.vPmCostMade.Where(i => i.Pm_Cost_Planned_Id == Pm_Cost_PlannedID).ToList();
             return ListGetCostMade;
         }
 

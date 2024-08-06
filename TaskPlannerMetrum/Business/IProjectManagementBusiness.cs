@@ -51,13 +51,13 @@ namespace TaskPlannerMetrum.Business
 
  
         public bool DeletePredictedCost(string ID);
-        public List<PmCostPlanned> GetPmCostPlanned(int ContractID);
+        public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID);
 
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade);
         public bool DeleteCostMade(string ID);
 
         public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
-        public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
+        public List<vPmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
         public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID);

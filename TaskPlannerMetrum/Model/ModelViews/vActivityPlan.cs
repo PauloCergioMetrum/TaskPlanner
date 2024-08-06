@@ -44,7 +44,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public string? BusinessUnit {  get; set; }
         public int? MilestonesID { get; set; }
-        public string ? MilestoneName {  get; set; }    
+        public string? MilestoneName {  get; set; }    
 
         public int ?EquipmentID { get; set; }    
     }
