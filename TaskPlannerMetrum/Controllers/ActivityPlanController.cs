@@ -134,7 +134,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult FindActivityPlan(string activityId, int MilestonesID, string MilestoneName)
+        public IActionResult FindActivityPlan(string activityId, int? MilestonesID, string MilestoneName)
         {
             try
             {

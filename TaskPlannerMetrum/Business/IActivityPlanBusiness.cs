@@ -13,7 +13,7 @@ namespace TaskPlannerMetrum.Business
         public bool Create(ActivePlanList activityPlan);
         public dynamic TasksByProject(string projectId, int? page, int? size, string searchExecutor);
         public dynamic TasksByUser(string userId, int? page, int? size, string searchExecutor);
-        public dynamic GetActivityPlan(string activityId , int MilestonesID, string MilestoneName);
+        public dynamic GetActivityPlan(string activityId, int? MilestonesID, string MilestoneName);
         public bool UpdateActivityPlan(TaskPlannerMetrum.Model.ModelViews.vActivityPlan activityPlan);
         public bool DeleteId(int id);
 
