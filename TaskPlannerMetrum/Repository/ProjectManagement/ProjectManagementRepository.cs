@@ -1073,6 +1073,24 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.GetFinanceMilestones(contractID).ToList();
         }
 
+
+        public List<GetFinanceMilestones> GetAllMilestonesItemProjects(int contractID)
+        {
+            return _context.GetFinanceMilestones(contractID)
+                           .Where(milestone => milestone.MilestonesName != "FATURADO" &&
+                                               milestone.MilestonesName != "REEMBOLSO" &&
+                                               milestone.MilestonesName != "EM ANDAMENTO" &&
+                                               milestone.MilestonesName != "CANCELADO" &&
+                                               milestone.MilestonesName != "PARALISADO" &&
+                                               milestone.MilestonesName != "ADIANTAMENTO")
+                           .ToList();
+        }
+
+
+
+
+
+
         public List<Functions> GetAllFunctions()
         {
             return _context.Functions.ToList();

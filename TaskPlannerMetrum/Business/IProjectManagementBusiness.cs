@@ -139,6 +139,7 @@ namespace TaskPlannerMetrum.Business
 
 
         public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
+        public List<GetFinanceMilestones> GetAllMilestonesItemProjects(int contractID);
 
         //LISTA DE FUNÇÃO , 
         public List<Functions> GetAllFunctions();

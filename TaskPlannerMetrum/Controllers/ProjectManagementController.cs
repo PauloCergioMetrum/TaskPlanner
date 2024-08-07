@@ -933,6 +933,8 @@ namespace TaskPlannerMetrum.Controllers
 
         //MARCO  FATURADO 
 
+        
+
         [HttpGet("GetAllMilestonesItem")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -952,6 +954,28 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
+
+        [HttpGet("GetAllMilestonesItemProjects")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAllMilestonesItemProjects(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllMilestonesItemProjects(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
 
 
         [HttpGet("GetAllFunctions")]
