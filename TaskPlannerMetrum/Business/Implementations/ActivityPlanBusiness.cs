@@ -85,29 +85,33 @@ namespace TaskPlannerMetrum.Business.Implementations
             return false;
         }
 
-        public dynamic GetActivityPlan(string activityId)
+        public dynamic GetActivityPlan(string activityId, int? MilestonesID, string MilestoneName)
         {
-       
             var activitList = _activiesRepository.FindAllTaskByProject(activityId);
             if (activitList == null)
             {
                 return new
                 {
-                    MilestonesGroups = "", 
-                    totalRecords = 0 
+                    MilestonesGroups = new List<object>(),
+                    totalRecords = 0
                 };
             }
 
             var groupedActivities = activitList
                 .GroupBy(
-                    a => new { MilestonesID = a.MilestonesID ?? 0, MilestoneName = a.MilestoneName ?? "Sem marco" },
+                    a => new
+                    {
+                        MilestonesID = a.MilestonesID ?? 0,
+                        MilestoneName = string.IsNullOrEmpty(a.MilestoneName) ? "Sem marco" : a.MilestoneName
+                    },
                     (key, group) => new
                     {
                         MilestonesID = key.MilestonesID,
                         MilestoneName = key.MilestoneName,
                         Activities = group.ToList()
                     })
-                .OrderBy(g => g.MilestonesID);
+                .OrderBy(g => g.MilestonesID)
+                .ToList(); // Ensure the result is a list
 
             int totalRecords = activitList.Count();
             var result = new
@@ -118,7 +122,6 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             return result;
         }
-
 
         public dynamic GetExecutorPlan(string projectId)
         {

@@ -81,8 +81,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
         public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
  
-        public List<PmCostPlanned> GetPmCostPlanned(int ContractID);
-        public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
+        public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID);
+        public List<vPmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
         public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
