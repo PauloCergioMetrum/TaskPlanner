@@ -96,7 +96,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<PM_Scope_Traking> GetScopeTrajing(int ContractID);
         public List<PM_Scope_Change> GetScopeChanges(int ContractID);
         public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
-        public List<GetFinanceMilestones> GetAllMilestonesItemProjects(int contractID);
+     
 
         
         public List<Functions> GetAllFunctions();
@@ -113,7 +113,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
         // DELETE Methods
-        public bool DeleteMilestones(string ID);
+
+        public bool MilesTonesDelete(int ID);
+        public bool DeleteMilestones(string ID, int MilestonesID);
         public bool DeleteAcquisition(string ID);
         public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
         public bool DeleteTypeOfCost(int ID);

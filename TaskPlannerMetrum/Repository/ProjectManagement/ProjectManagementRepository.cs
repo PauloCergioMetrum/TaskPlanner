@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using TaskPlannerMetrum.Data.VO;
@@ -162,7 +163,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 acquisitionMadeEntity.Value = acquisitionMade.Value;
                 acquisitionMadeEntity.DateAcquisition = acquisitionMade.DateAcquisition;
                 acquisitionMadeEntity.DateAcquisitionDelivery = acquisitionMade.DateAcquisitionDelivery;
-                acquisitionMadeEntity.Description = acquisitionMade.Description;    
+                acquisitionMadeEntity.Description = acquisitionMade.Description;
                 _context.SaveChanges();
 
                 return true;
@@ -235,21 +236,66 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
-
-
-
-        public bool DeleteMilestones(string ID)
+        public bool DeleteMilestones(string ID, int MilestonesID)
         {
+            // Primeiro, encontre o registro da tabela MilestonesValue que precisa ser excluído
             var milestone = _context.MilestonesValue.FirstOrDefault(m => m.ID == ID);
+
+            // Se o registro for encontrado, remova-o
             if (milestone != null)
             {
+                // Encontre o MilestonesID do registro removido
+                int milestoneId = milestone.MilestonesID;
+
+                // Remove o registro da tabela MilestonesValue
                 _context.MilestonesValue.Remove(milestone);
+                _context.SaveChanges();
+
+                // Verifica o número de registros restantes com o mesmo MilestonesID na tabela MilestonesValue
+                int remainingMilestonesCount = _context.MilestonesValue.Count(m => m.MilestonesID == milestoneId);
+
+                // Verifica o número de registros na tabela MilestonesItem
+                int milestonesItemCount = _context.MilestonesItem.Count(m => m.ID == MilestonesID);
+
+                // Se restar algum registro com o mesmo MilestonesID ou se existirem mais de um registro na tabela MilestonesItem, só remove da tabela MilestonesValue
+                if (remainingMilestonesCount > 0 || milestonesItemCount > 1)
+                {
+                    return true;
+                }
+
+                // Se não restar nenhum registro com o mesmo MilestonesID e houver exatamente um registro na tabela MilestonesItem, chama o método para excluir o registro da tabela MilestonesItem
+                return MilesTonesDelete(MilestonesID);
+            }
+
+            return false;
+        }
+
+        public bool MilesTonesDelete(int ID)
+        {
+            // Encontre todos os registros relacionados em MilestonesValue
+            var relatedMilestones = _context.MilestonesValue.Where(m => m.MilestonesID == ID).ToList();
+
+            // Remova os registros relacionados em MilestonesValue
+            if (relatedMilestones.Any())
+            {
+                _context.MilestonesValue.RemoveRange(relatedMilestones);
+            }
+
+            // Encontre o registro em MilestonesItem e remova-o
+            var milestoneItem = _context.MilestonesItem.FirstOrDefault(m => m.ID == ID);
+            if (milestoneItem != null)
+            {
+                _context.MilestonesItem.Remove(milestoneItem);
                 _context.SaveChanges();
                 return true;
             }
-            return false;
 
+            return false;
         }
+
+
+
+
 
 
 
@@ -447,7 +493,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
                     existingCostMade.Pm_Cost_Planned_Id = pmCostMade.Pm_Cost_Planned_Id;
-      
+
 
 
                     _context.SaveChanges();
@@ -1087,18 +1133,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
-        public List<GetFinanceMilestones> GetAllMilestonesItemProjects(int contractID)
-        {
-            return _context.GetFinanceMilestones(contractID)
-                           .Where(milestone => milestone.MilestonesName != "FATURADO" &&
-                                               milestone.MilestonesName != "REEMBOLSO" &&
-                                               milestone.MilestonesName != "EM ANDAMENTO" &&
-                                               milestone.MilestonesName != "CANCELADO" &&
-                                               milestone.MilestonesName != "PARALISADO" &&
-                                               milestone.MilestonesName != "ADIANTAMENTO")
-                           .ToList();
-        }
-
+      
 
 
 
@@ -1559,7 +1594,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<MilestonesItem> GetMilestoneItem(int contractID)
         {
-            return _context.MilestonesItem.Where(a=>a.ContractID== contractID).ToList();    
+            return _context.MilestonesItem.Where(a => a.ContractID == contractID).ToList();
         }
     }
 }

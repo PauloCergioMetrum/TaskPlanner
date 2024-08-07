@@ -24,8 +24,9 @@ namespace TaskPlannerMetrum.Business
 
 
         public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO);
-        public bool DeleteMilestones(string ID);
+        public bool DeleteMilestones(string ID, int MilestonesID);
 
+        public bool MilesTonesDelete(int ID);
 
         public List<Positions> GetPositionsByGrup();
 
@@ -139,7 +140,7 @@ namespace TaskPlannerMetrum.Business
 
 
         public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
-        public List<GetFinanceMilestones> GetAllMilestonesItemProjects(int contractID);
+
 
         //LISTA DE FUNÇÃO , 
         public List<Functions> GetAllFunctions();

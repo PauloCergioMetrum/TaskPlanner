@@ -94,6 +94,10 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.existMilesStonesValue(ID);
         }
+        public bool MilesTonesDelete(int ID)
+        {
+            return _projectmanagementRepository.MilesTonesDelete(ID);
+        }
 
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID)
         {
@@ -154,9 +158,9 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public bool DeleteMilestones(string ID)
+        public bool DeleteMilestones(string ID, int MilestonesID)
         {
-            return _projectmanagementRepository.DeleteMilestones(ID);
+            return _projectmanagementRepository.DeleteMilestones(ID , MilestonesID);
         }
 
 
@@ -609,12 +613,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllMilestonesItem(contractID);
         }
 
-        public List<GetFinanceMilestones> GetAllMilestonesItemProjects(int contractID)
-        {
-            return _projectmanagementRepository.GetAllMilestonesItemProjects(contractID);
-        }
-
-
+    
 
         
 

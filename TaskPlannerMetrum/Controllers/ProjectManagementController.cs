@@ -126,13 +126,35 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult DeleteMilestones(string ID)
+        public IActionResult DeleteMilestones(string ID, int MilestonesID)
         {
             try
             {
 
 
-                return Ok(_projectManagementBusiness.DeleteMilestones(ID));
+                return Ok(_projectManagementBusiness.DeleteMilestones(ID, MilestonesID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpDelete("MilesTonesDelete")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult MilesTonesDelete(int ID)
+        {
+            try
+            {
+
+
+                return Ok(_projectManagementBusiness.MilesTonesDelete(ID));
 
             }
             catch (Exception ex)
@@ -955,25 +977,6 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-        [HttpGet("GetAllMilestonesItemProjects")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        public IActionResult GetAllMilestonesItemProjects(int ContractID)
-        {
-            try
-            {
-
-                return Ok(_projectManagementBusiness.GetAllMilestonesItemProjects(ContractID));
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-        }
 
 
 
