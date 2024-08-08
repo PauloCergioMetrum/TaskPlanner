@@ -1594,8 +1594,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<MilestonesItem> GetMilestoneItem(int contractID)
         {
-            return _context.MilestonesItem.Where(a => a.ContractID == contractID).ToList();
+            return _context.MilestonesItem
+                .Where(a => a.ContractID == contractID &&
+                            a.Name != "REEMBOLSO" &&
+                            a.Name != "ADIANTAMENTO")
+                .ToList();
         }
+
     }
 }
 
