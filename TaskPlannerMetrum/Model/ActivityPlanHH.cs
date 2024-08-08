@@ -2,9 +2,9 @@
 {
     public class ActivityPlanHH
     {
-        public double TotalPlannedManHour { get; set; }
-        public double TotalExecutedManHour { get; set; }
-        public double PredictedTotal { get; set; }
+        public decimal TotalPlannedManHour { get; set; }
+        public decimal TotalExecutedManHour { get; set; }
+        public decimal TotalExpected { get; set; }
     }
 }
 

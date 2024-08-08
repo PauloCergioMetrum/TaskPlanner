@@ -63,6 +63,8 @@ namespace TaskPlannerMetrum.Business
         public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames();
         public List<ActivityPlanHH> ActivityPlanHH(int contractID);
         public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID);
+        public ActivityPlanHHDetail GetActivityPlanDetails(int contractID);
+
 
         public List<vPM_OutsourcedServices_Combined> GetOutsourcedServicesCombined(int ContractID);
 

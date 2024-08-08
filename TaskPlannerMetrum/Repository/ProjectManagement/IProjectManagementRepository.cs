@@ -103,6 +103,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID);
         public List<ActivityPlanHH> ActivityPlanHH(int contractID);
         public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID);
+        public ActivityPlanHHDetail GetActivityPlanDetails(int contractID);
+
+
 
 
 

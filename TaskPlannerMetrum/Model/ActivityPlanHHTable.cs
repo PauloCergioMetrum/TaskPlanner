@@ -9,5 +9,7 @@
         public double PlannedManHour { get; set; }
         public double ExecutedManHour { get; set; }
         public double TotalHours { get; set; }   
+
+
     }
 }

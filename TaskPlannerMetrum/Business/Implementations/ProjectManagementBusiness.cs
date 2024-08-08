@@ -746,6 +746,13 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.ActivityPlanHHTable(contractID);
         }
 
+        public ActivityPlanHHDetail GetActivityPlanDetails(int contractID)
+        {
+            return _projectmanagementRepository.GetActivityPlanDetails(contractID); 
+        }
+       
+
+
 
     }
 }

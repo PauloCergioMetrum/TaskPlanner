@@ -1560,6 +1560,20 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
+        public ActivityPlanHHDetail GetActivityPlanDetails(int contractID)
+        {
+            var activityPlanHH = _context.ActivityPlanHH(contractID).FirstOrDefault();
+            var activityPlanHHTable = _context.ActivityPlanHHTable(contractID).ToList();
+
+            var activityPlanDetail = new ActivityPlanHHDetail
+            {
+                ActivityPlanHH = activityPlanHH,
+                ActivityPlanHHTable = activityPlanHHTable
+            };
+
+            return activityPlanDetail;
+        }
+
     }
 }
 
