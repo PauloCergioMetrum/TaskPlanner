@@ -1319,6 +1319,49 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("ActivityPlanHH")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult ActivityPlanHH(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.ActivityPlanHH(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpGet("ActivityPlanHHTable")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult ActivityPlanHHTable(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.ActivityPlanHHTable(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
 
 
     }
