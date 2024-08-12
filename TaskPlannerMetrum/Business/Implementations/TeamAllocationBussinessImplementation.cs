@@ -18,12 +18,21 @@ namespace TaskPlannerMetrum.Business
         {
             var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit, startDate?.Year, startDate?.Month, endDate?.Year, endDate?.Month, function, project);
             var graphics = _teamAllocationRepository.GetTeamAllocationGraphic(startDate, endDate, function);
+            var functions = _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
 
             return new TeamAllocationResponseDTO
             {
                 TeamAllocations = allocations,
-                TeamAllocationGraphics = graphics
+                TeamAllocationGraphics = graphics,
+                GetTeamAllocationGraphicFunctions = functions,
+                
             };
         }
+        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions()
+        {
+            return _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
+        }
+
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Bcpg.OpenPgp;
+using System;
 using System.Collections.Generic;
 
 namespace TaskPlannerMetrum.Model.DTO
@@ -7,12 +8,15 @@ namespace TaskPlannerMetrum.Model.DTO
     {
         public List<TeamAllocationDTO> TeamAllocations { get; set; }
         public List<TeamAllocationDTO.TeamAllocationGraphicDTO> TeamAllocationGraphics { get; set; }
+        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions>GetTeamAllocationGraphicFunctions { get; set; } 
+
+        //List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions();
     }
 
     public class TeamAllocationDTO
     {
         public string SaleOrder { get; set; }
-        public int ID {  get; set; }    
+        public int ID { get; set; }
         public string Client { get; set; }
         public string BusinessUnit { get; set; }
         public double PlannedHours { get; set; }
@@ -28,6 +32,13 @@ namespace TaskPlannerMetrum.Model.DTO
             public double TotalPlannedHours { get; set; }
             public double TotalExecutedHours { get; set; }
             public double AvailableTime { get; set; }
+        }
+
+        public class GetTeamAllocationGraphicFunctions
+        {
+            public string SeniorityLevel { get; set; }
+
+            public int Quantity { get; set; }
         }
     }
 }

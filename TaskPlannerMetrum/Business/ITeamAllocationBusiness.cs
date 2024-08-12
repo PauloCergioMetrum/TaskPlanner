@@ -8,5 +8,10 @@ namespace TaskPlannerMetrum.Business
     {
         TeamAllocationResponseDTO GetTeamAllocation(string businessUnit, DateTime? startDate, DateTime? endDate, string function, string project);
 
+        
+
+
+        List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions();
+
     }
 }

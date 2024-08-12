@@ -101,5 +101,37 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
             return teamAllocationGraphicList;
         }
+
+        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions()
+        {
+            List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> teamAllocationGraphicFunctions = new List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions>();
+
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "[dbo].[GetTeamAllocationGraphicFunctions]";
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                _context.Database.OpenConnection();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var function = new TeamAllocationDTO.GetTeamAllocationGraphicFunctions
+                        {
+                            SeniorityLevel = reader["SeniorityLevel"].ToString(),
+                            Quantity = Convert.ToInt32(reader["Quantity"])
+                        };
+
+                        teamAllocationGraphicFunctions.Add(function);
+                    }
+                }
+
+                _context.Database.CloseConnection();
+            }
+
+            return teamAllocationGraphicFunctions;
+        }
+
     }
 }
