@@ -48,6 +48,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskPlannerMetrum.Repository.TechnicialLeader;
 using TaskPlannerMetrum.Repository.ProjectCharter;
+using TaskPlannerMetrum.Repository.TeamAllocation;
 
 namespace TaskPlannerMetrum
 {
@@ -177,11 +178,12 @@ namespace TaskPlannerMetrum
       services.AddScoped<IBusinessUnitRepository, BusinessUnitRepository>();
       services.AddScoped<ITechnicalLeaderBusiness, TechnicalLeaderImplementation>();
       services.AddScoped<IProjectCharterBusiness, ProjectCharterBusiness>();
+       services.AddScoped<ITeamAllocationBusiness, TeamAllocationBussinessImplementation>();
 
 
 
 
-      services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<ITokenService, TokenService>();
       services.AddScoped<IUserRepository, UserRepository>();
       services.AddScoped<IActivityPlanRepository, ActivityPlanRepository>();
       services.AddScoped<IActiviesRepository, ActiviesScopeRepository>();
@@ -202,7 +204,10 @@ namespace TaskPlannerMetrum
       services.AddScoped<IUserHourCostRepository, UserHourCostRepository>();
       services.AddScoped<IProjectCharterRepository, ProjectCharterRepository>();
       services.AddScoped<ITechnicalLeaderRepository, TechnicalLeaderRepository>();
-    }
+
+            services.AddScoped<ITeamAllocationRepository, TeamAllocationRepository>();
+          
+        }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
