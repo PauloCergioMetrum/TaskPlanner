@@ -29,6 +29,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 command.Parameters.Add(new SqlParameter("@BusinessUnit", SqlDbType.NVarChar, 100) { Value = (object)businessUnit ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date) { Value = (object)startDate ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date) { Value = (object)endDate ?? DBNull.Value });
+
                 command.Parameters.Add(new SqlParameter("@Function", SqlDbType.NVarChar, 100) { Value = (object)function ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@Project", SqlDbType.NVarChar, 100) { Value = (object)project ?? DBNull.Value });
 
@@ -81,10 +82,25 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 {
                     while (reader.Read())
                     {
+                        var monthValue = reader.IsDBNull(1) ? null : reader.GetString(1);
+                        string formattedMonth = null;
+
+                        // Tentativa de conversão direta da string para DateTime
+                        if (DateTime.TryParse(monthValue, out DateTime parsedDate))
+                        {
+                            // Se a conversão for bem-sucedida, formate a data no formato desejado
+                            formattedMonth = parsedDate.ToString("MMMM/yyyy");
+                        }
+                        else
+                        {
+                            // Se não for possível converter, tente outras abordagens ou defina um valor padrão
+                            formattedMonth = "Invalid Date";
+                        }
+
                         var teamAllocationGraphic = new TeamAllocationDTO.TeamAllocationGraphicDTO
                         {
                             FunctionName = reader.IsDBNull(0) ? null : reader.GetString(0),
-                            Month = reader.IsDBNull(1) ? null : reader.GetString(1),
+                            Month = formattedMonth,
                             TotalPlannedHours = reader.IsDBNull(2) ? 0 : reader.GetDouble(2),
                             TotalExecutedHours = reader.IsDBNull(3) ? 0 : reader.GetDouble(3),
                             AvailableTime = reader.IsDBNull(4) ? 0 : reader.GetDouble(4)
@@ -92,6 +108,8 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
                         teamAllocationGraphicList.Add(teamAllocationGraphic);
                     }
+
+
                 }
 
                 _context.Database.CloseConnection();
