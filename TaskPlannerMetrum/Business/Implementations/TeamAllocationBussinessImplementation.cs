@@ -24,11 +24,7 @@ namespace TaskPlannerMetrum.Business
             return _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
         }
 
-        public List<string> GetTeamFilterBusinessUnit()
-        {
-            return _teamAllocationRepository.GetTeamFilterBusinessUnit();
-        }
-
+      
         public TeamAllocationResponseDTO GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, string function = null, string project = null)
         {
             var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit, startDate, endDate, function, project);
@@ -47,6 +43,9 @@ namespace TaskPlannerMetrum.Business
             };
         }
 
-      
+        List<string> ITeamAllocationBusiness.GetTeamFilterBusinessUnit(string selectedBusinessUnit)
+        {
+            return _teamAllocationRepository.GetTeamFilterBusinessUnit();
+        }
     }
 }

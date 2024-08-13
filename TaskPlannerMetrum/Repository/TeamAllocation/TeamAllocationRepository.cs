@@ -176,7 +176,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
 
 
-        public List<string> GetTeamFilterBusinessUnit()
+        public List<string> GetTeamFilterBusinessUnit(string selectedBusinessUnit = null)
         {
             List<string> businessUnitList = new List<string>();
 
@@ -184,6 +184,14 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             {
                 command.CommandText = "[dbo].[GetTeamFilterBussinesUnit]";
                 command.CommandType = CommandType.StoredProcedure;
+
+                if (!string.IsNullOrEmpty(selectedBusinessUnit))
+                {
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@SelectedBusinessUnit";
+                    parameter.Value = selectedBusinessUnit;
+                    command.Parameters.Add(parameter);
+                }
 
                 _context.Database.OpenConnection();
 
@@ -204,6 +212,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
             return businessUnitList;
         }
+
 
 
 
