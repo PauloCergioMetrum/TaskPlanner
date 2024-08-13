@@ -14,9 +14,9 @@ namespace TaskPlannerMetrum.Business
             _teamAllocationRepository = teamAllocationRepository;
         }
 
-        public TeamAllocationResponseDTO GetTeamAllocation(string businessUnit, DateTime? startDate, DateTime? endDate, string function, string project)
+        public TeamAllocationResponseDTO GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, string function = null, string project = null)
         {
-            var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit, startDate?.Year, startDate?.Month, endDate?.Year, endDate?.Month, function, project);
+            var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit ,startDate,endDate,function,project);
             var graphics = _teamAllocationRepository.GetTeamAllocationGraphic(startDate, endDate, function);
             var functions = _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
 

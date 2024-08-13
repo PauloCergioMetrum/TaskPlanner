@@ -17,9 +17,7 @@ namespace TaskPlannerMetrum.Controllers
         {
             _teamAllocationBusiness = teamAllocationBusiness;
         }
-
         [HttpGet("GetAllTeamAllocation")]
-
         public IActionResult GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, string function = null, string project = null)
         {
             try
@@ -37,5 +35,6 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
     }
 }

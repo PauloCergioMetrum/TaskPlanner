@@ -17,7 +17,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             _context = context;
         }
 
-        public List<TeamAllocationDTO> GetTeamAllocation(string businessUnit = null, int? startYear = null, int? startMonth = null, int? endYear = null, int? endMonth = null, string function = null, string project = null)
+        public List<TeamAllocationDTO> GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, string function = null, string project = null)
         {
             List<TeamAllocationDTO> teamAllocationList = new List<TeamAllocationDTO>();
 
@@ -27,10 +27,8 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Parameters.Add(new SqlParameter("@BusinessUnit", SqlDbType.NVarChar, 100) { Value = (object)businessUnit ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@StartYear", SqlDbType.Int) { Value = (object)startYear ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@StartMonth", SqlDbType.Int) { Value = (object)startMonth ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@EndYear", SqlDbType.Int) { Value = (object)endYear ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@EndMonth", SqlDbType.Int) { Value = (object)endMonth ?? DBNull.Value });
+                command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date) { Value = (object)startDate ?? DBNull.Value });
+                command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date) { Value = (object)endDate ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@Function", SqlDbType.NVarChar, 100) { Value = (object)function ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@Project", SqlDbType.NVarChar, 100) { Value = (object)project ?? DBNull.Value });
 
@@ -43,16 +41,15 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                         int index = 0;
                         var teamAllocation = new TeamAllocationDTO
                         {
-                            SaleOrder = reader.IsDBNull(index) ? null : reader.GetInt64(index++).ToString(),
+                            ID = reader.IsDBNull(index) ? 0 : (int)reader.GetInt64(index++),
+                            SaleOrder = reader.IsDBNull(index) ? null : reader.GetString(index++),
                             Client = reader.IsDBNull(index) ? null : reader.GetString(index++),
                             BusinessUnit = reader.IsDBNull(index) ? null : reader.GetString(index++),
                             PlannedHours = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
                             ExecutedHours = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
-                            ScheduledDate = reader.IsDBNull(index)? DateTime.MinValue: DateTime.TryParse(reader.GetString(index++), out DateTime parsedDate)? parsedDate: DateTime.MinValue,
-
+                            ScheduledDate = reader.IsDBNull(index) ? DateTime.MinValue : reader.GetDateTime(index++), // Agora lê como DateTime
                             Executor = reader.IsDBNull(index) ? null : reader.GetString(index++)
                         };
-
 
                         teamAllocationList.Add(teamAllocation);
                     }
@@ -63,6 +60,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
             return teamAllocationList;
         }
+
 
         public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, string functionName = null)
         {

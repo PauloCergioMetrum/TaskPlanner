@@ -15,15 +15,15 @@ namespace TaskPlannerMetrum.Model.DTO
 
     public class TeamAllocationDTO
     {
-        public string SaleOrder { get; set; }
-        public int ID { get; set; }
-        public string Client { get; set; }
-        public string BusinessUnit { get; set; }
-        public double PlannedHours { get; set; }
-        public double ExecutedHours { get; set; }
-        public DateTime ScheduledDate { get; set; }
-        public string Executor { get; set; }
-        public string ScheduledDateFormatted => ScheduledDate.ToString("dd/MM/yyyy");
+        public int ID { get; set; } 
+        public string SaleOrder { get; set; } 
+        public string Client { get; set; } 
+        public string BusinessUnit { get; set; } 
+        public double PlannedHours { get; set; } 
+        public double ExecutedHours { get; set; } 
+        public DateTime ScheduledDate { get; set; } 
+        public string ScheduledDateFormatted { get; set; } 
+        public string Executor { get; set; } 
 
         public class TeamAllocationGraphicDTO
         {
