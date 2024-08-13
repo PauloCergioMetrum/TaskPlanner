@@ -1,5 +1,4 @@
-﻿using Org.BouncyCastle.Bcpg.OpenPgp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace TaskPlannerMetrum.Model.DTO
@@ -8,22 +7,21 @@ namespace TaskPlannerMetrum.Model.DTO
     {
         public List<TeamAllocationDTO> TeamAllocations { get; set; }
         public List<TeamAllocationDTO.TeamAllocationGraphicDTO> TeamAllocationGraphics { get; set; }
-        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions>GetTeamAllocationGraphicFunctions { get; set; } 
-
-        //List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions();
+        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> TeamAllocationGraphicFunctions { get; set; }
+        public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards { get; set; }
     }
 
     public class TeamAllocationDTO
     {
-        public int ID { get; set; } 
-        public string SaleOrder { get; set; } 
-        public string Client { get; set; } 
-        public string BusinessUnit { get; set; } 
-        public double PlannedHours { get; set; } 
-        public double ExecutedHours { get; set; } 
-        public DateTime ScheduledDate { get; set; } 
-        public string ScheduledDateFormatted { get; set; } 
-        public string Executor { get; set; } 
+        public int ID { get; set; }
+        public string SaleOrder { get; set; }
+        public string Client { get; set; }
+        public string BusinessUnit { get; set; }
+        public double PlannedHours { get; set; }
+        public double ExecutedHours { get; set; }
+        public DateTime ScheduledDate { get; set; }
+        public string ScheduledDateFormatted { get; set; }
+        public string Executor { get; set; }
 
         public class TeamAllocationGraphicDTO
         {
@@ -37,8 +35,15 @@ namespace TaskPlannerMetrum.Model.DTO
         public class GetTeamAllocationGraphicFunctions
         {
             public string SeniorityLevel { get; set; }
-
             public int Quantity { get; set; }
+        }
+
+        public class GetTeamAllocationCards
+        {
+            public DateTime DateStart { get; set; }
+            public DateTime DateEnd { get; set; }
+            public double? TotalPlannedHours { get; set; }
+            public double? TotalExecutedHours { get; set; }
         }
     }
 }

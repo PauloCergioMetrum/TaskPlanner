@@ -14,25 +14,30 @@ namespace TaskPlannerMetrum.Business
             _teamAllocationRepository = teamAllocationRepository;
         }
 
-        public TeamAllocationResponseDTO GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, string function = null, string project = null)
+        public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd)
         {
-            var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit ,startDate,endDate,function,project);
-            var graphics = _teamAllocationRepository.GetTeamAllocationGraphic(startDate, endDate, function);
-            var functions = _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
-
-            return new TeamAllocationResponseDTO
-            {
-                TeamAllocations = allocations,
-                TeamAllocationGraphics = graphics,
-                GetTeamAllocationGraphicFunctions = functions,
-                
-            };
+            return _teamAllocationRepository.GetTeamAllocationCards(DateStart, DateEnd);
         }
+
         public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions()
         {
             return _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
         }
 
+        public TeamAllocationResponseDTO GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, string function = null, string project = null)
+        {
+            var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit, startDate, endDate, function, project);
+            var graphics = _teamAllocationRepository.GetTeamAllocationGraphic(startDate, endDate, function);
+            var functions = _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
+            var cards = _teamAllocationRepository.GetTeamAllocationCards(startDate ?? DateTime.MinValue, endDate ?? DateTime.MaxValue);
 
+            return new TeamAllocationResponseDTO
+            {
+                TeamAllocations = allocations,
+                TeamAllocationGraphics = graphics,
+                TeamAllocationGraphicFunctions = functions,
+                GetTeamAllocationCards = cards,
+            };
+        }
     }
 }

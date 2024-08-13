@@ -1,5 +1,4 @@
-﻿using Memt.Logger;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model.DTO;
@@ -17,6 +16,7 @@ namespace TaskPlannerMetrum.Controllers
         {
             _teamAllocationBusiness = teamAllocationBusiness;
         }
+
         [HttpGet("GetAllTeamAllocation")]
         public IActionResult GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, string function = null, string project = null)
         {
@@ -31,10 +31,9 @@ namespace TaskPlannerMetrum.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log(ex.Message, ELoggerType.Debug);
+              
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }

@@ -8,8 +8,9 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
     {
         List<TeamAllocationDTO> GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, string function = null, string project = null);
 
-        //List<TeamAllocationDTO> GetTeamAllocation(string businessUnit = null, int? startYear = null, int? startMonth = null, int? endYear = null, int? endMonth = null, string function = null, string project = null);
         List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, string functionName = null);
         List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions();
+
+        List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd);
     }
 }

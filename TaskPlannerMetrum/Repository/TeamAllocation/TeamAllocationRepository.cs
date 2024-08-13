@@ -29,7 +29,6 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 command.Parameters.Add(new SqlParameter("@BusinessUnit", SqlDbType.NVarChar, 100) { Value = (object)businessUnit ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date) { Value = (object)startDate ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date) { Value = (object)endDate ?? DBNull.Value });
-
                 command.Parameters.Add(new SqlParameter("@Function", SqlDbType.NVarChar, 100) { Value = (object)function ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@Project", SqlDbType.NVarChar, 100) { Value = (object)project ?? DBNull.Value });
 
@@ -48,7 +47,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                             BusinessUnit = reader.IsDBNull(index) ? null : reader.GetString(index++),
                             PlannedHours = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
                             ExecutedHours = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
-                            ScheduledDate = reader.IsDBNull(index) ? DateTime.MinValue : reader.GetDateTime(index++), // Agora lê como DateTime
+                            ScheduledDate = reader.IsDBNull(index) ? DateTime.MinValue : reader.GetDateTime(index++),
                             Executor = reader.IsDBNull(index) ? null : reader.GetString(index++)
                         };
 
@@ -82,19 +81,12 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 {
                     while (reader.Read())
                     {
+                        string formattedMonth = "Invalid Date";
                         var monthValue = reader.IsDBNull(1) ? null : reader.GetString(1);
-                        string formattedMonth = null;
 
-                        // Tentativa de conversão direta da string para DateTime
-                        if (DateTime.TryParse(monthValue, out DateTime parsedDate))
+                        if (!string.IsNullOrEmpty(monthValue) && DateTime.TryParse(monthValue, out DateTime parsedDate))
                         {
-                            // Se a conversão for bem-sucedida, formate a data no formato desejado
                             formattedMonth = parsedDate.ToString("MMMM/yyyy");
-                        }
-                        else
-                        {
-                            // Se não for possível converter, tente outras abordagens ou defina um valor padrão
-                            formattedMonth = "Invalid Date";
                         }
 
                         var teamAllocationGraphic = new TeamAllocationDTO.TeamAllocationGraphicDTO
@@ -108,14 +100,47 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
                         teamAllocationGraphicList.Add(teamAllocationGraphic);
                     }
-
-
                 }
 
                 _context.Database.CloseConnection();
             }
 
             return teamAllocationGraphicList;
+        }
+
+        public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd)
+        {
+            List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards = new List<TeamAllocationDTO.GetTeamAllocationCards>();
+            DateTime validDateStart = DateStart == DateTime.MinValue ? new DateTime(1753, 1, 1) : DateStart;
+            DateTime validDateEnd = DateEnd == DateTime.MinValue ? new DateTime(9999, 12, 31) : DateEnd;
+
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "[dbo].[GetTeamAllocationCards]";
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@DateStart", validDateStart));
+                command.Parameters.Add(new SqlParameter("@DateEnd", validDateEnd));
+
+                _context.Database.OpenConnection();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        double? totalPlannedHours = reader.IsDBNull(0) ? (double?)null : reader.GetDouble(0);
+                        double? totalExecutedHours = reader.IsDBNull(1) ? (double?)null : reader.GetDouble(1);
+
+                        var teamAllocationGraphic = new TeamAllocationDTO.GetTeamAllocationCards()
+                        {
+                            TotalPlannedHours = totalPlannedHours,
+                            TotalExecutedHours = totalExecutedHours
+                        };
+
+                        GetTeamAllocationCards.Add(teamAllocationGraphic);
+                    }
+                }
+            }
+
+            return GetTeamAllocationCards;
         }
 
         public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions()
@@ -148,6 +173,5 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
             return teamAllocationGraphicFunctions;
         }
-
     }
 }
