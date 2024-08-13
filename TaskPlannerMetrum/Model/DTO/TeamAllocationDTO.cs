@@ -9,6 +9,8 @@ namespace TaskPlannerMetrum.Model.DTO
         public List<TeamAllocationDTO.TeamAllocationGraphicDTO> TeamAllocationGraphics { get; set; }
         public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> TeamAllocationGraphicFunctions { get; set; }
         public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards { get; set; }
+
+        public List<string> BusinessUnits { get; set; }
     }
 
     public class TeamAllocationDTO
@@ -44,6 +46,12 @@ namespace TaskPlannerMetrum.Model.DTO
             public DateTime DateEnd { get; set; }
             public double? TotalPlannedHours { get; set; }
             public double? TotalExecutedHours { get; set; }
+        }
+
+
+        public class GetTeamFilterBusinessUnit
+        {
+            public List<string> BusinessUnits { get; set; }
         }
     }
 }

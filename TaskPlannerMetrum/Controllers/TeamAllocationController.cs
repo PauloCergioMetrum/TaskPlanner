@@ -22,12 +22,14 @@ namespace TaskPlannerMetrum.Controllers
         {
             try
             {
+          
                 var result = _teamAllocationBusiness.GetTeamAllocation(businessUnit, startDate, endDate, function, project);
+
                 if (result == null || (result.TeamAllocations.Count == 0 && result.TeamAllocationGraphics.Count == 0))
                 {
-                    return NoContent();
+                    return NoContent(); 
                 }
-                return Ok(result);
+                return Ok(result); 
             }
             catch (Exception ex)
             {
@@ -36,4 +38,5 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
     }
+
 }

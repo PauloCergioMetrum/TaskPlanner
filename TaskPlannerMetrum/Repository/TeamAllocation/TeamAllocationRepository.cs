@@ -173,5 +173,39 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
             return teamAllocationGraphicFunctions;
         }
+
+
+
+        public List<string> GetTeamFilterBusinessUnit()
+        {
+            List<string> businessUnitList = new List<string>();
+
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "[dbo].[GetTeamFilterBussinesUnit]";
+                command.CommandType = CommandType.StoredProcedure;
+
+                _context.Database.OpenConnection();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var businessUnit = reader.IsDBNull(0) ? null : reader.GetString(0);
+                        if (businessUnit != null)
+                        {
+                            businessUnitList.Add(businessUnit);
+                        }
+                    }
+                }
+
+                _context.Database.CloseConnection();
+            }
+
+            return businessUnitList;
+        }
+
+
+
     }
 }

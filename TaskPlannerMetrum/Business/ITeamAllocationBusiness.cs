@@ -12,6 +12,6 @@ namespace TaskPlannerMetrum.Business
          List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd);
 
         List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions();
-
+      List<string> GetTeamFilterBusinessUnit();
     }
 }
