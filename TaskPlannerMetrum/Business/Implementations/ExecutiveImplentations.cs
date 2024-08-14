@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing.Text;
 using TaskPlannerMetrum.Business.Implementations;
 using TaskPlannerMetrum.Model.DTO;
@@ -18,11 +19,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             _executiveRepository = executiveRepository;
         }
 
-
-
-        public List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null)
+        public List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null, DateTime? StartDate = null, DateTime? EndDate = null)
         {
-            return _executiveRepository.GetPvExecutiveTable(inspectorIDs); 
+            return _executiveRepository.GetPvExecutiveTable(inspectorIDs, StartDate, EndDate);
         }
     }
 }

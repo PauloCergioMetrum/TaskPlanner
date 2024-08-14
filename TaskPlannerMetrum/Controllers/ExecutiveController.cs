@@ -17,9 +17,8 @@ namespace TaskPlannerMetrum.Controllers
     {
         private readonly ILogger<ExecutiveController> _logger;
         private readonly IExecutiveBussines _executiveBussines;
-        private readonly IExecutiveRepository  _executiveRepository; 
+        private readonly IExecutiveRepository _executiveRepository;
 
-  
         public ExecutiveController(ILogger<ExecutiveController> logger, IExecutiveBussines executiveBussines, IExecutiveRepository executiveRepository)
         {
             _logger = logger;
@@ -28,11 +27,17 @@ namespace TaskPlannerMetrum.Controllers
         }
 
         [HttpGet("GetAllExecutive")]
-        public ActionResult<List<ExecutiveDto>> GetPvExecutiveTable([FromQuery] string inspectorIDs)
+        public ActionResult<List<ExecutiveDto>> GetPvExecutiveTable([FromQuery] string inspectorIDs, [FromQuery] DateTime? StartDate, [FromQuery] DateTime? EndDate)
         {
             try
             {
-                var result = _executiveRepository.GetPvExecutiveTable(inspectorIDs);
+                // Exemplo de validação simples
+                if (StartDate.HasValue && EndDate.HasValue && StartDate > EndDate)
+                {
+                    return BadRequest("StartDate cannot be later than EndDate.");
+                }
+
+                var result = _executiveRepository.GetPvExecutiveTable(inspectorIDs, StartDate, EndDate);
 
                 if (result == null || result.Count == 0)
                 {
@@ -43,12 +48,9 @@ namespace TaskPlannerMetrum.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while retrieving PV executive table."); 
+                _logger.LogError(ex, "An error occurred while retrieving PV executive table.");
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
-        
     }
 }
-

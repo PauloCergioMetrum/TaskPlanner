@@ -18,7 +18,7 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
             _context = context;
         }
 
-       public  List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null)
+        public List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null, DateTime? StartDate = null, DateTime? EndDate = null)
         {
             List<ExecutiveDto> pvExecutiveList = new List<ExecutiveDto>();
 
@@ -27,7 +27,10 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
                 command.CommandText = "[dbo].[GetPvExecutiveTable]";
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.Add(new SqlParameter("@inspectorID", SqlDbType.NVarChar, 255) { Value = (object)inspectorIDs ?? DBNull.Value });
+                // Adicionando os parâmetros corretamente
+                command.Parameters.Add(new SqlParameter("@InspectorID", SqlDbType.NVarChar, 255) { Value = (object)inspectorIDs ?? DBNull.Value });
+                command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.DateTime) { Value = (object)StartDate ?? DBNull.Value });
+                command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.DateTime) { Value = (object)EndDate ?? DBNull.Value });
 
                 _context.Database.OpenConnection();
 
@@ -49,8 +52,8 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
                             SalesDescription = reader.IsDBNull(index) ? null : reader.GetString(index++),
                             ItemValue = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
                             InvoicedValue = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
-                            ExpectedInvoiceMonth = reader.IsDBNull(index) ? DateTime.MinValue : reader.GetDateTime(index++),
-                            InvoicedDate = reader.IsDBNull(index) ? DateTime.MinValue : reader.GetDateTime(index++),
+                            ExpectedInvoiceMonth = reader.IsDBNull(index) ? (DateTime?)null : reader.GetDateTime(index++),
+                            InvoicedDate = reader.IsDBNull(index) ? (DateTime?)null : reader.GetDateTime(index++),
                             Status = reader.IsDBNull(index) ? null : reader.GetString(index++)
                         };
 
@@ -64,10 +67,7 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
             return pvExecutiveList;
         }
 
-
        
-
-
-
+       
     }
 }
