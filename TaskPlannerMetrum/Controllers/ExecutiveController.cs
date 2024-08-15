@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Business;
+using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.Executive;
 
@@ -26,30 +27,18 @@ namespace TaskPlannerMetrum.Controllers
             _executiveRepository = executiveRepository;
         }
 
-        [HttpGet("GetAllExecutive")]
-        public ActionResult<List<ExecutiveDto>> GetPvExecutiveTable([FromQuery] string inspectorIDs, [FromQuery] DateTime? StartDate, [FromQuery] DateTime? EndDate)
+        [HttpGet("GetPvExecutiveTable")]
+        public IActionResult GetPvExecutiveTable([FromQuery] string inspectorIDs, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             try
             {
-                // Exemplo de validação simples
-                if (StartDate.HasValue && EndDate.HasValue && StartDate > EndDate)
-                {
-                    return BadRequest("StartDate cannot be later than EndDate.");
-                }
-
-                var result = _executiveRepository.GetPvExecutiveTable(inspectorIDs, StartDate, EndDate);
-
-                if (result == null || result.Count == 0)
-                {
-                    return NotFound("No records found.");
-                }
-
+                var result = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate);
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while retrieving PV executive table.");
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+             
+                return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
     }

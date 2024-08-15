@@ -18,56 +18,56 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
             _context = context;
         }
 
-        public List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null, DateTime? StartDate = null, DateTime? EndDate = null)
+
+        public List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            List<ExecutiveDto> pvExecutiveList = new List<ExecutiveDto>();
+            var pvExecutiveList = new List<ExecutiveDto>();
 
-            using (var command = _context.Database.GetDbConnection().CreateCommand())
+       
+            using (var connection = _context.Database.GetDbConnection())
             {
-                command.CommandText = "[dbo].[GetPvExecutiveTable]";
-                command.CommandType = CommandType.StoredProcedure;
+                connection.Open();
 
-                // Adicionando os parâmetros corretamente
-                command.Parameters.Add(new SqlParameter("@InspectorID", SqlDbType.NVarChar, 255) { Value = (object)inspectorIDs ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.DateTime) { Value = (object)StartDate ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.DateTime) { Value = (object)EndDate ?? DBNull.Value });
-
-                _context.Database.OpenConnection();
-
-                using (var reader = command.ExecuteReader())
+                using (var command = connection.CreateCommand())
                 {
-                    while (reader.Read())
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[GetFiscalFilter]";            
+                    command.Parameters.Add(new SqlParameter("@InspectorIDs", inspectorIDs ?? (object)DBNull.Value));
+                    command.Parameters.Add(new SqlParameter("@StartDate", startDate ?? (object)DBNull.Value));
+                    command.Parameters.Add(new SqlParameter("@EndDate", endDate ?? (object)DBNull.Value));               
+                    using (var reader = command.ExecuteReader())
                     {
-                        int index = 0;
-                        var pvExecutive = new ExecutiveDto
+                        while (reader.Read())
                         {
-                            InspectorId = reader.IsDBNull(index) ? 0 : reader.GetInt32(index++),
-                            InspectorName = reader.IsDBNull(index) ? null : reader.GetString(index++),
-                            CompanyId = reader.IsDBNull(index) ? 0 : reader.GetInt32(index++),
-                            WorkspaceName = reader.IsDBNull(index) ? null : reader.GetString(index++),
-                            BusinessUnit = reader.IsDBNull(index) ? null : reader.GetString(index++),
-                            SalesOrder = reader.IsDBNull(index) ? null : reader.GetString(index++),
-                            ClientId = reader.IsDBNull(index) ? 0 : reader.GetInt32(index++),
-                            ClientName = reader.IsDBNull(index) ? null : reader.GetString(index++),
-                            SalesDescription = reader.IsDBNull(index) ? null : reader.GetString(index++),
-                            ItemValue = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
-                            InvoicedValue = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
-                            ExpectedInvoiceMonth = reader.IsDBNull(index) ? (DateTime?)null : reader.GetDateTime(index++),
-                            InvoicedDate = reader.IsDBNull(index) ? (DateTime?)null : reader.GetDateTime(index++),
-                            Status = reader.IsDBNull(index) ? null : reader.GetString(index++)
-                        };
+                            var dto = new ExecutiveDto
+                            {
+                                ID = reader.GetInt64(reader.GetOrdinal("ID")),
+                                InspectorID = reader.GetInt32(reader.GetOrdinal("inspectorID")),
+                                UserName = reader.GetString(reader.GetOrdinal("user_name")),
+                                WorkSpaceID = reader.GetInt32(reader.GetOrdinal("WorkSpaceID")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                BusinessUnit = reader.GetString(reader.GetOrdinal("BusinessUnit")),
+                                InternalCode = reader.GetString(reader.GetOrdinal("InternalCode")),
+                                ClientID = reader.GetInt32(reader.GetOrdinal("ClientID")),
+                                ClientName = reader.GetString(reader.GetOrdinal("ClientName")),
+                                Condition = reader.GetString(reader.GetOrdinal("Condition")),
+                                Value = reader.GetDouble(reader.GetOrdinal("Value")),
+                                InvoicedValue = reader.GetDouble(reader.GetOrdinal("InvoicedValue")),
+                                ExpectedInvoiceDate = reader.GetString(reader.GetOrdinal("ExpectedInvoiceDate")),
+                                InvoicedDate = reader.IsDBNull(reader.GetOrdinal("InvoicedDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("InvoicedDate")),
+                                StatusDpv = reader.GetString(reader.GetOrdinal("StatusDpv"))
+                            };
 
-                        pvExecutiveList.Add(pvExecutive);
+                            pvExecutiveList.Add(dto);
+                        }
                     }
                 }
-
-                _context.Database.CloseConnection();
             }
 
             return pvExecutiveList;
         }
 
-       
-       
+
+
     }
 }

@@ -19,9 +19,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             _executiveRepository = executiveRepository;
         }
 
-        public List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null, DateTime? StartDate = null, DateTime? EndDate = null)
+        public List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            return _executiveRepository.GetPvExecutiveTable(inspectorIDs, StartDate, EndDate);
+            return _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate);  
         }
     }
 }
