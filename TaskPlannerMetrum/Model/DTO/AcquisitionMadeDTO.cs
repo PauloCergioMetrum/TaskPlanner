@@ -5,12 +5,13 @@ namespace TaskPlannerMetrum.Model.DTO
     public class AcquisitionMadeDTO
     {
         public string ID { get; set; }
-        public int StatusAcquistionID { get; set; }
+        public int? StatusAcquistionID { get; set; }
         public int Amount { get; set; }
         public string AquisitionPlannedID { get; set; }
         public double Value { get; set; }
         public DateTime DateAcquisition { get; set; }
         public DateTime DateAcquisitionDelivery { get; set; }
+        public  string Description {  get; set; }   
 
         public int TypeID { get; set; }
     }

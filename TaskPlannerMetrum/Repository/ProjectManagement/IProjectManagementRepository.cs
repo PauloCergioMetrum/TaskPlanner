@@ -19,7 +19,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreateMilestonesValue(MilestonesValue milestones);
         public bool CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions);
         public bool CreateAcquisitionMadeItem(PMAcquisitionMade acquisitionMade);
-        public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
+       // public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
         //public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade);
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);
@@ -72,6 +72,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public vContractList GetForecastByIDView(int id);
 
         public List<GetMilestones> GetMilestonesNames(int contractID);
+        public List<MilestonesItem> GetMilestoneItem(int contractID);
 
         public MilestonesValue GetMilestonesValueByID(int milestonesID);
         public List<Positions> GetPositionsByGrup();
@@ -79,13 +80,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool ExistAcquisitionMade(string ID);
         public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
         public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
-        public List<PmTypeCost> GetTypeOfCost(int ContractID);
-        public List<PmCostPlanned> GetPmCostPlanned(int ContractID);
-        public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
+ 
+        public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID);
+        public List<vPmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
         public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
-        public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
+        public List<vPM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
         public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames();
         public List<vPM_OutsourcedServices_Combined> GetOutsourcedServicesCombined(int ContractID);
         public List<vPM_OutsourcedServices_Made_Combined> GetOutsourcedServicesCombinedMade(string ID_OutsourcedServices_Planned);
@@ -95,30 +96,31 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<PM_Scope_Traking> GetScopeTrajing(int ContractID);
         public List<PM_Scope_Change> GetScopeChanges(int ContractID);
         public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
+     
+
+        
         public List<Functions> GetAllFunctions();
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID);
         public List<DisplacementServices> GetAllDisplacementServices();
         public List<vPM_MilestoneType> GetAllPM_MilestonesType(string MilestonesValueID);
-
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
-
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();
-
         public List<UserVO> GetAllUsersGercon();
-
-
-
         public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId);
+        public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID);
+
 
 
         // DELETE Methods
-        public bool DeleteMilestones(string ID);
+
+        public bool MilesTonesDelete(int ID);
+        public bool DeleteMilestones(string ID, int MilestonesID);
         public bool DeleteAcquisition(string ID);
         public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
         public bool DeleteTypeOfCost(int ID);
         public bool DeletePredictedCost(string ID);
-        //public bool DeleteCostMade(string ID);
+        public bool DeleteCostMade(string ID);
         public bool DeleteMobilization(string ID);
         public bool DeleteMobilizationMade(string ID);
         public bool DeleteOutsourcedServicesPlanned(string ID);

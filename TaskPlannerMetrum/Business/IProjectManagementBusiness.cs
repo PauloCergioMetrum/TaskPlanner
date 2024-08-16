@@ -24,8 +24,9 @@ namespace TaskPlannerMetrum.Business
 
 
         public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO);
-        public bool DeleteMilestones(string ID);
+        public bool DeleteMilestones(string ID, int MilestonesID);
 
+        public bool MilesTonesDelete(int ID);
 
         public List<Positions> GetPositionsByGrup();
 
@@ -45,21 +46,23 @@ namespace TaskPlannerMetrum.Business
 
         public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
 
-        public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
-        public bool DeleteTypeOfCost(int ID);
-        public List<PmTypeCost> GetTypeOfCost(int ContractID);
 
-        //public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
+        public bool DeleteTypeOfCost(int ID);
+  
+
+ 
         public bool DeletePredictedCost(string ID);
-        public List<PmCostPlanned> GetPmCostPlanned(int ContractID);
+        public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID);
 
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade);
-        //public bool DeleteCostMade(string ID);
+        public bool DeleteCostMade(string ID);
 
         public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
-        public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
+        public List<vPmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
+        public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID);
+        public List<MilestonesItem> GetMilestoneItem(int contractID);
 
 
 
@@ -71,7 +74,7 @@ namespace TaskPlannerMetrum.Business
         //MOBILIZAÇÃO 
         public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
 
-        public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
+        public List<vPM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
 
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);
 
@@ -137,6 +140,7 @@ namespace TaskPlannerMetrum.Business
 
 
         public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
+
 
         //LISTA DE FUNÇÃO , 
         public List<Functions> GetAllFunctions();

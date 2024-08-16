@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System;
+﻿using System;
 
-namespace TaskPlannerMetrum.Model
+namespace TaskPlannerMetrum.Model.ModelViews
 {
-    public class PM_Mobilization_Made
+    public class vPM_Mobilization_Made
     {
         public string ID { get; set; }
         public double CountMobilization { get; set; }
@@ -16,7 +15,6 @@ namespace TaskPlannerMetrum.Model
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }
         public string Description { get; set; }
-        //public double TotalValue {  get; set; } 
-
+        public double TotalValue { get; set; }
     }
 }

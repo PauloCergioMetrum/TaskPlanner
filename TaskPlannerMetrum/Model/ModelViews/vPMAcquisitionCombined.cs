@@ -11,5 +11,6 @@
         public double TotalCost { get; set; }
         public double PredictedTotal { get; set; }
         public double Difference {  get; set; }
+        public double CombinedTotal {  get; set; }  
     }
 }

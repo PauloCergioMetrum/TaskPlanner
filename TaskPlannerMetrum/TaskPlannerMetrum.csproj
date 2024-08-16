@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Compile Remove="Business\IUserHourCostsUserID.cs" />
+    <Compile Remove="Model\ModelViews\vPmCostPlanned.cs" />
   </ItemGroup>
 
   <ItemGroup>
