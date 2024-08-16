@@ -737,6 +737,22 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetMilestoneItem(contractID);
         }
 
+        public List<ActivityPlanHH> ActivityPlanHH(int contractID)
+        {
+            return _projectmanagementRepository.ActivityPlanHH(contractID);
+        }
+        public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID)
+        {
+            return _projectmanagementRepository.ActivityPlanHHTable(contractID);
+        }
+
+        public ActivityPlanHHDetail GetActivityPlanDetails(int contractID)
+        {
+            return _projectmanagementRepository.GetActivityPlanDetails(contractID); 
+        }
+       
+
+
 
     }
 }

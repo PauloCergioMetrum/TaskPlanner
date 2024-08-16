@@ -121,6 +121,10 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<BalancePerProject>().HasNoKey();
             modelBuilder.Entity<GetNumberOfContractsForBusinessUnit>().HasNoKey();
             modelBuilder.Entity<OperationalRelationshipTable>().HasNoKey();
+            modelBuilder.Entity<ActivityPlanHH>().HasNoKey();
+            modelBuilder.Entity<ActivityPlanHHTable>().HasNoKey();
+
+
 
         }
 
@@ -198,6 +202,22 @@ namespace TaskPlannerMetrum.Model.Context
                 .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID)).ToList();
 
         }
+
+        public List<ActivityPlanHH> ActivityPlanHH(int contractID)
+        {
+            var sql = "[dbo].[ActivityPlanHH] @ContractID";
+            return this.Set<ActivityPlanHH>()
+                .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
+                .ToList();
+        }
+        public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID)
+        {
+            var sql = "[dbo].[ActivityPlanHHTable] @ContractID";
+            return this.Set<ActivityPlanHHTable>()
+                .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
+                .ToList();
+        }
+
 
     }
 
