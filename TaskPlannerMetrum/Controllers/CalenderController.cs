@@ -100,6 +100,8 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+
+
         [HttpGet("GetAllContracts")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -126,8 +128,53 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
+        [HttpPost("EquipamentCalendar")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
 
 
+        public IActionResult EquipamentCalendar(List<int> equipament)
+        {
+            try
+            {
+              
 
+                return Ok(_calenderBusiness.GetEquipamentCalendar(equipament));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("GetAllEquipament")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        //[TypeFilter(typeof(HyperMediaFilter))]
+
+
+        public IActionResult GetAllEquipament()
+        {
+            try
+            {
+
+
+                return Ok(_calenderBusiness.GetAllEquipament());
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

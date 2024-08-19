@@ -13,5 +13,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string userName{ get; set; }
 
         public int DepartmentID { get; set; }
+
+        public int permission_id { get; set;}
     }
 }

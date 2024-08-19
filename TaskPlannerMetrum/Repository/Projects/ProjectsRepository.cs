@@ -21,7 +21,7 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TaskPlannerMetrum.Model.DTO;
-using TaskPlannerMetrum.Model;
+//using TaskPlannerMetrum.Model;
 
 
 namespace TaskPlannerMetrum.Repository.Projects
@@ -61,7 +61,7 @@ namespace TaskPlannerMetrum.Repository.Projects
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -191,7 +191,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return false;
             }
@@ -564,7 +564,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                 _context.SaveChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return false;
             }

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using TaskPlannerMetrum.Model.DTO;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace TaskPlannerMetrum.Controllers
 {
@@ -103,11 +104,42 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
+        [HttpPost("CreatHoursCostByExcel")]
+        [ProducesResponseType(200, Type = typeof(List<UserHourCosts>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreatHoursCostByExcel([FromForm] IFormFile file, [FromForm] DateTime startDate, [FromForm] DateTime endDate)
+        {
+            try
+            {
+                var userHourCostList = _userHourCost.CreatHoursCostByExcel(file, startDate, endDate);
 
-
+                if (userHourCostList.Result)
+                {
+                    return Ok("Horas Cadastradas");
+                }
+                else
+                {
+                    return BadRequest("Falha ao cadastrar horas.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
     }
 
+
+
+
+
+
+
 }
+
 
 
 

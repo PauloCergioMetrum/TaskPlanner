@@ -32,9 +32,9 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public DateTime? DateRetroactive {  get; set; }
 
-        public double? PredictedSavings { get; set; }
+        public string? PredictedSavings { get; set; }
 
-        public double ?PredictedMarkup { get; set; }
+        public string? PredictedMarkup { get; set; }
 
         public DateTime? ValidityStartDate { get; set; }
 
@@ -48,5 +48,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string? PaymentCondition { get; set; }
 
         public int WorkSpaceID { get; set; }
+
+       
     }
 }

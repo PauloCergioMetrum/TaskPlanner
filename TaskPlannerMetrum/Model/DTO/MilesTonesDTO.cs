@@ -6,18 +6,25 @@ namespace TaskPlannerMetrum.Model.DTO
 {
     public class MilesTonesDTO
     {
-        public int ID { get; set; }
-        public int ContractID { get; set; }     
-        public string March { get; set; }
 
-        public DateTime PlannedDate { get; set; }
 
-        public DateTime ReplannedDate { get; set; }
 
-        public int Baseline { get; set; }   
-
-        public DateTime DatePerformed { get; set; }
-
-        public string Detail { get; set; }  
+        public string ID { get; set; }
+        public int Baseline { get; set; }
+        public string Name { get; set; }    
+        public int MilestonesID {  get; set; }
+        public int ContractID { get; set; }
+        public string Description { get; set; }
+        public DateTime ScheduledDate { get; set; }
+        public DateTime RescheduledDate { get; set; }       
+        public DateTime? ExecutedDate { get; set; }   
+        public int TypeID { get; set; }
+        public double Value { get; set; }
+        public string? TypeMilestonesID { get; set; }
+        public int TechLeadID { get; set; }
+        public int BusinessUnitID { get; set; }
     }
+
+
+
 }
