@@ -8,7 +8,6 @@ using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.Executive;
-
 namespace TaskPlannerMetrum.Controllers
 {
     [ApiController]
@@ -32,14 +31,16 @@ namespace TaskPlannerMetrum.Controllers
         {
             try
             {
-                var result = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate);
+                var result = _executiveBussines.CreateExecutiveDtoAll(inspectorIDs, startDate, endDate);
                 return Ok(result);
             }
             catch (Exception ex)
             {
-             
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+
+
+
     }
 }

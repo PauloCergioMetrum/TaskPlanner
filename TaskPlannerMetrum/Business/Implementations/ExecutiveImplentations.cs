@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Text;
+using System.Linq;
 using TaskPlannerMetrum.Business.Implementations;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.Executive;
@@ -19,10 +20,32 @@ namespace TaskPlannerMetrum.Business.Implementations
             _executiveRepository = executiveRepository;
         }
 
-        public List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null)
+
+        public ExecutiveDto GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            return _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate);  
+            var allocations = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate);
+            return allocations.FirstOrDefault();
         }
+
+        public List<GetPvSummary> GetPvSummaries(DateTime? StartYearMonth, DateTime? EndYearMonth)
+        {
+            var summaries = _executiveRepository.GetPvSummaries(StartYearMonth, EndYearMonth);  
+            return summaries.ToList();  
+        }
+
+        public ExecutiveDtoAll CreateExecutiveDtoAll(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            var executiveList = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate);
+            var summaryList = _executiveRepository.GetPvSummaries(startDate, endDate);
+
+            return new ExecutiveDtoAll
+            {
+                ExecutiveDtoList = executiveList,
+                GetPvSummaryList = summaryList
+            };
+        }
+
+       
     }
 }
 

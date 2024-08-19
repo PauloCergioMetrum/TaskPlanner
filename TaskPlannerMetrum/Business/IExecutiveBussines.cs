@@ -6,9 +6,11 @@ namespace TaskPlannerMetrum.Business
 {
     public interface IExecutiveBussines
     {
-        List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null, DateTime? StartDate = null, DateTime? EndDate = null);
-
-
-
+        ExecutiveDtoAll CreateExecutiveDtoAll(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null);
+        ExecutiveDto GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null);
+        List<GetPvSummary> GetPvSummaries(DateTime? StartYearMonth, DateTime? EndYearMonth);
     }
+
 }
+
+

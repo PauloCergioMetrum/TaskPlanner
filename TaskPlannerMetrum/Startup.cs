@@ -215,6 +215,7 @@ namespace TaskPlannerMetrum
             services.AddScoped<ITeamAllocationRepository, TeamAllocationRepository>();
             services.AddScoped<IExecutiveRepository, ExecutiveRepository>();
             services.AddScoped<ICustomerSatisfactionRepository , CustomerSatisfactionRepository>();
+           
 
 
 
