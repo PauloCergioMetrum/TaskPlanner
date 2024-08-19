@@ -18,5 +18,10 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _repository.ClientFeedbackDetailsModel(contractID);
         }
+
+        public bool CreateCustomerFeedback(  int contractID, string clientResponse, int? clientRating, string receivedComplaint)
+        {
+            return _repository.CreateCustomerFeedback(contractID, clientResponse, clientRating, receivedComplaint);  
+        }
     }
 }

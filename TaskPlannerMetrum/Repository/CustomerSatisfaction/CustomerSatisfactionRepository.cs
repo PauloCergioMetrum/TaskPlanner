@@ -3,8 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Contracts;
+using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
+using System.Linq;
+using Memt.Logger;
 
 namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
 {
@@ -40,15 +44,14 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                         {
                             var feedbackDetail = new CustomerSatisfactionDTO
                             {
-                                ID = reader.GetInt64(reader.GetOrdinal("ID")), 
-
+                                ID = reader.GetInt64(reader.GetOrdinal("ID")),
                                 ContractName = reader["ContractName"] as string,
                                 Contact = reader["Contact"] as string,
                                 Scope = reader["Scope"] as string,
                                 LastExecutedDate = reader.IsDBNull(reader.GetOrdinal("LastExecutedDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastExecutedDate")),
                                 LastContactDate = reader.IsDBNull(reader.GetOrdinal("LastContactDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastContactDate")),
                                 ClientResponse = reader["ClientResponse"] as string,
-                                ClientRating = reader.IsDBNull(reader.GetOrdinal("ClientRating")) ? 0 : Convert.ToInt32(reader.GetDecimal(reader.GetOrdinal("ClientRating"))), // Conversão correta
+                                ClientRating = reader.IsDBNull(reader.GetOrdinal("ClientRating")) ? 0 : reader.GetInt32(reader.GetOrdinal("ClientRating")), 
                                 ReceivedComplaint = reader["ReceivedComplaint"] as string
                             };
 
@@ -63,5 +66,32 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
             return feedbackDetailsList;
         }
 
+
+        public bool CreateCustomerFeedback(  int contractID, string clientResponse, int? clientRating, string receivedComplaint)
+        {
+            try
+            {
+                var newCustomerFeedback = new Satisfaction_Customer
+                {
+                 
+                    ContractID = contractID,
+                    ClientResponse = clientResponse,
+                    ClientRating = clientRating,
+                    ReceivedComplaint = receivedComplaint
+                    
+                };
+
+                _context.Satisfaction_Customer.Add(newCustomerFeedback);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"Error while saving: {ex.Message}, Inner Exception: {ex.InnerException?.Message}", ELoggerType.Debug);
+                throw; 
+            }
+        }
+
     }
 }
+
