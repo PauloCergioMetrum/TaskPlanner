@@ -39,16 +39,16 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        [HttpPost("CreateCustomerFeedback")]
+        [HttpPut("CreateCustomerFeedback")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult CreateCustomerFeedback( int ContractID, string clientResponse, int? clientRating, string receivedComplaint)
+        public IActionResult CreateCustomerFeedback (DateTime FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint)
         {
             try
             {
-                return Ok(_customerSatisfactionBusiness.CreateCustomerFeedback( ContractID ,clientResponse ,clientRating,receivedComplaint));
+                return Ok(_customerSatisfactionBusiness.CreateCustomerFeedback(FeedbackDate, contractID ,clientResponse ,clientRating,receivedComplaint));
 
             }
             catch (Exception ex)

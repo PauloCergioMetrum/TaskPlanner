@@ -67,30 +67,49 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
         }
 
 
-        public bool CreateCustomerFeedback(  int contractID, string clientResponse, int? clientRating, string receivedComplaint)
+        public bool CreateCustomerFeedback(DateTime FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint)
         {
             try
             {
-                var newCustomerFeedback = new Satisfaction_Customer
-                {
-                 
-                    ContractID = contractID,
-                    ClientResponse = clientResponse,
-                    ClientRating = clientRating,
-                    ReceivedComplaint = receivedComplaint
-                    
-                };
+               
+                var existingFeedback = _context.Satisfaction_Customer
+                                              .FirstOrDefault(f => f.ContractID == contractID);
 
-                _context.Satisfaction_Customer.Add(newCustomerFeedback);
+                if (existingFeedback != null)
+                {
+                   
+                    existingFeedback.ClientResponse = clientResponse;
+                    existingFeedback.ClientRating = clientRating;
+                    existingFeedback.ReceivedComplaint = receivedComplaint;
+                    existingFeedback.FeedbackDate = FeedbackDate;   
+                }
+                else
+                {
+                
+                    var newCustomerFeedback = new Satisfaction_Customer
+                    {
+                        ContractID = contractID,
+                        ClientResponse = clientResponse,
+                        ClientRating = clientRating,
+                        ReceivedComplaint = receivedComplaint,
+                        FeedbackDate = FeedbackDate 
+                       
+                    };
+
+                    _context.Satisfaction_Customer.Add(newCustomerFeedback);
+                }
+
+               
                 _context.SaveChanges();
                 return true;
             }
             catch (Exception ex)
             {
                 Logger.Log($"Error while saving: {ex.Message}, Inner Exception: {ex.InnerException?.Message}", ELoggerType.Debug);
-                throw; 
+                throw;
             }
         }
+
 
     }
 }

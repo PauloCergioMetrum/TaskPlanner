@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Business
@@ -6,6 +7,6 @@ namespace TaskPlannerMetrum.Business
     public interface ICustomerSatisfactionBusiness
     {
         List<CustomerSatisfactionDTO> ClientFeedbackDetailsModel(int contractID);
-        public bool CreateCustomerFeedback(int contractID, string clientResponse, int? clientRating, string receivedComplaint);
+        public bool CreateCustomerFeedback( DateTime FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint);
     }
 }
