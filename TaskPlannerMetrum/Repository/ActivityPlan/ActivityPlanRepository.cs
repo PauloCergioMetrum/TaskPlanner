@@ -56,8 +56,10 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     IsRework = activityPlan.IsRework,
                     DepartamentID = activityPlan.DepartamentID,
                     BusinessUnit = activityPlan.BusinessUnit,
-                    MilestonesID = activityPlan.MilestonesID,
-                    EquipmentID =activityPlan.EquipmentID,
+                   // MilestonesID = activityPlan.MilestonesID,
+                    MilestonesID = activityPlan.MilestonesID == 0 ? (int?)null : activityPlan.MilestonesID,
+
+                    EquipmentID = activityPlan.EquipmentID,
                 });
                 _context.SaveChanges();
 
@@ -367,7 +369,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID == 0 ? newActivityPlan.ExecutorTeamID : activityPlan.ExecutorTeamID;
             newActivityPlan.MilestonesID = activityPlan.MilestonesID;
             newActivityPlan.EquipmentID = activityPlan.EquipmentID;
-            newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID;
+           
 
             _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
