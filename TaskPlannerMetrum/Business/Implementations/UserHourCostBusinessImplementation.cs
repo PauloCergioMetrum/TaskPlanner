@@ -92,11 +92,22 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
         }
 
-        public List<UserHourCosts> ListUserHoursCost(int userID)
+        public List<UserHourCostsDTO> ListUserHoursCost(int userID)
         {
+            List<Functions> functionsList = _repository.GetAllFunction();
             try
             {
-                return _repository.GetAllUserHourCost(userID);
+                var userHoursCostList =  _repository.GetAllUserHourCost(userID);
+
+               return userHoursCostList.Select(i => new UserHourCostsDTO
+                {
+                    ID = i.ID,
+                    HourCost = i.HourCost,
+                    EndDate = i.EndDate,
+                    StartDate = i.StartDate,
+                    FunctionName = functionsList.Where(f => f.ID == i.FunctionID).Select(n => n.Name).FirstOrDefault()
+                }).ToList();
+                
             }
             catch (Exception)
             {
@@ -161,7 +172,12 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
         public async Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate)
         {
-            List<Functions> functionsList = _repository.GetAllFunction();
+            List<Functions> functionsList = _repository.GetAllFunction().Select(f => new Functions
+            {
+                ID = f.ID,
+                Name = RemoveAccents(f.Name)
+            }).ToList();
+
             try
             {
                 using (var stream = new MemoryStream())
@@ -242,6 +258,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public string RemoveAccents(string text)
         {
+            text = text.Replace("-", "");
             if (string.IsNullOrWhiteSpace(text))
                 return text;
 
@@ -256,7 +273,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 }
             }
 
-            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC).ToUpper();
         }
 
 

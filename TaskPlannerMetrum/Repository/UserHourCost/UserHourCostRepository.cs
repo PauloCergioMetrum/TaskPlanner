@@ -125,14 +125,7 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
         public List<Functions> GetAllFunction()
         {
 
-         var functions = _context.Functions
-            .AsEnumerable()
-            .Select(f => new Functions
-            {
-                ID = f.ID,
-                Name = RemoveAccents(f.Name)
-            }).ToList();
-
+         var functions = _context.Functions.ToList();
             return functions;
         }
 
