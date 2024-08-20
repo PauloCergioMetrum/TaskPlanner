@@ -19,6 +19,7 @@ using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.UserHourCostRepository;
 using TaskPlannerMetrum.Repository.Users;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -26,6 +27,7 @@ namespace TaskPlannerMetrum.Business.Implementations
     {
         private readonly IUserHourCostRepository _repository;
         private readonly IUserRepository _repositoryUsers;
+      
 
         public UserHourCostBusinessImplementation(IUserHourCostRepository repository, IUserRepository userRepository)
         {
@@ -159,64 +161,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
         public async Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate)
         {
-            //List<Functions> allFunction = _repository.GetAllFunction();
-            //List<Management> allManagements = _repository.GetAllManagement();
-            //try
-            //{
-            //    using (var stream = new MemoryStream())
-            //    {
-            //        await excelFile.CopyToAsync(stream);
-            //        using (var workbook = new XLWorkbook(stream))
-            //        {
-            //            var worksheet = workbook.Worksheets.FirstOrDefault();
-            //            if (worksheet == null)
-            //            {
-            //                return false;
-            //            }
-            //            List<User> allUsers = _repository.GetAllUsers();
-            //            int rowCount = worksheet.RowsUsed().Count();
-            //            for (int row = 3; row <= rowCount; row++)
-            //            {
-
-            //                string colaborador = worksheet.Cell(row, 2).GetValue<string>()?.Trim();
-            //                double hourCost = worksheet.Cell(row, 7).GetValue<double>();
-            //                string functionName = worksheet.Cell(row, 6).GetValue<string>();
-            //                string managementName = worksheet.Cell(row, 5).GetValue<string>();
-            //                var user = allUsers.FirstOrDefault(u => u.FullName.ToUpper() == colaborador?.ToUpper());
-            //                if (user != null)
-            //                {
-            //                    var userHourCost = new UserHourCosts
-            //                    {
-            //                        UserID = user.Id,
-            //                        HourCost = hourCost,
-            //                        StartDate = startDate,
-            //                        EndDate = endDate,
-            //                        ID = Guid.NewGuid().ToString()
-            //                    };
-            //                    bool createSuccess = CreateOrUpdate(userHourCost);
-            //                    if (createSuccess)
-            //                    {
-            //                        _repository.updateUser(userHourCost.UserID, functionName, managementName);
-            //                    }
-
-            //                    if (!createSuccess)
-            //                    {
-            //                        return false;
-            //                    }
-            //                }
-
-            //            }
-            //        }
-
-
-            //    }
-            //    return true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine($"Erro ao processar arquivo: {ex.Message}");
-            //    return false;
-            //}
+            List<Functions> functionsList = _repository.GetAllFunction();
             try
             {
                 using (var stream = new MemoryStream())
@@ -244,6 +189,8 @@ namespace TaskPlannerMetrum.Business.Implementations
                                 return false;
                             }
                             string functionName = worksheet.Cell(row, 6).GetValue<string>();
+                            functionName = RemoveAccents(functionName);
+                            int functionID = functionsList.Where(n=> n.Name.ToUpper().Replace(" ", "") == functionName.ToUpper().Replace(" ","")).Select(i=> i.ID).FirstOrDefault();
                             string managementName = worksheet.Cell(row, 5).GetValue<string>();
                             var user = allUsers.FirstOrDefault(u => RemoveDiacritics(u.FullName).ToUpper() == RemoveDiacritics(colaborador)?.ToUpper());
                             if (user != null)
@@ -254,12 +201,13 @@ namespace TaskPlannerMetrum.Business.Implementations
                                     HourCost = hourCost,
                                     StartDate = startDate,
                                     EndDate = endDate,
-                                    ID = Guid.NewGuid().ToString()
+                                    ID = Guid.NewGuid().ToString(),
+                                    FunctionID = functionID,    
                                 };
                                 bool createSuccess = CreateOrUpdate(userHourCost);
                                 if (createSuccess)
                                 {
-                                    _repository.updateUser(userHourCost.UserID, functionName, managementName);
+                                    _repository.updateUser(userHourCost.UserID, functionID, managementName);
                                 }
                                 else
                                 {
@@ -290,6 +238,25 @@ namespace TaskPlannerMetrum.Business.Implementations
                 return _repository.UpdateUserHourCost(userHourCost);
             }
             return _repository.CreateUserHourCost(userHourCost);
+        }
+
+        public string RemoveAccents(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return text;
+
+            text = text.Normalize(NormalizationForm.FormD);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (char c in text)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
 
 
