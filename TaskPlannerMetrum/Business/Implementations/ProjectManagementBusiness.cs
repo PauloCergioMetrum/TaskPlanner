@@ -9,12 +9,16 @@ using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Model.ModelViews;
 using System.Diagnostics.Contracts;
 using TaskPlannerMetrum.Data.VO;
+using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Security.Principal;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
     public class ProjectManagementBusiness : IProjectManagementBusiness
     {
         private readonly IProjectManagementRepository _projectmanagementRepository;
+        private int dynamic;
 
         public ProjectManagementBusiness(IProjectManagementRepository projectmanagementBusiness)
         {
@@ -160,7 +164,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool DeleteMilestones(string ID, int MilestonesID)
         {
-            return _projectmanagementRepository.DeleteMilestones(ID , MilestonesID);
+            return _projectmanagementRepository.DeleteMilestones(ID, MilestonesID);
         }
 
 
@@ -613,9 +617,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllMilestonesItem(contractID);
         }
 
-    
 
-        
+
+
 
         public List<Functions> GetAllFunctions()
         {
@@ -748,9 +752,71 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public ActivityPlanHHDetail GetActivityPlanDetails(int contractID)
         {
-            return _projectmanagementRepository.GetActivityPlanDetails(contractID); 
+            List<MilestonesItem> milesTonesList = _projectmanagementRepository.GetAllMilestones();
+            List<MilestonesItem> milesTonesByContractID = milesTonesList.Where(c => c.ContractID == contractID).ToList();
+            var activitPlanDetaisByContractID = _projectmanagementRepository.GetActivityPlanDetails(contractID);
+            List<string> seniorityLevelList = activitPlanDetaisByContractID.ActivityPlanHHTable.Select(p => p.ExecutorSeniorityLevel).Distinct().ToList();
+            List<ActivicPlannGrupByMilesTone> ListTotals = new List<ActivicPlannGrupByMilesTone>();
+
+
+            List<Details> detailsList = new List<Details>();
+            foreach (var m in milesTonesByContractID)
+            {
+
+                foreach (var s in seniorityLevelList)
+                {
+                   int existExecutor = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.ExecutorSeniorityLevel == s && l.MilestoneName == m.Name).Select(d => d.ExecutorUserName).Count();
+                    if(existExecutor >=1)
+                    {
+                        var newDetails = new Details
+                        {
+                            Executor = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.ExecutorSeniorityLevel == s && l.MilestoneName == m.Name).Select(d => d.ExecutorUserName).FirstOrDefault(),
+                            BusinesUnit = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.ExecutorSeniorityLevel == s && l.MilestoneName == m.Name).Select(d => d.BusinessUnit).FirstOrDefault(),
+                            ExecutedManHour = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.ExecutorSeniorityLevel == s && l.MilestoneName == m.Name).Select(d => d.ExecutedManHour).FirstOrDefault(),
+                            PlannedManHour = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.ExecutorSeniorityLevel == s && l.MilestoneName == m.Name).Select(d => d.PlannedManHour).FirstOrDefault(),
+                            SeniorLevel = s,
+                        };
+
+                        detailsList.Add(newDetails);
+                    }
+                   
+                }
+            }
+            List<Model.Function> function = new List<Model.Function>();
+            foreach (var m in milesTonesByContractID)
+            {
+                
+                foreach (var s in seniorityLevelList)
+                {
+
+                    function = new List<Model.Function>
+                    {
+                        new Model.Function
+                        {
+                            ExecutorSeniorityLevel = s,
+                            TotalHours = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.ExecutorSeniorityLevel == s && l.MilestoneName == m.Name).Select(t => t.TotalHours).Sum(),
+                            Details = detailsList.Where(dt=> dt.SeniorLevel == s).ToList(),
+                        }
+                    };
+                    var list = new ActivicPlannGrupByMilesTone
+                    {
+                        MilestonesID = m.ID,
+                        MilestoneName = m.Name,
+                        Functions = function
+                    };
+                    ListTotals.Add(list);
+
+                }
+                
+
+                
+            }
+            Console.WriteLine(ListTotals);
+            activitPlanDetaisByContractID.ActivicPlannGrupByMilesTone = ListTotals;
+            return activitPlanDetaisByContractID;
+
         }
-       
+
 
 
 

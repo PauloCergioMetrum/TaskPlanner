@@ -1565,6 +1565,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             var activityPlanHH = _context.ActivityPlanHH(contractID).FirstOrDefault();
             var activityPlanHHTable = _context.ActivityPlanHHTable(contractID).ToList();
 
+            
             var activityPlanDetail = new ActivityPlanHHDetail
             {
                 ActivityPlanHH = activityPlanHH,
@@ -1572,6 +1573,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             };
 
             return activityPlanDetail;
+        }
+
+
+        public List<MilestonesItem> GetAllMilestones()
+        {
+            return _context.MilestonesItem.ToList();
         }
 
     }
