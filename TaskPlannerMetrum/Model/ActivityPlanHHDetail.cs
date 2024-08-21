@@ -30,9 +30,11 @@ namespace TaskPlannerMetrum.Model
 
         public List<Details> Details { get; set; }
 
-        
+        public string MilesTonesName { get; set; }
 
-        
+
+
+
     }
 
     public class Details
@@ -45,5 +47,7 @@ namespace TaskPlannerMetrum.Model
         public string BusinesUnit {  get; set; }
 
         public string SeniorLevel { get; set; }
+
+        public string MilesTonesName { get; set; }
     }
 }
