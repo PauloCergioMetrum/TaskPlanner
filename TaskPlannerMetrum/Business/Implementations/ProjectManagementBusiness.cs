@@ -757,48 +757,100 @@ namespace TaskPlannerMetrum.Business.Implementations
             var activitPlanDetaisByContractID = _projectmanagementRepository.GetActivityPlanDetails(contractID);
             List<string> seniorityLevelList = activitPlanDetaisByContractID.ActivityPlanHHTable.Select(p => p.ExecutorSeniorityLevel).Distinct().ToList();
             List<ActivicPlannGrupByMilesTone> ListTotals = new List<ActivicPlannGrupByMilesTone>();
-
-
             List<Details> detailsList = new List<Details>();
-            foreach (var m in milesTonesByContractID)
-            {
-                var newDetails = new Details
-                {
-                    Executor = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.ExecutorUserName).FirstOrDefault(),
-                    BusinesUnit = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.BusinessUnit).FirstOrDefault(),
-                    ExecutedManHour = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.ExecutedManHour).FirstOrDefault(),
-                    PlannedManHour = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.PlannedManHour).FirstOrDefault(),
-                    MilesTonesName = m.Name,
 
-                };
-                detailsList.Add(newDetails);
-            }
-            List<Model.Function> function = new List<Model.Function>();
-            foreach (var m in milesTonesByContractID)
+            List<ActivicPlannGrupByMilesTone> milesTonesLsit = new List<ActivicPlannGrupByMilesTone>();
+
+            foreach (var milestones in milesTonesByContractID)
             {
-                var list = new ActivicPlannGrupByMilesTone
+                ActivicPlannGrupByMilesTone milesTone = new ActivicPlannGrupByMilesTone
                 {
-                    MilestonesID = m.ID,
-                    MilestoneName = m.Name,
-                    Functions = function
-                };
-                foreach (var s in seniorityLevelList)
-                {
-                 
-                    Model.Function functions = new Model.Function
+                    MilestonesID = milestones.ID,
+                    MilestoneName = milestones.Name,
+                    Executers = activitPlanDetaisByContractID.ActivityPlanHHTable
+                    .Where(ex => ex.MilestoneName == milestones.Name)
+                    .Select(ex => new Executors
                     {
-                        ExecutorSeniorityLevel = s,
-                        TotalHours =   activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l =>  l.MilestoneName == m.Name).Select(t => t.TotalHours).FirstOrDefault(),
-                        Details =    detailsList.Where(dt => dt.MilesTonesName == m.Name).ToList(),
-                        MilesTonesName = m.Name
-                    };
-                    function.Add(functions);
-                }
-                list.Functions =function.Where(f=> f.MilesTonesName == m.Name).ToList();
-                ListTotals.Add(list);
+                        Executor = ex.ExecutorUserName,
+                        TotalHours = ex.TotalHours,
+                        MilesTonesName = milestones.Name,
+                        Details = activitPlanDetaisByContractID.ActivityPlanHHTable
+                            .Where(n => n.MilestoneName == milestones.Name)
+                            .Select(dt => new Model.Details
+                            {
+                                BusinesUnit = dt.BusinessUnit,
+                                ExecutedManHour = dt.ExecutedManHour,
+                                ExecutorSeniorityLevel = dt.ExecutorSeniorityLevel,
+                                MilesTonesName = dt.MilestoneName,
+                                PlannedManHour = dt.PlannedManHour,
+                                SeniorLevel = dt.ExecutorSeniorityLevel
+                            }).ToList()  // Adicionado .ToList() aqui
+                    }).ToList()  // Adicionado .ToList() aqui
+                };
+                milesTonesLsit.Add(milesTone);
             }
-            Console.WriteLine(ListTotals);
-            activitPlanDetaisByContractID.ActivicPlannGrupByMilesTone = ListTotals;
+
+
+
+            //foreach (var m in milesTonesByContractID)
+            //{
+            //    var newDetails = new Details
+            //    {
+            //        SeniorLevel = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.ExecutorSeniorityLevel).FirstOrDefault(),
+            //        BusinesUnit = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.BusinessUnit).FirstOrDefault(),
+            //        ExecutedManHour = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.ExecutedManHour).FirstOrDefault(),
+            //        PlannedManHour = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.PlannedManHour).FirstOrDefault(),
+            //        MilesTonesName = m.Name,
+            //    };
+            //    detailsList.Add(newDetails);
+            //}
+
+            //List<Model.Executors> Executers = new List<Model.Executors>();
+            //List<Model.Executors> testeExec = new List<Model.Executors>();
+            //foreach (var m in milesTonesByContractID)
+            //{
+
+            //    var filteredPlanDetails = activitPlanDetaisByContractID.ActivityPlanHHTable
+            //        .Where(i => i.MilestoneName == m.Name)
+            //            .ToList();
+
+            //    var executorsList = filteredPlanDetails.Select(p => new Model.Executors
+            //    {
+            //        Executor = p.ExecutorUserName,
+            //        MilesTonesName = p.MilestoneName,
+            //        Details = detailsList.Where(dt=> dt.MilesTonesName == m.Name).ToList(), 
+            //        TotalHours = filteredPlanDetails.Select(t => t.TotalHours).FirstOrDefault() 
+            //    }).FirstOrDefault();
+
+            //    testeExec.Add(executorsList);
+
+            //}
+            //foreach (var m in milesTonesByContractID)
+            //{
+            //    var filteredPlanDetails = activitPlanDetaisByContractID.ActivityPlanHHTable
+            //        .Where(i => i.MilestoneName == m.Name)
+            //            .ToList();
+
+            //    var executorsList = filteredPlanDetails.Where(mn => mn.MilestoneName == m.Name).Select(p => new Model.Executors
+            //    {
+            //        Executor = p.ExecutorUserName,
+            //        MilesTonesName = p.MilestoneName,
+            //        Details = detailsList, 
+            //        TotalHours = filteredPlanDetails.Select(t => t.TotalHours).FirstOrDefault() 
+            //    }).FirstOrDefault();
+
+            //    testeExec.Add(executorsList);
+
+            //    var list = new ActivicPlannGrupByMilesTone
+            //    {
+            //        MilestonesID = m.ID,
+            //        MilestoneName = m.Name,
+            //        Executers = testeExec
+            //    };
+            //    ListTotals.Add(list);
+            //}
+
+            activitPlanDetaisByContractID.ActivicPlannGrupByMilesTone = milesTonesLsit;
             return activitPlanDetaisByContractID;
 
         }
