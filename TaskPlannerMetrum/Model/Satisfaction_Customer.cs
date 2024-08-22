@@ -7,7 +7,7 @@ namespace TaskPlannerMetrum.Model
     {
         public int ID { get; set; }
 
-        public DateTime FeedbackDate {  get; set; }     
+        public DateTime? FeedbackDate {  get; set; }     
         public int ContractID { get; set; }
 
         public string ClientResponse { get; set; }
