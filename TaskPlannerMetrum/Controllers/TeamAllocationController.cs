@@ -18,7 +18,7 @@ namespace TaskPlannerMetrum.Controllers
             _teamAllocationBusiness = teamAllocationBusiness;
         }
 
-        [HttpGet("GetAllTeamAllocation")]
+        [HttpPost("GetAllTeamAllocation")]
         public IActionResult GetTeamAllocation(Model.DTO.TeamAlocationTableDTO TeamAlocatTable)
         {
             try
