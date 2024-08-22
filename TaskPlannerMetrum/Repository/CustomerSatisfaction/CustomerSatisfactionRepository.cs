@@ -51,7 +51,7 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                                 LastExecutedDate = reader.IsDBNull(reader.GetOrdinal("LastExecutedDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastExecutedDate")),
                                 LastContactDate = reader.IsDBNull(reader.GetOrdinal("LastContactDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastContactDate")),
                                 ClientResponse = reader["ClientResponse"] as string,
-                                ClientRating = reader.IsDBNull(reader.GetOrdinal("ClientRating")) ? 0 : reader.GetInt32(reader.GetOrdinal("ClientRating")), 
+                                ClientRating = reader.IsDBNull(reader.GetOrdinal("ClientRating")) ? 0 : reader.GetInt32(reader.GetOrdinal("ClientRating")),
                                 ReceivedComplaint = reader["ReceivedComplaint"] as string
                             };
 
@@ -67,25 +67,22 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
         }
 
 
-        public bool CreateCustomerFeedback(DateTime FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint)
+        public bool CreateCustomerFeedback(DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint)
         {
             try
             {
-               
                 var existingFeedback = _context.Satisfaction_Customer
-                                              .FirstOrDefault(f => f.ContractID == contractID);
+                                               .FirstOrDefault(f => f.ContractID == contractID);
 
                 if (existingFeedback != null)
                 {
-                   
                     existingFeedback.ClientResponse = clientResponse;
                     existingFeedback.ClientRating = clientRating;
                     existingFeedback.ReceivedComplaint = receivedComplaint;
-                    existingFeedback.FeedbackDate = FeedbackDate;   
+                    existingFeedback.FeedbackDate = FeedbackDate; 
                 }
                 else
                 {
-                
                     var newCustomerFeedback = new Satisfaction_Customer
                     {
                         ContractID = contractID,
@@ -93,13 +90,11 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                         ClientRating = clientRating,
                         ReceivedComplaint = receivedComplaint,
                         FeedbackDate = FeedbackDate 
-                       
                     };
 
                     _context.Satisfaction_Customer.Add(newCustomerFeedback);
                 }
 
-               
                 _context.SaveChanges();
                 return true;
             }
@@ -109,6 +104,8 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                 throw;
             }
         }
+
+
 
 
     }
