@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 using System;
 using System.Collections.Generic;
 
@@ -8,6 +9,8 @@ namespace TaskPlannerMetrum.Model.DTO
     {
         public List<ExecutiveDto> ExecutiveDtoList { get; set; }
         public List<GetPvSummary> GetPvSummaryList { get; set; }
+        public List<BusinessUnitPercentage> businessUnitPercentages { get; set; }
+        public List<ExecutivePVgraphic> executivePVgraphics { get; set; }
     }
 
 
@@ -35,6 +38,25 @@ namespace TaskPlannerMetrum.Model.DTO
     public class GetPvSummary
     {
         public int Abertos { get; set; }
-        public int Fechados  { get; set; }
+        public int Fechados { get; set; }
+        public int Ano { get; set; }
+        public string Mes { get; set; }
+    }
+
+    public class BusinessUnitPercentage
+    {
+        public string BusinessUnit { get; set; }
+        public int UnitCount { get; set; }
+        public decimal Percentage { get; set; }
+
+    }
+
+    public class ExecutivePVgraphic
+    {
+
+        public int TotalInternalCode { get; set; }
+        public double TotalValue { get; set; }
+
+
     }
 }

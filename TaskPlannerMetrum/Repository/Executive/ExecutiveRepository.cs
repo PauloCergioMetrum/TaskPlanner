@@ -19,6 +19,8 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
         }
 
 
+
+
         public List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null)
         {
             var pvExecutiveList = new List<ExecutiveDto>();
@@ -71,33 +73,97 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
 
             using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
+                command.CommandText = "[dbo].[GetPvSummary]";
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@StartYearMonth", SqlDbType.DateTime) { Value = (object)StartYearMonth ?? DBNull.Value });
+                command.Parameters.Add(new SqlParameter("@EndYearMonth", SqlDbType.DateTime) { Value = (object)EndYearMonth ?? DBNull.Value });
 
+                _context.Database.OpenConnection();
+
+                using (var reader = command.ExecuteReader())
                 {
-                    command.CommandText = "[dbo].[GetPvSummary]";
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    command.Parameters.Add(new SqlParameter("@StartYearMonth", SqlDbType.Date) { Value = (object)StartYearMonth ?? DBNull.Value });
-                    command.Parameters.Add(new SqlParameter("@EndYearMonth", SqlDbType.Date) { Value = (object)EndYearMonth ?? DBNull.Value });
-                    _context.Database.OpenConnection();
-                    using (var reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        var summary = new GetPvSummary
                         {
-                            var summary = new GetPvSummary
-                            {
-                                Abertos = reader.GetInt32(reader.GetOrdinal("Abertos")),
-                                Fechados = reader.GetInt32(reader.GetOrdinal("Fechados")),
-                            };
+                            Ano = reader.GetInt32(reader.GetOrdinal("Ano")),
+                            Mes = reader.GetString(reader.GetOrdinal("Mes")),
+                            Abertos = reader.GetInt32(reader.GetOrdinal("Abertos")),
+                            Fechados = reader.GetInt32(reader.GetOrdinal("Fechados")),
+                        };
 
-                            getPvSummaries.Add(summary);
-                        }
+                        getPvSummaries.Add(summary);
                     }
+                }
 
-                    return getPvSummaries;
+                _context.Database.CloseConnection();
+            }
+
+            return getPvSummaries;
+        }
+
+
+
+
+        public List<BusinessUnitPercentage> GetBusinessUnitPercentages()
+        {
+            var businessUnitPercentages = new List<BusinessUnitPercentage>();
+
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "[dbo].[GetBusinessUnitPercentage]";
+                command.CommandType = CommandType.StoredProcedure;
+
+                _context.Database.OpenConnection();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var percentage = new BusinessUnitPercentage
+                        {
+                            BusinessUnit = reader.GetString(reader.GetOrdinal("BusinessUnit")),
+                            UnitCount = reader.GetInt32(reader.GetOrdinal("UnitCount")),
+                            Percentage = reader.GetDecimal(reader.GetOrdinal("Percentage"))
+                        };
+
+                        businessUnitPercentages.Add(percentage);
+                    }
                 }
             }
 
+            return businessUnitPercentages;
         }
+        public List<ExecutivePVgraphic> GetExecutivePVGraphic()
+        {
+            var executivePVgraphicList = new List<ExecutivePVgraphic>();
+
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "[dbo].[GetExecutivePVGraphic]";
+                command.CommandType = CommandType.StoredProcedure;
+
+                _context.Database.OpenConnection();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var executivePVgraphic = new ExecutivePVgraphic
+                        {
+                            TotalValue = reader.GetDouble(reader.GetOrdinal("TotalValue")),
+                            TotalInternalCode = reader.GetInt32(reader.GetOrdinal("TotalInternalCode"))
+                        };
+
+                        executivePVgraphicList.Add(executivePVgraphic);
+                    }
+                }
+
+                _context.Database.CloseConnection();
+            }
+
+            return executivePVgraphicList;
+        }
+
 
     }
 }
