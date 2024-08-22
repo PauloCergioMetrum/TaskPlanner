@@ -25,6 +25,8 @@ namespace TaskPlannerMetrum.Model.DTO
         public string ScheduledDateFormatted { get; set; }
         public string Executor { get; set; }
 
+        public string FunctionName { get; set; }
+
         public class TeamAllocationGraphicDTO
         {
             public string FunctionName { get; set; }

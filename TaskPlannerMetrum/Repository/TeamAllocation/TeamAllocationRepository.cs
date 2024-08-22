@@ -17,7 +17,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             _context = context;
         }
 
-        public List<TeamAllocationDTO> GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, string function = null, string project = null)
+        public List<TeamAllocationDTO> GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string project = null)
         {
             List<TeamAllocationDTO> teamAllocationList = new List<TeamAllocationDTO>();
 
@@ -29,7 +29,8 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 command.Parameters.Add(new SqlParameter("@BusinessUnit", SqlDbType.NVarChar, 100) { Value = (object)businessUnit ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date) { Value = (object)startDate ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date) { Value = (object)endDate ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@Function", SqlDbType.NVarChar, 100) { Value = (object)function ?? DBNull.Value });
+                var functionIDList = functionID != null ? string.Join(",", functionID) : null;
+                command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, 255) { Value = (object)functionIDList ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@Project", SqlDbType.NVarChar, 100) { Value = (object)project ?? DBNull.Value });
 
                 _context.Database.OpenConnection();
@@ -62,7 +63,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
         }
 
 
-        public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, string functionName = null)
+        public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null)
         {
             List<TeamAllocationDTO.TeamAllocationGraphicDTO> teamAllocationGraphicList = new List<TeamAllocationDTO.TeamAllocationGraphicDTO>();
 
@@ -73,7 +74,9 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
                 command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date) { Value = (object)startDate ?? DBNull.Value });
                 command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date) { Value = (object)endDate ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@FunctionName", SqlDbType.NVarChar, 255) { Value = (object)functionName ?? DBNull.Value });
+                var functionIDList = functionID != null ? string.Join(",", functionID) : null;
+                command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, 255) { Value = (object)functionIDList ?? DBNull.Value });
+
 
                 _context.Database.OpenConnection();
 

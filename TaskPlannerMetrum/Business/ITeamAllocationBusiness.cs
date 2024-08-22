@@ -6,7 +6,7 @@ namespace TaskPlannerMetrum.Business
 {
     public interface ITeamAllocationBusiness
     {
-        TeamAllocationResponseDTO GetTeamAllocation(string businessUnit, DateTime? startDate, DateTime? endDate, string function, string project);
+        TeamAllocationResponseDTO GetTeamAllocation(string businessUnit, DateTime? startDate, DateTime? endDate, List<int> funtionID, string project);
          List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd);
         List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions();
         List<string> GetTeamFilterBusinessUnit(string selectedBusinessUnit = null);
