@@ -7,6 +7,7 @@ using TaskPlannerMetrum.Model;
 
 namespace TaskPlannerMetrum.Controllers
 {
+    [Route("api/[controller]/v{version:apiVersion}")]
     public class CustomerSatisfactionController:ControllerBase
     {
 
@@ -58,6 +59,29 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpGet("GetCustomerSatisfactions")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CustomerSatisfactions()
+        {
+            try
+            {
+                return Ok(_customerSatisfactionBusiness.CustomerSastifaction());
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
 
     }
 }

@@ -106,6 +106,48 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
         }
 
 
+        public List<CustomerSastifaction> CustomerSastifaction()
+        {
+            List<CustomerSastifaction> contractDetailsList = new List<CustomerSastifaction>();
+
+            using (var connection = new SqlConnection(_context.Database.GetDbConnection().ConnectionString))
+            {
+                using (var command = new SqlCommand("[dbo].[CustomerSatisfactionTable]", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    connection.Open();
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var contractDetail = new CustomerSastifaction
+                            {
+                                ID = reader.GetInt64(reader.GetOrdinal("ID")),
+                                ContractName = reader["ContractName"] as string,
+                                Contact = reader["Contact"] as string,
+                                LastExecutedDate = reader.IsDBNull(reader.GetOrdinal("LastExecutedDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastExecutedDate")),
+                                LastContactDate = reader.IsDBNull(reader.GetOrdinal("LastContactDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastContactDate")),
+                                FeedbackDate = reader.IsDBNull(reader.GetOrdinal("FeedbackDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FeedbackDate")),
+                                ClientResponse = reader["ClientResponse"] as string,
+                                ClientRating = reader.IsDBNull(reader.GetOrdinal("ClientRating")) ? 0 : reader.GetInt32(reader.GetOrdinal("ClientRating")),
+                                ReceivedComplaint = reader["ReceivedComplaint"] as string,
+                                StatusID = reader.GetInt32(reader.GetOrdinal("StatusID"))
+                            };
+
+                            contractDetailsList.Add(contractDetail);
+                        }
+                    }
+
+                    connection.Close();
+                }
+            }
+
+            return contractDetailsList;
+        }
+
+
 
 
     }

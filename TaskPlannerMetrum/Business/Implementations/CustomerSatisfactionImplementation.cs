@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.CustomerSatisfaction;
 
@@ -22,6 +23,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         public bool CreateCustomerFeedback(DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint)
         {
             return _repository.CreateCustomerFeedback(FeedbackDate,contractID, clientResponse, clientRating, receivedComplaint);  
+        }
+
+        public List<CustomerSastifaction> CustomerSastifaction()
+        {
+            return _repository.CustomerSastifaction();  
         }
     }
 }
