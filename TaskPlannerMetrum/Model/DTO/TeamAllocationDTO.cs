@@ -15,7 +15,7 @@ namespace TaskPlannerMetrum.Model.DTO
 
     public class TeamAllocationDTO
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string SaleOrder { get; set; }
         public string Client { get; set; }
         public string BusinessUnit { get; set; }
