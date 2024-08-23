@@ -185,7 +185,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             return GetTeamAllocationCards;
         }
 
-        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions()
+        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions(DateTime? startDate = null, DateTime? endDate = null, List<int> functionIDs = null)
         {
             List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> teamAllocationGraphicFunctions = new List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions>();
 
@@ -193,6 +193,14 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             {
                 command.CommandText = "[dbo].[GetTeamAllocationGraphicFunctions]";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                // Adicionando parâmetros para startDate e endDate
+                command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date) { Value = (object)startDate ?? DBNull.Value });
+                command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date) { Value = (object)endDate ?? DBNull.Value });
+
+                // Verificando e adicionando parâmetro para functionIDs
+                var functionIDList = functionIDs != null && functionIDs.Any() ? string.Join(",", functionIDs) : null;
+                command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, 255) { Value = (object)functionIDList ?? DBNull.Value });
 
                 _context.Database.OpenConnection();
 
@@ -215,6 +223,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
             return teamAllocationGraphicFunctions;
         }
+
 
 
 

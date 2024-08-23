@@ -18,7 +18,7 @@ namespace TaskPlannerMetrum.Business
         {
             var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit, startDate, endDate, functionID, project);
             var graphics = _teamAllocationRepository.GetTeamAllocationGraphic(startDate, endDate, functionID);
-            var functions = _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
+            var functions = _teamAllocationRepository.GetTeamAllocationGraphicFunctions(startDate, endDate, functionID);
             var cards = _teamAllocationRepository.GetTeamAllocationCards(startDate ?? DateTime.MinValue, endDate ?? DateTime.MaxValue);
             var filter = _teamAllocationRepository.GetTeamFilterBusinessUnit();
 

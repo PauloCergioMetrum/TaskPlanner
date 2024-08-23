@@ -20,7 +20,7 @@ namespace TaskPlannerMetrum.Business
 
 
         Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate);
-
+        public List<Functions> GetAllFunctions();
 
 
     }

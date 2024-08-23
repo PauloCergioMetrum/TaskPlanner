@@ -137,6 +137,11 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
             return true;
         }
+        public List<Functions> GetAllFunctions() 
+        {
+            return _repository.GetAllFunction();
+        
+        }
 
         public static string RemoveDiacritics(string text)
         {
