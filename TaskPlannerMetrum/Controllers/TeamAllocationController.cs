@@ -19,25 +19,41 @@ namespace TaskPlannerMetrum.Controllers
         }
 
         [HttpPost("GetAllTeamAllocation")]
-        public IActionResult GetTeamAllocation(Model.DTO.TeamAlocationTableDTO TeamAlocatTable)
+        public IActionResult GetTeamAllocation(TeamAlocationTableDTO TeamAlocatTable)
         {
             try
             {
-          
-                var result = _teamAllocationBusiness.GetTeamAllocation(TeamAlocatTable.businessUnit, TeamAlocatTable.startDate, TeamAlocatTable.endDate, TeamAlocatTable.FunctionIds, TeamAlocatTable.project);
+                var result = _teamAllocationBusiness.GetTeamAllocation(
+                    TeamAlocatTable.businessUnit,
+                    TeamAlocatTable.startDate,
+                    TeamAlocatTable.endDate,
+                    TeamAlocatTable.FunctionIds,
+                    TeamAlocatTable.project
+                );
 
                 if (result == null || (result.TeamAllocations.Count == 0 && result.TeamAllocationGraphics.Count == 0))
                 {
-                    return NoContent(); 
+                   
+                    result = _teamAllocationBusiness.GetTeamAllocation(
+                        null, 
+                        null,
+                        null, 
+                        null, 
+                        null  
+                    );
+
+                    if (result == null || (result.TeamAllocations.Count == 0 && result.TeamAllocationGraphics.Count == 0))
+                    {
+                        return NoContent();
+                    }
                 }
-                return Ok(result); 
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
-              
                 return BadRequest(ex.Message);
             }
         }
     }
-
 }

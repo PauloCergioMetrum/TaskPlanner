@@ -38,8 +38,11 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public class GetTeamAllocationGraphicFunctions
         {
-            public string SeniorityLevel { get; set; }
+            public string FunctionName { get; set; }
             public int Quantity { get; set; }
+            public int id { get; set; }
+
+
         }
 
         public class GetTeamAllocationCards

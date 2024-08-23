@@ -14,16 +14,6 @@ namespace TaskPlannerMetrum.Business
             _teamAllocationRepository = teamAllocationRepository;
         }
 
-        public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd)
-        {
-            return _teamAllocationRepository.GetTeamAllocationCards(DateStart, DateEnd);
-        }
-
-        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions()
-        {
-            return _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
-        }
-
         public TeamAllocationResponseDTO GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string project = null)
         {
             var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit, startDate, endDate, functionID, project);
@@ -38,11 +28,21 @@ namespace TaskPlannerMetrum.Business
                 TeamAllocationGraphics = graphics,
                 TeamAllocationGraphicFunctions = functions,
                 GetTeamAllocationCards = cards,
-                BusinessUnits = filter,  
+                BusinessUnits = filter,
             };
         }
 
-        List<string> ITeamAllocationBusiness.GetTeamFilterBusinessUnit(string selectedBusinessUnit)
+        public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd)
+        {
+            return _teamAllocationRepository.GetTeamAllocationCards(DateStart, DateEnd);
+        }
+
+        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions()
+        {
+            return _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
+        }
+
+        public List<string> GetTeamFilterBusinessUnit(string selectedBusinessUnit = null)
         {
             return _teamAllocationRepository.GetTeamFilterBusinessUnit();
         }

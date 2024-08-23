@@ -202,7 +202,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                     {
                         var function = new TeamAllocationDTO.GetTeamAllocationGraphicFunctions
                         {
-                            SeniorityLevel = reader["SeniorityLevel"].ToString(),
+                            FunctionName = reader["FunctionName"].ToString(),
                             Quantity = Convert.ToInt32(reader["Quantity"])
                         };
 
@@ -215,6 +215,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
             return teamAllocationGraphicFunctions;
         }
+
 
 
 
