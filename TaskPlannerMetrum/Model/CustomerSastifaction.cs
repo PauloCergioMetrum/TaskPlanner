@@ -9,9 +9,11 @@ namespace TaskPlannerMetrum.Model
         public DateTime? LastExecutedDate { get; set; }
         public DateTime? LastContactDate { get; set; }
         public DateTime? FeedbackDate { get; set; }
-        public string ClientResponse { get; set; }
+         public string ClientName { get; set; }
         public int ClientRating { get; set; }
         public string ReceivedComplaint { get; set; }
         public int StatusID { get; set; }
+        public string BusinessUnit { get; set; }  
+        public string VendorName { get; set; }
     }
 }

@@ -130,10 +130,12 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                                 LastExecutedDate = reader.IsDBNull(reader.GetOrdinal("LastExecutedDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastExecutedDate")),
                                 LastContactDate = reader.IsDBNull(reader.GetOrdinal("LastContactDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastContactDate")),
                                 FeedbackDate = reader.IsDBNull(reader.GetOrdinal("FeedbackDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FeedbackDate")),
-                                ClientResponse = reader["ClientResponse"] as string,
+                                ClientName = reader["ClientName"] as string,
                                 ClientRating = reader.IsDBNull(reader.GetOrdinal("ClientRating")) ? 0 : reader.GetInt32(reader.GetOrdinal("ClientRating")),
                                 ReceivedComplaint = reader["ReceivedComplaint"] as string,
-                                StatusID = reader.GetInt32(reader.GetOrdinal("StatusID"))
+                                StatusID = reader.GetInt32(reader.GetOrdinal("StatusID")),
+                                BusinessUnit = reader["BusinessUnit"] as string, 
+                                VendorName = reader["VendorName"] as string 
                             };
 
                             contractDetailsList.Add(contractDetail);
