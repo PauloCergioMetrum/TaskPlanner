@@ -135,7 +135,8 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                                 ReceivedComplaint = reader["ReceivedComplaint"] as string,
                                 StatusID = reader.GetInt32(reader.GetOrdinal("StatusID")),
                                 BusinessUnit = reader["BusinessUnit"] as string, 
-                                VendorName = reader["VendorName"] as string 
+                                VendorName = reader["VendorName"] as string,
+                                InspectorName = reader["InspectorName"] as string
                             };
 
                             contractDetailsList.Add(contractDetail);

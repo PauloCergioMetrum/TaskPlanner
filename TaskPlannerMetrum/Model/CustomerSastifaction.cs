@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Office.CoverPageProps;
+using System;
 namespace TaskPlannerMetrum.Model
 {
     public class CustomerSastifaction
@@ -15,5 +16,8 @@ namespace TaskPlannerMetrum.Model
         public int StatusID { get; set; }
         public string BusinessUnit { get; set; }  
         public string VendorName { get; set; }
-    }
+        public string InspectorName{ get; set; }
+
+
+}
 }
