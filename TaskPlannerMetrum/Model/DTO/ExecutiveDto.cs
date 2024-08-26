@@ -56,7 +56,13 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public int TotalInternalCode { get; set; }
         public double TotalValue { get; set; }
-
-
     }
+
+    public class ExecutivePvGraphicsResult
+    {
+        public string BusinessUnit { get; set; }
+        public string StartDate { get; set; }
+        public double ValueTotal { get; set; }
+    }
+
 }

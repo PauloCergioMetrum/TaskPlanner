@@ -12,6 +12,9 @@ namespace TaskPlannerMetrum.Business
 
         List<BusinessUnitPercentage> GetBusinessUnitPercentages();
         List<ExecutivePVgraphic> GetExecutivePVGraphic();
+   
+
+        public List<ExecutivePvGraphicsResult> GetExecutivePvGraphicsOpenClose(bool? closed = null, bool? open = null);
 
 
 

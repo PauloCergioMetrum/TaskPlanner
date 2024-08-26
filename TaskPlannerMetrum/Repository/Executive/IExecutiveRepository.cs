@@ -15,6 +15,8 @@ namespace TaskPlannerMetrum.Repository.Executive
 
         List<ExecutivePVgraphic> GetExecutivePVGraphic();
 
+        List<ExecutivePvGraphicsResult> GetExecutivePvGraphicsOpenClose(bool? closed = null, bool? open = null);
+
 
 
     }

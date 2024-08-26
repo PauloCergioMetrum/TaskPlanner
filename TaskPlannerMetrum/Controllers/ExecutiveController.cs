@@ -40,6 +40,13 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        [HttpGet ("GetExecutivePvGraphicsOpenClose")]
+        public IActionResult GetExecutivePvGraphicsOpenClose([FromQuery] bool? closed, [FromQuery] bool? open)
+        {
+            var results = _executiveBussines.GetExecutivePvGraphicsOpenClose(closed, open);
+            return Ok(results);
+        }
+
 
 
     }

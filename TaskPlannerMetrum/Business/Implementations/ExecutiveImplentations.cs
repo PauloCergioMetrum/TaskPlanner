@@ -63,7 +63,11 @@ namespace TaskPlannerMetrum.Business.Implementations
             };
         }
 
-
+        public List<ExecutivePvGraphicsResult> GetExecutivePvGraphicsOpenClose(bool? closed = null, bool? open = null)
+        {
+            return _executiveRepository.GetExecutivePvGraphicsOpenClose(closed, open);
+               
+        }
     }
 }
 

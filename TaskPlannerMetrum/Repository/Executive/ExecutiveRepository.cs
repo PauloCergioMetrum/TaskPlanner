@@ -164,8 +164,66 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
             return executivePVgraphicList;
         }
 
+        public List<ExecutivePvGraphicsResult> GetExecutivePvGraphicsOpenClose(bool? closed = null, bool? open = null)
+        {
+            var executivePvGraphics = new List<ExecutivePvGraphicsResult>();
+
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "[dbo].[GetExecutivePvGraphicsOpenClose]";
+                command.CommandType = CommandType.StoredProcedure;
+
+          
+                var closedParameter = command.CreateParameter();
+                closedParameter.ParameterName = "@Closed";
+                closedParameter.Value = closed.HasValue ? (object)closed.Value : DBNull.Value;
+                command.Parameters.Add(closedParameter);
+
+                var openParameter = command.CreateParameter();
+                openParameter.ParameterName = "@Open";
+                openParameter.Value = open.HasValue ? (object)open.Value : DBNull.Value;
+                command.Parameters.Add(openParameter);
+
+                _context.Database.OpenConnection();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var executivePVgraphic = new ExecutivePvGraphicsResult
+                        {
+                            BusinessUnit = reader.GetString(reader.GetOrdinal("BusinessUnit")),
+                            StartDate = reader.GetString(reader.GetOrdinal("StartDate")),
+                            ValueTotal = reader.GetDouble(reader.GetOrdinal("ValueTotal"))
+                        };
+
+                        executivePvGraphics.Add(executivePVgraphic);
+                    }
+                }
+
+                _context.Database.CloseConnection();
+            }
+
+            return executivePvGraphics;
+        }
+
 
     }
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
 
 
