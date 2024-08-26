@@ -131,10 +131,6 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
-
-
         [HttpPost("GetAllFunctions()")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -145,8 +141,6 @@ namespace TaskPlannerMetrum.Controllers
             try
             {
                 return Ok( _userHourCost.GetAllFunctions());
-
-                
             }
             catch (Exception ex)
             {
@@ -155,19 +149,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-
-
-
-
-   
     }
-
-
-
-
-
-
-
 }
 
 

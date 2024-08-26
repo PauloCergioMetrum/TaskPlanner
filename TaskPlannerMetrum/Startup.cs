@@ -184,6 +184,10 @@ namespace TaskPlannerMetrum
             services.AddScoped<ITeamAllocationBusiness, TeamAllocationBussinessImplementation>();
             services.AddScoped<IExecutiveBussines, ExecutiveImplentations>();
             services.AddScoped<ICustomerSatisfactionBusiness , CustomerSatisfactionImplementation>();
+            services.AddScoped<IConfigureSettingsBusinesss, ConfigureSettingsBusiness>();
+
+
+            
 
 
 
