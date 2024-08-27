@@ -7,7 +7,7 @@ namespace TaskPlannerMetrum.Model
 
         public int ID { get; set; }
 
-        public int PlannedManHour { get; set; }
+        public double PlannedManHour { get; set; }
        public DateTime ScheduledDate { get; set; }
     }
 }
