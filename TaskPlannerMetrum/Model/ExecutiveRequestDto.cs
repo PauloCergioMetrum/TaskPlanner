@@ -8,5 +8,6 @@ namespace TaskPlannerMetrum.Model
         public DateTime? EndDate { get; set; }
         public bool? Closed { get; set; }
         public bool? Open { get; set; }
+        public string BusinessUnit {  get; set; }     
     }
 }

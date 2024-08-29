@@ -21,9 +21,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public ExecutiveDto GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null)
+
+
+        public ExecutiveDto GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null , string businessUnits = null)
         {
-            var allocations = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate);
+            var allocations = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate , businessUnits);
             return allocations.FirstOrDefault();
         }
 
@@ -46,9 +48,9 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         }
 
-        public ExecutiveDtoAll CreateExecutiveDtoAll(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null)
+        public ExecutiveDtoAll CreateExecutiveDtoAll(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null, string businessUnits = null  )
         {
-            var executiveList = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate);
+            var executiveList = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate , businessUnits);
             var summaryList = _executiveRepository.GetPvSummaries(startDate, endDate);
             var getbusinessPorcentage = _executiveRepository.GetBusinessUnitPercentages();
             var executivePVGraphic = _executiveRepository.GetExecutivePVGraphic();

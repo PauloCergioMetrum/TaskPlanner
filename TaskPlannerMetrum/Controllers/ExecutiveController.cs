@@ -33,7 +33,7 @@ namespace TaskPlannerMetrum.Controllers
         {
             try
             {
-                var result = _executiveBussines.CreateExecutiveDtoAll(request.InspectorIDs, request.StartDate, request.EndDate);
+                var result = _executiveBussines.CreateExecutiveDtoAll(request.InspectorIDs, request.StartDate, request.EndDate , request.BusinessUnit);
                 var openCloseResults = _executiveBussines.GetExecutivePvGraphicsOpenClose(request.Closed, request.Open);
 
           

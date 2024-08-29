@@ -21,18 +21,19 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
 
 
 
-        public List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null)
+        public List<ExecutiveDto> GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null, string businessUnits = null)
         {
             var pvExecutiveList = new List<ExecutiveDto>();
 
             using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
-
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "[dbo].[GetFiscalFilter]";
                 command.Parameters.Add(new SqlParameter("@InspectorIDs", inspectorIDs ?? (object)DBNull.Value));
                 command.Parameters.Add(new SqlParameter("@StartDate", startDate ?? (object)DBNull.Value));
                 command.Parameters.Add(new SqlParameter("@EndDate", endDate ?? (object)DBNull.Value));
+                command.Parameters.Add(new SqlParameter("@BusinessUnits", businessUnits ?? (object)DBNull.Value));
+
                 _context.Database.OpenConnection();
                 using (var reader = command.ExecuteReader())
                 {
@@ -60,9 +61,11 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
                         pvExecutiveList.Add(dto);
                     }
                 }
-                return pvExecutiveList;
             }
+
+            return pvExecutiveList;
         }
+
 
 
 
