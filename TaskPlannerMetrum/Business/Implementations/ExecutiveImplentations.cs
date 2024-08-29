@@ -23,9 +23,9 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public ExecutiveDto GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null , string businessUnits = null)
+        public ExecutiveDto GetPvExecutiveTable(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null, string businessUnits = null)
         {
-            var allocations = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate , businessUnits);
+            var allocations = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate, businessUnits);
             return allocations.FirstOrDefault();
         }
 
@@ -35,9 +35,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return summaries.ToList();
         }
 
-        public List<BusinessUnitPercentage> GetBusinessUnitPercentages()
+        public List<BusinessUnitPercentage> GetBusinessUnitPercentages(string businessUnits)
         {
-            var getbusinessPorcentage = _executiveRepository.GetBusinessUnitPercentages();
+            var getbusinessPorcentage = _executiveRepository.GetBusinessUnitPercentages(businessUnits);
             return getbusinessPorcentage.ToList();
         }
 
@@ -48,11 +48,12 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         }
 
-        public ExecutiveDtoAll CreateExecutiveDtoAll(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null, string businessUnits = null  )
+
+        public ExecutiveDtoAll CreateExecutiveDtoAll(string inspectorIDs = null, DateTime? startDate = null, DateTime? endDate = null, string businessUnits = null)
         {
-            var executiveList = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate , businessUnits);
+            var executiveList = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate, businessUnits);
             var summaryList = _executiveRepository.GetPvSummaries(startDate, endDate);
-            var getbusinessPorcentage = _executiveRepository.GetBusinessUnitPercentages();
+            var getbusinessPorcentage = _executiveRepository.GetBusinessUnitPercentages(businessUnits);
             var executivePVGraphic = _executiveRepository.GetExecutivePVGraphic();
 
             return new ExecutiveDtoAll
@@ -61,17 +62,21 @@ namespace TaskPlannerMetrum.Business.Implementations
                 GetPvSummaryList = summaryList,
                 businessUnitPercentages = getbusinessPorcentage,
                 executivePVgraphics = executivePVGraphic
-
             };
         }
+
+
 
         public List<ExecutivePvGraphicsResult> GetExecutivePvGraphicsOpenClose(bool? closed = null, bool? open = null)
         {
             return _executiveRepository.GetExecutivePvGraphicsOpenClose(closed, open);
-               
+
         }
+
+        
     }
 }
+
 
 
 

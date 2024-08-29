@@ -66,6 +66,43 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
             return pvExecutiveList;
         }
 
+        public List<BusinessUnitPercentage> GetBusinessUnitPercentages(string businessUnits = null)
+        {
+            var businessUnitPercentages = new List<BusinessUnitPercentage>();
+
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "[dbo].[GetBusinessUnitPercentage]";
+                command.CommandType = CommandType.StoredProcedure;
+
+                var businessUnitsParameter = command.CreateParameter();
+                businessUnitsParameter.ParameterName = "@BusinessUnits";
+                businessUnitsParameter.Value = string.IsNullOrEmpty(businessUnits) ? (object)DBNull.Value : businessUnits;
+                command.Parameters.Add(businessUnitsParameter);
+
+                _context.Database.OpenConnection();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var percentage = new BusinessUnitPercentage
+                        {
+                            BusinessUnit = reader.GetString(reader.GetOrdinal("BusinessUnit")),
+                            UnitCount = reader.GetInt32(reader.GetOrdinal("UnitCount")),
+                            Percentage = reader.GetDecimal(reader.GetOrdinal("Percentage"))
+                        };
+
+                        businessUnitPercentages.Add(percentage);
+                    }
+                }
+
+                _context.Database.CloseConnection();
+            }
+
+            return businessUnitPercentages;
+        }
+
 
 
 
@@ -108,34 +145,9 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
 
 
 
-        public List<BusinessUnitPercentage> GetBusinessUnitPercentages()
-        {
-            var businessUnitPercentages = new List<BusinessUnitPercentage>();
 
-            using (var command = _context.Database.GetDbConnection().CreateCommand())
-            {
-                command.CommandText = "[dbo].[GetBusinessUnitPercentage]";
-                command.CommandType = CommandType.StoredProcedure;
 
-                _context.Database.OpenConnection();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var percentage = new BusinessUnitPercentage
-                        {
-                            BusinessUnit = reader.GetString(reader.GetOrdinal("BusinessUnit")),
-                            UnitCount = reader.GetInt32(reader.GetOrdinal("UnitCount")),
-                            Percentage = reader.GetDecimal(reader.GetOrdinal("Percentage"))
-                        };
 
-                        businessUnitPercentages.Add(percentage);
-                    }
-                }
-            }
-
-            return businessUnitPercentages;
-        }
         public List<ExecutivePVgraphic> GetExecutivePVGraphic()
         {
             var executivePVgraphicList = new List<ExecutivePVgraphic>();
@@ -176,7 +188,7 @@ namespace TaskPlannerMetrum.Repository.PvExecutive
                 command.CommandText = "[dbo].[GetExecutivePvGraphicsOpenClose]";
                 command.CommandType = CommandType.StoredProcedure;
 
-          
+
                 var closedParameter = command.CreateParameter();
                 closedParameter.ParameterName = "@Closed";
                 closedParameter.Value = closed.HasValue ? (object)closed.Value : DBNull.Value;
