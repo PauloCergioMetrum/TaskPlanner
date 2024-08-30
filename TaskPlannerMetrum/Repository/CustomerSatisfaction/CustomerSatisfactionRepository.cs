@@ -126,6 +126,7 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                             {
                                 ID = reader.GetInt64(reader.GetOrdinal("ID")),
                                 ContractName = reader["ContractName"] as string,
+                                ContractID = reader.GetInt32(reader.GetOrdinal("ContractID")), 
                                 Contact = reader["Contact"] as string,
                                 LastExecutedDate = reader.IsDBNull(reader.GetOrdinal("LastExecutedDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastExecutedDate")),
                                 LastContactDate = reader.IsDBNull(reader.GetOrdinal("LastContactDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastContactDate")),
@@ -136,7 +137,9 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                                 StatusID = reader.GetInt32(reader.GetOrdinal("StatusID")),
                                 BusinessUnit = reader["BusinessUnit"] as string, 
                                 VendorName = reader["VendorName"] as string,
-                                InspectorName = reader["InspectorName"] as string
+                                InspectorName = reader["InspectorName"] as string,
+                            
+                                
                             };
 
                             contractDetailsList.Add(contractDetail);

@@ -5,6 +5,7 @@ namespace TaskPlannerMetrum.Model
     public class CustomerSastifaction
     {
         public long ID { get; set; }
+        public int ContractID { get; set; }     
         public string ContractName { get; set; }
         public string Contact { get; set; }
         public DateTime? LastExecutedDate { get; set; }
