@@ -21,33 +21,33 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public dynamic GetAllRatingProjectExecutor(int projectID, int UserID)
+        public dynamic GetAllRatingProjectExecutor(int MilestonesID, int UserID)
         {
-            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(projectID.ToString()).ToList();
+            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(MilestonesID).ToList();
             foreach (var user in UsersTasks)
             {
-                bool isTechLeader = _repository.IsTechLeader(user.ExecutorTeamID, projectID);
-                _repository.CreateRatingProjects(user.ExecutorTeamID, projectID);
-                _repository.CreateRatings(isTechLeader, user.ExecutorTeamID, projectID);
+                bool isTechLeader = _repository.IsTechLeader(user.ExecutorTeamID, MilestonesID);
+                _repository.CreateRatingProjects(user.ExecutorTeamID, MilestonesID);
+                _repository.CreateRatings(isTechLeader, user.ExecutorTeamID, MilestonesID);
             }
-            return _repository.GetAllRatingProject(projectID, UserID);
+            return _repository.GetAllRatingProject(MilestonesID, UserID);
         }
 
-        public dynamic GetAllRatingProjectLeader(int projectID, int userID)
+        public dynamic GetAllRatingProjectLeader(int MilestonesID, int userID)
         {
 
-            _repository.ExistLeaderID(projectID);
+            _repository.ExistLeaderID(MilestonesID);
 
-            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(projectID.ToString()).ToList();
+            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(MilestonesID).ToList();
 
 
             foreach (var user in UsersTasks)
             {
-                bool isTechLeader = _repository.IsTechLeader(user.ExecutorTeamID, projectID);
-                _repository.CreateRatingProjects(user.ExecutorTeamID, projectID);
-                _repository.CreateRatings(isTechLeader, user.ExecutorTeamID, projectID);
+                bool isTechLeader = _repository.IsTechLeader(user.ExecutorTeamID, MilestonesID);
+                _repository.CreateRatingProjects(user.ExecutorTeamID, MilestonesID);
+                _repository.CreateRatings(isTechLeader, user.ExecutorTeamID, MilestonesID);
             }
-            return _repository.GetAllRatingProject(projectID, userID);
+            return _repository.GetAllRatingProject(MilestonesID, userID);
         }
 
         public dynamic GetFiscalRatingProject(int contractID)
@@ -62,7 +62,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             //  BUSCAR NA TABELA DEPARTMENTPROJECTS TODOS OS TECHLEADER DO CONTRACTID (ID DO CONTRATO)
             _repository.ExistLeaderID(ContractID);
 
-            var usersListIDs = _activityPlanRepository.FindAllTaskByProject(ContractID.ToString()).Select(s => s.ExecutorTeamID).Distinct().ToList();
+            var usersListIDs = _activityPlanRepository.FindAllTaskByProject(ContractID).Select(s => s.ExecutorTeamID).Distinct().ToList();
             foreach (var userid in usersListIDs)
             {
                 if (_repository.ExistRating(userid, ContractID) == false)
