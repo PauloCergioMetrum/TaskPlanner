@@ -12,7 +12,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public bool Create(TaskPlannerMetrum.Model.ActivityPlan activityPlan);
 
-        public List<vActivePlans> FindAllTaskByProject(int MilestonesID);
+        public List<vActivePlans> FindAllTaskByProject(int MilestonesID ,int ContractID);
         public vActivityPlan GetActivityPlanById(int MilestonesID);
 
         public List<Milestone> FindAllMilestonesByContract(int contractID);

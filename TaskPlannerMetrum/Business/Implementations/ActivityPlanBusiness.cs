@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using TaskPlannerMetrum.Data.Converter.Implementations;
 using TaskPlannerMetrum.Model;
@@ -88,9 +89,9 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public dynamic GetActivityPlan(int MilestonesID)
+        public dynamic GetActivityPlan(int MilestonesID ,int ContractID)
         {
-            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID);
+            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID , ContractID);
             if (activitList == null || !activitList.Any())
             {
                 return new
@@ -144,9 +145,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetExecutorPlan(projectId);
         }
 
-        public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor)
+        public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor ,int ContractID)
         {
-            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID).OrderBy(s => s.ScheduledDate).AsEnumerable();
+            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID , ContractID).OrderBy(s => s.ScheduledDate).AsEnumerable();
             int totalRecords = activitList.Count();
             if (!string.IsNullOrEmpty(searchExecutor))
             {

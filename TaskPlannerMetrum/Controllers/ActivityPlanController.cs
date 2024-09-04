@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Threading;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Business.Implementations;
@@ -93,12 +94,12 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         //[TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult FindTask(int MilestonesID, int? page, int? size, string searchExecutor)
+        public IActionResult FindTask(int MilestonesID, int? page, int? size, string searchExecutor ,int ContractID)
         {
             int pageSize = (size ?? 10);
             int pageNumber = (page ?? 1);
 
-            return Ok(_activityPlanBusiness.TasksByProject(MilestonesID, pageNumber, pageSize, searchExecutor));
+            return Ok(_activityPlanBusiness.TasksByProject(MilestonesID, pageNumber, pageSize, searchExecutor , ContractID));
         }
 
 
@@ -136,11 +137,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult FindActivityPlan(int MilestonesID)
+        public IActionResult FindActivityPlan(int MilestonesID ,int ContractID)
         {
             try
             {
-                return Ok(_activityPlanBusiness.GetActivityPlan(MilestonesID));
+                return Ok(_activityPlanBusiness.GetActivityPlan(MilestonesID , ContractID));
 
             }
             catch (Exception ex)

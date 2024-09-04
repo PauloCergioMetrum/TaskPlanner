@@ -97,11 +97,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         //[TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult RatingRetroactive(int ContractId)
+        public IActionResult RatingRetroactive(int ContractId , int MilestonesID)
         {
             try
             {
-                _ratingBusiness.RatingRetroactive(ContractId);
+                _ratingBusiness.RatingRetroactive(ContractId , MilestonesID);
                 return Ok();
             }
             catch (Exception ex)

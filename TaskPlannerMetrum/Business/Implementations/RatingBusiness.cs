@@ -21,9 +21,9 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public dynamic GetAllRatingProjectExecutor(int MilestonesID, int UserID)
+        public dynamic GetAllRatingProjectExecutor(int MilestonesID, int UserID ,int ContractID)
         {
-            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(MilestonesID).ToList();
+            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(MilestonesID, ContractID).ToList();
             foreach (var user in UsersTasks)
             {
                 bool isTechLeader = _repository.IsTechLeader(user.ExecutorTeamID, MilestonesID);
@@ -33,12 +33,17 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _repository.GetAllRatingProject(MilestonesID, UserID);
         }
 
-        public dynamic GetAllRatingProjectLeader(int MilestonesID, int userID)
+        public dynamic GetAllRatingProjectExecutor(int projectID, int userID)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public dynamic GetAllRatingProjectLeader(int MilestonesID, int userID ,int ContractID)
         {
 
             _repository.ExistLeaderID(MilestonesID);
 
-            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(MilestonesID).ToList();
+            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(MilestonesID , ContractID).ToList();
 
 
             foreach (var user in UsersTasks)
@@ -50,19 +55,24 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _repository.GetAllRatingProject(MilestonesID, userID);
         }
 
+        public dynamic GetAllRatingProjectLeader(int projectID, int userID)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public dynamic GetFiscalRatingProject(int contractID)
         {
             _repository.UpdateManager(contractID);
             return _repository.GetRatingManager(contractID);
         }
 
-        public void RatingRetroactive(int ContractID)
+        public void RatingRetroactive(int ContractID ,int MilestonesID)
         {
 
             //  BUSCAR NA TABELA DEPARTMENTPROJECTS TODOS OS TECHLEADER DO CONTRACTID (ID DO CONTRATO)
             _repository.ExistLeaderID(ContractID);
 
-            var usersListIDs = _activityPlanRepository.FindAllTaskByProject(ContractID).Select(s => s.ExecutorTeamID).Distinct().ToList();
+            var usersListIDs = _activityPlanRepository.FindAllTaskByProject(MilestonesID, ContractID).Select(s => s.ExecutorTeamID).Distinct().ToList();
             foreach (var userid in usersListIDs)
             {
                 if (_repository.ExistRating(userid, ContractID) == false)

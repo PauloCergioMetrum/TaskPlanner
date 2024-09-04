@@ -182,10 +182,14 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
             catch { return false; }
         }
-        public List<vActivePlans> FindAllTaskByProject(int MilestonesID)
+        public List<vActivePlans> FindAllTaskByProject(int MilestonesID, int ContractID)
         {
-            return _context.vActivePlans.Where(c => c.MilestonesID == Convert.ToInt32(MilestonesID)).OrderBy(d => d.ScheduledDate).ToList();
+            return _context.vActivePlans
+                .Where(c => c.MilestonesID == MilestonesID && c.ContractID == ContractID)
+                .OrderBy(d => d.ScheduledDate)
+                .ToList();
         }
+
 
 
 
