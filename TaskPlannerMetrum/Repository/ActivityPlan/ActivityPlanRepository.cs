@@ -185,10 +185,12 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public List<vActivePlans> FindAllTaskByProject(int MilestonesID, int ContractID)
         {
             return _context.vActivePlans
-                .Where(c => c.MilestonesID == MilestonesID && c.ContractID == ContractID)
+                .Where(c => (MilestonesID == 0 ? c.MilestonesID == null : c.MilestonesID == MilestonesID)
+                            && c.ContractID == ContractID)
                 .OrderBy(d => d.ScheduledDate)
                 .ToList();
         }
+
 
 
 
@@ -752,9 +754,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             var milestones = _context.vActivePlans
                 .Where(m => m.ContractID == contractID)
                 .Select(m => new Milestone
-                {
-                    MilestonesID = m.MilestonesID,
-                    MilestoneName = m.MilestoneName
+                {  ContractID = m.ContractID,
+                    MilestonesID = m.MilestonesID == null ? 0 : m.MilestonesID,
+                    MilestoneName = m.MilestoneName   
                 })
                 .Distinct() 
                 .ToList();
