@@ -87,15 +87,9 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         }
 
-        public object UpdateRating(RatingDTOAll ratings)
+        public dynamic UpdateRating(RatingDTOAll ratings)
         {
-            return _repository.UpdateRating(ratings);
+            throw new System.NotImplementedException();
         }
-
-
-
-
-
-
     }
 }

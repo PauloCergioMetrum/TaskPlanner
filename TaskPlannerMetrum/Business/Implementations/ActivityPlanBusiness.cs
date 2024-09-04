@@ -291,5 +291,12 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _activiesRepository.FindAllMilestonesByContract(contractID);
         }
+
+        public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor)
+        {
+            throw new NotImplementedException();
+        }
+
+       
     }
 }

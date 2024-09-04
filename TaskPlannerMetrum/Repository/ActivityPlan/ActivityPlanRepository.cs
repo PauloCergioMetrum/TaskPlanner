@@ -749,16 +749,23 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public List<Milestone> FindAllMilestonesByContract(int contractID)
         {
-
             var milestones = _context.vActivePlans
                 .Where(m => m.ContractID == contractID)
                 .Select(m => new Milestone
                 {
                     MilestonesID = m.MilestonesID,
                     MilestoneName = m.MilestoneName
-                }).ToList();
+                })
+                .Distinct() 
+                .ToList();
 
             return milestones;
+        }
+
+
+        public List<vActivePlans> FindAllTaskByProject(int MilestonesID)
+        {
+            throw new NotImplementedException();
         }
     }
 }
