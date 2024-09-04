@@ -56,8 +56,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     IsRework = activityPlan.IsRework,
                     DepartamentID = activityPlan.DepartamentID,
                     BusinessUnit = activityPlan.BusinessUnit,
-                   // MilestonesID = activityPlan.MilestonesID,
-                    MilestonesID = activityPlan.MilestonesID == 0 ? (int?)null : activityPlan.MilestonesID,
+                    MilestonesID = activityPlan.MilestonesID,
+                    //MilestonesID = activityPlan.MilestonesID == 0 ? (int?)null : activityPlan.MilestonesID,
 
                     EquipmentID = activityPlan.EquipmentID,
                 });
@@ -182,11 +182,15 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
             catch { return false; }
         }
-
-        public List<vActivePlans> FindAllTaskByProject(string projectId)
+        public List<vActivePlans> FindAllTaskByProject(int MilestonesID, int ContractID)
         {
-            return _context.vActivePlans.Where(c => c.ContractID == Convert.ToInt32(projectId)).OrderBy(d => d.ScheduledDate).ToList();
+            return _context.vActivePlans
+                .Where(c => (MilestonesID == 0 ? c.MilestonesID == null : c.MilestonesID == MilestonesID)
+                            && c.ContractID == ContractID)
+                .OrderBy(d => d.ScheduledDate)
+                .ToList();
         }
+
 
 
 
@@ -301,10 +305,10 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
         }
 
-        public vActivityPlan GetActivityPlanById(string activityPlanId)
+        public vActivityPlan GetActivityPlanById(int MilestonesID)
         {
 
-            var activity = _context.ActivityPlan.FirstOrDefault(a => a.ID == Convert.ToInt32(activityPlanId));
+            var activity = _context.ActivityPlan.FirstOrDefault(a => a.MilestonesID == Convert.ToInt32(MilestonesID));
 
             if (activity == null)
             {
@@ -315,7 +319,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             var activityPlan = new vActivityPlan
             {
 
-                ID = Convert.ToInt32(activityPlanId),
+                ID = Convert.ToInt32(MilestonesID),
                 ExecutedManHour = activity.ExecutedManHour,
                 NotesFromExecutor = activity.NotesFromExecutor,
                 statusName = GetStatusName(activity.Status.ToString(), activity.ScheduledDate),
@@ -333,6 +337,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
             return activityPlan;
         }
+
 
 
 
@@ -742,6 +747,27 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public List<GetEquipamentAvaibilaity> GetEquipamentAvaibilaities(int EquipamentID, DateTime StartDate, DateTime EndDate)
         {
             return _context.GetEquipmentAvailability(EquipamentID, StartDate, EndDate);
+        }
+
+        public List<Milestone> FindAllMilestonesByContract(int contractID)
+        {
+            var milestones = _context.vActivePlans
+                .Where(m => m.ContractID == contractID)
+                .Select(m => new Milestone
+                {  ContractID = m.ContractID,
+                    MilestonesID = m.MilestonesID == null ? 0 : m.MilestonesID,
+                    MilestoneName = m.MilestoneName   
+                })
+                .Distinct() 
+                .ToList();
+
+            return milestones;
+        }
+
+
+        public List<vActivePlans> FindAllTaskByProject(int MilestonesID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -9,7 +9,7 @@
 
         public dynamic UpdateRating(Model.RatingDTOAll ratings);
 
-        public void RatingRetroactive(int ContractID);
+        public void RatingRetroactive(int ContractID ,int MilestonesID);
 
 
         public dynamic GetFiscalRatingProject(int ContractID);

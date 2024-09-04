@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using TaskPlannerMetrum.Data.Converter.Implementations;
 using TaskPlannerMetrum.Model;
@@ -56,8 +57,9 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.DepartamentID = activityPlan.DepartamentID;
                     task.TaskDescription = activityPlan.TaskDescription;
                     task.BusinessUnit = activityPlan.BusinessUnit;
-                    task.EquipmentID = activityPlan.EquipmentID == 0 ? (int?)null : activityPlan.EquipmentID;             
-                    task.MilestonesID = activityPlan.MilestonesID == 0 ? (int?)null : activityPlan.MilestonesID;
+                   task.EquipmentID = activityPlan.EquipmentID == 0 ? (int?)null : activityPlan.EquipmentID;
+                    task.MilestonesID = activityPlan.MilestonesID;
+                    //task.EquipmentID = activityPlan.EquipmentID;
 
 
                     _activiesRepository.Create(task);
@@ -86,42 +88,56 @@ namespace TaskPlannerMetrum.Business.Implementations
             return false;
         }
 
-        public dynamic GetActivityPlan(string activityId, int? MilestonesID, string MilestoneName)
+
+        public dynamic GetActivityPlan(int MilestonesID ,int ContractID)
         {
-            var activitList = _activiesRepository.FindAllTaskByProject(activityId);
-            if (activitList == null)
+            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID , ContractID);
+            if (activitList == null || !activitList.Any())
             {
                 return new
                 {
-                    MilestonesGroups = new List<object>(),
+                    Activities = new List<object>(),
                     totalRecords = 0
                 };
             }
 
-            var groupedActivities = activitList
-                .GroupBy(
-                    a => new
-                    {
-                        MilestonesID = a.MilestonesID ?? 0,
-                        MilestoneName = string.IsNullOrEmpty(a.MilestoneName) ? "Sem marco" : a.MilestoneName
-                    },
-                    (key, group) => new
-                    {
-                        MilestonesID = key.MilestonesID,
-                        MilestoneName = key.MilestoneName,
-                        Activities = group.ToList()
-                    })
-                .OrderBy(g => g.MilestonesID)
-                .ToList(); // Ensure the result is a list
-
             int totalRecords = activitList.Count();
+
             var result = new
             {
-                MilestonesGroups = groupedActivities,
+                Activities = activitList,
                 totalRecords = totalRecords
             };
 
             return result;
+        }
+
+
+        public dynamic GetMilestonesByContract(int contractID)
+        {
+            var milestonesList = _activiesRepository.FindAllMilestonesByContract(contractID);
+            if (milestonesList == null || !milestonesList.Any())
+            {
+                return new
+                {
+                    Milestones = new List<object>(),
+                    totalRecords = 0
+                };
+            }
+
+            var result = milestonesList.Select(m => new
+            {
+                m.MilestonesID,
+                m.MilestoneName
+            }).ToList();
+
+            int totalRecords = result.Count;
+
+            return new
+            {
+                Milestones = result,
+                totalRecords = totalRecords
+            };
         }
 
         public dynamic GetExecutorPlan(string projectId)
@@ -129,9 +145,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetExecutorPlan(projectId);
         }
 
-        public dynamic TasksByProject(string projectId, int? page, int? size, string searchExecutor)
+        public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor ,int ContractID)
         {
-            var activitList = _activiesRepository.FindAllTaskByProject(projectId).OrderBy(s => s.ScheduledDate).AsEnumerable();
+            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID , ContractID).OrderBy(s => s.ScheduledDate).AsEnumerable();
             int totalRecords = activitList.Count();
             if (!string.IsNullOrEmpty(searchExecutor))
             {
@@ -270,5 +286,17 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _activiesRepository.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate);
         }
+
+        public List<Milestone> FindAllMilestonesByContract(int contractID)
+        {
+            return _activiesRepository.FindAllMilestonesByContract(contractID);
+        }
+
+        public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor)
+        {
+            throw new NotImplementedException();
+        }
+
+       
     }
 }

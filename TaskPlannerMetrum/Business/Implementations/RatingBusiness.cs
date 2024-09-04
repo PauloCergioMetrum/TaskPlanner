@@ -21,33 +21,43 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public dynamic GetAllRatingProjectExecutor(int projectID, int UserID)
+        public dynamic GetAllRatingProjectExecutor(int MilestonesID, int UserID ,int ContractID)
         {
-            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(projectID.ToString()).ToList();
+            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(MilestonesID, ContractID).ToList();
             foreach (var user in UsersTasks)
             {
-                bool isTechLeader = _repository.IsTechLeader(user.ExecutorTeamID, projectID);
-                _repository.CreateRatingProjects(user.ExecutorTeamID, projectID);
-                _repository.CreateRatings(isTechLeader, user.ExecutorTeamID, projectID);
+                bool isTechLeader = _repository.IsTechLeader(user.ExecutorTeamID, MilestonesID);
+                _repository.CreateRatingProjects(user.ExecutorTeamID, MilestonesID);
+                _repository.CreateRatings(isTechLeader, user.ExecutorTeamID, MilestonesID);
             }
-            return _repository.GetAllRatingProject(projectID, UserID);
+            return _repository.GetAllRatingProject(MilestonesID, UserID);
+        }
+
+        public dynamic GetAllRatingProjectExecutor(int projectID, int userID)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public dynamic GetAllRatingProjectLeader(int MilestonesID, int userID ,int ContractID)
+        {
+
+            _repository.ExistLeaderID(MilestonesID);
+
+            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(MilestonesID , ContractID).ToList();
+
+
+            foreach (var user in UsersTasks)
+            {
+                bool isTechLeader = _repository.IsTechLeader(user.ExecutorTeamID, MilestonesID);
+                _repository.CreateRatingProjects(user.ExecutorTeamID, MilestonesID);
+                _repository.CreateRatings(isTechLeader, user.ExecutorTeamID, MilestonesID);
+            }
+            return _repository.GetAllRatingProject(MilestonesID, userID);
         }
 
         public dynamic GetAllRatingProjectLeader(int projectID, int userID)
         {
-
-            _repository.ExistLeaderID(projectID);
-
-            var UsersTasks = _activityPlanRepository.FindAllTaskByProject(projectID.ToString()).ToList();
-
-
-            foreach (var user in UsersTasks)
-            {
-                bool isTechLeader = _repository.IsTechLeader(user.ExecutorTeamID, projectID);
-                _repository.CreateRatingProjects(user.ExecutorTeamID, projectID);
-                _repository.CreateRatings(isTechLeader, user.ExecutorTeamID, projectID);
-            }
-            return _repository.GetAllRatingProject(projectID, userID);
+            throw new System.NotImplementedException();
         }
 
         public dynamic GetFiscalRatingProject(int contractID)
@@ -56,13 +66,13 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _repository.GetRatingManager(contractID);
         }
 
-        public void RatingRetroactive(int ContractID)
+        public void RatingRetroactive(int ContractID ,int MilestonesID)
         {
 
             //  BUSCAR NA TABELA DEPARTMENTPROJECTS TODOS OS TECHLEADER DO CONTRACTID (ID DO CONTRATO)
             _repository.ExistLeaderID(ContractID);
 
-            var usersListIDs = _activityPlanRepository.FindAllTaskByProject(ContractID.ToString()).Select(s => s.ExecutorTeamID).Distinct().ToList();
+            var usersListIDs = _activityPlanRepository.FindAllTaskByProject(MilestonesID, ContractID).Select(s => s.ExecutorTeamID).Distinct().ToList();
             foreach (var userid in usersListIDs)
             {
                 if (_repository.ExistRating(userid, ContractID) == false)
@@ -77,15 +87,9 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         }
 
-        public object UpdateRating(RatingDTOAll ratings)
+        public dynamic UpdateRating(RatingDTOAll ratings)
         {
-            return _repository.UpdateRating(ratings);
+            throw new System.NotImplementedException();
         }
-
-
-
-
-
-
     }
 }
