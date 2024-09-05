@@ -14,7 +14,11 @@ namespace TaskPlannerMetrum.Model.DTO
         public string ClientResponse { get; set; }
         public int ClientRating { get; set; }
         public string ReceivedComplaint { get; set; }
-        public int ContractID { get; set; }     
+        public int ContractID { get; set; }
+        public DateTime FeedbackDate {  get; set; } 
+
+
+
 
     }
 
