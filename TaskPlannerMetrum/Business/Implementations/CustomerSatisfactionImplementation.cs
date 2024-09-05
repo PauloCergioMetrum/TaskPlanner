@@ -15,7 +15,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             _repository = customerSatisfactionRepository;
         }
 
-        public List<CustomerSatisfactionDTO> ClientFeedbackDetailsModel(int contractID)
+        public List<ClientFeedbackDetailsView> ClientFeedbackDetailsModel(int contractID)
         {
             return _repository.ClientFeedbackDetailsModel(contractID);
         }

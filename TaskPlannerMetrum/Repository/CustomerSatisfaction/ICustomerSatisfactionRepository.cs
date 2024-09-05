@@ -10,7 +10,7 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
     {
 
 
-        public List<CustomerSatisfactionDTO> ClientFeedbackDetailsModel(int contractID);
+        public List<ClientFeedbackDetailsView> ClientFeedbackDetailsModel(int contractID);
         public bool CreateCustomerFeedback(DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint);
         public List<CustomerSastifaction> CustomerSastifaction();
 

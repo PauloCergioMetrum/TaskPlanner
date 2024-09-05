@@ -21,51 +21,11 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
             _context = context;
         }
 
-        public List<CustomerSatisfactionDTO> ClientFeedbackDetailsModel(int contractID)
+        public List<ClientFeedbackDetailsView> ClientFeedbackDetailsModel(int contractID)
         {
-            List<CustomerSatisfactionDTO> feedbackDetailsList = new List<CustomerSatisfactionDTO>();
-
-            using (var connection = new SqlConnection(_context.Database.GetDbConnection().ConnectionString))
-            {
-                using (var command = new SqlCommand("[dbo].[GetClientFeedbackDetails]", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    var parameter = command.CreateParameter();
-                    parameter.ParameterName = "@ContractID";
-                    parameter.Value = contractID;
-                    command.Parameters.Add(parameter);
-
-                    connection.Open();
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var feedbackDetail = new CustomerSatisfactionDTO
-                            {
-                                ID = reader.GetInt64(reader.GetOrdinal("ID")),
-                                ContractName = reader["ContractName"] as string,
-                                Contact = reader["Contact"] as string,
-                                Scope = reader["Scope"] as string,
-                                LastExecutedDate = reader.IsDBNull(reader.GetOrdinal("LastExecutedDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastExecutedDate")),
-                                LastContactDate = reader.IsDBNull(reader.GetOrdinal("LastContactDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastContactDate")),
-                                ClientResponse = reader["ClientResponse"] as string,
-                                ClientRating = reader.IsDBNull(reader.GetOrdinal("ClientRating")) ? 0 : reader.GetInt32(reader.GetOrdinal("ClientRating")),
-                                ReceivedComplaint = reader["ReceivedComplaint"] as string
-                            };
-
-                            feedbackDetailsList.Add(feedbackDetail);
-                        }
-                    }
-
-                    connection.Close();
-                }
-            }
-
-            return feedbackDetailsList;
+             var ExixteContractID = _context.ClientFeedbackDetailsView.Where(a => a.ContractID == contractID).ToList();
+            return ExixteContractID;
         }
-
 
         public bool CreateCustomerFeedback(DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint)
         {
