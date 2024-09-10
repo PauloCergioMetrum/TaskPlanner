@@ -56,6 +56,8 @@ namespace TaskPlannerMetrum.Business
 
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
+        public List<vPM_SummaryPlannedData> Tapscope(int contractID);
+
 
 
 

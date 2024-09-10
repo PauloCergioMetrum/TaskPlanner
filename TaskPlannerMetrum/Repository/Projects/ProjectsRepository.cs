@@ -21,6 +21,7 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TaskPlannerMetrum.Model.DTO;
+using DocumentFormat.OpenXml.Presentation;
 //using TaskPlannerMetrum.Model;
 
 
@@ -657,6 +658,16 @@ namespace TaskPlannerMetrum.Repository.Projects
             }
 
             return vContractProjects;
+        }
+
+        public List<vPM_SummaryPlannedData> Tapscope(int contractID)
+        {
+           
+            var tapList = _context.vPM_SummaryPlannedData
+                           .Where(spd => spd.ContractID == contractID)
+                           .ToList();
+
+            return tapList;
         }
 
     }
