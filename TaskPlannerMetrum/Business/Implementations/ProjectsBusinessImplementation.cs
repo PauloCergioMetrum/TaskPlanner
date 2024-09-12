@@ -259,7 +259,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectRepository.GetAllContractProjectByTechLeader(TechLeaderID, InspectorName);
         }
 
-        
+        public List<vPM_SummaryPlannedData> Tapscope(int contractID)
+        {
+              return  _projectRepository.Tapscope(contractID);  
+        }
     }
 
 

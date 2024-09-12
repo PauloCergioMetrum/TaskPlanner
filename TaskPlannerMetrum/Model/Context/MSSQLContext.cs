@@ -116,6 +116,8 @@ namespace TaskPlannerMetrum.Model.Context
 
 
 
+        public DbSet<vPM_SummaryPlannedData> VPM_SummaryPlannedData {  get; set; }  
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HoursExecutor>().HasNoKey();

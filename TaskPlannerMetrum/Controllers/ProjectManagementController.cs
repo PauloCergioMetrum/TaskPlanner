@@ -16,18 +16,15 @@ namespace TaskPlannerMetrum.Controllers
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
     [Authorize(Roles = "1,4,DEPCNT")]
-
     public class ProjectManagementController : ControllerBase
     {
-
         private readonly IProjectManagementBusiness _projectManagementBusiness;
-
         public ProjectManagementController(IProjectManagementBusiness projectManagementBusiness)
         {
             _projectManagementBusiness = projectManagementBusiness;
         }
 
-       
+
 
 
         [HttpGet("GetOrderInfo")]
@@ -292,7 +289,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-      
+
 
         [HttpDelete("DeleteTypeOf")]
         [ProducesResponseType(200)]
@@ -312,7 +309,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-       
+
 
         [HttpPost("CreateOrUpdatePredictedCost")]
         [ProducesResponseType(200)]
@@ -955,7 +952,7 @@ namespace TaskPlannerMetrum.Controllers
 
         //MARCO  FATURADO 
 
-        
+
 
         [HttpGet("GetAllMilestonesItem")]
         [ProducesResponseType(200)]

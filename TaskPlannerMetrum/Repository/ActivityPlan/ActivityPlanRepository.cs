@@ -5,6 +5,8 @@
 
 using log4net.Util;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using MySqlConnector;
 using System;
@@ -57,7 +59,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     DepartamentID = activityPlan.DepartamentID,
                     BusinessUnit = activityPlan.BusinessUnit,
                     MilestonesID = activityPlan.MilestonesID,
-                    EquipmentID =activityPlan.EquipmentID,
+                    //MilestonesID = activityPlan.MilestonesID == 0 ? (int?)null : activityPlan.MilestonesID,
+
+                    EquipmentID = activityPlan.EquipmentID,
                 });
                 _context.SaveChanges();
 
@@ -180,11 +184,15 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
             catch { return false; }
         }
-
-        public List<vActivePlans> FindAllTaskByProject(string projectId)
+        public List<vActivePlans> FindAllTaskByProject(int MilestonesID, int ContractID)
         {
-            return _context.vActivePlans.Where(c => c.ContractID == Convert.ToInt32(projectId)).OrderBy(d => d.ScheduledDate).ToList();
+            return _context.vActivePlans
+                .Where(c => (MilestonesID == 0 ? c.MilestonesID == null : c.MilestonesID == MilestonesID)
+                            && c.ContractID == ContractID)
+                .OrderBy(d => d.ScheduledDate)
+                .ToList();
         }
+
 
 
 
@@ -299,10 +307,10 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
         }
 
-        public vActivityPlan GetActivityPlanById(string activityPlanId)
+        public vActivityPlan GetActivityPlanById(int MilestonesID)
         {
 
-            var activity = _context.ActivityPlan.FirstOrDefault(a => a.ID == Convert.ToInt32(activityPlanId));
+            var activity = _context.ActivityPlan.FirstOrDefault(a => a.MilestonesID == Convert.ToInt32(MilestonesID));
 
             if (activity == null)
             {
@@ -313,7 +321,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             var activityPlan = new vActivityPlan
             {
 
-                ID = Convert.ToInt32(activityPlanId),
+                ID = Convert.ToInt32(MilestonesID),
                 ExecutedManHour = activity.ExecutedManHour,
                 NotesFromExecutor = activity.NotesFromExecutor,
                 statusName = GetStatusName(activity.Status.ToString(), activity.ScheduledDate),
@@ -331,6 +339,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
             return activityPlan;
         }
+
 
 
 
@@ -367,7 +376,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID == 0 ? newActivityPlan.ExecutorTeamID : activityPlan.ExecutorTeamID;
             newActivityPlan.MilestonesID = activityPlan.MilestonesID;
             newActivityPlan.EquipmentID = activityPlan.EquipmentID;
-            newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID;
+           
 
             _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
@@ -740,6 +749,73 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public List<GetEquipamentAvaibilaity> GetEquipamentAvaibilaities(int EquipamentID, DateTime StartDate, DateTime EndDate)
         {
             return _context.GetEquipmentAvailability(EquipamentID, StartDate, EndDate);
+        }
+
+
+        public List<Milestone> FindAllMilestonesByContract(int contractID)
+        {
+            List<Milestone> milestoneDetails = new List<Milestone>();
+
+            try
+            {
+                using (var command = _context.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = "EXECUTE [dbo].[GetMilestoneDetails] @ContractID";
+                    command.Parameters.Add(new SqlParameter("@ContractID", contractID));
+
+                    _context.Database.OpenConnection();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int index = 0;
+                            var detail = new Milestone
+                            {
+                                ContractID = reader.GetInt32(index++),
+                                MilestonesID = reader.IsDBNull(index) ? null : (int?)reader.GetValue(index++),
+                                MilestoneName = reader.IsDBNull(index) ? null : reader.GetString(index++),
+                                TechLeadID = reader.IsDBNull(index) ? null : (int?)reader.GetInt32(index++),
+                                UserName = reader.IsDBNull(index) ? null : reader.GetString(index++),
+                                BusinessUnitID = reader.IsDBNull(index) ? null : (int?)reader.GetInt32(index++),
+                                BusinessUnit = reader.IsDBNull(index) ? null : reader.GetString(index++),
+                                Delayed = reader.IsDBNull(index) ? null : (int?)reader.GetValue(index++),
+                            };
+
+                            milestoneDetails.Add(detail);
+                        }
+                    }
+                }
+
+                return milestoneDetails;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
+
+
+        //public List<Milestone> FindAllMilestonesByContract(int contractID)
+        //{
+        //    var milestones = _context.vActivePlans
+        //        .Where(m => m.ContractID == contractID)
+        //        .Select(m => new Milestone
+        //        {  ContractID = m.ContractID,
+        //            MilestonesID = m.MilestonesID == null ? 0 : m.MilestonesID,
+        //            MilestoneName = m.MilestoneName   
+        //        })
+        //        .Distinct() 
+        //        .ToList();
+
+        //    return milestones;
+        //}
+
+
+        public List<vActivePlans> FindAllTaskByProject(int MilestonesID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

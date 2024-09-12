@@ -441,6 +441,28 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
+        [HttpGet("Tapscope")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult Tapscope(int ContractID)
+        {
+            try
+            {
+                return Ok(_projectBusiness.Tapscope(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
 
     }
 }
