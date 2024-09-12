@@ -220,6 +220,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
             return _context.Set<OperationalRelationshipTable>().FromSqlRaw(sql).ToList();
         }
+
         public List<OptionsFilterTechLead> GetAllTechLeader()
         {
 

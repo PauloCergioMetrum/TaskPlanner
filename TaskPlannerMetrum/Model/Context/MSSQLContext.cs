@@ -70,6 +70,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<PM_TAP_General_Info> PM_TAP_General_Info { get; set; }
         public DbSet<PM_TAP_Scope> PM_TAP_Scope { get; set; }
         public DbSet<PM_Information_General> PM_Information_General { get; set; }
+        public DbSet<Satisfaction_Customer> Satisfaction_Customer {  get; set; }    
 
         public DbSet<PM_TAP_Resources> PM_TAP_Resources { get; set; }
         public DbSet<PM_MilestonesType> PM_MilestonesType { get; set; }
@@ -110,6 +111,10 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<Management> Management { get; set; }
         public DbSet<vPmCostPlanned> vPmCostPlanned {  get; set; }
         public DbSet<vPm_Cost_Planned> vPm_Cost_Planned { get; set; }
+        public DbSet<ClientFeedbackDetailsView> ClientFeedbackDetailsView { get; set; }
+
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

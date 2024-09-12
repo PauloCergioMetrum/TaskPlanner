@@ -15,7 +15,7 @@ namespace TaskPlannerMetrum.Model.DTO
 
     public class TeamAllocationDTO
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string SaleOrder { get; set; }
         public string Client { get; set; }
         public string BusinessUnit { get; set; }
@@ -24,6 +24,8 @@ namespace TaskPlannerMetrum.Model.DTO
         public DateTime ScheduledDate { get; set; }
         public string ScheduledDateFormatted { get; set; }
         public string Executor { get; set; }
+
+        public string FunctionName { get; set; }
 
         public class TeamAllocationGraphicDTO
         {
@@ -36,8 +38,11 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public class GetTeamAllocationGraphicFunctions
         {
-            public string SeniorityLevel { get; set; }
+            public string FunctionName { get; set; }
             public int Quantity { get; set; }
+            public int id { get; set; }
+
+
         }
 
         public class GetTeamAllocationCards

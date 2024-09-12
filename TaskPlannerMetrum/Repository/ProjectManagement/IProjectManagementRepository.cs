@@ -129,6 +129,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool DeleteFunctionID(string ID);
         public bool DeletePM_MilestonesType(string ID);
 
+        public List<MilestonesItem> GetAllMilestones();
+
 
 
     }

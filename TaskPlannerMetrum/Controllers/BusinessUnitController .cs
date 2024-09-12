@@ -45,20 +45,6 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        //[HttpGet]
-        //[Route("GetBusinessUni")]
-        //public IActionResult GetAllBuninesUnit()
-        //{
-        //    try
-        //    {
-        //        var businessUnits = GetBusinessUni.GetBusinessUni();
-        //        return Ok(businessUnits);
-        //    }
-        //    catch (Exception ex)
-        //    {
-          
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+    
     }
 }
