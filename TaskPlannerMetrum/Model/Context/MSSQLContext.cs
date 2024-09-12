@@ -106,7 +106,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPmCostPlanned> vPmCostPlanned {  get; set; }
         public DbSet<vPm_Cost_Planned> vPm_Cost_Planned { get; set; }
 
-        public DbSet<vPM_SummaryPlannedData> vPM_SummaryPlannedData {  get; set; }  
+        public DbSet<vPM_SummaryPlannedData> VPM_SummaryPlannedData {  get; set; }  
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

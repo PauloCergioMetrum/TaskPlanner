@@ -4,14 +4,15 @@ namespace TaskPlannerMetrum.Model.ModelViews
 {
     public class vPM_SummaryPlannedData
     {
-        public string ID { get; set; } 
-        public double ValueUnit { get; set; }
-        public int Amount { get; set; }
-        public double TypeID { get; set; }
-        public string OutsourceDescription { get; set; }
+        public int Id { get; set; }
+        // public string ID { get; set; } 
+        //public double ValueUnit { get; set; }
+        //public int Amount { get; set; }
+        // public double TypeID { get; set; }
+        //public string OutsourceDescription { get; set; }
         public int ContractID { get; set; }
-        public bool Subcontracting { get; set; }
-        public int TypeAcquisitionID { get; set; }
+        //public bool Subcontracting { get; set; }
+        //public int TypeAcquisitionID { get; set; }
         public int AmountPlanned { get; set; }
         public string AcquisitionDescription { get; set; }
         public double AmountValue { get; set; }

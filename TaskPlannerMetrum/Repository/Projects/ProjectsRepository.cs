@@ -663,7 +663,7 @@ namespace TaskPlannerMetrum.Repository.Projects
         public List<vPM_SummaryPlannedData> Tapscope(int contractID)
         {
            
-            var tapList = _context.vPM_SummaryPlannedData
+            var tapList = _context.VPM_SummaryPlannedData
                            .Where(spd => spd.ContractID == contractID)
                            .ToList();
 
