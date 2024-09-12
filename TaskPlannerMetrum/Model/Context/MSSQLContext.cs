@@ -73,6 +73,11 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<PM_TAP_Resources> PM_TAP_Resources { get; set; }
         public DbSet<PM_MilestonesType> PM_MilestonesType { get; set; }
+
+
+        public DbSet<PM_TAP_Resources> PM_TAP_Resources { get; set; }
+
+        
         //VIEWS
         public DbSet<vPmCostMade> vPmCostMade { get; set; }     
         public DbSet<vCalendar> vCalendar { get; set; }
@@ -121,11 +126,20 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<BalancePerProject>().HasNoKey();
             modelBuilder.Entity<GetNumberOfContractsForBusinessUnit>().HasNoKey();
             modelBuilder.Entity<OperationalRelationshipTable>().HasNoKey();
+
+            modelBuilder.Entity<PredictedInvoiced>().HasNoKey();
+            modelBuilder.Entity<MaterialServices>().HasNoKey();
+            modelBuilder.Entity<BillingPerBusinessUnit>().HasNoKey();
+            modelBuilder.Entity<ReportDetailsTable>().HasNoKey();
+            modelBuilder.Entity<GoalRealizationReport>().HasNoKey();
+
             modelBuilder.Entity<ActivityPlanHH>().HasNoKey();
             modelBuilder.Entity<ActivityPlanHHTable>().HasNoKey();
 
 
 
+
+            
         }
 
 
