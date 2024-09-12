@@ -15,7 +15,7 @@ namespace TaskPlannerMetrum.Business
 
         bool UpdateHourCost(UserHourCosts userHourCost);
 
-        List<UserHourCosts> ListUserHoursCost(int userID);
+        public List<UserHourCostsDTO> ListUserHoursCost(int userID);
 
 
 
