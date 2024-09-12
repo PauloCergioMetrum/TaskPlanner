@@ -46,6 +46,8 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string? EquipamentName { get; set; }
 
         public int? EquipamentID { get; set; }
+        //public int MilestonesID { get; set; }   
+        public string MilestoneName {  get; set; }  
 
 
 

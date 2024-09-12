@@ -19,8 +19,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreateMilestonesValue(MilestonesValue milestones);
         public bool CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions);
         public bool CreateAcquisitionMadeItem(PMAcquisitionMade acquisitionMade);
-       // public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
-        //public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade);
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);
         public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade);
@@ -30,8 +28,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreatScopeTraking(PM_Scope_Traking pMScopeTraking);
         public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change);
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto);
-        public bool CreatePM_MilestonesType(PM_MilestonesType dto);
-        
+        public bool CreatePM_MilestonesType(PM_MilestonesType dto);       
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
 
        
@@ -59,8 +56,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool UpdateInfoGenralClients(int contractId, List<PM_Information_General> contactClients );
         public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope);
         public bool UpdateResouces(int ContractID, PM_TAP_Resources UpdateResouces);
-
-       // public bool UpdateInfoContract(int contractId, ProjectManagementGeneralInfo infoContract)
         public Model.Contracts GetForecastByID(int id);
 
 
@@ -70,22 +65,20 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
         public vContractList GetForecastByIDView(int id);
-
         public List<GetMilestones> GetMilestonesNames(int contractID);
-
+        public List<MilestonesItem> GetMilestoneItem(int contractID);
         public MilestonesValue GetMilestonesValueByID(int milestonesID);
         public List<Positions> GetPositionsByGrup();
         public bool ExistAcquisition(string ID);
         public bool ExistAcquisitionMade(string ID);
         public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
-        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
-        public List<PmTypeCost> GetTypeOfCost(int ContractID);
-        public List<PmCostPlanned> GetPmCostPlanned(int ContractID);
-        public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID); 
+        public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID);
+        public List<vPmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
         public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
-        public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
+        public List<vPM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
         public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames();
         public List<vPM_OutsourcedServices_Combined> GetOutsourcedServicesCombined(int ContractID);
         public List<vPM_OutsourcedServices_Made_Combined> GetOutsourcedServicesCombinedMade(string ID_OutsourcedServices_Planned);
@@ -95,25 +88,32 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<PM_Scope_Traking> GetScopeTrajing(int ContractID);
         public List<PM_Scope_Change> GetScopeChanges(int ContractID);
         public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
+     
+
+        
         public List<Functions> GetAllFunctions();
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID);
         public List<DisplacementServices> GetAllDisplacementServices();
         public List<vPM_MilestoneType> GetAllPM_MilestonesType(string MilestonesValueID);
-
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
-
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();
-
         public List<UserVO> GetAllUsersGercon();
-
-
-
         public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId);
+        public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID);
+        public List<ActivityPlanHH> ActivityPlanHH(int contractID);
+        public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID);
+        public ActivityPlanHHDetail GetActivityPlanDetails(int contractID);
+
+
+
+
 
 
         // DELETE Methods
-        public bool DeleteMilestones(string ID);
+
+        public bool MilesTonesDelete(int ID);
+        public bool DeleteMilestones(string ID, int MilestonesID);
         public bool DeleteAcquisition(string ID);
         public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
         public bool DeleteTypeOfCost(int ID);

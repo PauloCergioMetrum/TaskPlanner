@@ -134,12 +134,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult FindActivityPlan(string activityId)
+        public IActionResult FindActivityPlan(string activityId, int? MilestonesID, string MilestoneName)
         {
             try
             {
-                return Ok(_activityPlanBusiness.GetActivityPlan(activityId));
+                return Ok(_activityPlanBusiness.GetActivityPlan(activityId , MilestonesID ,MilestoneName));
 
             }
             catch (Exception ex)

@@ -19,5 +19,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public double TotalMade { get; set; }
         public double TotalPlanned { get; set; }
         public double Difference { get; set; }
+        public double TotalOfEverything {  get; set; }  
+
     }
 }

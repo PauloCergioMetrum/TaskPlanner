@@ -16,54 +16,32 @@ namespace TaskPlannerMetrum.Business
 
 
         public bool CreateMilesTones(MilesTonesDTO milesTones);
-
-        // List<int> GetMilestonesNames(MilestonesItem ,int contractID);
-
-
         public List<GetMilestones> GetMilestonesNames(int contractID);
-
-
         public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO);
-        public bool DeleteMilestones(string ID);
-
-
+        public bool DeleteMilestones(string ID, int MilestonesID);
+        public bool MilesTonesDelete(int ID);
         public List<Positions> GetPositionsByGrup();
-
         public bool CreateAcquisitionsPlanned(AcquisitionsDTO acquisitions);
-
         public bool DeleteAcquisition(string ID);
-
         public bool UpdateAcquisition(AcquisitionsDTO acquisitions);
-
         public bool CreateAcquisitionsMade(AcquisitionMadeDTO acquisitionMade);
-
         public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
-
         public bool UpdateAcquisitionMadeItem(AcquisitionMadeDTO acquisitionMade);
-
         public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
-
         public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
-
-        //public bool CreateTypeOfCost(PmTypeCost pmTypeCost);
-        public bool DeleteTypeOfCost(int ID);
-        public List<PmTypeCost> GetTypeOfCost(int ContractID);
-
-        //public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
+        public bool DeleteTypeOfCost(int ID); 
         public bool DeletePredictedCost(string ID);
-        public List<PmCostPlanned> GetPmCostPlanned(int ContractID);
+        public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID);
 
         public bool CreateOrUpdateCostMade(PmCostMade pmCostMade);
         public bool DeleteCostMade(string ID);
 
         public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
-        public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
+        public List<vPmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
 
-
-
-
-
+        public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID);
+        public List<MilestonesItem> GetMilestoneItem(int contractID);
         public int existMilesStonesValue(string ID);
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
 
@@ -71,7 +49,7 @@ namespace TaskPlannerMetrum.Business
         //MOBILIZAÇÃO 
         public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
 
-        public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
+        public List<vPM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
 
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);
 
@@ -79,13 +57,13 @@ namespace TaskPlannerMetrum.Business
 
         public bool UpdateMobilization(string ID);
         public bool UpdateMobilizationMaded(string ID);
-
         public bool DeleteMobilization(string ID);
         public bool DeleteMobilizationMade(string ID);
 
-
-
         public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames();
+        public List<ActivityPlanHH> ActivityPlanHH(int contractID);
+        public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID);
+        public ActivityPlanHHDetail GetActivityPlanDetails(int contractID);
 
 
         public List<vPM_OutsourcedServices_Combined> GetOutsourcedServicesCombined(int ContractID);
@@ -137,6 +115,7 @@ namespace TaskPlannerMetrum.Business
 
 
         public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
+
 
         //LISTA DE FUNÇÃO , 
         public List<Functions> GetAllFunctions();

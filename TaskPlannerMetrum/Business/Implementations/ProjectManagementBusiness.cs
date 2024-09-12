@@ -94,6 +94,10 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.existMilesStonesValue(ID);
         }
+        public bool MilesTonesDelete(int ID)
+        {
+            return _projectmanagementRepository.MilesTonesDelete(ID);
+        }
 
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID)
         {
@@ -154,9 +158,9 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public bool DeleteMilestones(string ID)
+        public bool DeleteMilestones(string ID, int MilestonesID)
         {
-            return _projectmanagementRepository.DeleteMilestones(ID);
+            return _projectmanagementRepository.DeleteMilestones(ID , MilestonesID);
         }
 
 
@@ -275,6 +279,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                         Value = acquisitionMade.Value,
                         DateAcquisition = acquisitionMade.DateAcquisition,
                         DateAcquisitionDelivery = acquisitionMade.DateAcquisitionDelivery,
+                        Description = acquisitionMade.Description,
                     });
                     return true;
 
@@ -342,28 +347,21 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
         }
 
-        //public bool CreateTypeOfCost(PmTypeCost pmTypeCost)
-        //{
-        //    return _projectmanagementRepository.CreateTypeOfCost((PmTypeCost)pmTypeCost);
-        //}
+
 
         public bool DeleteTypeOfCost(int ID)
         {
             return _projectmanagementRepository.DeleteTypeOfCost(ID);
         }
 
-        public List<PmTypeCost> GetTypeOfCost(int ContractID)
-        {
-            return (_projectmanagementRepository.GetTypeOfCost(ContractID));
-        }
 
-      
+
         public bool DeletePredictedCost(string ID)
         {
             return _projectmanagementRepository.DeletePredictedCost(ID);
         }
 
-        public List<PmCostPlanned> GetPmCostPlanned(int ContractID)
+        public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID)
         {
             return _projectmanagementRepository.GetPmCostPlanned(ContractID);
         }
@@ -380,7 +378,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public List<PmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
+        public List<vPmCostMade> GetPmCostMade(string Pm_Cost_PlannedID)
         {
             return _projectmanagementRepository.GetPmCostMade(Pm_Cost_PlannedID);
         }
@@ -399,7 +397,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetMobilization(contractID);
         }
 
-        public List<PM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID)
+        public List<vPM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID)
         {
             return _projectmanagementRepository.GetMobilizationMade(mobilizationPlannedID);
         }
@@ -615,6 +613,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllMilestonesItem(contractID);
         }
 
+    
+
+        
+
         public List<Functions> GetAllFunctions()
         {
             return _projectmanagementRepository.GetAllFunctions();
@@ -675,7 +677,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         public bool UpdateInfoGeneral(ProjectInfoGeneralDTO infoGneral)
         {
             //atualizar escopo
-            if(_projectmanagementRepository.UpdateScopeInfo(infoGneral.ContractID, infoGneral.Scopes ) == false) return false;
+            if (_projectmanagementRepository.UpdateScopeInfo(infoGneral.ContractID, infoGneral.Scopes) == false) return false;
 
             if (_projectmanagementRepository.UpdateResouces(infoGneral.ContractID, infoGneral.Resources) == false) return false;
 
@@ -687,7 +689,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             //Atualizar informações gerais Partes Interesadas
             if (_projectmanagementRepository.UpdateInfoGenralClients(infoGneral.ContractID, infoGneral.ProjectInfo.ContactClients) == false) return false;
 
-   
+
 
 
 
@@ -712,25 +714,46 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope)
         {
-            return _projectmanagementRepository.UpdateProjectScope(ID, updatedScope);   
+            return _projectmanagementRepository.UpdateProjectScope(ID, updatedScope);
         }
 
         public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId)
         {
-           return _projectmanagementRepository.GetProjectInfoByContractId(contractId);
+            return _projectmanagementRepository.GetProjectInfoByContractId(contractId);
         }
 
         public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned)
         {
-             return _projectmanagementRepository.CreateOrUpdatePredictedCost(pmCostPlanned);
+            return _projectmanagementRepository.CreateOrUpdatePredictedCost(pmCostPlanned);
         }
 
-        //public List<ProjectCreationRequestDTO> GetAllProjectCharter(int contractId)
-        //{
-        //    return _projectmanagementRepository.GetAllProjectCharter(contractId);   
-        //}
+        public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID)
+        {
+            return _projectmanagementRepository.GetAllBussinesUnit(ContractID);
+        }
+
+        public List<MilestonesItem> GetMilestoneItem(int contractID)
+        {
+            return _projectmanagementRepository.GetMilestoneItem(contractID);
+        }
+
+        public List<ActivityPlanHH> ActivityPlanHH(int contractID)
+        {
+            return _projectmanagementRepository.ActivityPlanHH(contractID);
+        }
+        public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID)
+        {
+            return _projectmanagementRepository.ActivityPlanHHTable(contractID);
+        }
+
+        public ActivityPlanHHDetail GetActivityPlanDetails(int contractID)
+        {
+            return _projectmanagementRepository.GetActivityPlanDetails(contractID); 
+        }
+       
+
+
 
     }
 }
-
 
