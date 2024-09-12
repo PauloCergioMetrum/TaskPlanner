@@ -12,7 +12,7 @@
         public int ProjectReviewsMade { get; set; }
         public int PeportReviewsPlanned { get; set; }
         public int PeportReviewsMade { get; set; }
-        public int DevelopSystemReviewsPlanned { get; set; }
+        public int? DevelopSystemReviewsPlanned { get; set; }
         public int DevelopSystemReviewsMade { get; set; }
     }
 }

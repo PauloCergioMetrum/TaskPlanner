@@ -47,6 +47,10 @@ using TaskPlannerMetrum.Repository.BusinessUnit;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskPlannerMetrum.Repository.TechnicialLeader;
+using TaskPlannerMetrum.Repository.ProjectCharter;
+using TaskPlannerMetrum.Repository.TeamAllocation;
+using TaskPlannerMetrum.Repository.Executive;
+using TaskPlannerMetrum.Repository.PvExecutive;
 
 namespace TaskPlannerMetrum
 {
@@ -86,30 +90,30 @@ namespace TaskPlannerMetrum
                 {
                     ValidateIssuerSigningKey = true,
                     ValidateIssuer = true,
-                   
+
                     ValidateAudience = true,
                     ValidateLifetime = true,
-                    
+
                     ValidIssuer = tokenConfigurations.Issuer,
                     ValidAudience = tokenConfigurations.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret)),
                     ClockSkew = TimeSpan.Zero
                 };
             });
-          
+
             services.AddAuthorization(auth =>
             {
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser().Build()
-                    
+
                     );
                 auth.AddPolicy("1", policy => policy.RequireClaim("role", "1"));
                 auth.AddPolicy("2", policy => policy.RequireClaim("role", "2"));
                 auth.AddPolicy("3", policy => policy.RequireClaim("role", "3"));
                 auth.AddPolicy("4", policy => policy.RequireClaim("role", "4"));
                 auth.AddPolicy("DEPCNT", policy => policy.RequireClaim("departName", "DEPCNT"));
-                
+
 
 
 
@@ -122,13 +126,13 @@ namespace TaskPlannerMetrum
                 .AllowAnyHeader();
             }));
             services.AddControllers();
-            
+
             //var connection = Configuration["MySQLConnection:MySQLConnectionString"];
             // services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
 
             var connection = Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"];
-            services.AddDbContext<MSSQLContext>(options =>  options.UseSqlServer(connection));
-           
+            services.AddDbContext<MSSQLContext>(options => options.UseSqlServer(connection));
+
             services.AddMvc(options =>
             {
                 options.RespectBrowserAcceptHeader = true;
@@ -146,16 +150,16 @@ namespace TaskPlannerMetrum
             {
                 c.SwaggerDoc("v1",
                     new OpenApiInfo
-                    {
-                        Title = "Task Planner Metrum API",
-                        Version = "v1",
-                        Description = "API RESTful developed for Task Planner Metrum'",
-                        Contact = new OpenApiContact
                         {
-                            Name = "Augusto Morais",
-                            Url = new Uri("https://github.com/augustomemt")
-                        }
-                    });
+                            Title = "Task Planner Metrum API",
+                            Version = "v1",
+                            Description = "API RESTful developed for Task Planner Metrum'",
+                            Contact = new OpenApiContact
+                            {
+                                Name = "Augusto Morais",
+                                Url = new Uri("https://github.com/augustomemt")
+                            }
+                        });
             });
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserBusiness, UserBusinessImplementation>();
@@ -169,12 +173,17 @@ namespace TaskPlannerMetrum
             services.AddScoped<IRatingBusiness, RatingBusiness>();
             services.AddScoped<IUserHourCostBusiness, UserHourCostBusinessImplementation>();
             services.AddScoped<IProjectManagementBusiness, ProjectManagementBusiness>();
-            services.AddScoped<IBusinessUnitBusiness , BusinessUnitImplementation >();
+            services.AddScoped<IBusinessUnitBusiness, BusinessUnitImplementation>();
             services.AddScoped<IActiviesScopeBusiness, ActivesScopeBusinessImplementation>();
             services.AddScoped<IActivityPlanBusiness, ActivityPlanBusiness>();
             services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
             services.AddScoped<IBusinessUnitRepository, BusinessUnitRepository>();
             services.AddScoped<ITechnicalLeaderBusiness, TechnicalLeaderImplementation>();
+            services.AddScoped<IProjectCharterBusiness, ProjectCharterBusiness>();
+            services.AddScoped<ITeamAllocationBusiness, TeamAllocationBussinessImplementation>();
+            services.AddScoped<IExecutiveBussines, ExecutiveImplentations>();
+
+
 
 
 
@@ -198,9 +207,10 @@ namespace TaskPlannerMetrum
             services.AddScoped<IClientsRepository, ClientsRepository>();
             services.AddScoped<IRatingRepository, RatingRepository>();
             services.AddScoped<IUserHourCostRepository, UserHourCostRepository>();
-;
-
-             services.AddScoped<ITechnicalLeaderRepository, TechnicalLeaderRepository>();
+            services.AddScoped<IProjectCharterRepository, ProjectCharterRepository>();
+            services.AddScoped<ITechnicalLeaderRepository, TechnicalLeaderRepository>();
+            services.AddScoped<ITeamAllocationRepository, TeamAllocationRepository>();
+            services.AddScoped<IExecutiveRepository, ExecutiveRepository>();
 
         }
 
@@ -221,7 +231,7 @@ namespace TaskPlannerMetrum
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
-          
+
             app.UseRouting();
 
             app.UseCors();

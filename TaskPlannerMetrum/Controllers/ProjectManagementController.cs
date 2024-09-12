@@ -27,26 +27,7 @@ namespace TaskPlannerMetrum.Controllers
             _projectManagementBusiness = projectManagementBusiness;
         }
 
-        [HttpPut("UpdateForCast")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        public IActionResult UpdateForCast(Model.DTO.ProjectManagementDTO forcast)
-        {
-
-            try
-            {
-
-                return Ok(_projectManagementBusiness.UpdateForecast(forcast));
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
+       
 
 
         [HttpGet("GetOrderInfo")]
@@ -92,7 +73,7 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
-      
+
 
 
 
@@ -124,7 +105,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-      
+
         public IActionResult GetMilestonesNames(int contractID)
         {
             try
@@ -145,13 +126,35 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult DeleteMilestones(string ID)
+        public IActionResult DeleteMilestones(string ID, int MilestonesID)
         {
             try
             {
 
 
-                return Ok(_projectManagementBusiness.DeleteMilestones(ID));
+                return Ok(_projectManagementBusiness.DeleteMilestones(ID, MilestonesID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpDelete("MilesTonesDelete")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult MilesTonesDelete(int ID)
+        {
+            try
+            {
+
+
+                return Ok(_projectManagementBusiness.MilesTonesDelete(ID));
 
             }
             catch (Exception ex)
@@ -289,33 +292,14 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        [HttpPost("CreateTypeOfCost")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-
-        public IActionResult CreateTypeOfCost(PmTypeCost pmTypeCost)
-        {
-            try
-            {
-
-                return Ok(_projectManagementBusiness.CreateTypeOfCost(pmTypeCost));
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-        }
+      
 
         [HttpDelete("DeleteTypeOf")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult DeleteTypeOfCost(string ID)
+        public IActionResult DeleteTypeOfCost(int ID)
         {
             try
             {
@@ -328,26 +312,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        [HttpGet("GetTypeOfCost")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        public IActionResult GetTypeOfCost(int ContractID)
-        {
-
-            try
-            {
-
-                return Ok(_projectManagementBusiness.GetTypeOfCost(ContractID));
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
+       
 
         [HttpPost("CreateOrUpdatePredictedCost")]
         [ProducesResponseType(200)]
@@ -619,7 +584,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetOutsourcedServicesCombined( int ContractID)
+        public IActionResult GetOutsourcedServicesCombined(int ContractID)
         {
             try
             {
@@ -908,7 +873,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetScopeTrajing( int  ContractID)
+        public IActionResult GetScopeTrajing(int ContractID)
         {
 
             try
@@ -990,6 +955,8 @@ namespace TaskPlannerMetrum.Controllers
 
         //MARCO  FATURADO 
 
+        
+
         [HttpGet("GetAllMilestonesItem")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -1009,6 +976,9 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
+
+
+
 
 
         [HttpGet("GetAllFunctions")]
@@ -1056,7 +1026,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetAllFunctionsMilesstoneType( string MilesstoneTypeID)
+        public IActionResult GetAllFunctionsMilesstoneType(string MilesstoneTypeID)
         {
             try
             {
@@ -1172,6 +1142,207 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
+
+        // HH
+        [HttpGet("GetHHByID")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetHHByID(string MilestonesValueID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetHHByID(MilestonesValueID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet("GetAllMileStonesValue")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAllMileStonesValue(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllMileStonesValue(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        //TAP
+        [HttpPut("UpdateInfoProject")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult UpdateInfoProject([FromBody] ProjectInfoGeneralDTO infoGenral)
+        {
+
+            if (infoGenral == null)
+            {
+                return BadRequest("Payload is null");
+            }
+            try
+            {
+
+                return Ok(_projectManagementBusiness.UpdateInfoGeneral(infoGenral));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetProjectInfoByContractId")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetProjectInfoByContractId(int contractId)
+        {
+
+
+
+
+            return Ok(_projectManagementBusiness.GetProjectInfoByContractId(contractId));
+
+
+
+        }
+
+
+
+
+
+
+        [HttpGet("GetAllProjectCharter")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult GetAllProjectCharter()
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllProjectCharter());
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpGet("GetAllUsersGercon")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult GetAllUsersGercon()
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllUsersGercon());
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpGet("GetAllBussinesUnit")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult GetAllBussinesUnit(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetAllBussinesUnit(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpGet("GetMilestoneItem")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult GetMilestoneItem(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetMilestoneItem(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpGet("GetActivityPlanDetails")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult GetActivityPlanDetails(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetActivityPlanDetails(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
+
 
 
 

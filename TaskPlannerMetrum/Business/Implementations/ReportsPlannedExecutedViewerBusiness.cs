@@ -4,6 +4,7 @@ using System.Linq;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Repository.ReportsViewer;
 
 namespace TaskPlannerMetrum.Business.Implementations
@@ -56,7 +57,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             var listExecutedID = reportPlannedExecuted.Select(e => e.ExecutorID).ToList();
             var listContractID = reportPlannedExecuted.Select(e => e.ContractID).ToList();
             var listHoursCost = _repository.GetHourCost(startDate, endDate).AsQueryable();
-            
+
 
             if (reportPlannedExecuted.Select(e => e.ExecutorID).ToList().Count != 0)
             {
@@ -65,7 +66,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             if (reportPlannedExecuted.Select(e => e.ContractID).ToList().Count != 0)
             {
-                listHoursCost = listHoursCost.Where(l => listContractID.Any(u => u == l.ContractID)).AsQueryable(); 
+                listHoursCost = listHoursCost.Where(l => listContractID.Any(u => u == l.ContractID)).AsQueryable();
             }
             return Math.Round(listHoursCost.Select(d => d.DayCost).Sum(), 2);
         }
@@ -84,17 +85,17 @@ namespace TaskPlannerMetrum.Business.Implementations
                 totalPlanned = Math.Round(listPlannedExecuted.Sum(s => s.PlannedManHour), 2),
                 totalExecuted = Math.Round(listPlannedExecuted.Sum(s => s.ExecutedManHour), 2),
                 totalCost = HoursCostSearch(listPlannedExecuted),
-                totalExpectedHour = Math.Round(HoursExpetcted(reportPlannedExecuted.startDate,reportPlannedExecuted.endDate, reportPlannedExecuted.lContractID),2)
+                totalExpectedHour = Math.Round(HoursExpetcted(reportPlannedExecuted.startDate, reportPlannedExecuted.endDate, reportPlannedExecuted.lContractID), 2)
 
             };
 
             return plannedExecuted;
         }
 
-        public double HoursExpetcted (DateTime startDate, DateTime endDate, List<int> contractID)
+        public double HoursExpetcted(DateTime startDate, DateTime endDate, List<int> contractID)
         {
             double ExpectedHours = 0;
-            foreach(var contract in contractID)
+            foreach (var contract in contractID)
             {
                 ExpectedHours += _repository.GetHourExpectedHour(startDate, endDate, contract);
             }
@@ -103,7 +104,87 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
+        public List<PreparetBalancePerProject> PreparetBalancePerProject(OperationalReportReportDTO OperationalReportReportDTO)
+        {
+            List<BalancePerProject> allBalancePerProject = _repository.GetBalancePerProject(OperationalReportReportDTO);
+            var distinctBalanceProjects = allBalancePerProject.ToList().Distinct();
+            List<PreparetBalancePerProject> balanceDetailsFullList = new List<PreparetBalancePerProject>();
+         
+            foreach (var businessUnit in distinctBalanceProjects)
+            {
+                if(balanceDetailsFullList.Where(b=> b.BusinessUnit == businessUnit.BusinessUnit).Count()<1)
+                {
+                    balanceDetailsFullList.Add(new PreparetBalancePerProject
+                    {
+                        BusinessUnit =  businessUnit.BusinessUnit,
+                        Details = allBalancePerProject.Where(b => b.BusinessUnit ==  businessUnit.BusinessUnit).Select(b => new BalancePerProject
+                        {
+                            BusinessUnit = b.BusinessUnit,
+                            Period = b.Period,
+                            AumontClose = b.AumontClose,
+                            AumontOpen = b.AumontOpen,
+                        }).Distinct().ToList()
+
+                    });
+                }
+                
+            }
+            return balanceDetailsFullList;
+
+        }
+
+
+        public ProjectOperational OperationalProjectReport(OperationalReportReportDTO OperationalReportReportDTO)
+        {
+            List<NumberOfContractsForBusinessUnit> ContractsForBusinessUnit = _repository.CountContractsPerBusinessUnit(OperationalReportReportDTO);
+            List<OperationalRelationshipTable> OperationalRelationshipTable = _repository.GetContractDetails(OperationalReportReportDTO);
+            List<StatusForPeriod> StatusForPeriod = _repository.getStatusPerPeriod(OperationalReportReportDTO);
+            List<PreparetBalancePerProject> BalancePerProject = PreparetBalancePerProject(OperationalReportReportDTO);
+            return new ProjectOperational
+            {
+                ContractsForBusinessUnit = ContractsForBusinessUnit,
+                StatusForPeriod = StatusForPeriod,
+                BalancePerProject = BalancePerProject,
+                OperationalRelationshipTable = OperationalRelationshipTable
+            };
+        }
+
+        public OptionsListFilter OptionsListFilter()
+        {
+            return new OptionsListFilter
+            {
+                BusinessUnits =_repository.GetAllBusinesUnit(),
+                ProjectInspector = _repository.GetAllInspector(),
+                TechLeader = _repository.GetAllTechLeader(),
+                Status = new List<string>{ "ABERTO", "FECHADO"}
+
+            };
+        }
+
+        public ReportInvoiceDetails InvoiceReport(ReportInvoice filters)
+        {
+
+            List<PredictedInvoiced> PredictedInvoiced = _repository.GetMaterialAndService(filters);
+            List<MaterialServices> MaterialServices = _repository.GetPredictedInvoicedReport(filters);
+            List<BillingPerBusinessUnit> BillingPerBusinessUnit  =_repository.GetBillingPerBusinessUnit(filters);
+            List<ReportDetailsTable> ReportDetailsTable = _repository.GetReportDetailsTable(filters);
+            GoalRealizationReport GoalRealizationReport = _repository.GetGoalsAndRealized(filters);
+            return new ReportInvoiceDetails
+            {
+                PredictedInvoiced = PredictedInvoiced,
+                MaterialAndService = MaterialServices,
+                BillingPerBusinessUnit = BillingPerBusinessUnit,
+                ReportDetailsTable = ReportDetailsTable ,
+                GoalRealizationReport = GoalRealizationReport   
+
+            };
+        }
+
+
+
     }
-
-
 }
+
+
+
+

@@ -10,5 +10,14 @@ namespace TaskPlannerMetrum.Business
     {
         public ReportPlannedExecuted GetPlannedExecuted(ReportPlannedExecutedDTO reportPlannedExecuted);
 
+        public ProjectOperational OperationalProjectReport(OperationalReportReportDTO OperationalReportReportDTO);
+
+        public OptionsListFilter OptionsListFilter();
+
+
+        public ReportInvoiceDetails InvoiceReport(ReportInvoice filters);
+
+
+
     }
 }

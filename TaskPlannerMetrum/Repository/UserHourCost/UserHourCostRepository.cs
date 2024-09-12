@@ -5,6 +5,7 @@ using DocumentFormat.OpenXml.Office2010.PowerPoint;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using OfficeOpenXml.Utils;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,9 @@ using System.Text;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
+
+using TaskPlannerMetrum.Model.DTO;
+
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.UserHourCostRepository
@@ -160,6 +164,7 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
             UserUpdate.FunctionID = FunctionID;
             if (UserUpdate == null)
             {
+
                 return false;
             }
             string managementNameNormalized = NormalizeString(managementName).ToUpper();
