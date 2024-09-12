@@ -76,7 +76,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<PM_MilestonesType> PM_MilestonesType { get; set; }
 
 
-        public DbSet<PM_TAP_Resources> PM_TAP_Resources { get; set; }
+       // public DbSet<PM_TAP_Resources> PM_TAP_Resources { get; set; }
 
         
         //VIEWS
