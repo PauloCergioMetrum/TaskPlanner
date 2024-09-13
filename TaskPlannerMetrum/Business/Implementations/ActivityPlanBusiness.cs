@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Data.Converter.Implementations;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
@@ -113,9 +114,12 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public dynamic GetMilestonesByContract(int contractID)
+
+        public async Task<dynamic> GetMilestonesByContractAsync(int contractID)
         {
-            var milestonesList = _activiesRepository.FindAllMilestonesByContract(contractID);
+            // Espera o resultado da tarefa para obter a lista de milestones
+            var milestonesList = await _activiesRepository.GetMilestonesByContractAsync(contractID);
+
             if (milestonesList == null || !milestonesList.Any())
             {
                 return new
@@ -140,6 +144,11 @@ namespace TaskPlannerMetrum.Business.Implementations
             };
         }
 
+        public Task<List<MilestoneDetailDTO>> FindAllMilestonesByContractAsync(int contractID)
+        {
+            return _activiesRepository.GetMilestonesByContractAsync(contractID);
+        }
+        
         public dynamic GetExecutorPlan(string projectId)
         {
             return _activiesRepository.GetExecutorPlan(projectId);
@@ -287,11 +296,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate);
         }
 
-        public List<Milestone> FindAllMilestonesByContract(int contractID)
-        {
-            return _activiesRepository.FindAllMilestonesByContract(contractID);
-        }
-
+    
         public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor)
         {
             throw new NotImplementedException();

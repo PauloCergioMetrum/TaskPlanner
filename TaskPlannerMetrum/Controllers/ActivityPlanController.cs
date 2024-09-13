@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Business.Implementations;
 using TaskPlannerMetrum.Model;
@@ -94,12 +96,12 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         //[TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult FindTask(int MilestonesID, int? page, int? size, string searchExecutor ,int ContractID)
+        public IActionResult FindTask(int MilestonesID, int? page, int? size, string searchExecutor, int ContractID)
         {
             int pageSize = (size ?? 10);
             int pageNumber = (page ?? 1);
 
-            return Ok(_activityPlanBusiness.TasksByProject(MilestonesID, pageNumber, pageSize, searchExecutor , ContractID));
+            return Ok(_activityPlanBusiness.TasksByProject(MilestonesID, pageNumber, pageSize, searchExecutor, ContractID));
         }
 
 
@@ -137,11 +139,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult FindActivityPlan(int MilestonesID ,int ContractID)
+        public IActionResult FindActivityPlan(int MilestonesID, int ContractID)
         {
             try
             {
-                return Ok(_activityPlanBusiness.GetActivityPlan(MilestonesID , ContractID));
+                return Ok(_activityPlanBusiness.GetActivityPlan(MilestonesID, ContractID));
 
             }
             catch (Exception ex)
@@ -152,16 +154,22 @@ namespace TaskPlannerMetrum.Controllers
         }
 
         [HttpGet("FindAllMilestonesByContract")]
-        [ProducesResponseType(typeof(List<Milestone>), 200)]
+        [ProducesResponseType(typeof(List<MilestoneDetailDTO>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult FindAllMilestonesByContract(int contractID)
+        public async Task<IActionResult> FindAllMilestonesByContractAsync(int contractID)
         {
             try
             {
-                return Ok(_activityPlanBusiness.FindAllMilestonesByContract(contractID));
+                var result = await _activityPlanBusiness.FindAllMilestonesByContractAsync(contractID);
 
+                if (result == null || !result.Any())
+                {
+                    return NoContent();
+                }
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -171,24 +179,8 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
-        //[HttpGet("FindAllMilestonesByContract")]
-        //[ProducesResponseType(200)]
-        //[ProducesResponseType(204)]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(401)]
-        //public IActionResult FindAllMilestonesByContract(int ContractID)
-        //{
-        //    try
-        //    {
-        //        return Ok(_activityPlanBusiness.FindAllMilestonesByContract(ContractID));
 
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        return BadRequest(ex.Message);
-            //    }
 
-            //}
         [HttpPut("UpdateTaskExecutor")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
