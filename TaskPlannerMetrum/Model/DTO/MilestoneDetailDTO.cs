@@ -1,4 +1,6 @@
-﻿namespace TaskPlannerMetrum.Model.DTO
+﻿using System;
+
+namespace TaskPlannerMetrum.Model.DTO
 {
     public class MilestoneDetailDTO
     {
@@ -10,6 +12,8 @@
         public int? BusinessUnitID { get; set; }
         public string BusinessUnit { get; set; }
         public int? Delayed { get; set; }
+        public DateTime ScheduledDate {  get; set; }    
+        public DateTime RescheduledDate { get; set; } 
     }
 
 
