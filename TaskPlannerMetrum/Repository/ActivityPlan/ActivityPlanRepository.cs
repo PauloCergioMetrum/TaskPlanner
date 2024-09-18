@@ -760,7 +760,10 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 MilestoneName = m.MilestoneName,
                 TechLeadName = m.TechLeadName,
                 BusinessUnit = m.BusinessUnit,
-                Delayed = m.Delayed
+                Delayed = m.Delayed,
+                ScheduledDate = m.ScheduledDate,
+                RescheduledDate = m.RescheduledDate,
+                
             }).ToList();
 
             return dtoResult;
