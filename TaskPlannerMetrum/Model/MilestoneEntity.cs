@@ -12,7 +12,7 @@ namespace TaskPlannerMetrum.Model
         public int? BusinessUnitID { get; set; }
         public string BusinessUnit { get; set; }
         public int? Delayed { get; set; }
-        public DateTime ScheduledDate { get; set; }
-        public DateTime RescheduledDate { get; set; }
+        public DateTime? ScheduledDate { get; set; }
+        public DateTime? RescheduledDate { get; set; }
     }
 }
