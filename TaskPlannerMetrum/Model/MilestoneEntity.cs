@@ -15,5 +15,10 @@ namespace TaskPlannerMetrum.Model
 
         public DateTime? ScheduledDate { get; set; }
         public DateTime? RescheduledDate { get; set; }
+
+        public double? ExpectedHours { get; set; }
+        public double? TotalPlannedManHour { get; set; }
+        public double? TotalExecutedManHour { get; set; }
+
     }
 }

@@ -763,7 +763,11 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 Delayed = m.Delayed,
                 ScheduledDate = m.ScheduledDate,
                 RescheduledDate = m.RescheduledDate,
-                
+                ExpectedHours = m.ExpectedHours,
+                TotalExecutedManHour = m.TotalExecutedManHour,
+                TotalPlannedManHour = m.TotalPlannedManHour,
+
+
             }).ToList();
 
             return dtoResult;
@@ -782,10 +786,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
 
 
-        //public List<Milestone> FindAllMilestonesByContract(int contractID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+      
     }
 }
 
