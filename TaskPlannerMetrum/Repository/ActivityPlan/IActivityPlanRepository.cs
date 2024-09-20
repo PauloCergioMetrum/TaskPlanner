@@ -16,6 +16,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public List<vActivePlans> FindAllTaskByProject(int MilestonesID ,int ContractID);
         public vActivityPlan GetActivityPlanById(int MilestonesID);
 
+
         Task<List<MilestoneDetailDTO>> GetMilestonesByContractAsync(int contractId);
 
 
@@ -53,6 +54,9 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         // LOCAÇÃO DE EQUIPAMENTOS
         public List<Equipment> GetAllEquipment();
 
-     public List<GetEquipamentAvaibilaity> GetEquipamentAvaibilaities(int EquipamentID , DateTime StartDate , DateTime EndDate);    
+        Task<List<MilestoneDetailDTO>> GetMilestonesByContractAsync(int contractId);
+
+
+        public List<GetEquipamentAvaibilaity> GetEquipamentAvaibilaities(int EquipamentID , DateTime StartDate , DateTime EndDate);    
     }
 }

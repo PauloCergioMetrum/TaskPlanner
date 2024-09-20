@@ -148,15 +148,19 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _activiesRepository.GetMilestonesByContractAsync(contractID);
         }
-        
+
         public dynamic GetExecutorPlan(string projectId)
         {
             return _activiesRepository.GetExecutorPlan(projectId);
         }
 
+      
+
+
         public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor ,int ContractID)
         {
             var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID , ContractID).OrderBy(s => s.ScheduledDate).AsEnumerable();
+
             int totalRecords = activitList.Count();
             if (!string.IsNullOrEmpty(searchExecutor))
             {
@@ -296,12 +300,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate);
         }
 
-    
+n
         public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor)
         {
             throw new NotImplementedException();
         }
 
-       
+        
     }
 }

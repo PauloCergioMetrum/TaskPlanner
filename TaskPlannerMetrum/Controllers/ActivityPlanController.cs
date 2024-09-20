@@ -13,6 +13,8 @@ using TaskPlannerMetrum.Business.Implementations;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using System.Linq;
+
 
 namespace TaskPlannerMetrum.Controllers
 {
@@ -153,6 +155,28 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
+        //[HttpGet("FindAllMilestonesByContract")]
+        //[ProducesResponseType(typeof(List<Milestone>), 200)]
+        //[ProducesResponseType(204)]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(401)]
+        //public IActionResult FindAllMilestonesByContract(int contractID)
+        //{
+        //    try
+        //    {
+        //        return Ok(_activityPlanBusiness.FindAllMilestonesByContract(contractID));
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+
+
+
+
         [HttpGet("FindAllMilestonesByContract")]
         [ProducesResponseType(typeof(List<MilestoneDetailDTO>), 200)]
         [ProducesResponseType(204)]
@@ -164,10 +188,12 @@ namespace TaskPlannerMetrum.Controllers
             {
                 var result = await _activityPlanBusiness.FindAllMilestonesByContractAsync(contractID);
 
+
                 if (result == null || !result.Any())
                 {
                     return NoContent();
                 }
+
 
                 return Ok(result);
             }
@@ -176,7 +202,6 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
 
 

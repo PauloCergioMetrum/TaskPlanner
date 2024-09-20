@@ -185,14 +185,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
             catch { return false; }
         }
-        public List<vActivePlans> FindAllTaskByProject(int MilestonesID, int ContractID)
-        {
-            return _context.vActivePlans
-                .Where(c => (MilestonesID == 0 ? c.MilestonesID == null : c.MilestonesID == MilestonesID)
-                            && c.ContractID == ContractID)
-                .OrderBy(d => d.ScheduledDate)
-                .ToList();
-        }
+   
 
 
 
@@ -711,6 +704,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             return _context.GetEquipmentAvailability(EquipamentID, StartDate, EndDate);
         }
 
+
         public async Task<List<MilestoneDetailDTO>> GetMilestonesByContractAsync(int contractId)
         {
             var contractIdParam = new SqlParameter("@ContractID", contractId);
@@ -725,14 +719,33 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 TechLeadName = m.TechLeadName,
                 BusinessUnit = m.BusinessUnit,
                 Delayed = m.Delayed,
+
+                ScheduledDate = m.ScheduledDate,
                 RescheduledDate = m.RescheduledDate,
-                ScheduledDate =m.ScheduledDate
+                ExpectedHours = m.ExpectedHours,
+                TotalExecutedManHour = m.TotalExecutedManHour,
+                TotalPlannedManHour = m.TotalPlannedManHour,
 
 
             }).ToList();
 
             return dtoResult;
         }
+
+
+
+        public List<vActivePlans> FindAllTaskByProject(int MilestonesID, int ContractID)
+        {
+            return _context.vActivePlans
+                .Where(c => (MilestonesID == 0 ? c.MilestonesID == null : c.MilestonesID == MilestonesID)
+                            && c.ContractID == ContractID)
+                .OrderBy(d => d.ScheduledDate)
+                .ToList();
+        }
+
+
+
+
     }
 }
 
