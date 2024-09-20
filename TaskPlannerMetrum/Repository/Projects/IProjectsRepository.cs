@@ -61,6 +61,8 @@ namespace TaskPlannerMetrum.Repository.Projects
 
         public bool IsTechLeaderAssociated(int contractID, int techLeaderID);
 
+        public List<vPM_SummaryPlannedData> Tapscope(int contractID);
+
 
 
 

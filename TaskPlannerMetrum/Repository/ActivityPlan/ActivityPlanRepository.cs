@@ -5,6 +5,8 @@
 
 using log4net.Util;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using MySqlConnector;
 using System;
@@ -14,6 +16,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
@@ -182,14 +185,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
             catch { return false; }
         }
-        public List<vActivePlans> FindAllTaskByProject(int MilestonesID, int ContractID)
-        {
-            return _context.vActivePlans
-                .Where(c => (MilestonesID == 0 ? c.MilestonesID == null : c.MilestonesID == MilestonesID)
-                            && c.ContractID == ContractID)
-                .OrderBy(d => d.ScheduledDate)
-                .ToList();
-        }
+   
 
 
 
@@ -749,26 +745,48 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             return _context.GetEquipmentAvailability(EquipamentID, StartDate, EndDate);
         }
 
-        public List<Milestone> FindAllMilestonesByContract(int contractID)
+
+
+        public async Task<List<MilestoneDetailDTO>> GetMilestonesByContractAsync(int contractId)
         {
-            var milestones = _context.vActivePlans
-                .Where(m => m.ContractID == contractID)
-                .Select(m => new Milestone
-                {  ContractID = m.ContractID,
-                    MilestonesID = m.MilestonesID == null ? 0 : m.MilestonesID,
-                    MilestoneName = m.MilestoneName   
-                })
-                .Distinct() 
+            var contractIdParam = new SqlParameter("@ContractID", contractId);
+            var result = await _context.Set<MilestoneEntity>()
+           .FromSqlRaw("EXEC [dbo].[GetMilestoneDetails] @ContractID", contractIdParam)
+           .ToListAsync();
+            var dtoResult = result.Select(m => new MilestoneDetailDTO
+            {
+                ContractID = m.ContractID,
+                MilestonesID = m.MilestonesID,
+                MilestoneName = m.MilestoneName,
+                TechLeadName = m.TechLeadName,
+                BusinessUnit = m.BusinessUnit,
+                Delayed = m.Delayed,
+                ScheduledDate = m.ScheduledDate,
+                RescheduledDate = m.RescheduledDate,
+                ExpectedHours = m.ExpectedHours,
+                TotalExecutedManHour = m.TotalExecutedManHour,
+                TotalPlannedManHour = m.TotalPlannedManHour,
+
+
+            }).ToList();
+
+            return dtoResult;
+        }
+
+
+
+        public List<vActivePlans> FindAllTaskByProject(int MilestonesID, int ContractID)
+        {
+            return _context.vActivePlans
+                .Where(c => (MilestonesID == 0 ? c.MilestonesID == null : c.MilestonesID == MilestonesID)
+                            && c.ContractID == ContractID)
+                .OrderBy(d => d.ScheduledDate)
                 .ToList();
-
-            return milestones;
         }
 
 
-        public List<vActivePlans> FindAllTaskByProject(int MilestonesID)
-        {
-            throw new NotImplementedException();
-        }
+
+      
     }
 }
 

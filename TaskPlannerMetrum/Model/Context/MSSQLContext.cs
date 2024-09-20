@@ -106,6 +106,10 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPmCostPlanned> vPmCostPlanned {  get; set; }
         public DbSet<vPm_Cost_Planned> vPm_Cost_Planned { get; set; }
 
+        public DbSet<vPM_SummaryPlannedData> VPM_SummaryPlannedData {  get; set; }
+
+        public DbSet<MilestoneEntity> MilestoneEntities { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HoursExecutor>().HasNoKey();
@@ -121,6 +125,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<BalancePerProject>().HasNoKey();
             modelBuilder.Entity<GetNumberOfContractsForBusinessUnit>().HasNoKey();
             modelBuilder.Entity<OperationalRelationshipTable>().HasNoKey();
+            base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey();
 
         }
 

@@ -6,11 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Business.Implementations;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using System.Linq;
+
 
 namespace TaskPlannerMetrum.Controllers
 {
@@ -151,25 +154,54 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
+        //[HttpGet("FindAllMilestonesByContract")]
+        //[ProducesResponseType(typeof(List<Milestone>), 200)]
+        //[ProducesResponseType(204)]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(401)]
+        //public IActionResult FindAllMilestonesByContract(int contractID)
+        //{
+        //    try
+        //    {
+        //        return Ok(_activityPlanBusiness.FindAllMilestonesByContract(contractID));
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+
+
+
 
         [HttpGet("FindAllMilestonesByContract")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(List<MilestoneDetailDTO>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult FindAllMilestonesByContract(int ContractID)
+        public async Task<IActionResult> FindAllMilestonesByContractAsync(int contractID)
         {
             try
             {
-                return Ok(_activityPlanBusiness.FindAllMilestonesByContract(ContractID));
+                var result = await _activityPlanBusiness.FindAllMilestonesByContractAsync(contractID);
 
+                if (result == null || !result.Any())
+                {
+                    return NoContent();
+                }
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
+
+
+
         [HttpPut("UpdateTaskExecutor")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
