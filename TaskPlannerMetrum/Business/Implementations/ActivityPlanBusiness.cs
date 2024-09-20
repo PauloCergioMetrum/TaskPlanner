@@ -114,6 +114,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
+
         public async Task<dynamic> GetMilestonesByContractAsync(int contractID)
         {
             // Espera o resultado da tarefa para obter a lista de milestones
@@ -147,8 +148,6 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _activiesRepository.GetMilestonesByContractAsync(contractID);
         }
-
-
 
         public dynamic GetExecutorPlan(string projectId)
         {
@@ -301,9 +300,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate);
         }
 
-      
-
-
+n
         public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor)
         {
             throw new NotImplementedException();

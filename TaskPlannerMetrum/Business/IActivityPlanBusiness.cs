@@ -18,7 +18,14 @@ namespace TaskPlannerMetrum.Business
 
         public dynamic TasksByUser(string userId, int? page, int? size, string searchExecutor);
         public dynamic GetActivityPlan(int MilestonesID, int ContractID );
-       // public List<Milestone> FindAllMilestonesByContract(int contractID);
+
+        //public List<MilestoneDetailDTO> FindAllMilestonesByContract(int contractID);
+
+
+
+        Task<List<MilestoneDetailDTO>> FindAllMilestonesByContractAsync(int contractID);
+
+
         public bool UpdateActivityPlan(TaskPlannerMetrum.Model.ModelViews.vActivityPlan activityPlan);
         public bool DeleteId(int id);
 

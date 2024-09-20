@@ -16,7 +16,12 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public List<vActivePlans> FindAllTaskByProject(int MilestonesID ,int ContractID);
         public vActivityPlan GetActivityPlanById(int MilestonesID);
 
-       // public List<Milestone> FindAllMilestonesByContract(int contractID);
+
+        Task<List<MilestoneDetailDTO>> GetMilestonesByContractAsync(int contractId);
+
+
+
+
         public List<vActivePlans> FindAllTaskByUser(string userId);
         public bool UpdateActivityPlan(vActivityPlan activityPlan);
 

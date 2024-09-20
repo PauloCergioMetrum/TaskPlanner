@@ -220,6 +220,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
             return _context.Set<OperationalRelationshipTable>().FromSqlRaw(sql).ToList();
         }
+
         public List<OptionsFilterTechLead> GetAllTechLeader()
         {
 
@@ -250,7 +251,128 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
+        public List<PredictedInvoiced> GetMaterialAndService(ReportInvoice parameters)
+        {
+            // Converte listas para strings, ou nulo se a lista estiver vazia
+            string businessUnits = parameters.BusinessUnits.Any() ? string.Join(",", parameters.BusinessUnits) : null;
+            string inspectorIDs = parameters.InspectorIDs.Any() ? string.Join(",", parameters.InspectorIDs) : null;
 
+            // Cria a string SQL para a chamada da stored procedure
+            var sql = "EXEC [dbo].[GetPredictedInvoiced] " +
+                      "@startDate, " +
+                      "@endDate, " +
+                      "@businessUnits, " +
+                      "@inspectorIDs";
+
+            // Chama a stored procedure passando os parâmetros
+            return _context.Set<PredictedInvoiced>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@startDate", (object)parameters.StartDate ?? DBNull.Value),
+                    new SqlParameter("@endDate", (object)parameters.EndDate ?? DBNull.Value),
+                    new SqlParameter("@businessUnits", (object)businessUnits ?? DBNull.Value),
+                    new SqlParameter("@inspectorIDs", (object)inspectorIDs ?? DBNull.Value))
+                .ToList();
+        }
+
+
+        public List<MaterialServices> GetPredictedInvoicedReport(ReportInvoice parameters)
+        {
+            // Converte listas para strings, ou nulo se a lista estiver vazia
+            string businessUnits = parameters.BusinessUnits != null && parameters.BusinessUnits.Any()
+                ? string.Join(",", parameters.BusinessUnits)
+                : null;
+            string inspectorIDs = parameters.InspectorIDs != null && parameters.InspectorIDs.Any()
+                ? string.Join(",", parameters.InspectorIDs)
+                : null;
+
+            // Prepara o comando SQL com os parâmetros
+            var sql = "EXEC [dbo].[GetMaterialAndServiceCount] @startDate, @endDate, @BusinessUnits, @InspectorIDs";
+
+            // Chama a stored procedure passando os parâmetros
+            return _context.Set<MaterialServices>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@startDate", parameters.StartDate.HasValue ? (object)parameters.StartDate.Value : DBNull.Value),
+                    new SqlParameter("@endDate", parameters.EndDate.HasValue ? (object)parameters.EndDate.Value : DBNull.Value),
+                    new SqlParameter("@BusinessUnits", businessUnits ?? (object)DBNull.Value),
+                    new SqlParameter("@InspectorIDs", inspectorIDs ?? (object)DBNull.Value))
+                .ToList();
+        }
+
+
+        public List<BillingPerBusinessUnit> GetBillingPerBusinessUnit(ReportInvoice filter)
+        {
+            // Converte a lista de BusinessUnits e InspectorIDs para strings ou usa null se estiver vazia
+            var businessUnits = filter.BusinessUnits != null && filter.BusinessUnits.Count > 0
+                ? string.Join(",", filter.BusinessUnits)
+                : null;
+            var inspectorIDs = filter.InspectorIDs != null && filter.InspectorIDs.Count > 0
+                ? string.Join(",", filter.InspectorIDs)
+                : null;
+
+            // SQL para chamar a stored procedure
+            var sql = "EXEC [dbo].[BillingPerBusinessUnit] @startDate, @endDate, @BusinessUnits, @InspectorIDs";
+
+            // Chama a stored procedure e retorna os resultados
+            return _context.Set<BillingPerBusinessUnit>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@startDate", (object)filter.StartDate ?? DBNull.Value),
+                    new SqlParameter("@endDate", (object)filter.EndDate ?? DBNull.Value),
+                    new SqlParameter("@BusinessUnits", (object)businessUnits ?? DBNull.Value),
+                    new SqlParameter("@InspectorIDs", (object)inspectorIDs ?? DBNull.Value))
+                .ToList();
+        }
+
+
+
+
+        public List<ReportDetailsTable> GetReportDetailsTable(ReportInvoice filter)
+        {
+            // Converte a lista de BusinessUnits e InspectorIDs para strings ou usa null se estiver vazia
+            var businessUnits = filter.BusinessUnits != null && filter.BusinessUnits.Count > 0
+                ? string.Join(",", filter.BusinessUnits)
+                : null;
+            var inspectorIDs = filter.InspectorIDs != null && filter.InspectorIDs.Count > 0
+                ? string.Join(",", filter.InspectorIDs)
+                : null;
+
+            // SQL para chamar a stored procedure
+            var sql = "EXEC [dbo].[GetReportDetailsTable] @startDate, @endDate, @BusinessUnits, @InspectorIDs";
+
+            // Chama a stored procedure e retorna os resultados
+            return _context.Set<ReportDetailsTable>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@startDate", (object)filter.StartDate ?? DBNull.Value),
+                    new SqlParameter("@endDate", (object)filter.EndDate ?? DBNull.Value),
+                    new SqlParameter("@BusinessUnits", (object)businessUnits ?? DBNull.Value),
+                    new SqlParameter("@InspectorIDs", (object)inspectorIDs ?? DBNull.Value))
+                .ToList();
+        }
+
+
+
+
+
+        public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter)
+        {
+            // Verifica se o StartDate tem valor, se não, lança uma exceção ou lida de outra forma
+            if (!filter.StartDate.HasValue)
+                throw new ArgumentException("StartDate is required.");
+
+            // Extrair o ano do StartDate como string
+            string year = filter.StartDate.Value.Year.ToString();
+
+            var sql = "EXEC [dbo].[GetGoalsAndRealized] @year, @startDate, @endDate";
+
+            var result = _context.Set<GoalRealizationReport>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@year", year),
+                    new SqlParameter("@startDate", filter.StartDate ?? (object)DBNull.Value),
+                    new SqlParameter("@endDate", filter.EndDate ?? (object)DBNull.Value))
+                .AsEnumerable()
+                .FirstOrDefault();
+
+            return result ?? new GoalRealizationReport(); 
+        }
 
 
 

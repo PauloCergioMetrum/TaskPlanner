@@ -12,12 +12,12 @@ namespace TaskPlannerMetrum.Model
         public int DisplacementServicesID { get; set; }
         public int FunctionID { get; set; }
         public string FunctionName { get; set; }
-        public double ValueHour { get; set; } // Changed from decimal to double
-        public double HoursExpected { get; set; } // Changed from decimal to double
-        public double HoursPlanned { get; set; } // Changed from decimal to double
-        public double HoursExecuted { get; set; } // Changed from decimal to double
-        public double CostHoursExpected { get; set; } // Changed from decimal to double
-        public double CostHoursPlanned { get; set; } // Changed from decimal to double
-        public double CostHoursExecuted { get; set; } // Changed from decimal to double
+        public double ValueHour { get; set; } 
+        public double HoursExpected { get; set; } 
+        public double HoursPlanned { get; set; } 
+        public double HoursExecuted { get; set; }
+        public double CostHoursExpected { get; set; } 
+        public double CostHoursPlanned { get; set; }
+        public double CostHoursExecuted { get; set; } 
     }
 }

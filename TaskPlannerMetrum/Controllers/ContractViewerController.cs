@@ -22,7 +22,7 @@ namespace TaskPlannerMetrum.Controllers
         {
             _contractViewerBusiness = contractViewerBusiness;
             
-            // subindo
+          
         }
 
         [HttpGet("GetAllContractsView")]

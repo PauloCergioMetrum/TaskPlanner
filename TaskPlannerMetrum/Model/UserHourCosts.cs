@@ -11,6 +11,10 @@ namespace TaskPlannerMetrum.Model
         public DateTime EndDate { get; set; }
         public double HourCost { get; set; }
         public int  UserID { get; set; }
+
+        public int FunctionID { get; set; }
+
+       
     }
 }
  

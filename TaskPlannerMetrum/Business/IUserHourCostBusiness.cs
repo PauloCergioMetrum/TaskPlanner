@@ -15,12 +15,12 @@ namespace TaskPlannerMetrum.Business
 
         bool UpdateHourCost(UserHourCosts userHourCost);
 
-        List<UserHourCosts> ListUserHoursCost(int userID);
+        public List<UserHourCostsDTO> ListUserHoursCost(int userID);
 
 
 
         Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate);
-
+        public List<Functions> GetAllFunctions();
 
 
     }

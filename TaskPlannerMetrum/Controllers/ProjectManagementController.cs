@@ -1316,6 +1316,31 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetActivityPlanDetails")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult GetActivityPlanDetails(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetActivityPlanDetails(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
+
+
 
 
     }

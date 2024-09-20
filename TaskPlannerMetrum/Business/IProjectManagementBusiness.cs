@@ -16,41 +16,20 @@ namespace TaskPlannerMetrum.Business
 
 
         public bool CreateMilesTones(MilesTonesDTO milesTones);
-
-        // List<int> GetMilestonesNames(MilestonesItem ,int contractID);
-
-
         public List<GetMilestones> GetMilestonesNames(int contractID);
-
-
         public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO);
         public bool DeleteMilestones(string ID, int MilestonesID);
-
         public bool MilesTonesDelete(int ID);
-
         public List<Positions> GetPositionsByGrup();
-
         public bool CreateAcquisitionsPlanned(AcquisitionsDTO acquisitions);
-
         public bool DeleteAcquisition(string ID);
-
         public bool UpdateAcquisition(AcquisitionsDTO acquisitions);
-
         public bool CreateAcquisitionsMade(AcquisitionMadeDTO acquisitionMade);
-
         public bool DeleteAcquisitionMade(string ID, string AquisitionPlannedID);
-
         public bool UpdateAcquisitionMadeItem(AcquisitionMadeDTO acquisitionMade);
-
         public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
-
         public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
-
-
-        public bool DeleteTypeOfCost(int ID);
-  
-
- 
+        public bool DeleteTypeOfCost(int ID); 
         public bool DeletePredictedCost(string ID);
         public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID);
 
@@ -63,10 +42,6 @@ namespace TaskPlannerMetrum.Business
 
         public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID);
         public List<MilestonesItem> GetMilestoneItem(int contractID);
-
-
-
-
         public int existMilesStonesValue(string ID);
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
 
@@ -82,13 +57,13 @@ namespace TaskPlannerMetrum.Business
 
         public bool UpdateMobilization(string ID);
         public bool UpdateMobilizationMaded(string ID);
-
         public bool DeleteMobilization(string ID);
         public bool DeleteMobilizationMade(string ID);
 
-
-
         public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames();
+        public List<ActivityPlanHH> ActivityPlanHH(int contractID);
+        public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID);
+        public ActivityPlanHHDetail GetActivityPlanDetails(int contractID);
 
 
         public List<vPM_OutsourcedServices_Combined> GetOutsourcedServicesCombined(int ContractID);

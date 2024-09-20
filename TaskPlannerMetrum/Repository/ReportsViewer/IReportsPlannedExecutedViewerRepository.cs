@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 
@@ -33,7 +34,19 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         public List<OptionsListFilterProjectInspector> GetAllInspector();
 
+        public List<PredictedInvoiced> GetMaterialAndService(ReportInvoice parameters);
 
+
+        public List<MaterialServices> GetPredictedInvoicedReport(ReportInvoice parameters);
+
+
+        public List<BillingPerBusinessUnit> GetBillingPerBusinessUnit(ReportInvoice filter);
+
+
+        public List<ReportDetailsTable> GetReportDetailsTable(ReportInvoice filter);
+
+
+        public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter);
 
 
 
