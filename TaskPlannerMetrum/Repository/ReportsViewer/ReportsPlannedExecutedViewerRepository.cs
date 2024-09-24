@@ -61,12 +61,12 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                             {
                                 hourResult = Convert.ToDouble(reader.GetValue(0));
                             }
-                          
+
 
                         }
 
                     }
-                    
+
                 }
                 return hourResult;
             }
@@ -123,39 +123,72 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 return list;
 
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return null;
             }
         }
 
+        //public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO)
+        //{
+        //    var contractIDs = string.Join(",", operationalReportReportDTO.ContractIDs);
+        //    var filteredBusinessUnits = _context.BusinessUnit
+        //                                .Where(bu => operationalReportReportDTO.BusinessUnitIDs.Contains(bu.Id))
+        //                                .ToList();
+        //    var businessUnitNames = string.Join(",", filteredBusinessUnits.Select(bu => bu.Name));
+
+        //    // Verifica se a lista de contratos está vazia e ajusta para "null" se for o caso
+        //    if (operationalReportReportDTO.ContractIDs.Count == 0)
+        //    {
+        //        contractIDs = "null";
+        //    }
+
+        //    // Verifica se a lista de IDs de unidades de negócio está vazia e ajusta para "null" se for o caso
+        //    if (operationalReportReportDTO.BusinessUnitIDs.Count == 0)
+        //    {
+        //        businessUnitNames = "null";
+        //    }
+
+        //    var sql = "EXEC [dbo].[GetNumberOfContractsForBusinessUnit] " +
+        //              $"@ContractIDs = {contractIDs}, " +
+        //              $"@BusinessUnitNames = {(businessUnitNames == "null" ? "null" : $"'{businessUnitNames}'")}";  // Inclui null ou os nomes das unidades de negócio
+
+        //    return _context.Set<NumberOfContractsForBusinessUnit>().FromSqlRaw(sql).ToList();
+        //}
+
+
+
+
         public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO)
         {
-            var contractIDs = string.Join(",", operationalReportReportDTO.ContractIDs);
+            var contractIDs = operationalReportReportDTO.ContractIDs.Any()
+                ? string.Join(",", operationalReportReportDTO.ContractIDs)
+                : null;
+
             var filteredBusinessUnits = _context.BusinessUnit
-                                        .Where(bu => operationalReportReportDTO.BusinessUnitIDs.Contains(bu.Id))
-                                        .ToList();
-            var businessUnitNames = string.Join(",", filteredBusinessUnits.Select(bu => bu.Name));
+                .Where(bu => operationalReportReportDTO.BusinessUnitIDs.Contains(bu.Id))
+                .ToList();
 
-            // Verifica se a lista de contratos está vazia e ajusta para "null" se for o caso
-            if (operationalReportReportDTO.ContractIDs.Count == 0)
+            var businessUnitNames = filteredBusinessUnits.Any()
+                ? string.Join(",", filteredBusinessUnits.Select(bu => bu.Name))
+                : null;
+            var sql = "EXEC [dbo].[GetNumberOfContractsForBusinessUnit] @ContractIDs, @BusinessUnitNames";
+            var parameters = new[]
             {
-                contractIDs = "null";
-            }
+        new SqlParameter("@ContractIDs", (object)contractIDs ?? DBNull.Value),
+        new SqlParameter("@BusinessUnitNames", (object)businessUnitNames ?? DBNull.Value),
+    };
 
-            // Verifica se a lista de IDs de unidades de negócio está vazia e ajusta para "null" se for o caso
-            if (operationalReportReportDTO.BusinessUnitIDs.Count == 0)
-            {
-                businessUnitNames = "null";
-            }
-
-            var sql = "EXEC [dbo].[GetNumberOfContractsForBusinessUnit] " +
-                      $"@ContractIDs = {contractIDs}, " +
-                      $"@BusinessUnitNames = {(businessUnitNames == "null" ? "null" : $"'{businessUnitNames}'")}";  // Inclui null ou os nomes das unidades de negócio
-
-            return _context.Set<NumberOfContractsForBusinessUnit>().FromSqlRaw(sql).ToList();
+            return _context.Set<NumberOfContractsForBusinessUnit>()
+                           .FromSqlRaw(sql, parameters)
+                           .ToList();
         }
-        public List<StatusForPeriod> getStatusPerPeriod( OperationalReportReportDTO OperationalReportReportDTO)
+
+
+
+
+
+        public List<StatusForPeriod> getStatusPerPeriod(OperationalReportReportDTO OperationalReportReportDTO)
         {
             var startDate = OperationalReportReportDTO.StartDate != null ?
                                 OperationalReportReportDTO.StartDate.ToString("yyyy-MM-dd") :
@@ -224,8 +257,8 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         public List<OptionsFilterTechLead> GetAllTechLeader()
         {
 
-            var allPermissions =_context.Permissions.ToList();  
-            var idPermissions = allPermissions.Where(n=> n.Description =="Admin" || n.Description =="Supervisor").Select(i=> i.id).ToList();
+            var allPermissions = _context.Permissions.ToList();
+            var idPermissions = allPermissions.Where(n => n.Description == "Admin" || n.Description == "Supervisor").Select(i => i.id).ToList();
             return _context.Users
             .Where(u => idPermissions.Contains(u.PermissionId) && u.IsActive == true).Select(u => new OptionsFilterTechLead
             {
@@ -235,7 +268,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
         public List<OptionsListFilterProjectInspector> GetAllInspector()
         {
-            var getIdSFiscalList =_context.Department.Where(d=> d.Name == "DEPCNT").Select(i=> i.ID).ToList();
+            var getIdSFiscalList = _context.Department.Where(d => d.Name == "DEPCNT").Select(i => i.ID).ToList();
             return _context.Users
             .Where(u => getIdSFiscalList.Contains(u.DepartmentId) && u.IsActive == true).Select(u => new OptionsListFilterProjectInspector
             {
@@ -371,7 +404,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 .AsEnumerable()
                 .FirstOrDefault();
 
-            return result ?? new GoalRealizationReport(); 
+            return result ?? new GoalRealizationReport();
         }
 
 
