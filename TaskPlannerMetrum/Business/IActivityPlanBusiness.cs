@@ -10,7 +10,7 @@ namespace TaskPlannerMetrum.Business
 {
     public interface IActivityPlanBusiness
     {
-        Task<List<MilestoneDetailDTO>> FindAllMilestonesByContractAsync(int contractID);
+ 
 
         public dynamic GetExecutorPlan(string projectId);
         public bool Create(ActivePlanList activityPlan);

@@ -58,7 +58,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.DepartamentID = activityPlan.DepartamentID;
                     task.TaskDescription = activityPlan.TaskDescription;
                     task.BusinessUnit = activityPlan.BusinessUnit;
-                   task.EquipmentID = activityPlan.EquipmentID == 0 ? (int?)null : activityPlan.EquipmentID;
+                    task.EquipmentID = activityPlan.EquipmentID == 0 ? (int?)null : activityPlan.EquipmentID;
                     task.MilestonesID = activityPlan.MilestonesID;
                     //task.EquipmentID = activityPlan.EquipmentID;
 
@@ -90,9 +90,9 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public dynamic GetActivityPlan(int MilestonesID ,int ContractID)
+        public dynamic GetActivityPlan(int MilestonesID, int ContractID)
         {
-            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID , ContractID);
+            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID, ContractID);
             if (activitList == null || !activitList.Any())
             {
                 return new
@@ -154,12 +154,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetExecutorPlan(projectId);
         }
 
-      
 
 
-        public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor ,int ContractID)
+
+        public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor, int ContractID)
         {
-            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID , ContractID).OrderBy(s => s.ScheduledDate).AsEnumerable();
+            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID, ContractID).OrderBy(s => s.ScheduledDate).AsEnumerable();
 
             int totalRecords = activitList.Count();
             if (!string.IsNullOrEmpty(searchExecutor))
@@ -172,12 +172,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             {
                 activitList = activitList.OrderBy(x => x.ScheduledDate).Skip((page.Value - 1) * size.Value).Take(size.Value);
             }
+
             var result = new
             {
                 activitList = activitList,
                 totalRecords = totalRecords
             };
-
 
             return result;
         }
@@ -300,12 +300,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate);
         }
 
-n
+
         public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor)
         {
             throw new NotImplementedException();
         }
 
-        
+
     }
 }
