@@ -18,7 +18,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             _context = context;
         }
 
-        public List<TeamAllocationDTO> GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string project = null)
+        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null)
         {
             List<TeamAllocationDTO> teamAllocationList = new List<TeamAllocationDTO>();
 
@@ -27,9 +27,13 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 command.CommandText = "[dbo].[GetTeamAllocationTable]";
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.Add(new SqlParameter("@BusinessUnit", SqlDbType.NVarChar, 100)
+                var businessUnitList = businessUnit != null && businessUnit.Any()
+                    ? string.Join(",", businessUnit)
+                    : null;
+
+                command.Parameters.Add(new SqlParameter("@BusinessUnit", SqlDbType.NVarChar, -1)
                 {
-                    Value = (object)businessUnit ?? DBNull.Value
+                    Value = (object)businessUnitList ?? DBNull.Value
                 });
 
                 command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date)
@@ -42,19 +46,23 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                     Value = (object)endDate ?? DBNull.Value
                 });
 
-                // Converta a lista de IDs para uma string delimitada por vírgulas ou defina como null
                 var functionIDList = functionID != null && functionID.Any()
                     ? string.Join(",", functionID)
                     : null;
 
-                command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, 255)
+                command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, -1)
                 {
                     Value = (object)functionIDList ?? DBNull.Value
                 });
 
-                command.Parameters.Add(new SqlParameter("@Project", SqlDbType.NVarChar, 100)
+                // Converter o array de projetos em uma string separada por vírgulas
+                var projectList = project != null && project.Any()
+                    ? string.Join(",", project)
+                    : null;
+
+                command.Parameters.Add(new SqlParameter("@Project", SqlDbType.NVarChar, -1)
                 {
-                    Value = (object)project ?? DBNull.Value
+                    Value = (object)projectList ?? DBNull.Value
                 });
 
                 _context.Database.OpenConnection();
@@ -85,6 +93,8 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
             return teamAllocationList;
         }
+
+
 
 
         public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null)
@@ -265,8 +275,9 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             return businessUnitList;
         }
 
-
-
-
+        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> function = null, string project = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

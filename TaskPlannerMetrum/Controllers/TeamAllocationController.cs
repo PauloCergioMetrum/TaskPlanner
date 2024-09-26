@@ -17,29 +17,27 @@ namespace TaskPlannerMetrum.Controllers
         {
             _teamAllocationBusiness = teamAllocationBusiness;
         }
-
         [HttpPost("GetAllTeamAllocation")]
-        public IActionResult GetTeamAllocation(TeamAlocationTableDTO TeamAlocatTable)
+        public IActionResult GetTeamAllocation(TeamAlocationTableDTO teamAlocatTable)
         {
             try
             {
                 var result = _teamAllocationBusiness.GetTeamAllocation(
-                    TeamAlocatTable.businessUnit,
-                    TeamAlocatTable.startDate,
-                    TeamAlocatTable.endDate,
-                    TeamAlocatTable.FunctionIds,
-                    TeamAlocatTable.project
+                    teamAlocatTable.businessUnit,
+                    teamAlocatTable.startDate,
+                    teamAlocatTable.endDate,
+                    teamAlocatTable.FunctionIds,
+                    teamAlocatTable.project
                 );
 
                 if (result == null || (result.TeamAllocations.Count == 0 && result.TeamAllocationGraphics.Count == 0))
                 {
-                   
                     result = _teamAllocationBusiness.GetTeamAllocation(
-                        null, 
                         null,
-                        null, 
-                        null, 
-                        null  
+                        null,
+                        null,
+                        null,
+                        null
                     );
 
                     if (result == null || (result.TeamAllocations.Count == 0 && result.TeamAllocationGraphics.Count == 0))
@@ -55,5 +53,7 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
     }
 }

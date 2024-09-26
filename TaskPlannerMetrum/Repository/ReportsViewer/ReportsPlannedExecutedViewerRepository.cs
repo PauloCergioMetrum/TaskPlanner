@@ -128,63 +128,38 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 return null;
             }
         }
-
-        //public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO)
-        //{
-        //    var contractIDs = string.Join(",", operationalReportReportDTO.ContractIDs);
-        //    var filteredBusinessUnits = _context.BusinessUnit
-        //                                .Where(bu => operationalReportReportDTO.BusinessUnitIDs.Contains(bu.Id))
-        //                                .ToList();
-        //    var businessUnitNames = string.Join(",", filteredBusinessUnits.Select(bu => bu.Name));
-
-        //    // Verifica se a lista de contratos está vazia e ajusta para "null" se for o caso
-        //    if (operationalReportReportDTO.ContractIDs.Count == 0)
-        //    {
-        //        contractIDs = "null";
-        //    }
-
-        //    // Verifica se a lista de IDs de unidades de negócio está vazia e ajusta para "null" se for o caso
-        //    if (operationalReportReportDTO.BusinessUnitIDs.Count == 0)
-        //    {
-        //        businessUnitNames = "null";
-        //    }
-
-        //    var sql = "EXEC [dbo].[GetNumberOfContractsForBusinessUnit] " +
-        //              $"@ContractIDs = {contractIDs}, " +
-        //              $"@BusinessUnitNames = {(businessUnitNames == "null" ? "null" : $"'{businessUnitNames}'")}";  // Inclui null ou os nomes das unidades de negócio
-
-        //    return _context.Set<NumberOfContractsForBusinessUnit>().FromSqlRaw(sql).ToList();
-        //}
-
-
-
-
         public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO)
         {
-            var contractIDs = operationalReportReportDTO.ContractIDs.Any()
-                ? string.Join(",", operationalReportReportDTO.ContractIDs)
-                : null;
-
+            var contractIDs = string.Join(",", operationalReportReportDTO.ContractIDs);
             var filteredBusinessUnits = _context.BusinessUnit
-                .Where(bu => operationalReportReportDTO.BusinessUnitIDs.Contains(bu.Id))
-                .ToList();
-
-            var businessUnitNames = filteredBusinessUnits.Any()
-                ? string.Join(",", filteredBusinessUnits.Select(bu => bu.Name))
-                : null;
-            var sql = "EXEC [dbo].[GetNumberOfContractsForBusinessUnit] @ContractIDs, @BusinessUnitNames";
-            var parameters = new[]
+                                        .Where(bu => operationalReportReportDTO.BusinessUnitIDs.Contains(bu.Id))
+                                        .ToList();
+            var businessUnitNames = string.Join(",", filteredBusinessUnits.Select(bu => bu.Name));
+            var startDate = operationalReportReportDTO.StartDate != null ?
+                               operationalReportReportDTO.StartDate.ToString("yyyy/MM") :
+                               "null";
+            var endDate = operationalReportReportDTO.EndDate != null ?
+                                operationalReportReportDTO.EndDate.ToString("yyyy/MM") :
+                                "null";
+            if (operationalReportReportDTO.ContractIDs.Count == 0)
             {
-        new SqlParameter("@ContractIDs", (object)contractIDs ?? DBNull.Value),
-        new SqlParameter("@BusinessUnitNames", (object)businessUnitNames ?? DBNull.Value),
-    };
+                contractIDs = "null";
+            }
 
-            return _context.Set<NumberOfContractsForBusinessUnit>()
-                           .FromSqlRaw(sql, parameters)
-                           .ToList();
+            if (operationalReportReportDTO.BusinessUnitIDs.Count == 0)
+            {
+                businessUnitNames = "null";
+            }
+
+            var sql = "EXEC [dbo].[GetNumberOfContractsForBusinessUnit] " +
+            $"@ContractIDs = {contractIDs}, " +
+            $"@BusinessUnitNames = {(businessUnitNames == "null" ? "null" : $"'{businessUnitNames}'")}, " +
+            $"@StartPeriod = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
+            $"@EndPeriod = {(endDate != "null" ? $"'{endDate}'" : "null")}";
+
+
+            return _context.Set<NumberOfContractsForBusinessUnit>().FromSqlRaw(sql).ToList();
         }
-
-
 
 
 

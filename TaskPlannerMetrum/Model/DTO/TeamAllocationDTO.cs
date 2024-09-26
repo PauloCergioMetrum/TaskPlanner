@@ -10,7 +10,7 @@ namespace TaskPlannerMetrum.Model.DTO
         public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> TeamAllocationGraphicFunctions { get; set; }
         public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards { get; set; }
 
-        public List<string> BusinessUnits { get; set; }
+        public string[] BusinessUnits { get; set; }
     }
 
     public class TeamAllocationDTO
@@ -56,7 +56,7 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public class GetTeamFilterBusinessUnit
         {
-            public List<string> BusinessUnits { get; set; }
+            public string[] BusinessUnits { get; set; }
         }
     }
 }
