@@ -18,7 +18,8 @@ namespace TaskPlannerMetrum.Business
 
         public ReportInvoiceDetails InvoiceReport(ReportInvoice filters);
 
-        public List<ContractGraphicDto> GetAllContractsGraphic(int contractId, string internalCode);
+        Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode);
+
 
     }
 }

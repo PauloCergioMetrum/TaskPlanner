@@ -384,43 +384,29 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
-        public List<ContractGraphicDto> GetAllContractsGraphic(int contractId, string internalCode)
+        public async Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode)
         {
-            if (contractId <= 0)
-            {
-                throw new ArgumentException("O ID do contrato deve ser maior que zero.", nameof(contractId));
-            }
+            var contractIDParam = contractID.HasValue
+                ? new SqlParameter("@ContractID", contractID.Value)
+                : new SqlParameter("@ContractID", DBNull.Value);
 
-            var sql = "EXEC [dbo].[GetAllContractsGraphic] @ContractID, @InternalCode";
-            var contractIdParam = new SqlParameter("@ContractID", contractId);
-            var internalCodeParam = new SqlParameter(
-                "@InternalCode",
-                string.IsNullOrEmpty(internalCode) ? (object)DBNull.Value : internalCode
-            );
+            var internalCodeParam = string.IsNullOrEmpty(internalCode)
+                ? new SqlParameter("@InternalCode", DBNull.Value)
+                : new SqlParameter("@InternalCode", internalCode);
 
-            var result = _context.ContractGraphics
-                .FromSqlRaw(sql, contractIdParam, internalCodeParam)
-                .AsNoTracking()
-                .ToList();
+            var result = await _context.ContractGraphics
+                .FromSqlRaw("EXEC GetAllContractsGraphic @ContractID, @InternalCode", contractIDParam, internalCodeParam)
+                .ToListAsync();
 
-            // Mapeamento manual para DTO
-            var dtoList = result.Select(cg => new ContractGraphicDto
-            {
-                ContractID = cg.ContractID,
-                InternalCode = cg.InternalCode,
-                ClientName = cg.ClientName
-            }).ToList();
-
-            return dtoList;
+            return result;
         }
-
-
-
     }
 
-
-
 }
+
+
+
+
 
 
 

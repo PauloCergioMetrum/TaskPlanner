@@ -49,7 +49,14 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter);
 
-        public List<ContractGraphicDto> GetAllContractsGraphic(int contractId, string internalCode);
+      
+
+
+    
+
+        Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode);
+
+
 
 
 

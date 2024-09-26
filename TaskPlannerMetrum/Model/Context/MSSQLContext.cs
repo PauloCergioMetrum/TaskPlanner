@@ -79,6 +79,8 @@ namespace TaskPlannerMetrum.Model.Context
 
         // ISSO E UM MODELO.
         public DbSet<MilestoneEntity> MilestoneEntities { get; set; }
+
+
         public DbSet<ContractGraphic> ContractGraphics { get; set; }
 
 
@@ -117,6 +119,9 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPm_Cost_Planned> vPm_Cost_Planned { get; set; }
         public DbSet<ClientFeedbackDetailsView> ClientFeedbackDetailsView { get; set; }
         public DbSet<vPM_SummaryPlannedData> VPM_SummaryPlannedData {  get; set; }
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HoursExecutor>().HasNoKey();

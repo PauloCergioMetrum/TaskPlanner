@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
@@ -111,34 +112,49 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-
-
-
-        [HttpPost("GetAllContractsGraphic")]
+        [HttpPost("ContractGraphicRequest")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetAllContractsGraphic(int contractId, string internalCode)
+        public async Task<IActionResult> GetContracts([FromBody] ContractGraphicRequest request)
         {
-            try
+     
+            async Task<List<ContractGraphic>> FetchAllContractsAsync()
             {
-                return Ok(_reportsPlannedExecutedViewerBusiness.GetAllContractsGraphic(contractId, internalCode));
+                return (await _reportsPlannedExecutedViewerBusiness.GetAllContractsGraphicAsync(null, null)).ToList();
             }
-            catch (Exception ex)
+
+            if (request == null || request.Contracts == null || !request.Contracts.Any())
             {
-                Logger.Log(ex.Message, ELoggerType.Debug);
-                return BadRequest(ex.Message);
+                var allContracts = await FetchAllContractsAsync();
+                return allContracts.Any() ? Ok(allContracts) : NoContent();
             }
+
+            var contractsResult = new List<ContractGraphic>();
+
+            foreach (var contract in request.Contracts)
+            {
+                var contracts = contract.ContractID == null && string.IsNullOrEmpty(contract.InternalCode)
+                    ? await FetchAllContractsAsync()
+                    : await _reportsPlannedExecutedViewerBusiness.GetAllContractsGraphicAsync(contract.ContractID, contract.InternalCode);
+
+                contractsResult.AddRange(contracts ?? Enumerable.Empty<ContractGraphic>());
+            }
+
+            return contractsResult.Any() ? Ok(contractsResult) : NoContent();
         }
 
 
 
-
-
-
-
     }
+
+
+
+
+
+
+
 }
 
 

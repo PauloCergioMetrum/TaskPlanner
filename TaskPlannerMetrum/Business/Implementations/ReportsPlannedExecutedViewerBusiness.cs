@@ -181,9 +181,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             };
         }
 
-        public List<ContractGraphicDto> GetAllContractsGraphic(int contractId, string internalCode)
+        public async Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode)
         {
-           return _repository.GetAllContractsGraphic(contractId, internalCode); 
+            return await _repository.GetAllContractsGraphicAsync(contractID, internalCode);
         }
     }
 }
