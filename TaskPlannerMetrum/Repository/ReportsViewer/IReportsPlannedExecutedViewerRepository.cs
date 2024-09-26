@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -47,6 +48,15 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
         public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter);
+
+        public List<ContractGraphicDto> GetAllContractsGraphic(int contractId, string internalCode);
+
+
+
+
+
+
+
 
 
 

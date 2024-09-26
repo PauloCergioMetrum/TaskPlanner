@@ -79,8 +79,9 @@ namespace TaskPlannerMetrum.Model.Context
 
         // ISSO E UM MODELO.
         public DbSet<MilestoneEntity> MilestoneEntities { get; set; }
+        public DbSet<ContractGraphic> ContractGraphics { get; set; }
 
- 
+
 
         //VIEWS
         public DbSet<vPmCostMade> vPmCostMade { get; set; }     
@@ -139,7 +140,10 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GoalRealizationReport>().HasNoKey();
             modelBuilder.Entity<ActivityPlanHH>().HasNoKey();
             modelBuilder.Entity<ActivityPlanHHTable>().HasNoKey();
-            base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey(); 
+            base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey();
+            base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
+
+
 
 
 

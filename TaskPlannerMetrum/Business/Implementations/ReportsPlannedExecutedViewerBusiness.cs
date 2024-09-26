@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -180,8 +181,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             };
         }
 
-
-
+        public List<ContractGraphicDto> GetAllContractsGraphic(int contractId, string internalCode)
+        {
+           return _repository.GetAllContractsGraphic(contractId, internalCode); 
+        }
     }
 }
 

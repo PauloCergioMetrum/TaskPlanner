@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
@@ -383,17 +384,45 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
+        public List<ContractGraphicDto> GetAllContractsGraphic(int contractId, string internalCode)
+        {
+            if (contractId <= 0)
+            {
+                throw new ArgumentException("O ID do contrato deve ser maior que zero.", nameof(contractId));
+            }
 
+            var sql = "EXEC [dbo].[GetAllContractsGraphic] @ContractID, @InternalCode";
+            var contractIdParam = new SqlParameter("@ContractID", contractId);
+            var internalCodeParam = new SqlParameter(
+                "@InternalCode",
+                string.IsNullOrEmpty(internalCode) ? (object)DBNull.Value : internalCode
+            );
 
+            var result = _context.ContractGraphics
+                .FromSqlRaw(sql, contractIdParam, internalCodeParam)
+                .AsNoTracking()
+                .ToList();
 
+            // Mapeamento manual para DTO
+            var dtoList = result.Select(cg => new ContractGraphicDto
+            {
+                ContractID = cg.ContractID,
+                InternalCode = cg.InternalCode,
+                ClientName = cg.ClientName
+            }).ToList();
 
-
+            return dtoList;
+        }
 
 
 
     }
 
+
+
 }
+
+
 
 
 
