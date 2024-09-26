@@ -119,43 +119,22 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(401)]
         public async Task<IActionResult> GetContracts([FromBody] ContractGraphicRequest request)
         {
-     
-            async Task<List<ContractGraphic>> FetchAllContractsAsync()
-            {
-                return (await _reportsPlannedExecutedViewerBusiness.GetAllContractsGraphicAsync(null, null)).ToList();
-            }
-
-            if (request == null || request.Contracts == null || !request.Contracts.Any())
-            {
-                var allContracts = await FetchAllContractsAsync();
-                return allContracts.Any() ? Ok(allContracts) : NoContent();
-            }
-
-            var contractsResult = new List<ContractGraphic>();
-
-            foreach (var contract in request.Contracts)
-            {
-                var contracts = contract.ContractID == null && string.IsNullOrEmpty(contract.InternalCode)
-                    ? await FetchAllContractsAsync()
-                    : await _reportsPlannedExecutedViewerBusiness.GetAllContractsGraphicAsync(contract.ContractID, contract.InternalCode);
-
-                contractsResult.AddRange(contracts ?? Enumerable.Empty<ContractGraphic>());
-            }
-
+            var contractsResult = await _reportsPlannedExecutedViewerBusiness.GetContractsByRequestAsync(request);
             return contractsResult.Any() ? Ok(contractsResult) : NoContent();
         }
-
-
-
     }
 
 
 
-
-
-
-
 }
+
+
+
+
+
+
+
+
 
 
 

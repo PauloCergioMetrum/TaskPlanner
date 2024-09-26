@@ -185,6 +185,24 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return await _repository.GetAllContractsGraphicAsync(contractID, internalCode);
         }
+
+        public async Task<List<ContractGraphic>> GetContractsByRequestAsync(ContractGraphicRequest request)
+        {
+            if (request?.Contracts == null || !request.Contracts.Any())
+            {
+                return (await GetAllContractsGraphicAsync(null, null)).ToList();
+            }
+
+            var contractsResult = new List<ContractGraphic>();
+
+            foreach (var contract in request.Contracts)
+            {
+                var contracts = await GetAllContractsGraphicAsync(contract.ContractID, contract.InternalCode);
+                contractsResult.AddRange(contracts ?? Enumerable.Empty<ContractGraphic>());
+            }
+
+            return contractsResult;
+        }
     }
 }
 

@@ -16,7 +16,6 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
        // public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit();
 
         public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO);
-
         
 
         public List<StatusForPeriod> getStatusPerPeriod(OperationalReportReportDTO OperationalReportReportDTO);
