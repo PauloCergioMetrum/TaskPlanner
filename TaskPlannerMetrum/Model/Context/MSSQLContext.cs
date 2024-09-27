@@ -147,12 +147,14 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<ActivityPlanHHTable>().HasNoKey();
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey();
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
-
-
-
-
-
+            modelBuilder.Entity<TeamAllocationDTO>().HasNoKey();
         }
+
+
+
+
+
+            
 
 
 

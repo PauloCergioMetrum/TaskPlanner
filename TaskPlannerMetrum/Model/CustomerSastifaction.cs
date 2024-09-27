@@ -18,7 +18,8 @@ namespace TaskPlannerMetrum.Model
         public string BusinessUnit { get; set; }  
         public string VendorName { get; set; }
         public string InspectorName{ get; set; }
+        public DateTime? StartDate { get; set; }
 
 
-}
+    }
 }
