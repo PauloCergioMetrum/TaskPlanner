@@ -115,7 +115,7 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
 
 
                                 Status_satisfaction_Customer = reader.IsDBNull(reader.GetOrdinal("status_satisfaction_Customer"))
-                            ? 0 // Valor padrão caso seja nulo
+                            ? 0 
                             : reader.GetInt32(reader.GetOrdinal("status_satisfaction_Customer"))
                             };
 

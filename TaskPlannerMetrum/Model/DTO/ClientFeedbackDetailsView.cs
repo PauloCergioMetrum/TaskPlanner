@@ -16,6 +16,7 @@ namespace TaskPlannerMetrum.Model.DTO
         public int ContractID { get; set; }
         public DateTime? FeedbackDate { get; set; }
         public string MaxScheduledDate { get; set; }
+        // apagar esse comentario
 
 
     }
