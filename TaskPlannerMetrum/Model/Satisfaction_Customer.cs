@@ -15,5 +15,7 @@ namespace TaskPlannerMetrum.Model
         public int? ClientRating { get; set; }
 
         public string ReceivedComplaint { get; set; }
+
+        public int? status { get; set; }
     }
 }

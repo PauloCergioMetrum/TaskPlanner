@@ -27,7 +27,7 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
             return ExixteContractID;
         }
 
-        public bool CreateCustomerFeedback(DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint)
+        public bool CreateCustomerFeedback(DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint , int? Status)
         {
             try
             {
@@ -40,6 +40,7 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                     existingFeedback.ClientRating = clientRating;
                     existingFeedback.ReceivedComplaint = receivedComplaint;
                     existingFeedback.FeedbackDate = FeedbackDate; 
+                    existingFeedback.status = Status;   
                 }
                 else
                 {
@@ -49,8 +50,10 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                         ClientResponse = clientResponse,
                         ClientRating = clientRating,
                         ReceivedComplaint = receivedComplaint,
-                        FeedbackDate = FeedbackDate 
+                        FeedbackDate = FeedbackDate,
+                        status = Status 
                     };
+
 
                     _context.Satisfaction_Customer.Add(newCustomerFeedback);
                 }
@@ -108,7 +111,12 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                                 InspectorName = reader["InspectorName"] as string,
                                 StartDate = reader.IsDBNull(reader.GetOrdinal("StartDate"))
                                     ? (DateTime?)null
-                                    : reader.GetDateTime(reader.GetOrdinal("StartDate")) 
+                                    : reader.GetDateTime(reader.GetOrdinal("StartDate")),
+
+
+                                Status_satisfaction_Customer = reader.IsDBNull(reader.GetOrdinal("status_satisfaction_Customer"))
+                            ? 0 // Valor padrão caso seja nulo
+                            : reader.GetInt32(reader.GetOrdinal("status_satisfaction_Customer"))
                             };
 
                             contractDetailsList.Add(contractDetail);
