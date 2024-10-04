@@ -8,7 +8,7 @@ namespace TaskPlannerMetrum.Business
     public interface ICustomerSatisfactionBusiness
     {
         List<ClientFeedbackDetailsView> ClientFeedbackDetailsModel(int contractID);
-        public bool CreateCustomerFeedback( DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint);
+        public bool CreateCustomerFeedback( DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint , int? Status);
         public List<CustomerSastifaction> CustomerSastifaction();
     }
 }

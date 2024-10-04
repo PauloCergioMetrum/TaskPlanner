@@ -6,18 +6,16 @@ namespace TaskPlannerMetrum.Model.DTO
 {
     public class TeamAlocationTableDTO
     {
-        public string businessUnit { get; set; }
+        public string[] businessUnit { get; set; }
 
         public DateTime startDate { get; set; }
 
         public DateTime endDate { get; set; }
 
-        
-        public List<int> FunctionIds { get; set; } 
+        public List<int> FunctionIds { get; set; }
 
-
-        public string project { get; set; }
-
-      
+        // Atualizar para ser um array de strings
+        public string[] project { get; set; }
     }
+
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -180,8 +181,28 @@ namespace TaskPlannerMetrum.Business.Implementations
             };
         }
 
+        public async Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode)
+        {
+            return await _repository.GetAllContractsGraphicAsync(contractID, internalCode);
+        }
 
+        public async Task<List<ContractGraphic>> GetContractsByRequestAsync(ContractGraphicRequest request)
+        {
+            if (request?.Contracts == null || !request.Contracts.Any())
+            {
+                return (await GetAllContractsGraphicAsync(null, null)).ToList();
+            }
 
+            var contractsResult = new List<ContractGraphic>();
+
+            foreach (var contract in request.Contracts)
+            {
+                var contracts = await GetAllContractsGraphicAsync(contract.ContractID, contract.InternalCode);
+                contractsResult.AddRange(contracts ?? Enumerable.Empty<ContractGraphic>());
+            }
+
+            return contractsResult;
+        }
     }
 }
 

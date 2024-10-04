@@ -27,7 +27,7 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
             return ExixteContractID;
         }
 
-        public bool CreateCustomerFeedback(DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint)
+        public bool CreateCustomerFeedback(DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint , int? Status)
         {
             try
             {
@@ -40,6 +40,7 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                     existingFeedback.ClientRating = clientRating;
                     existingFeedback.ReceivedComplaint = receivedComplaint;
                     existingFeedback.FeedbackDate = FeedbackDate; 
+                    existingFeedback.status = Status;   
                 }
                 else
                 {
@@ -49,8 +50,10 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                         ClientResponse = clientResponse,
                         ClientRating = clientRating,
                         ReceivedComplaint = receivedComplaint,
-                        FeedbackDate = FeedbackDate 
+                        FeedbackDate = FeedbackDate,
+                        status = Status 
                     };
+
 
                     _context.Satisfaction_Customer.Add(newCustomerFeedback);
                 }
@@ -86,20 +89,34 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                             {
                                 ID = reader.GetInt64(reader.GetOrdinal("ID")),
                                 ContractName = reader["ContractName"] as string,
-                                ContractID = reader.GetInt32(reader.GetOrdinal("ContractID")), 
+                                ContractID = reader.GetInt32(reader.GetOrdinal("ContractID")),
                                 Contact = reader["Contact"] as string,
-                                LastExecutedDate = reader.IsDBNull(reader.GetOrdinal("LastExecutedDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastExecutedDate")),
-                                LastContactDate = reader.IsDBNull(reader.GetOrdinal("LastContactDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("LastContactDate")),
-                                FeedbackDate = reader.IsDBNull(reader.GetOrdinal("FeedbackDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("FeedbackDate")),
+                                LastExecutedDate = reader.IsDBNull(reader.GetOrdinal("LastExecutedDate"))
+                                    ? (DateTime?)null
+                                    : reader.GetDateTime(reader.GetOrdinal("LastExecutedDate")),
+                                LastContactDate = reader.IsDBNull(reader.GetOrdinal("LastContactDate"))
+                                    ? (DateTime?)null
+                                    : reader.GetDateTime(reader.GetOrdinal("LastContactDate")),
+                                FeedbackDate = reader.IsDBNull(reader.GetOrdinal("FeedbackDate"))
+                                    ? (DateTime?)null
+                                    : reader.GetDateTime(reader.GetOrdinal("FeedbackDate")),
                                 ClientName = reader["ClientName"] as string,
-                                ClientRating = reader.IsDBNull(reader.GetOrdinal("ClientRating")) ? 0 : reader.GetInt32(reader.GetOrdinal("ClientRating")),
+                                ClientRating = reader.IsDBNull(reader.GetOrdinal("ClientRating"))
+                                    ? 0
+                                    : reader.GetInt32(reader.GetOrdinal("ClientRating")),
                                 ReceivedComplaint = reader["ReceivedComplaint"] as string,
                                 StatusID = reader.GetInt32(reader.GetOrdinal("StatusID")),
-                                BusinessUnit = reader["BusinessUnit"] as string, 
+                                BusinessUnit = reader["BusinessUnit"] as string,
                                 VendorName = reader["VendorName"] as string,
                                 InspectorName = reader["InspectorName"] as string,
-                            
-                                
+                                StartDate = reader.IsDBNull(reader.GetOrdinal("StartDate"))
+                                    ? (DateTime?)null
+                                    : reader.GetDateTime(reader.GetOrdinal("StartDate")),
+
+
+                                Status_satisfaction_Customer = reader.IsDBNull(reader.GetOrdinal("status_satisfaction_Customer"))
+                            ? 0 
+                            : reader.GetInt32(reader.GetOrdinal("status_satisfaction_Customer"))
                             };
 
                             contractDetailsList.Add(contractDetail);

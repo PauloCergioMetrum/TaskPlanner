@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Repository.Generic;
+using TaskPlannerMetrum.Repository.ReportsViewer;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskPlannerMetrum.Controllers
@@ -108,12 +112,29 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-
-
-
-
+        [HttpPost("ContractGraphicRequest")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> GetContracts([FromBody] ContractGraphicRequest request)
+        {
+            var contractsResult = await _reportsPlannedExecutedViewerBusiness.GetContractsByRequestAsync(request);
+            return contractsResult.Any() ? Ok(contractsResult) : NoContent();
+        }
     }
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 

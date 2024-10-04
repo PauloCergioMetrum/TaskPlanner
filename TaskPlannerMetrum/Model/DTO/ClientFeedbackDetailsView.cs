@@ -9,18 +9,18 @@ namespace TaskPlannerMetrum.Model.DTO
         public string Contact { get; set; }
         public string Scope { get; set; }
         public DateTime? LatestScheduledDate { get; set; }
-       
         public DateTime? LastContactDate { get; set; }
         public string ClientResponse { get; set; }
         public int ClientRating { get; set; }
         public string ReceivedComplaint { get; set; }
         public int ContractID { get; set; }
-        public DateTime FeedbackDate {  get; set; } 
-
-
+        public DateTime? FeedbackDate { get; set; }
+        public string MaxScheduledDate { get; set; }
+        // apagar esse comentario
 
 
     }
+
 
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
@@ -15,7 +16,6 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
        // public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit();
 
         public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO);
-
         
 
         public List<StatusForPeriod> getStatusPerPeriod(OperationalReportReportDTO OperationalReportReportDTO);
@@ -47,6 +47,22 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
         public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter);
+
+      
+
+
+    
+
+        Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode);
+
+
+
+
+
+
+
+
+
 
 
 

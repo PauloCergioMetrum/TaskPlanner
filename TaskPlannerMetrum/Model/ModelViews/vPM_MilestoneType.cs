@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Office.CoverPageProps;
+using System.Data;
 
 namespace TaskPlannerMetrum.Model.ModelViews
 {
@@ -14,7 +15,9 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public int FunctionID { get; set; }
         public string FunctionName { get; set; }
 
-        public double ValueHour {  get; set; } 
-        public double? TotalMilesStone { get; set; } 
+        public double ValueHour { get; set; }
+        public double? TotalMilesStone { get; set; }
+        public int MilestonesID { get; set; }
+        public int TotalRecordsByContract { get; set; }
     }
 }
