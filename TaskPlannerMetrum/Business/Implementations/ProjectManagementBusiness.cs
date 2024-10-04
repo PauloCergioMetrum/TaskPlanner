@@ -9,12 +9,16 @@ using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Model.ModelViews;
 using System.Diagnostics.Contracts;
 using TaskPlannerMetrum.Data.VO;
+using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Security.Principal;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
     public class ProjectManagementBusiness : IProjectManagementBusiness
     {
         private readonly IProjectManagementRepository _projectmanagementRepository;
+        private int dynamic;
 
         public ProjectManagementBusiness(IProjectManagementRepository projectmanagementBusiness)
         {
@@ -160,7 +164,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool DeleteMilestones(string ID, int MilestonesID)
         {
-            return _projectmanagementRepository.DeleteMilestones(ID , MilestonesID);
+            return _projectmanagementRepository.DeleteMilestones(ID, MilestonesID);
         }
 
 
@@ -613,9 +617,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllMilestonesItem(contractID);
         }
 
-    
 
-        
+
+
 
         public List<Functions> GetAllFunctions()
         {
@@ -736,6 +740,122 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetMilestoneItem(contractID);
         }
+
+        public List<ActivityPlanHH> ActivityPlanHH(int contractID)
+        {
+            return _projectmanagementRepository.ActivityPlanHH(contractID);
+        }
+        public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID)
+        {
+            return _projectmanagementRepository.ActivityPlanHHTable(contractID);
+        }
+
+        public ActivityPlanHHDetail GetActivityPlanDetails(int contractID)
+        {
+            List<MilestonesItem> milesTonesList = _projectmanagementRepository.GetAllMilestones();
+            List<MilestonesItem> milesTonesByContractID = milesTonesList.Where(c => c.ContractID == contractID).ToList();
+            var activitPlanDetaisByContractID = _projectmanagementRepository.GetActivityPlanDetails(contractID);
+            List<string> seniorityLevelList = activitPlanDetaisByContractID.ActivityPlanHHTable.Select(p => p.ExecutorSeniorityLevel).Distinct().ToList();
+            List<ActivicPlannGrupByMilesTone> ListTotals = new List<ActivicPlannGrupByMilesTone>();
+            List<Details> detailsList = new List<Details>();
+
+            List<ActivicPlannGrupByMilesTone> milesTonesLsit = new List<ActivicPlannGrupByMilesTone>();
+
+            foreach (var milestones in milesTonesByContractID)
+            {
+                ActivicPlannGrupByMilesTone milesTone = new ActivicPlannGrupByMilesTone
+                {
+                    MilestonesID = milestones.ID,
+                    MilestoneName = milestones.Name,
+                    Executers = activitPlanDetaisByContractID.ActivityPlanHHTable
+                    .Where(ex => ex.MilestoneName == milestones.Name)
+                    .Select(ex => new Executors
+                    {
+                        Executor = ex.ExecutorUserName,
+                        TotalHours = ex.TotalHours,
+                        MilesTonesName = milestones.Name,
+                        Details = activitPlanDetaisByContractID.ActivityPlanHHTable
+                            .Where(n => n.MilestoneName == milestones.Name)
+                            .Select(dt => new Model.Details
+                            {
+                                BusinesUnit = dt.BusinessUnit,
+                                ExecutedManHour = dt.ExecutedManHour,
+                                ExecutorSeniorityLevel = dt.ExecutorSeniorityLevel,
+                                MilesTonesName = dt.MilestoneName,
+                                PlannedManHour = dt.PlannedManHour,
+                                SeniorLevel = dt.ExecutorSeniorityLevel
+                            }).ToList()  // Adicionado .ToList() aqui
+                    }).ToList()  // Adicionado .ToList() aqui
+                };
+                milesTonesLsit.Add(milesTone);
+            }
+
+
+
+            //foreach (var m in milesTonesByContractID)
+            //{
+            //    var newDetails = new Details
+            //    {
+            //        SeniorLevel = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.ExecutorSeniorityLevel).FirstOrDefault(),
+            //        BusinesUnit = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.BusinessUnit).FirstOrDefault(),
+            //        ExecutedManHour = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.ExecutedManHour).FirstOrDefault(),
+            //        PlannedManHour = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.PlannedManHour).FirstOrDefault(),
+            //        MilesTonesName = m.Name,
+            //    };
+            //    detailsList.Add(newDetails);
+            //}
+
+            //List<Model.Executors> Executers = new List<Model.Executors>();
+            //List<Model.Executors> testeExec = new List<Model.Executors>();
+            //foreach (var m in milesTonesByContractID)
+            //{
+
+            //    var filteredPlanDetails = activitPlanDetaisByContractID.ActivityPlanHHTable
+            //        .Where(i => i.MilestoneName == m.Name)
+            //            .ToList();
+
+            //    var executorsList = filteredPlanDetails.Select(p => new Model.Executors
+            //    {
+            //        Executor = p.ExecutorUserName,
+            //        MilesTonesName = p.MilestoneName,
+            //        Details = detailsList.Where(dt=> dt.MilesTonesName == m.Name).ToList(), 
+            //        TotalHours = filteredPlanDetails.Select(t => t.TotalHours).FirstOrDefault() 
+            //    }).FirstOrDefault();
+
+            //    testeExec.Add(executorsList);
+
+            //}
+            //foreach (var m in milesTonesByContractID)
+            //{
+            //    var filteredPlanDetails = activitPlanDetaisByContractID.ActivityPlanHHTable
+            //        .Where(i => i.MilestoneName == m.Name)
+            //            .ToList();
+
+            //    var executorsList = filteredPlanDetails.Where(mn => mn.MilestoneName == m.Name).Select(p => new Model.Executors
+            //    {
+            //        Executor = p.ExecutorUserName,
+            //        MilesTonesName = p.MilestoneName,
+            //        Details = detailsList, 
+            //        TotalHours = filteredPlanDetails.Select(t => t.TotalHours).FirstOrDefault() 
+            //    }).FirstOrDefault();
+
+            //    testeExec.Add(executorsList);
+
+            //    var list = new ActivicPlannGrupByMilesTone
+            //    {
+            //        MilestonesID = m.ID,
+            //        MilestoneName = m.Name,
+            //        Executers = testeExec
+            //    };
+            //    ListTotals.Add(list);
+            //}
+
+            activitPlanDetaisByContractID.ActivicPlannGrupByMilesTone = milesTonesLsit;
+            return activitPlanDetaisByContractID;
+
+        }
+
+
 
 
     }

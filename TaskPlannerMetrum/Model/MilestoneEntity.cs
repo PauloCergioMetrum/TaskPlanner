@@ -11,6 +11,7 @@ namespace TaskPlannerMetrum.Model
         public string TechLeadName { get; set; }
         public int? BusinessUnitID { get; set; }
         public string BusinessUnit { get; set; }
+
         public int? Delayed { get; set; }   
 
         public DateTime? ScheduledDate { get; set; }
@@ -19,6 +20,7 @@ namespace TaskPlannerMetrum.Model
         public double? ExpectedHours { get; set; }
         public double? TotalPlannedManHour { get; set; }
         public double? TotalExecutedManHour { get; set; }
+
 
     }
 }

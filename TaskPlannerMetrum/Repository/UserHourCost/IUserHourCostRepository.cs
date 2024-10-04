@@ -23,10 +23,12 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
         public List<UserHourCosts> GetAllHours();
 
 
-        public bool updateUser(int UserID, string functionName, string managementName);
+        public bool updateUser(int UserID, int FunctionID, string managementName);
 
         public List<Management> GetAllManagement();
         public List<Functions> GetAllFunction();
+
+
 
 
     }

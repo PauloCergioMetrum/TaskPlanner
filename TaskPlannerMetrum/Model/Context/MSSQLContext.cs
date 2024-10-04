@@ -70,9 +70,21 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<PM_TAP_General_Info> PM_TAP_General_Info { get; set; }
         public DbSet<PM_TAP_Scope> PM_TAP_Scope { get; set; }
         public DbSet<PM_Information_General> PM_Information_General { get; set; }
+        public DbSet<Satisfaction_Customer> Satisfaction_Customer {  get; set; }    
 
         public DbSet<PM_TAP_Resources> PM_TAP_Resources { get; set; }
         public DbSet<PM_MilestonesType> PM_MilestonesType { get; set; }
+
+
+
+        // ISSO E UM MODELO.
+        public DbSet<MilestoneEntity> MilestoneEntities { get; set; }
+
+
+        public DbSet<ContractGraphic> ContractGraphics { get; set; }
+
+
+
         //VIEWS
         public DbSet<vPmCostMade> vPmCostMade { get; set; }     
         public DbSet<vCalendar> vCalendar { get; set; }
@@ -105,10 +117,10 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<Management> Management { get; set; }
         public DbSet<vPmCostPlanned> vPmCostPlanned {  get; set; }
         public DbSet<vPm_Cost_Planned> vPm_Cost_Planned { get; set; }
-
+        public DbSet<ClientFeedbackDetailsView> ClientFeedbackDetailsView { get; set; }
         public DbSet<vPM_SummaryPlannedData> VPM_SummaryPlannedData {  get; set; }
 
-        public DbSet<MilestoneEntity> MilestoneEntities { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -125,9 +137,24 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<BalancePerProject>().HasNoKey();
             modelBuilder.Entity<GetNumberOfContractsForBusinessUnit>().HasNoKey();
             modelBuilder.Entity<OperationalRelationshipTable>().HasNoKey();
-            base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey();
 
+            modelBuilder.Entity<PredictedInvoiced>().HasNoKey();
+            modelBuilder.Entity<MaterialServices>().HasNoKey();
+            modelBuilder.Entity<BillingPerBusinessUnit>().HasNoKey();
+            modelBuilder.Entity<ReportDetailsTable>().HasNoKey();
+            modelBuilder.Entity<GoalRealizationReport>().HasNoKey();
+            modelBuilder.Entity<ActivityPlanHH>().HasNoKey();
+            modelBuilder.Entity<ActivityPlanHHTable>().HasNoKey();
+            base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey();
+            base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
+            modelBuilder.Entity<TeamAllocationDTO>().HasNoKey();
         }
+
+
+
+
+
+            
 
 
 
@@ -203,6 +230,22 @@ namespace TaskPlannerMetrum.Model.Context
                 .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID)).ToList();
 
         }
+
+        public List<ActivityPlanHH> ActivityPlanHH(int contractID)
+        {
+            var sql = "[dbo].[ActivityPlanHH] @ContractID";
+            return this.Set<ActivityPlanHH>()
+                .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
+                .ToList();
+        }
+        public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID)
+        {
+            var sql = "[dbo].[ActivityPlanHHTable] @ContractID";
+            return this.Set<ActivityPlanHHTable>()
+                .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
+                .ToList();
+        }
+
 
     }
 

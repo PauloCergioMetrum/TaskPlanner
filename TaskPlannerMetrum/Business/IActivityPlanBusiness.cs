@@ -10,7 +10,7 @@ namespace TaskPlannerMetrum.Business
 {
     public interface IActivityPlanBusiness
     {
-        Task<List<MilestoneDetailDTO>> FindAllMilestonesByContractAsync(int contractID);
+ 
 
         public dynamic GetExecutorPlan(string projectId);
         public bool Create(ActivePlanList activityPlan);
@@ -18,7 +18,14 @@ namespace TaskPlannerMetrum.Business
 
         public dynamic TasksByUser(string userId, int? page, int? size, string searchExecutor);
         public dynamic GetActivityPlan(int MilestonesID, int ContractID );
-       // public List<Milestone> FindAllMilestonesByContract(int contractID);
+
+        //public List<MilestoneDetailDTO> FindAllMilestonesByContract(int contractID);
+
+
+
+        Task<List<MilestoneDetailDTO>> FindAllMilestonesByContractAsync(int contractID);
+
+
         public bool UpdateActivityPlan(TaskPlannerMetrum.Model.ModelViews.vActivityPlan activityPlan);
         public bool DeleteId(int id);
 

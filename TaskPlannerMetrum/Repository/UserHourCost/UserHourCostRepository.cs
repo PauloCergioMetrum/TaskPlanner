@@ -16,7 +16,9 @@ using System.Text;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
+
 using TaskPlannerMetrum.Model.DTO;
+
 using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.UserHourCostRepository
@@ -126,34 +128,46 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
 
         public List<Functions> GetAllFunction()
         {
-            return _context.Functions.ToList();
+
+         var functions = _context.Functions.ToList();
+            return functions;
         }
 
+        public string RemoveAccents(string text)
+        {
+            text = text.Replace("-", "");
+            if (string.IsNullOrWhiteSpace(text))
+                return text;
+
+            text = text.Normalize(NormalizationForm.FormD);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (char c in text)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC).ToUpper();
+        }
         public List<Management> GetAllManagement()
         {
             return _context.Management.ToList();
         }
 
-        public bool updateUser(int UserID, string functionName, string managementName)
+        public bool updateUser(int UserID, int FunctionID, string managementName)
         {
 
             User UserUpdate = _context.Users.FirstOrDefault(i => i.Id == UserID);
+            UserUpdate.FunctionID = FunctionID;
             if (UserUpdate == null)
             {
 
                 return false;
             }
-            string functionNameNormalized = NormalizeString(functionName.Replace("-", " ")).ToUpper();
             string managementNameNormalized = NormalizeString(managementName).ToUpper();
-            var functionID = _context.Functions
-                .Where(f => EF.Functions.Collate(f.Name.ToUpper(), "SQL_Latin1_General_CP1_CI_AI") == functionNameNormalized)
-                .Select(f => f.ID)
-                .FirstOrDefault();
-            if (functionID != 0)
-            {
-                UserUpdate.FunctionID = functionID;
-            }
-
             var managementID = _context.Management
                 .Where(m => EF.Functions.Collate(m.Name.ToUpper(), "SQL_Latin1_General_CP1_CI_AI") == managementNameNormalized)
                 .Select(m => m.ID)
@@ -183,6 +197,7 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
                 {
                     stringBuilder.Append(c);
                 }
+
             }
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
