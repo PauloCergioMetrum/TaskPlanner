@@ -38,12 +38,10 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         {
             try
             {
-
-
                 int pmtemaID = _context.Team.Where(t => t.UserID == activityPlan.PlannerTeamID).Select(t => t.ID).FirstOrDefault();
+
                 _context.Add(new Model.ActivityPlan
                 {
-
                     ActivitiesScopeListID = activityPlan.ActivitiesScopeListID,
                     ExecutedManHour = activityPlan.ExecutedManHour,
                     ExecutorTeamID = _context.Team.Where(i => i.UserID == activityPlan.ExecutorTeamID).Select(i => i.ID).FirstOrDefault(),
@@ -60,13 +58,12 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     DepartamentID = activityPlan.DepartamentID,
                     BusinessUnit = activityPlan.BusinessUnit,
                     MilestonesID = activityPlan.MilestonesID,
-                    //MilestonesID = activityPlan.MilestonesID == 0 ? (int?)null : activityPlan.MilestonesID,
-
                     EquipmentID = activityPlan.EquipmentID,
                 });
+
                 _context.SaveChanges();
 
-
+                // Cria as avaliações para cada tarefa criada
                 CreateAllRatings(new UserTask
                 {
                     ContractID = activityPlan.ContractID,
@@ -75,17 +72,11 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     Rating = 0,
                     ActivityPlanID = _context.ActivityPlan.OrderBy(i => i.ID).Select(i => i.ID).LastOrDefault()
                 },
-                (new RatingProject
+                new RatingProject
                 {
                     ProjectID = activityPlan.ContractID,
-
                     UserID = activityPlan.ExecutorTeamID,
-
-                }
-                ));
-
-
-
+                });
 
                 return true;
             }

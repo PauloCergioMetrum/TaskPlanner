@@ -34,14 +34,13 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool Create(ActivePlanList activityPlan)
         {
-
             ActivityPlan task = new ActivityPlan();
 
             try
             {
+                // Itera sobre os executores e cria as tarefas correspondentes
                 foreach (var item in activityPlan.ExecutorTeamID)
                 {
-
                     task.ID = activityPlan.ID;
                     task.PlannerTeamID = activityPlan.PlannerTeamID;
                     task.Status = "5";
@@ -60,23 +59,18 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.BusinessUnit = activityPlan.BusinessUnit;
                     task.EquipmentID = activityPlan.EquipmentID == 0 ? (int?)null : activityPlan.EquipmentID;
                     task.MilestonesID = activityPlan.MilestonesID;
-                    //task.EquipmentID = activityPlan.EquipmentID;
 
-
+                    // Chama o repositório para salvar a tarefa
                     _activiesRepository.Create(task);
                 }
                 return true;
-
-
-
-
             }
             catch (Exception)
             {
                 return false;
             }
-
         }
+
 
 
 
