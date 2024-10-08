@@ -36,19 +36,39 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public bool Create(Model.ActivityPlan activityPlan)
         {
+            if (activityPlan == null) return false;
+
             try
             {
-                int pmtemaID = _context.Team.Where(t => t.UserID == activityPlan.PlannerTeamID).Select(t => t.ID).FirstOrDefault();
+                int plannerTeamID = _context.Team
+                    .Where(t => t.UserID == activityPlan.PlannerTeamID)
+                    .Select(t => t.ID)
+                    .FirstOrDefault();
 
-                _context.Add(new Model.ActivityPlan
+                if (plannerTeamID == 0)
+                {
+                    return false;
+                }
+
+                int executorTeamID = _context.Team
+                    .Where(t => t.UserID == activityPlan.ExecutorTeamID)
+                    .Select(t => t.ID)
+                    .FirstOrDefault();
+
+                if (executorTeamID == 0)
+                {
+                    return false;
+                }
+
+                var newActivityPlan = new Model.ActivityPlan
                 {
                     ActivitiesScopeListID = activityPlan.ActivitiesScopeListID,
                     ExecutedManHour = activityPlan.ExecutedManHour,
-                    ExecutorTeamID = _context.Team.Where(i => i.UserID == activityPlan.ExecutorTeamID).Select(i => i.ID).FirstOrDefault(),
+                    ExecutorTeamID = executorTeamID,
                     NotesFromExecutor = activityPlan.NotesFromExecutor,
                     NotesFromPlanner = activityPlan.NotesFromPlanner,
                     PlannedManHour = activityPlan.PlannedManHour,
-                    PlannerTeamID = pmtemaID,
+                    PlannerTeamID = plannerTeamID,
                     TaskDescription = activityPlan.TaskDescription,
                     ContractID = activityPlan.ContractID,
                     ScheduledDate = activityPlan.ScheduledDate,
@@ -58,33 +78,20 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     DepartamentID = activityPlan.DepartamentID,
                     BusinessUnit = activityPlan.BusinessUnit,
                     MilestonesID = activityPlan.MilestonesID,
-                    EquipmentID = activityPlan.EquipmentID,
-                });
+                    EquipmentID = activityPlan.EquipmentID
+                };
 
+                _context.ActivityPlan.Add(newActivityPlan);
                 _context.SaveChanges();
-
-                // Cria as avaliações para cada tarefa criada
-                CreateAllRatings(new UserTask
-                {
-                    ContractID = activityPlan.ContractID,
-                    ActivitiesScopeListID = activityPlan.ActivitiesScopeListID,
-                    UserID = activityPlan.ExecutorTeamID,
-                    Rating = 0,
-                    ActivityPlanID = _context.ActivityPlan.OrderBy(i => i.ID).Select(i => i.ID).LastOrDefault()
-                },
-                new RatingProject
-                {
-                    ProjectID = activityPlan.ContractID,
-                    UserID = activityPlan.ExecutorTeamID,
-                });
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
         }
+
 
         public bool CreateAllRatings(UserTask RatingforTasks, RatingProject ratingProjects)
         {
