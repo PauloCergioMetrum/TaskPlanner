@@ -47,25 +47,32 @@ namespace TaskPlannerMetrum.Controllers
 
             return Ok(_activityPlanBusiness.GetExecutorPlan(projectId));
         }
+
+
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult Create(ActivePlanList activityPlan)
-
+        public IActionResult Create([FromBody] List<ActivePlanList> activityPlans) // Recebe uma lista de ActivePlanList
         {
             try
             {
-                return Ok(_activityPlanBusiness.Create(activityPlan));
+                // Itera sobre cada objeto na lista e chama o método `Create` para cada um
+                foreach (var activityPlan in activityPlans)
+                {
+                    bool result = _activityPlanBusiness.Create(activityPlan); // Chama o método `Create` para cada item
+                    if (!result)
+                    {
+                        return BadRequest("Falha ao processar uma ou mais atividades.");
+                    }
+                }
+                return Ok("Todas as atividades foram criadas com sucesso.");
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-
-
         }
 
 
