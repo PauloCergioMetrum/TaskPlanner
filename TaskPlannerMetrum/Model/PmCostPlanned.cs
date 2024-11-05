@@ -8,8 +8,10 @@
         public double ValueUnit { get; set; }
         public string Description { get; set; }
         public int ContractID { get; set; }
+        //public string TotalPlanned { get; set; }        
 
-        
+
+
 
 
     }

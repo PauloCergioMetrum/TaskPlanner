@@ -792,72 +792,21 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-            //foreach (var m in milesTonesByContractID)
-            //{
-            //    var newDetails = new Details
-            //    {
-            //        SeniorLevel = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.ExecutorSeniorityLevel).FirstOrDefault(),
-            //        BusinesUnit = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.BusinessUnit).FirstOrDefault(),
-            //        ExecutedManHour = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.ExecutedManHour).FirstOrDefault(),
-            //        PlannedManHour = activitPlanDetaisByContractID.ActivityPlanHHTable.Where(l => l.MilestoneName == m.Name).Select(d => d.PlannedManHour).FirstOrDefault(),
-            //        MilesTonesName = m.Name,
-            //    };
-            //    detailsList.Add(newDetails);
-            //}
-
-            //List<Model.Executors> Executers = new List<Model.Executors>();
-            //List<Model.Executors> testeExec = new List<Model.Executors>();
-            //foreach (var m in milesTonesByContractID)
-            //{
-
-            //    var filteredPlanDetails = activitPlanDetaisByContractID.ActivityPlanHHTable
-            //        .Where(i => i.MilestoneName == m.Name)
-            //            .ToList();
-
-            //    var executorsList = filteredPlanDetails.Select(p => new Model.Executors
-            //    {
-            //        Executor = p.ExecutorUserName,
-            //        MilesTonesName = p.MilestoneName,
-            //        Details = detailsList.Where(dt=> dt.MilesTonesName == m.Name).ToList(), 
-            //        TotalHours = filteredPlanDetails.Select(t => t.TotalHours).FirstOrDefault() 
-            //    }).FirstOrDefault();
-
-            //    testeExec.Add(executorsList);
-
-            //}
-            //foreach (var m in milesTonesByContractID)
-            //{
-            //    var filteredPlanDetails = activitPlanDetaisByContractID.ActivityPlanHHTable
-            //        .Where(i => i.MilestoneName == m.Name)
-            //            .ToList();
-
-            //    var executorsList = filteredPlanDetails.Where(mn => mn.MilestoneName == m.Name).Select(p => new Model.Executors
-            //    {
-            //        Executor = p.ExecutorUserName,
-            //        MilesTonesName = p.MilestoneName,
-            //        Details = detailsList, 
-            //        TotalHours = filteredPlanDetails.Select(t => t.TotalHours).FirstOrDefault() 
-            //    }).FirstOrDefault();
-
-            //    testeExec.Add(executorsList);
-
-            //    var list = new ActivicPlannGrupByMilesTone
-            //    {
-            //        MilestonesID = m.ID,
-            //        MilestoneName = m.Name,
-            //        Executers = testeExec
-            //    };
-            //    ListTotals.Add(list);
-            //}
+            
 
             activitPlanDetaisByContractID.ActivicPlannGrupByMilesTone = milesTonesLsit;
             return activitPlanDetaisByContractID;
 
         }
 
+        //public List<MilestoneType_HH_Details> ManagementSalesOrderDetailsHH(string MilestonesValueID)
+        //{
 
+        //    if (string.IsNullOrEmpty(MilestonesValueID))
+        //        throw new ArgumentException("MilestonesID não pode ser nulo ou vazio", nameof(MilestonesValueID));
 
-
+        //    return _projectmanagementRepository.ManagementSalesOrderDetailsHH(MilestonesValueID).ToList();
+        //}
     }
 }
 

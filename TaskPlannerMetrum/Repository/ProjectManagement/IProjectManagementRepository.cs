@@ -104,7 +104,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<ActivityPlanHH> ActivityPlanHH(int contractID);
         public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID);
         public ActivityPlanHHDetail GetActivityPlanDetails(int contractID);
-
+        public List<MilestonesItem> GetAllMilestones();
+       // public List<MilestoneType_HH_Details> ManagementSalesOrderDetailsHH(string MilestonesValueID);
 
 
 
@@ -129,7 +130,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool DeleteFunctionID(string ID);
         public bool DeletePM_MilestonesType(string ID);
 
-        public List<MilestonesItem> GetAllMilestones();
+      
 
 
 
