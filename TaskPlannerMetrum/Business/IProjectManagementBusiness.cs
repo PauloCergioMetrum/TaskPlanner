@@ -152,6 +152,9 @@ namespace TaskPlannerMetrum.Business
 
         public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId);
 
+        public List<OrderManagementInfo> OrderManagementInfo(int contractID);
+        public List<vRightCardValue> RightCardValues(int contractID);
+
 
 
     }

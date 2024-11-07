@@ -1578,14 +1578,18 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.MilestonesItem.ToList();
         }
 
+        public List<OrderManagementInfo> OrderManagementInfo(int contractID)
+        {
+            return  _context.OrderManagementInfo.Where( a => a.ContractID == contractID ).ToList(); 
+        }
 
-        //public List<MilestoneType_HH_Details> ManagementSalesOrderDetailsHH(string MilestonesValueID)
-        //{
-          
-        //    return _context.MilestoneType_HH_Details
-        //        .Where(m => m.MilestonesValueID == MilestonesValueID)
-        //        .ToList();
-        //}
+        public List<vRightCardValue> RightCardValues(int contractID)
+        {
+            return _context.vRightCardValue.Where(a => a.ContractID == contractID).ToList();     
+        }
+
+
+        
 
     }
 }

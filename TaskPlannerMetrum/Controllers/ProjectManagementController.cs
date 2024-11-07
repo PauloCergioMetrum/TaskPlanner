@@ -1338,26 +1338,51 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
-        //[HttpGet("ManagementSalesOrderDetailsHH")]
-        //[ProducesResponseType(200)]
-        //[ProducesResponseType(204)]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(401)]
+        [HttpGet("GetOrderManagementInfo")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
 
-        //public IActionResult ManagementSalesOrderDetailsHH(string MilestonesValueID)
-        //{
-        //    try
-        //    {
+        public IActionResult OrderManagementInfo(int ContractID)
+        {
+            try
+            {
 
-        //        return Ok(_projectManagementBusiness.ManagementSalesOrderDetailsHH(MilestonesValueID));
+                return Ok(_projectManagementBusiness.OrderManagementInfo(ContractID));
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
+            }
+            catch (Exception ex)
+            {
 
-        //}
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpGet("GetRightCardValues")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult RightCardValues(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.RightCardValues(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
 
 
 

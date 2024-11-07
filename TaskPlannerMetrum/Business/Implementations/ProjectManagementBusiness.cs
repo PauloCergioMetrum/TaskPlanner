@@ -71,6 +71,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                         SalesOrder = OrderInformationByID.InternalCode,
                         Validity = validityDateFormatter,
                         BusinessUnit = OrderInformationByID.BusinessUnit,
+                        WorkspaceName = OrderInformationByID.WorkspaceName,
 
                         PredictedSavings = OrderInformationByID.PredictedSavings == null ? "" : OrderInformationByID.PredictedSavings.ToString(),
 
@@ -799,14 +800,15 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         }
 
-        //public List<MilestoneType_HH_Details> ManagementSalesOrderDetailsHH(string MilestonesValueID)
-        //{
+        public List<OrderManagementInfo> OrderManagementInfo(int contractID)
+        {
+           return _projectmanagementRepository.OrderManagementInfo(contractID); 
+        }
 
-        //    if (string.IsNullOrEmpty(MilestonesValueID))
-        //        throw new ArgumentException("MilestonesID não pode ser nulo ou vazio", nameof(MilestonesValueID));
-
-        //    return _projectmanagementRepository.ManagementSalesOrderDetailsHH(MilestonesValueID).ToList();
-        //}
+        public List<vRightCardValue> RightCardValues(int contractID)
+        {
+           return _projectmanagementRepository.RightCardValues(contractID); 
+        }
     }
 }
 
