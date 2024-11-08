@@ -88,9 +88,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<PM_Scope_Traking> GetScopeTrajing(int ContractID);
         public List<PM_Scope_Change> GetScopeChanges(int ContractID);
         public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
-     
+        public List<OrderManagementInfo> OrderManagementInfo(int contractID);
 
-        
+
+
+
         public List<Functions> GetAllFunctions();
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID);
         public List<DisplacementServices> GetAllDisplacementServices();
@@ -104,7 +106,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<ActivityPlanHH> ActivityPlanHH(int contractID);
         public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID);
         public ActivityPlanHHDetail GetActivityPlanDetails(int contractID);
+        public List<MilestonesItem> GetAllMilestones();
+       // public List<MilestoneType_HH_Details> ManagementSalesOrderDetailsHH(string MilestonesValueID);
 
+        public List<vRightCardValue>RightCardValues(int contractID);  
 
 
 
@@ -129,7 +134,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool DeleteFunctionID(string ID);
         public bool DeletePM_MilestonesType(string ID);
 
-        public List<MilestonesItem> GetAllMilestones();
+      
 
 
 

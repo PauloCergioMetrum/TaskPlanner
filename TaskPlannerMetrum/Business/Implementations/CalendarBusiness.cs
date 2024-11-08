@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.WebEncoders.Testing;
 using Microsoft.VisualBasic;
+using Org.BouncyCastle.Asn1.X509.SigI;
 using System.Collections.Generic;
 using System.Linq;
 using TaskPlannerMetrum.Model;
@@ -68,7 +69,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                         depNameUSER = u.UserDepartment,
                         task = taskItems,
                         backgroundColor = backgroundColor,
-                        equipamentName = u.EquipamentName?? "Nenhum equipamento alocado"
+                        equipamentName = u.EquipamentName ?? "Nenhum equipamento alocado"
                     };
 
                     taskDict[key] = taskUser;
@@ -145,36 +146,40 @@ namespace TaskPlannerMetrum.Business.Implementations
                 if (!EquipmanetUser.ContainsKey(key))
                 {
                     var taskItems = ListEquipaments
-                        .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
+                        .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID && s.Status != "4")
                         .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.Status) })
                         .Distinct()
-                        .ToList(); // Use ToList to materialize the collection
+                        .ToList();
 
-                    var backgroundColor = setColor(taskItems.Sum(s => s.PlannedManHour));
-
-                    var taskUser = new CalendarEquipament
+                    // Verifica se existem itens válidos antes de criar o objeto `taskUser`
+                    if (taskItems.Any())
                     {
-                        userID = u.UserID,
-                        titleUser = u.UserName,
-                        title = u.UserName,
-                        contractName = u.InternalCode,
-                        Taskstart = u.ScheduledDate.ToString("yyyy-MM-dd") + "T08:00:00",
-                        start = u.ScheduledDate.ToString("yyyy-MM-dd"),
-                        end = u.ScheduledDate.ToString("yyyy-MM-dd"),
-                        depNameUSER = u.UserDepartment,
-                        task = taskItems,
-                        backgroundColor = backgroundColor,
-                       
-                        equipamentName = u.EquipamentName?? "Nenhum equipamento alocado"
-                    };
+                        var backgroundColor = setColor(taskItems.Sum(s => s.PlannedManHour));
 
-                    EquipmanetUser[key] = taskUser;
-                    uniqEquipaments.Add(taskUser);
+                        var taskUser = new CalendarEquipament
+                        {
+                            userID = u.UserID,
+                            titleUser = u.UserName,
+                            title = u.UserName,
+                            contractName = u.InternalCode,
+                            Taskstart = u.ScheduledDate.ToString("yyyy-MM-dd") + "T08:00:00",
+                            start = u.ScheduledDate.ToString("yyyy-MM-dd"),
+                            end = u.ScheduledDate.ToString("yyyy-MM-dd"),
+                            depNameUSER = u.UserDepartment,
+                            task = taskItems,
+                            backgroundColor = backgroundColor,
+                            equipamentName = u.EquipamentName ?? "Nenhum equipamento alocado"
+                        };
+
+                        EquipmanetUser[key] = taskUser;
+                        uniqEquipaments.Add(taskUser);
+                    }
                 }
             }
 
             return uniqEquipaments;
         }
+
 
         public List<Equipment> GetAllEquipament()
         {

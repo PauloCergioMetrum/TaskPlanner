@@ -100,7 +100,7 @@ namespace TaskPlannerMetrum.Business
 
         public bool DeletepMScopeTraking(string ID);
         public List<PM_Scope_Traking> GetScopeTrajing(int ContractID);
-
+        //public List<MilestoneType_HH_Details> ManagementSalesOrderDetailsHH(string MilestonesValueID);
 
 
 
@@ -151,6 +151,9 @@ namespace TaskPlannerMetrum.Business
 
 
         public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId);
+
+        public List<OrderManagementInfo> OrderManagementInfo(int contractID);
+        public List<vRightCardValue> RightCardValues(int contractID);
 
 
 

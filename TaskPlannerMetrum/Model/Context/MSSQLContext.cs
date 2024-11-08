@@ -74,6 +74,10 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<PM_TAP_Resources> PM_TAP_Resources { get; set; }
         public DbSet<PM_MilestonesType> PM_MilestonesType { get; set; }
+        public DbSet<MilestoneType_HH_Details> MilestoneType_HH_Details {  get; set; }  
+        public DbSet<OrderManagementInfo> OrderManagementInfo {  get; set; }  
+     
+
 
 
 
@@ -119,11 +123,13 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPm_Cost_Planned> vPm_Cost_Planned { get; set; }
         public DbSet<ClientFeedbackDetailsView> ClientFeedbackDetailsView { get; set; }
         public DbSet<vPM_SummaryPlannedData> VPM_SummaryPlannedData {  get; set; }
+        public DbSet<vRightCardValue> vRightCardValue { get; set; }
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<vRightCardValue>().HasNoKey();
             modelBuilder.Entity<HoursExecutor>().HasNoKey();
             modelBuilder.Entity<ActivePlansByExecutor>().HasNoKey();
             modelBuilder.Entity<GetEquipamentAvaibilaity>().HasNoKey();
@@ -137,7 +143,6 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<BalancePerProject>().HasNoKey();
             modelBuilder.Entity<GetNumberOfContractsForBusinessUnit>().HasNoKey();
             modelBuilder.Entity<OperationalRelationshipTable>().HasNoKey();
-
             modelBuilder.Entity<PredictedInvoiced>().HasNoKey();
             modelBuilder.Entity<MaterialServices>().HasNoKey();
             modelBuilder.Entity<BillingPerBusinessUnit>().HasNoKey();
@@ -148,6 +153,9 @@ namespace TaskPlannerMetrum.Model.Context
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey();
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
             modelBuilder.Entity<TeamAllocationDTO>().HasNoKey();
+            modelBuilder.Entity<OrderManagementInfo>().HasNoKey();
+
+            
         }
 
 

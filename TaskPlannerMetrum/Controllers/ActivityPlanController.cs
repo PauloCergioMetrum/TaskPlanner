@@ -162,23 +162,7 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-        //[HttpGet("FindAllMilestonesByContract")]
-        //[ProducesResponseType(typeof(List<Milestone>), 200)]
-        //[ProducesResponseType(204)]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(401)]
-        //public IActionResult FindAllMilestonesByContract(int contractID)
-        //{
-        //    try
-        //    {
-        //        return Ok(_activityPlanBusiness.FindAllMilestonesByContract(contractID));
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+       
 
 
 
