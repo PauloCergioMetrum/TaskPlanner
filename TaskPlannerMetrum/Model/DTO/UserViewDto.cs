@@ -19,6 +19,7 @@ namespace TaskPlannerMetrum.Model.DTO
         public string? PermissionName { get; set; }
         public int? ManagementID { get; set; }
         public string ManagementName { get; set; }
+        public string FunctionName { get; set; }        
 
     }
 }
