@@ -1585,12 +1585,15 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vRightCardValue> RightCardValues(int contractID)
         {
-            return _context.vRightCardValue.Where(a => a.ContractID == contractID).ToList();     
+            return _context.vRightCardValue.Where(a => a.ContractID == contractID).ToList();
         }
 
-
-        
-
+        public List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID)
+        {
+            return _context.vIndirectcostChart
+                           .Where(a => a.ContractID == contractID)
+                           .ToList();
+        }
     }
 }
 
