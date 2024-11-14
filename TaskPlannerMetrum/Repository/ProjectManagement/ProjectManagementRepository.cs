@@ -437,7 +437,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             try
             {
                 var existingCostMade = _context.PmCostMade.FirstOrDefault(c => c.Id == pmCostMade.Id);
-
                 if (existingCostMade != null)
                 {
 
@@ -445,9 +444,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
                     existingCostMade.Pm_Cost_Planned_Id = pmCostMade.Pm_Cost_Planned_Id;
-
-
-
                     _context.SaveChanges();
                     return true;
                 }
