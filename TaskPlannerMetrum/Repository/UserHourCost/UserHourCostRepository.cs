@@ -13,6 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
@@ -31,19 +32,43 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
         {
             _context = context;
         }
-        public bool CreateUserHourCost(UserHourCosts userHourCost)
+        public bool CreateUserHourCost(UserHourCosts newCost)
         {
+            string triggerName = "trg_UpdateFunctionNameOnUserHourCosts";
+
             try
             {
-                var UpdateUserHourCost = _context.UserHourCosts.Add(userHourCost);
+                // Desabilitar o trigger importante 
+                _context.Database.ExecuteSqlRaw($"DISABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
+
+                var conflictingCost = _context.UserHourCosts
+                    .FirstOrDefault(u => u.UserID == newCost.UserID &&
+                                         u.StartDate <= newCost.EndDate &&
+                                         u.EndDate >= newCost.StartDate);
+
+                if (conflictingCost != null)
+                {
+                    conflictingCost.EndDate = newCost.StartDate.AddDays(-1);
+                    _context.UserHourCosts.Update(conflictingCost);
+                }
+
+                _context.UserHourCosts.Add(newCost);
                 _context.SaveChanges();
+
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Erro ao criar custo horário: {ex.Message}");
                 return false;
             }
+            finally
+            {
+                // Reabilitar o trigger importante
+                _context.Database.ExecuteSqlRaw($"ENABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
+            }
         }
+
 
         public bool DeleteUserHourCost(string ID)
         {
@@ -88,32 +113,51 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
             }
         }
 
-        public List<User> GetAllUsers()
-        {
-            return _context.Users.ToList();
-        }
 
         public bool UpdateUserHourCost(UserHourCosts userHourCost)
         {
+            string triggerName = "trg_UpdateFunctionNameOnUserHourCosts";
+
             try
             {
+                // Desabilitar o trigger
+                _context.Database.ExecuteSqlRaw($"DISABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
+
+
                 var existingUserHourCost = _context.UserHourCosts
-                    .FirstOrDefault(s => s.StartDate == userHourCost.StartDate && s.EndDate == userHourCost.EndDate && userHourCost.UserID ==userHourCost.UserID);
+                    .FirstOrDefault(s => s.ID == userHourCost.ID);
+
                 if (existingUserHourCost == null)
                 {
+
                     return false;
                 }
+
+
                 existingUserHourCost.HourCost = userHourCost.HourCost;
-                _context.Update(existingUserHourCost);
+                existingUserHourCost.StartDate = userHourCost.StartDate;
+                existingUserHourCost.EndDate = userHourCost.EndDate;
+                existingUserHourCost.FunctionName = userHourCost.FunctionName;
+
+
+                _context.Entry(existingUserHourCost).State = EntityState.Modified;
                 _context.SaveChanges();
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Erro ao atualizar custo horário: {ex.Message}");
                 return false;
             }
+            finally
+            {
+                // Reativar o trigger
+                _context.Database.ExecuteSqlRaw($"ENABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
+            }
         }
+
+
 
 
 
@@ -129,7 +173,7 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
         public List<Functions> GetAllFunction()
         {
 
-         var functions = _context.Functions.ToList();
+            var functions = _context.Functions.ToList();
             return functions;
         }
 
@@ -203,8 +247,102 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
 
+        public List<User> GetAllUsers()
+        {
+            return _context.Users.ToList();
+        }
 
 
+
+
+        public void CreateUserHourCostsBulk(List<UserHourCosts> userHourCosts)
+        {
+            foreach (var userHourCost in userHourCosts)
+            {
+                if (userHourCost.CreationDate == null)
+                {
+                    userHourCost.CreationDate = userHourCost.StartDate.Date + DateTime.Now.TimeOfDay;
+                }
+            }
+
+
+            _context.UserHourCosts.AddRange(userHourCosts);
+            _context.SaveChanges();
+        }
+
+
+        public void UpdateUserHourCostsBulk(List<UserHourCosts> userHourCosts)
+        {
+            foreach (var userHourCost in userHourCosts)
+            {
+
+                var existingEntity = _context.UserHourCosts.FirstOrDefault(u =>
+                    u.UserID == userHourCost.UserID &&
+                    u.StartDate == userHourCost.StartDate &&
+                    u.EndDate == userHourCost.EndDate &&
+                    u.HourCost == userHourCost.HourCost &&
+                    u.FunctionName == userHourCost.FunctionName);
+
+                if (existingEntity == null)
+                {
+
+                    var newUserHourCost = new UserHourCosts
+                    {
+                        UserID = userHourCost.UserID,
+                        HourCost = userHourCost.HourCost,
+                        StartDate = userHourCost.StartDate,
+                        EndDate = userHourCost.EndDate,
+                        FunctionName = userHourCost.FunctionName,
+                        ID = Guid.NewGuid().ToString()
+                    };
+
+                    _context.UserHourCosts.Add(newUserHourCost);
+                }
+
+            }
+
+            _context.SaveChanges();
+        }
+
+
+
+
+        public void UpdateUsersBulk(List<User> users)
+        {
+            _context.Users.UpdateRange(users);
+            _context.SaveChanges();
+        }
+
+        public async Task ExecuteSqlCommandAsync(string sql)
+        {
+            await _context.Database.ExecuteSqlRawAsync(sql);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<List<UserHourCosts>> GetLatestFunctionByAllUsersAsync()
+        {
+            return await _context.UserHourCosts
+                .GroupBy(u => u.UserID)
+                .Select(g => g.OrderByDescending(u => u.StartDate)
+                              .ThenByDescending(u => u.CreationDate)
+                              .FirstOrDefault())
+                .ToListAsync();
+        }
+
+        public List<UserHourCosts> GetUserCostsByDateRange(int userId, DateTime startDate, DateTime endDate)
+        {
+            return _context.UserHourCosts
+                .Where(u => u.UserID == userId &&
+                            u.StartDate <= endDate &&
+                            u.EndDate >= startDate)
+                .OrderBy(u => u.StartDate)
+                .ToList();
+        }
 
     }
 

@@ -11,5 +11,6 @@ namespace TaskPlannerMetrum.Model.DTO
         public int UserID { get; set; }
 
         public string FunctionName { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }
