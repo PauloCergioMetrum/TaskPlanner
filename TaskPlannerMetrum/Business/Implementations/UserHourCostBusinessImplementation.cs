@@ -164,8 +164,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     .ToDictionary(f => RemoveAccents(f.Name).ToUpper().Replace(" ", ""), f => f.ID);
 
                 var usersDict = _repository.GetAllUsers()
-                    .ToDictionary(u => RemoveDiacritics(u.FullName).ToUpper(), u => u);
-
+                    .ToDictionary(u => NormalizeString(u.FullName), u => u);
 
                 var existingHoursDict = _repository.GetAllHours()
                     .GroupBy(u => new { u.UserID, u.StartDate, u.EndDate, u.HourCost, u.FunctionName })
@@ -200,15 +199,23 @@ namespace TaskPlannerMetrum.Business.Implementations
 
                             string managementName = worksheet.Cell(row, 5).GetValue<string>();
 
-                            string userNameKey = RemoveDiacritics(colaborador).ToUpper();
-                            if (!usersDict.TryGetValue(userNameKey, out User user)) continue;
+                            string userNameKey = NormalizeString(colaborador);
+
+                            
+                            if (!usersDict.TryGetValue(userNameKey, out User user))
+                            {
+                                
+                                user = usersDict.Values
+                                    .OrderByDescending(u => Similarity(NormalizeString(u.FullName), userNameKey))
+                                    .FirstOrDefault(u => Similarity(NormalizeString(u.FullName), userNameKey) > 0.8);
+
+                                if (user == null) continue;
+                            }
 
                             var userHourCostKey = new { UserID = user.Id, StartDate = startDate, EndDate = endDate, HourCost = hourCost, FunctionName = functionNameRaw };
                             if (!existingHoursDict.ContainsKey(userHourCostKey))
                             {
-
                                 var creationDate = startDate.Date.Add(DateTime.Now.TimeOfDay).AddTicks(-(DateTime.Now.TimeOfDay.Ticks % TimeSpan.TicksPerSecond));
-
 
                                 var newUserHourCost = new UserHourCosts
                                 {
@@ -223,6 +230,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                                 userHourCostsToCreate.Add(newUserHourCost);
                             }
                         }
+
                         if (userHourCostsToCreate.Any())
                             _repository.CreateUserHourCostsBulk(userHourCostsToCreate);
 
@@ -248,6 +256,49 @@ namespace TaskPlannerMetrum.Business.Implementations
                 }
             }
         }
+
+        public static string NormalizeString(string input)
+        {
+            return string.IsNullOrWhiteSpace(input)
+                ? string.Empty
+                : string.Concat(input.Normalize(NormalizationForm.FormD)
+                    .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark))
+                    .ToUpperInvariant();
+        }
+
+
+        public static int LevenshteinDistance(string s, string t)
+        {
+            if (string.IsNullOrEmpty(s)) return t?.Length ?? 0;
+            if (string.IsNullOrEmpty(t)) return s.Length;
+
+            int[,] d = new int[s.Length + 1, t.Length + 1];
+
+            for (int i = 0; i <= s.Length; i++)
+                d[i, 0] = i;
+            for (int j = 0; j <= t.Length; j++)
+                d[0, j] = j;
+
+            for (int i = 1; i <= s.Length; i++)
+            {
+                for (int j = 1; j <= t.Length; j++)
+                {
+                    int cost = s[i - 1] == t[j - 1] ? 0 : 1;
+                    d[i, j] = Math.Min(
+                        Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
+                        d[i - 1, j - 1] + cost);
+                }
+            }
+
+            return d[s.Length, t.Length];
+        }
+
+        public static double Similarity(string s, string t)
+        {
+            int maxLength = Math.Max(s.Length, t.Length);
+            return maxLength == 0 ? 1.0 : 1.0 - (double)LevenshteinDistance(s, t) / maxLength;
+        }
+
 
 
         public string RemoveAccents(string text)
