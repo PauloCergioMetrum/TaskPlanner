@@ -203,9 +203,23 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
 
+        public void CreateUserHourCostsBulk(List<UserHourCosts> userHourCosts)
+        {
+            _context.UserHourCosts.AddRange(userHourCosts);
+            _context.SaveChanges();
+        }
 
+        public void UpdateUserHourCostsBulk(List<UserHourCosts> userHourCosts)
+        {
+            _context.UserHourCosts.UpdateRange(userHourCosts);
+            _context.SaveChanges();
+        }
 
-
+        public void UpdateUsersBulk(List<User> users)
+        {
+            _context.Users.UpdateRange(users);
+            _context.SaveChanges();
+        }
     }
 
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
@@ -107,9 +108,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID);
         public ActivityPlanHHDetail GetActivityPlanDetails(int contractID);
         public List<MilestonesItem> GetAllMilestones();
-       // public List<MilestoneType_HH_Details> ManagementSalesOrderDetailsHH(string MilestonesValueID);
+        public List<vRightCardValue>RightCardValues(int contractID);
+        // STATUS REPORTS
 
-        public List<vRightCardValue>RightCardValues(int contractID);  
+        List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID);
+
 
 
 
@@ -134,7 +137,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool DeleteFunctionID(string ID);
         public bool DeletePM_MilestonesType(string ID);
 
-      
+     
+
+
 
 
 

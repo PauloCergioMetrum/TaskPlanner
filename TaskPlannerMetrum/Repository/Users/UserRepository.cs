@@ -12,6 +12,7 @@ using TaskPlannerMetrum.Model.ModelViews;
 using DocumentFormat.OpenXml.Spreadsheet;
 using OfficeOpenXml.Utils;
 using TaskPlannerMetrum.Model.DTO;
+using DocumentFormat.OpenXml.Math;
 
 namespace TaskPlannerMetrum.Repository.Users
 {
@@ -93,36 +94,12 @@ namespace TaskPlannerMetrum.Repository.Users
                 IsActive=   u.IsActive,
                 CreationDate = u.CreationDate,
                 PermissionName = u.PermissionName,
-
+                FunctionName = u.FunctionName,
                 ManagementID = u.ManagementID,
                 ManagementName =u.ManagementName
             }).ToList();
             return userList;
-
-
-            //List<UserVO> retorno = new List<UserVO>();
-            //var users = _context.Users.ToList().OrderBy(n => n.UserName);
-            //foreach (var user in users)
-            //{
-            //    retorno.Add(new UserVO
-            //    {
-            //        Id = user.Id,
-            //        UserName = user.UserName,
-            //        FullName = user.FullName,
-            //        UserEmail = user.UserEmail,
-            //        DepartmentId = user.DepartmentId,
-            //        DepartamentName = GetDepartament(user.DepartmentId),
-            //        role = user.PermissionId.ToString(),
-            //        PermissionId = user.PermissionId,
-            //        PhoneNumber = user.PhoneNumber,
-            //        WorkspaceID = user.WorkspaceID,
-            //        IsActive = user.IsActive,
-            //        CreationDate = user.CreationDate,
-            //        PermissionName = _context.Permissions.Where(i => i.id == user.PermissionId).Select(d => d.Description).FirstOrDefault(),
-            //    });
-
-            //}
-            //return retorno;
+          
         }
         public string GetDepartament(int id)
         {

@@ -785,8 +785,8 @@ namespace TaskPlannerMetrum.Business.Implementations
                                 MilesTonesName = dt.MilestoneName,
                                 PlannedManHour = dt.PlannedManHour,
                                 SeniorLevel = dt.ExecutorSeniorityLevel
-                            }).ToList()  // Adicionado .ToList() aqui
-                    }).ToList()  // Adicionado .ToList() aqui
+                            }).ToList()  
+                    }).ToList() 
                 };
                 milesTonesLsit.Add(milesTone);
             }
@@ -809,6 +809,34 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
            return _projectmanagementRepository.RightCardValues(contractID); 
         }
+
+        public List<object> GetUniquePlannedTotalCharts(int contractID)
+        {
+        
+            var fullList = _projectmanagementRepository.GetIndirectCostChartsByContract(contractID);
+
+       
+            var groupedResult = fullList
+                .GroupBy(chart => new { chart.ContractID, chart.PlannedId, chart.TypeID, chart.TypeDescription, chart.PlannedTotal })
+                .Select(group => new
+                {
+                    contractID = group.Key.ContractID,
+                    PlannedId = group.Key.PlannedId,
+                    TypeID = group.Key.TypeID,
+                    TypeDescription = group.Key.TypeDescription,
+                    PlannedTotal = group.Key.PlannedTotal,
+                    MadeDetails = group.Select(x => new
+                    {
+                        x.MadeId,
+                        x.MadeTotal
+                    }).ToList()
+                })
+                .ToList<object>(); 
+
+            return groupedResult;
+        }
     }
 }
+
+
 

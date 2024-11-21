@@ -13,7 +13,9 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public bool ? Subcontracting { get; set; }
         public double TotalOutsourcedServices_Planned { get; set; }
         public double TotalOutsourcedServices_Made { get; set; }
-      
+        public double Difference { get; set; }      
+
+
 
     }
 }

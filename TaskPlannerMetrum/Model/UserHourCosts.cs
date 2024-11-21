@@ -12,7 +12,7 @@ namespace TaskPlannerMetrum.Model
         public double HourCost { get; set; }
         public int  UserID { get; set; }
 
-        public int FunctionID { get; set; }
+        public string FunctionName { get; set; }
 
        
     }

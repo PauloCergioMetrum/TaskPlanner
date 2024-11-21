@@ -437,7 +437,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             try
             {
                 var existingCostMade = _context.PmCostMade.FirstOrDefault(c => c.Id == pmCostMade.Id);
-
                 if (existingCostMade != null)
                 {
 
@@ -445,9 +444,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
                     existingCostMade.Pm_Cost_Planned_Id = pmCostMade.Pm_Cost_Planned_Id;
-
-
-
                     _context.SaveChanges();
                     return true;
                 }
@@ -1585,12 +1581,15 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vRightCardValue> RightCardValues(int contractID)
         {
-            return _context.vRightCardValue.Where(a => a.ContractID == contractID).ToList();     
+            return _context.vRightCardValue.Where(a => a.ContractID == contractID).ToList();
         }
 
-
-        
-
+        public List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID)
+        {
+            return _context.vIndirectcostChart
+                           .Where(a => a.ContractID == contractID)
+                           .ToList();
+        }
     }
 }
 
