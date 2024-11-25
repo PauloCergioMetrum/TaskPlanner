@@ -256,11 +256,7 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
 
 
 
-        public void UpdateUserHourCostsBulk(List<UserHourCosts> userHourCosts)
-        {
-            _context.UserHourCosts.UpdateRange(userHourCosts);
-            _context.SaveChanges();
-        }
+  
 
 
         public void CreateUserHourCostsBulk(List<UserHourCosts> userHourCosts)
