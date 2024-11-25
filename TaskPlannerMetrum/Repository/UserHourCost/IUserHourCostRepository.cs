@@ -22,15 +22,8 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
         // Novos métodos para operações em lote
         void CreateUserHourCostsBulk(List<UserHourCosts> userHourCosts);
         void UpdateUserHourCostsBulk(List<UserHourCosts> userHourCosts);
-        void UpdateUsersBulk(List<User> users);
-
-
-        void CreateUserHourCostsBulk(List<UserHourCosts> userHourCosts);
-        void UpdateUserHourCostsBulk(List<UserHourCosts> userHourCosts);
-        void UpdateUsersBulk(List<User> users);
-
-
-
+        void UpdateUsersBulk(List<User> users); 
+      
         Task ExecuteSqlCommandAsync(string sql);
         Task SaveChangesAsync();
         Task<List<UserHourCosts>> GetLatestFunctionByAllUsersAsync();
