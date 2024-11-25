@@ -102,6 +102,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
                 return userHoursCostList.Select(i => new UserHourCostsDTO
                 {
+
                     UserID = userID,
                     ID = i.ID,
                     HourCost = i.HourCost,
@@ -110,6 +111,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     FunctionName = i.FunctionName,
                     CreationDate = i.CreationDate,
                 }).ToList();
+
 
 
             }
@@ -122,6 +124,39 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
+        public async Task<bool> CreatHoursCostByCSV(HoursCostCSV HoursCostCSV)
+        {
+
+            List<User> allUsers = _repositoryUsers.GetAllUsers();
+            using (var reader = new StreamReader(HoursCostCSV.FileCSV.OpenReadStream()))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                await foreach (var record in csv.GetRecordsAsync<CsvRecord>())
+                {
+
+                    bool CreatHourasCost = _repository.CreateUserHourCost(new UserHourCosts
+                    {
+                        UserID = allUsers.Where(n => n.FullName.ToUpper() == record.COLABORADOR).Select(i => i.Id).FirstOrDefault(),
+                        HourCost = record.HH,
+                        StartDate = HoursCostCSV.StartDate,
+                        EndDate = HoursCostCSV.EndDate,
+                        ID = Guid.NewGuid().ToString(),
+
+
+
+                    });
+                    if (CreatHourasCost)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 
         public List<Functions> GetAllFunctions()
         {
@@ -151,8 +186,12 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public async Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate)
         {
+
             string triggerName = "trg_UpdateFunctionNameOnUserHourCosts";
             bool triggerDisabled = false;
+
+          
+
 
             try
             {
@@ -181,20 +220,25 @@ namespace TaskPlannerMetrum.Business.Implementations
                             return false;
                         }
 
+
                         int rowCount = worksheet.LastRowUsed().RowNumber();
                         List<UserHourCosts> userHourCostsToCreate = new List<UserHourCosts>();
+
                         List<User> usersToUpdate = new List<User>();
 
                         for (int row = 3; row <= rowCount; row++)
                         {
                             string colaborador = worksheet.Cell(row, 2).GetValue<string>()?.Trim();
+
                             if (string.IsNullOrEmpty(colaborador)) continue;
+
 
                             if (!double.TryParse(worksheet.Cell(row, 7).GetValue<string>(), out double hourCost))
                                 continue;
 
                             string functionNameRaw = worksheet.Cell(row, 6).GetValue<string>() ?? "";
                             string functionName = RemoveAccents(functionNameRaw).ToUpper().Replace(" ", "");
+
                             if (!functionsDict.TryGetValue(functionName, out int functionId)) continue;
 
                             string managementName = worksheet.Cell(row, 5).GetValue<string>();
@@ -228,8 +272,14 @@ namespace TaskPlannerMetrum.Business.Implementations
                                     CreationDate = creationDate
                                 };
                                 userHourCostsToCreate.Add(newUserHourCost);
+
                             }
+
+                            user.FunctionID = functionId;
+                         
+                            usersToUpdate.Add(user);
                         }
+
 
                         if (userHourCostsToCreate.Any())
                             _repository.CreateUserHourCostsBulk(userHourCostsToCreate);
@@ -238,6 +288,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                             _repository.UpdateUsersBulk(usersToUpdate);
 
                         await _repository.SaveChangesAsync();
+
                         return true;
                     }
                 }
@@ -247,6 +298,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 Console.WriteLine($"Erro ao processar arquivo: {ex.Message}");
                 return false;
             }
+
             finally
             {
                 // Reabilitar o trigger
@@ -280,6 +332,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 d[0, j] = j;
 
             for (int i = 1; i <= s.Length; i++)
+
             {
                 for (int j = 1; j <= t.Length; j++)
                 {

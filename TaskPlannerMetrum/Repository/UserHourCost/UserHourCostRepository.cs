@@ -247,12 +247,20 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
 
+
         public List<User> GetAllUsers()
         {
             return _context.Users.ToList();
         }
 
 
+
+
+        public void UpdateUserHourCostsBulk(List<UserHourCosts> userHourCosts)
+        {
+            _context.UserHourCosts.UpdateRange(userHourCosts);
+            _context.SaveChanges();
+        }
 
 
         public void CreateUserHourCostsBulk(List<UserHourCosts> userHourCosts)
@@ -307,11 +315,13 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
 
 
 
+
         public void UpdateUsersBulk(List<User> users)
         {
             _context.Users.UpdateRange(users);
             _context.SaveChanges();
         }
+
 
         public async Task ExecuteSqlCommandAsync(string sql)
         {
@@ -344,9 +354,9 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
                 .ToList();
         }
 
+
     }
 
-    //apagar depois
 
 
 

@@ -885,7 +885,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        //  ACOMPANHAMENTO DE ESCOPO  Mudança de Escopo 
+      
 
 
         [HttpPost("CreateScopeChange")]
@@ -1337,6 +1337,72 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
+
+        [HttpGet("GetOrderManagementInfo")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult OrderManagementInfo(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.OrderManagementInfo(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpGet("GetRightCardValues")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult RightCardValues(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.RightCardValues(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+        // STATUS REPORTS
+
+        [HttpGet("GetIndirectCostChart")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult GetUniquePlannedTotalCharts(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetUniquePlannedTotalCharts(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
 
 
 

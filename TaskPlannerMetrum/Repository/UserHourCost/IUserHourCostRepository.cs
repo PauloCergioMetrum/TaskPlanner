@@ -19,6 +19,11 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
         public List<Management> GetAllManagement();
         public List<Functions> GetAllFunction();
 
+        // Novos métodos para operações em lote
+        void CreateUserHourCostsBulk(List<UserHourCosts> userHourCosts);
+        void UpdateUserHourCostsBulk(List<UserHourCosts> userHourCosts);
+        void UpdateUsersBulk(List<User> users);
+
 
         void CreateUserHourCostsBulk(List<UserHourCosts> userHourCosts);
         void UpdateUserHourCostsBulk(List<UserHourCosts> userHourCosts);
