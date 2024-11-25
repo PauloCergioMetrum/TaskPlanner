@@ -10,17 +10,14 @@ namespace TaskPlannerMetrum.Business
     public interface IUserHourCostBusiness
     {
         bool CreateHourCost(UserHourCosts userHourCos);
-
         bool DeleteHourCost(string ID);
-
         bool UpdateHourCost(UserHourCosts userHourCost);
-
         public List<UserHourCostsDTO> ListUserHoursCost(int userID);
-
-
-
         Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate);
         public List<Functions> GetAllFunctions();
+        Task<List<UserHourCosts>> GetLatestFunctionByAllUsersAsync();
+        public List<UserHourCosts> GetUserCostsByDateRange(int userId, DateTime startDate, DateTime endDate);
+
 
 
     }

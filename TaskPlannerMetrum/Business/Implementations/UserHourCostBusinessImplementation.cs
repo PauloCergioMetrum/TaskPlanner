@@ -102,13 +102,18 @@ namespace TaskPlannerMetrum.Business.Implementations
 
                 return userHoursCostList.Select(i => new UserHourCostsDTO
                 {
-                    UserID = userID,   
-                    ID =i.ID,
+
+                    UserID = userID,
+                    ID = i.ID,
                     HourCost = i.HourCost,
                     EndDate = i.EndDate,
                     StartDate = i.StartDate,
-                    FunctionName = i.FunctionName
+                    FunctionName = i.FunctionName,
+                    CreationDate = i.CreationDate,
                 }).ToList();
+
+
+
             }
             catch (Exception)
             {
@@ -152,6 +157,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             }
             return true;
         }
+
         public List<Functions> GetAllFunctions()
         {
             return _repository.GetAllFunction();
@@ -177,18 +183,32 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
+
         public async Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate)
         {
+
+            string triggerName = "trg_UpdateFunctionNameOnUserHourCosts";
+            bool triggerDisabled = false;
+
           
-            List<Functions> functionsList = _repository.GetAllFunction().Select(f => new Functions
-            {
-                ID = f.ID,
-                Name = RemoveAccents(f.Name).ToUpper().Replace(" ", "")
-            }).ToList();
-            var functionsDict = functionsList.ToDictionary(f => f.Name, f => f.ID);
+
 
             try
             {
+                // Desabilitar o trigger
+                await _repository.ExecuteSqlCommandAsync($"DISABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
+                triggerDisabled = true;
+
+                var functionsDict = _repository.GetAllFunction()
+                    .ToDictionary(f => RemoveAccents(f.Name).ToUpper().Replace(" ", ""), f => f.ID);
+
+                var usersDict = _repository.GetAllUsers()
+                    .ToDictionary(u => NormalizeString(u.FullName), u => u);
+
+                var existingHoursDict = _repository.GetAllHours()
+                    .GroupBy(u => new { u.UserID, u.StartDate, u.EndDate, u.HourCost, u.FunctionName })
+                    .ToDictionary(g => g.Key, g => g.First());
+
                 using (var stream = new MemoryStream())
                 {
                     await excelFile.CopyToAsync(stream);
@@ -200,64 +220,59 @@ namespace TaskPlannerMetrum.Business.Implementations
                             return false;
                         }
 
-                   
-                        List<User> allUsers = _repository.GetAllUsers();
-                        var usersDict = allUsers.ToDictionary(u => RemoveDiacritics(u.FullName).ToUpper(), u => u);
-
-                  
-                        var allHoursCosts = _repository.GetAllHours();
-
-             
-                        var hoursCostsDict = allHoursCosts.GroupBy(u => new { u.UserID, u.StartDate, u.EndDate })
-                                                          .ToDictionary(g => g.Key, g => g.First());
 
                         int rowCount = worksheet.LastRowUsed().RowNumber();
-
-               
                         List<UserHourCosts> userHourCostsToCreate = new List<UserHourCosts>();
-                        List<UserHourCosts> userHourCostsToUpdate = new List<UserHourCosts>();
+
                         List<User> usersToUpdate = new List<User>();
 
                         for (int row = 3; row <= rowCount; row++)
                         {
                             string colaborador = worksheet.Cell(row, 2).GetValue<string>()?.Trim();
-                            if (string.IsNullOrEmpty(colaborador))
-                                continue;
+
+                            if (string.IsNullOrEmpty(colaborador)) continue;
+
 
                             if (!double.TryParse(worksheet.Cell(row, 7).GetValue<string>(), out double hourCost))
                                 continue;
 
                             string functionNameRaw = worksheet.Cell(row, 6).GetValue<string>() ?? "";
                             string functionName = RemoveAccents(functionNameRaw).ToUpper().Replace(" ", "");
-                            if (!functionsDict.TryGetValue(functionName, out int functionId))
-                                continue;
+
+                            if (!functionsDict.TryGetValue(functionName, out int functionId)) continue;
 
                             string managementName = worksheet.Cell(row, 5).GetValue<string>();
 
-                            string userNameKey = RemoveDiacritics(colaborador).ToUpper();
+                            string userNameKey = NormalizeString(colaborador);
+
+                            
                             if (!usersDict.TryGetValue(userNameKey, out User user))
-                                continue;
-
-                            var userHourCost = new UserHourCosts
-                            {
-                                UserID = user.Id,
-                                HourCost = hourCost,
-                                StartDate = startDate,
-                                EndDate = endDate,
-                                ID = Guid.NewGuid().ToString(),
-                                FunctionName = functionNameRaw,
-                            };
-
-                            var key = new { userHourCost.UserID, userHourCost.StartDate, userHourCost.EndDate };
-                            if (hoursCostsDict.ContainsKey(key))
                             {
                                 
-                                userHourCostsToUpdate.Add(userHourCost);
+                                user = usersDict.Values
+                                    .OrderByDescending(u => Similarity(NormalizeString(u.FullName), userNameKey))
+                                    .FirstOrDefault(u => Similarity(NormalizeString(u.FullName), userNameKey) > 0.8);
+
+                                if (user == null) continue;
                             }
-                            else
+
+                            var userHourCostKey = new { UserID = user.Id, StartDate = startDate, EndDate = endDate, HourCost = hourCost, FunctionName = functionNameRaw };
+                            if (!existingHoursDict.ContainsKey(userHourCostKey))
                             {
-                               
-                                userHourCostsToCreate.Add(userHourCost);
+                                var creationDate = startDate.Date.Add(DateTime.Now.TimeOfDay).AddTicks(-(DateTime.Now.TimeOfDay.Ticks % TimeSpan.TicksPerSecond));
+
+                                var newUserHourCost = new UserHourCosts
+                                {
+                                    UserID = user.Id,
+                                    HourCost = hourCost,
+                                    StartDate = startDate,
+                                    EndDate = endDate,
+                                    ID = Guid.NewGuid().ToString(),
+                                    FunctionName = functionNameRaw,
+                                    CreationDate = creationDate
+                                };
+                                userHourCostsToCreate.Add(newUserHourCost);
+
                             }
 
                             user.FunctionID = functionId;
@@ -265,15 +280,14 @@ namespace TaskPlannerMetrum.Business.Implementations
                             usersToUpdate.Add(user);
                         }
 
-                    
+
                         if (userHourCostsToCreate.Any())
                             _repository.CreateUserHourCostsBulk(userHourCostsToCreate);
 
-                        if (userHourCostsToUpdate.Any())
-                            _repository.UpdateUserHourCostsBulk(userHourCostsToUpdate);
-
                         if (usersToUpdate.Any())
                             _repository.UpdateUsersBulk(usersToUpdate);
+
+                        await _repository.SaveChangesAsync();
 
                         return true;
                     }
@@ -284,23 +298,61 @@ namespace TaskPlannerMetrum.Business.Implementations
                 Console.WriteLine($"Erro ao processar arquivo: {ex.Message}");
                 return false;
             }
-        }
 
-
-
-       
-
-        public bool CreateOrUpdate(UserHourCosts userHourCost)
-        {
-            var allHoursCosts = _repository.GetAllHours();
-            var userExists = allHoursCosts.Where(u => u.UserID == userHourCost.UserID);
-            var dateExists = allHoursCosts.Where(s => s.StartDate == userHourCost.StartDate && s.EndDate == userHourCost.EndDate && s.UserID == userHourCost.UserID).ToList().FirstOrDefault();
-            if (dateExists != null)
+            finally
             {
-                return _repository.UpdateUserHourCost(userHourCost);
+                // Reabilitar o trigger
+                if (triggerDisabled)
+                {
+                    await _repository.ExecuteSqlCommandAsync($"ENABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
+                }
             }
-            return _repository.CreateUserHourCost(userHourCost);
         }
+
+        public static string NormalizeString(string input)
+        {
+            return string.IsNullOrWhiteSpace(input)
+                ? string.Empty
+                : string.Concat(input.Normalize(NormalizationForm.FormD)
+                    .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark))
+                    .ToUpperInvariant();
+        }
+
+
+        public static int LevenshteinDistance(string s, string t)
+        {
+            if (string.IsNullOrEmpty(s)) return t?.Length ?? 0;
+            if (string.IsNullOrEmpty(t)) return s.Length;
+
+            int[,] d = new int[s.Length + 1, t.Length + 1];
+
+            for (int i = 0; i <= s.Length; i++)
+                d[i, 0] = i;
+            for (int j = 0; j <= t.Length; j++)
+                d[0, j] = j;
+
+            for (int i = 1; i <= s.Length; i++)
+
+            {
+                for (int j = 1; j <= t.Length; j++)
+                {
+                    int cost = s[i - 1] == t[j - 1] ? 0 : 1;
+                    d[i, j] = Math.Min(
+                        Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
+                        d[i - 1, j - 1] + cost);
+                }
+            }
+
+            return d[s.Length, t.Length];
+        }
+
+        public static double Similarity(string s, string t)
+        {
+            int maxLength = Math.Max(s.Length, t.Length);
+            return maxLength == 0 ? 1.0 : 1.0 - (double)LevenshteinDistance(s, t) / maxLength;
+        }
+
+
 
         public string RemoveAccents(string text)
         {
@@ -322,11 +374,14 @@ namespace TaskPlannerMetrum.Business.Implementations
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC).ToUpper();
         }
 
+        public Task<List<UserHourCosts>> GetLatestFunctionByAllUsersAsync()
+        {
+            return _repository.GetLatestFunctionByAllUsersAsync();
+        }
 
-
-
-
-
-
+        public List<UserHourCosts> GetUserCostsByDateRange(int userId, DateTime startDate, DateTime endDate)
+        {
+            return _repository.GetUserCostsByDateRange(userId, startDate, endDate);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Model;
 
 namespace TaskPlannerMetrum.Repository.UserHourCostRepository
@@ -23,7 +24,22 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
         void UpdateUserHourCostsBulk(List<UserHourCosts> userHourCosts);
         void UpdateUsersBulk(List<User> users);
 
-    
+
+        void CreateUserHourCostsBulk(List<UserHourCosts> userHourCosts);
+        void UpdateUserHourCostsBulk(List<UserHourCosts> userHourCosts);
+        void UpdateUsersBulk(List<User> users);
+
+
+
+        Task ExecuteSqlCommandAsync(string sql);
+        Task SaveChangesAsync();
+        Task<List<UserHourCosts>> GetLatestFunctionByAllUsersAsync();
+        List<UserHourCosts> GetUserCostsByDateRange(int userId, DateTime startDate, DateTime endDate);
+
+
+
+
+
     }
 
 }
