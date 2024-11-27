@@ -1590,6 +1590,14 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                            .Where(a => a.ContractID == contractID)
                            .ToList();
         }
+
+        public List<vStatusReportsGraph> GetStatusReportsGraph(int contractID)
+        {
+            return _context.vStatusReportsGraph
+                           .Where(a => a.ContractID == contractID)
+                           .ToList();
+        }
+
     }
 }
 

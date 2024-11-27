@@ -156,7 +156,8 @@ namespace TaskPlannerMetrum.Business
         public List<vRightCardValue> RightCardValues(int contractID);
 
         // STATUS REPORTS
-        public List<object> GetUniquePlannedTotalCharts(int contractID);
+        object GetCombinedCharts(int contractID);
+
 
     }
   

@@ -1381,28 +1381,26 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
-        // STATUS REPORTS
 
-        [HttpGet("GetIndirectCostChart")]
+
+
+        [HttpGet("GetCombinedCharts")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-
-        public IActionResult GetUniquePlannedTotalCharts(int ContractID)
+        public IActionResult GetCombinedCharts(int contractID)
         {
             try
             {
-
-                return Ok(_projectManagementBusiness.GetUniquePlannedTotalCharts(ContractID));
-
+                return Ok(_projectManagementBusiness.GetCombinedCharts(contractID));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
+
 
 
 

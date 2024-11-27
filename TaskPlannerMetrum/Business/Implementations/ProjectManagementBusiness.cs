@@ -785,15 +785,15 @@ namespace TaskPlannerMetrum.Business.Implementations
                                 MilesTonesName = dt.MilestoneName,
                                 PlannedManHour = dt.PlannedManHour,
                                 SeniorLevel = dt.ExecutorSeniorityLevel
-                            }).ToList()  
-                    }).ToList() 
+                            }).ToList()
+                    }).ToList()
                 };
                 milesTonesLsit.Add(milesTone);
             }
 
 
 
-            
+
 
             activitPlanDetaisByContractID.ActivicPlannGrupByMilesTone = milesTonesLsit;
             return activitPlanDetaisByContractID;
@@ -802,41 +802,89 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public List<OrderManagementInfo> OrderManagementInfo(int contractID)
         {
-           return _projectmanagementRepository.OrderManagementInfo(contractID); 
+            return _projectmanagementRepository.OrderManagementInfo(contractID);
         }
 
         public List<vRightCardValue> RightCardValues(int contractID)
         {
-           return _projectmanagementRepository.RightCardValues(contractID); 
+            return _projectmanagementRepository.RightCardValues(contractID);
         }
 
-        public List<object> GetUniquePlannedTotalCharts(int contractID)
-        {
-        
-            var fullList = _projectmanagementRepository.GetIndirectCostChartsByContract(contractID);
 
-       
-            var groupedResult = fullList
-                .GroupBy(chart => new { chart.ContractID, chart.PlannedId, chart.TypeID, chart.TypeDescription, chart.PlannedTotal })
+
+
+        public object GetCombinedCharts(int contractID)
+        {
+            // Obter os dados de custos indiretos
+            var indirectCosts = _projectmanagementRepository.GetIndirectCostChartsByContract(contractID);
+
+            var indirectGrouped = indirectCosts
+                .GroupBy(chart => new
+                {
+                    chart.ContractID,
+                    chart.PlannedId,
+                    chart.TypeID,
+                    chart.TypeDescription,
+                    chart.PlannedTotal
+                })
                 .Select(group => new
                 {
-                    contractID = group.Key.ContractID,
+                    ContractID = group.Key.ContractID,
                     PlannedId = group.Key.PlannedId,
                     TypeID = group.Key.TypeID,
                     TypeDescription = group.Key.TypeDescription,
-                    PlannedTotal = group.Key.PlannedTotal,
+                    PlannedTotal = group.Key.PlannedTotal ?? 0,
                     MadeDetails = group.Select(x => new
                     {
-                        x.MadeId,
-                        x.MadeTotal
+                        MadeId = x.MadeId,
+                        MadeTotal = x.MadeTotal ?? 0
                     }).ToList()
-                })
-                .ToList<object>(); 
+                }).ToList();
 
-            return groupedResult;
+            // Obter os dados de status de relatórios (mobilização)
+            var statusReports = _projectmanagementRepository.GetStatusReportsGraph(contractID);
+
+            var statusGrouped = statusReports
+                .GroupBy(chart => new
+                {
+                    chart.ContractID,
+                    chart.AquisitionPlannedID,
+                    chart.TypeAcquisitionID,
+                    chart.TypeAcquisitionDescription,
+                    chart.PredictedTotal
+                })
+                .Select(group => new
+                {
+                    ContractID = group.Key.ContractID,
+                    PlannedId = group.Key.AquisitionPlannedID,
+                    TypeID = group.Key.TypeAcquisitionID,
+                    TypeDescription = group.Key.TypeAcquisitionDescription,
+                    PlannedTotal = group.Key.PredictedTotal,
+                    MadeDetails = group.Select(x => new
+                    {
+                        MadeId = x.AquisitionPlannedID,
+                        MadeTotal = x.TotalMade
+                    }).ToList()
+                }).ToList();
+
+            // Combinar os dois grupos
+            var result = new
+            {
+                CustosIndiretos = indirectGrouped,
+                Mobilizacao = statusGrouped
+            };
+
+            return result;
         }
     }
 }
+
+   
+
+
+
+
+
 
 
 

@@ -111,7 +111,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vRightCardValue>RightCardValues(int contractID);
         // STATUS REPORTS
 
+
         List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID);
+        List<vStatusReportsGraph> GetStatusReportsGraph(int contractID);
 
 
 
