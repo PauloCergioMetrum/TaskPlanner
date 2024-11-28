@@ -76,16 +76,14 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<PM_MilestonesType> PM_MilestonesType { get; set; }
         public DbSet<MilestoneType_HH_Details> MilestoneType_HH_Details {  get; set; }  
         public DbSet<OrderManagementInfo> OrderManagementInfo {  get; set; }  
-     
-
-
-
-
-        // ISSO E UM MODELO.
         public DbSet<MilestoneEntity> MilestoneEntities { get; set; }
-
-
         public DbSet<ContractGraphic> ContractGraphics { get; set; }
+
+
+
+        public DbSet<vhhGraphicDetail> vhhGraphicDetail { get; set; }
+
+
 
 
 
@@ -135,6 +133,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<vRightCardValue>().HasNoKey();
             modelBuilder.Entity<vIndirectcostChart>().HasNoKey();
             modelBuilder.Entity<vStatusReportsGraph>().HasNoKey();
+            modelBuilder.Entity<vhhGraphicDetail>().HasNoKey();
             modelBuilder.Entity<HoursExecutor>().HasNoKey();
             modelBuilder.Entity<ActivePlansByExecutor>().HasNoKey();
             modelBuilder.Entity<GetEquipamentAvaibilaity>().HasNoKey();

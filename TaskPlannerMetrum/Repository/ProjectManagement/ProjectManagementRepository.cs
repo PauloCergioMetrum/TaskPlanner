@@ -343,17 +343,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
-        {
-            var AcquisitionList = _context.vPM_Acquisition_Combined.Where(r => r.ContractID == ContractID).ToList();
-            return AcquisitionList;
-        }
-
-        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
-        {
-            var AcquisitionsMadeList = _context.vPM_Acquisition_Cost.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
-            return AcquisitionsMadeList;
-        }
+     
+   
 
        
 
@@ -1580,6 +1571,20 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.vRightCardValue.Where(a => a.ContractID == contractID).ToList();
         }
 
+
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
+        {
+            var AcquisitionList = _context.vPM_Acquisition_Combined.Where(r => r.ContractID == ContractID).ToList();
+            return AcquisitionList;
+        }
+
+
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
+        {
+            var AcquisitionsMadeList = _context.vPM_Acquisition_Cost.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
+            return AcquisitionsMadeList;
+        }
+
         public List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID)
         {
             return _context.vIndirectcostChart
@@ -1598,10 +1603,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.OrderManagementInfo.Where(a => a.ContractID == contractID).ToList();
         }
 
-       
-
-
-
+        public List<vhhGraphicDetail> GetHhGraphicDetail(int contractID)
+        {
+           return _context.vhhGraphicDetail.Where(a =>a.ContractID == contractID).ToList();       
+        }
     }
 }
 

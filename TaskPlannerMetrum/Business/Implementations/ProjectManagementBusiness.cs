@@ -342,16 +342,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
-        {
-            return _projectmanagementRepository.GetAcquisitions(ContractID);
-        }
-
-        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
-        {
-            return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
-        }
-
+       
 
 
         public bool DeleteTypeOfCost(int ID)
@@ -812,9 +803,22 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
+        {
+            return _projectmanagementRepository.GetAcquisitions(ContractID);
+        }
+
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
+        {
+            return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
+        }
+
+
+
+
         public object GetCombinedCharts(int contractID)
         {
-           
+            // Custos Indiretos
             var indirectCosts = _projectmanagementRepository.GetIndirectCostChartsByContract(contractID);
 
             var indirectGrouped = indirectCosts
@@ -835,19 +839,19 @@ namespace TaskPlannerMetrum.Business.Implementations
                     PlannedTotal = group.Key.PlannedTotal ?? 0.0,
                     MadeDetails = group.Select(x => new
                     {
-                       AcquisitionMadeDTO= x.
+                        AcquisitionMadeDTO = x,
                         MadeTotal = x.MadeTotal ?? 0.0
                     }).ToList()
                 }).ToList();
 
-          
+            // Mobilização
             var mobilizationData = _projectmanagementRepository.GetMobilization(contractID);
 
             var mobilizationGrouped = mobilizationData
                 .GroupBy(m => m.ContractID)
                 .Select(group => new
                 {
-                    HospedagemPrevisto = group.Sum(x => x.CountAccommodation), 
+                    HospedagemPrevisto = group.Sum(x => x.CountAccommodation),
                     AlimentacaoPrevisto = group.Sum(x => x.CountFood),
                     TransporteAereoPrevisto = group.Sum(x => x.CountAirTransport),
                     TransporteTerrestrePrevisto = group.Sum(x => x.CountGroundTransport),
@@ -857,32 +861,17 @@ namespace TaskPlannerMetrum.Business.Implementations
                         .GroupBy(m => m.MobilizationPlannedID)
                         .Select(madeGroup => new
                         {
-                            HospedagemReal = madeGroup.Sum(x => x.CountAccommodation), 
+                            HospedagemReal = madeGroup.Sum(x => x.CountAccommodation),
                             AlimentacaoReal = madeGroup.Sum(x => x.CountFood),
                             TransporteAereoReal = madeGroup.Sum(x => x.CountAirTransport),
                             TransporteTerrestreReal = madeGroup.Sum(x => x.CountGroundTransport),
                             OutrosReal = madeGroup.Sum(x => x.CountOthers)
                         })
-                        .FirstOrDefault() 
-                })
-                .Select(group => new
-                {
-                    HospedagemPrevisto = group.HospedagemPrevisto,
-                    HospedagemReal = group.MobilizacaoMade?.HospedagemReal ?? 0.0,
-                    AlimentacaoPrevisto = group.AlimentacaoPrevisto,
-                    AlimentacaoReal = group.MobilizacaoMade?.AlimentacaoReal ?? 0.0,
-                    TransporteAereoPrevisto = group.TransporteAereoPrevisto,
-                    TransporteAereoReal = group.MobilizacaoMade?.TransporteAereoReal ?? 0.0,
-                    TransporteTerrestrePrevisto = group.TransporteTerrestrePrevisto,
-                    TransporteTerrestreReal = group.MobilizacaoMade?.TransporteTerrestreReal ?? 0.0,
-                    OutrosPrevisto = group.OutrosPrevisto,
-                    OutrosReal = group.MobilizacaoMade?.OutrosReal ?? 0.0,
-                    TotalPrevisto = group.OutrosPrevisto, 
-                    TotalRealizado = group.MobilizacaoMade?.OutrosReal ?? 0.0 
+                        .FirstOrDefault()
                 })
                 .ToList();
 
-         
+            // Status Relatórios
             var statusReports = _projectmanagementRepository.GetStatusReportsGraph(contractID);
 
             var statusGrouped = statusReports
@@ -908,7 +897,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     }).ToList()
                 }).ToList();
 
-         
+            // Gerenciamento de Pedidos
             var orderManagementData = _projectmanagementRepository.OrderManagementInfo(contractID);
 
             var orderManagementGrouped = orderManagementData
@@ -920,7 +909,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                     TotalCostHoursPlanned = group.Sum(x => x.TotalCostHoursPlanned ?? 0.0)
                 }).ToList();
 
-       
+            // Serviços Terceirizados
             var outsourcedServices = _projectmanagementRepository.GetOutsourcedServicesCombined(contractID);
 
             var outsourcedGrouped = outsourcedServices
@@ -932,18 +921,47 @@ namespace TaskPlannerMetrum.Business.Implementations
                     TotalOutsourcedServices_Made = group.Sum(x => x.TotalOutsourcedServices_Made)
                 }).ToList();
 
-           
+            // Dados de HhGraphicDetail
+            var hhGraphicDetails = _projectmanagementRepository.GetHhGraphicDetail(contractID);
+
+            // Caso deseje agrupar os detalhes
+            var hhGraphicGrouped = hhGraphicDetails
+                .GroupBy(m => m.ContractID)
+                .Select(group => new
+                {
+                    ContractID = group.Key,
+                    Details = group.Select(detail => new
+                    {
+                        detail.MilestoneItemID,
+                        detail.MilestoneValueID,
+                        detail.MilestonesID,
+                        detail.DisplacementServiceName,
+                        detail.DisplacementServicesID,
+                        detail.ValueHour,
+                        detail.HoursExpected,
+                        detail.HoursPlanned,
+                        detail.HoursExecuted,
+                        detail.CostHoursExpected,
+                        detail.CostHoursPlanned,
+                        detail.CostHoursExecuted
+                    }).ToList()
+                }).ToList();
+
+            // Combinação Final
             var result = new
             {
                 CustosIndiretos = indirectGrouped,
-                Mobilizacao = mobilizationGrouped, 
+                Mobilizacao = mobilizationGrouped,
                 StatusRelatorios = statusGrouped,
                 OrderManagement = orderManagementGrouped,
-                OutsourcedServices = outsourcedGrouped
+                OutsourcedServices = outsourcedGrouped,
+                HhGraphicDetails = hhGraphicGrouped
             };
 
             return result;
         }
+
+
 
 
 
