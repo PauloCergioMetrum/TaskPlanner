@@ -1574,11 +1574,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.MilestonesItem.ToList();
         }
 
-        public List<OrderManagementInfo> OrderManagementInfo(int contractID)
-        {
-            return  _context.OrderManagementInfo.Where( a => a.ContractID == contractID ).ToList(); 
-        }
-
+    
         public List<vRightCardValue> RightCardValues(int contractID)
         {
             return _context.vRightCardValue.Where(a => a.ContractID == contractID).ToList();
@@ -1597,6 +1593,14 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                            .Where(a => a.ContractID == contractID)
                            .ToList();
         }
+        public List<OrderManagementInfo> OrderManagementInfo(int contractID)
+        {
+            return _context.OrderManagementInfo.Where(a => a.ContractID == contractID).ToList();
+        }
+
+       
+
+
 
     }
 }

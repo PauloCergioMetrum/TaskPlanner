@@ -5,15 +5,16 @@ namespace TaskPlannerMetrum.Model.ModelViews
     public class vIndirectcostChart
     {
         public int ContractID { get; set; }
-        public string? PlannedId { get; set; }       
-        public string? MadeId { get; set; }          
-        public int? TypeID { get; set; }          
+        public string? PlannedId { get; set; }
+        public string? MadeId { get; set; }
+        public int? TypeID { get; set; }
         public string? TypeDescription { get; set; }
-        public double? PlannedTotal { get; set; }     
+        public double? PlannedTotal { get; set; }
         public double? MadeTotal { get; set; }
     }
 
-    public class vStatusReportsGraph {
+    public class vStatusReportsGraph
+    {
         public int TypeAcquisitionID { get; set; } // int
         public string TypeAcquisitionDescription { get; set; } // varchar(15)
         public int AmountPlanned { get; set; } // int
@@ -29,9 +30,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public DateTime DateAcquisitionDelivery { get; set; } // datetime
         public double TotalMade { get; set; } // float -> double
 
-
-
-
     }
 
+   
 }

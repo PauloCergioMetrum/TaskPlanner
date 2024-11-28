@@ -812,10 +812,9 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-
         public object GetCombinedCharts(int contractID)
         {
-            // Obter os dados de custos indiretos
+           
             var indirectCosts = _projectmanagementRepository.GetIndirectCostChartsByContract(contractID);
 
             var indirectGrouped = indirectCosts
@@ -833,15 +832,57 @@ namespace TaskPlannerMetrum.Business.Implementations
                     PlannedId = group.Key.PlannedId,
                     TypeID = group.Key.TypeID,
                     TypeDescription = group.Key.TypeDescription,
-                    PlannedTotal = group.Key.PlannedTotal ?? 0,
+                    PlannedTotal = group.Key.PlannedTotal ?? 0.0,
                     MadeDetails = group.Select(x => new
                     {
-                        MadeId = x.MadeId,
-                        MadeTotal = x.MadeTotal ?? 0
+                       AcquisitionMadeDTO= x.
+                        MadeTotal = x.MadeTotal ?? 0.0
                     }).ToList()
                 }).ToList();
 
-            // Obter os dados de status de relatórios (mobilização)
+          
+            var mobilizationData = _projectmanagementRepository.GetMobilization(contractID);
+
+            var mobilizationGrouped = mobilizationData
+                .GroupBy(m => m.ContractID)
+                .Select(group => new
+                {
+                    HospedagemPrevisto = group.Sum(x => x.CountAccommodation), 
+                    AlimentacaoPrevisto = group.Sum(x => x.CountFood),
+                    TransporteAereoPrevisto = group.Sum(x => x.CountAirTransport),
+                    TransporteTerrestrePrevisto = group.Sum(x => x.CountGroundTransport),
+                    OutrosPrevisto = group.Sum(x => x.CountOthers),
+                    MobilizacaoMade = mobilizationData
+                        .SelectMany(m => _projectmanagementRepository.GetMobilizationMade(m.ID.ToString()))
+                        .GroupBy(m => m.MobilizationPlannedID)
+                        .Select(madeGroup => new
+                        {
+                            HospedagemReal = madeGroup.Sum(x => x.CountAccommodation), 
+                            AlimentacaoReal = madeGroup.Sum(x => x.CountFood),
+                            TransporteAereoReal = madeGroup.Sum(x => x.CountAirTransport),
+                            TransporteTerrestreReal = madeGroup.Sum(x => x.CountGroundTransport),
+                            OutrosReal = madeGroup.Sum(x => x.CountOthers)
+                        })
+                        .FirstOrDefault() 
+                })
+                .Select(group => new
+                {
+                    HospedagemPrevisto = group.HospedagemPrevisto,
+                    HospedagemReal = group.MobilizacaoMade?.HospedagemReal ?? 0.0,
+                    AlimentacaoPrevisto = group.AlimentacaoPrevisto,
+                    AlimentacaoReal = group.MobilizacaoMade?.AlimentacaoReal ?? 0.0,
+                    TransporteAereoPrevisto = group.TransporteAereoPrevisto,
+                    TransporteAereoReal = group.MobilizacaoMade?.TransporteAereoReal ?? 0.0,
+                    TransporteTerrestrePrevisto = group.TransporteTerrestrePrevisto,
+                    TransporteTerrestreReal = group.MobilizacaoMade?.TransporteTerrestreReal ?? 0.0,
+                    OutrosPrevisto = group.OutrosPrevisto,
+                    OutrosReal = group.MobilizacaoMade?.OutrosReal ?? 0.0,
+                    TotalPrevisto = group.OutrosPrevisto, 
+                    TotalRealizado = group.MobilizacaoMade?.OutrosReal ?? 0.0 
+                })
+                .ToList();
+
+         
             var statusReports = _projectmanagementRepository.GetStatusReportsGraph(contractID);
 
             var statusGrouped = statusReports
@@ -867,19 +908,53 @@ namespace TaskPlannerMetrum.Business.Implementations
                     }).ToList()
                 }).ToList();
 
-            // Combinar os dois grupos
+         
+            var orderManagementData = _projectmanagementRepository.OrderManagementInfo(contractID);
+
+            var orderManagementGrouped = orderManagementData
+                .GroupBy(info => info.ContractID)
+                .Select(group => new
+                {
+                    ContractID = group.Key,
+                    TotalDifferenceExpectedExecuted = group.Sum(x => x.TotalDifferenceExpectedExecuted ?? 0.0),
+                    TotalCostHoursPlanned = group.Sum(x => x.TotalCostHoursPlanned ?? 0.0)
+                }).ToList();
+
+       
+            var outsourcedServices = _projectmanagementRepository.GetOutsourcedServicesCombined(contractID);
+
+            var outsourcedGrouped = outsourcedServices
+                .GroupBy(service => service.ContractID)
+                .Select(group => new
+                {
+                    ContractID = group.Key,
+                    TotalOutsourcedServices_Planned = group.Sum(x => x.TotalOutsourcedServices_Planned),
+                    TotalOutsourcedServices_Made = group.Sum(x => x.TotalOutsourcedServices_Made)
+                }).ToList();
+
+           
             var result = new
             {
                 CustosIndiretos = indirectGrouped,
-                Mobilizacao = statusGrouped
+                Mobilizacao = mobilizationGrouped, 
+                StatusRelatorios = statusGrouped,
+                OrderManagement = orderManagementGrouped,
+                OutsourcedServices = outsourcedGrouped
             };
 
             return result;
         }
+
+
+
+
+
+
+
     }
 }
 
-   
+
 
 
 
