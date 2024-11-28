@@ -10,6 +10,7 @@ using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Model;
 
 namespace TaskPlannerMetrum.Repository.ProjectManagement
 {
@@ -383,6 +384,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 existingCost.ValueUnit = pmCostPlanned.ValueUnit;
                 existingCost.Description = pmCostPlanned.Description;
                 existingCost.ContractID = pmCostPlanned.ContractID;
+                //existingCost.TotalPlanned = pmCostPlanned.TotalPlanned;    
 
                 _context.SaveChanges();
                 return true;
@@ -419,7 +421,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     ValueUnit = pm.ValueUnit,
                     Description = pm.Description,
                     ContractID = pm.ContractID,
-                    Total = pm.Total ?? 0
+                    Total = pm.Total ?? 0,
+                    TotalPlanned = pm.TotalPlanned,
+                    Difference = pm.Difference ?? 0
                 })
                 .ToList();
 
@@ -433,7 +437,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             try
             {
                 var existingCostMade = _context.PmCostMade.FirstOrDefault(c => c.Id == pmCostMade.Id);
-
                 if (existingCostMade != null)
                 {
 
@@ -441,9 +444,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
                     existingCostMade.Pm_Cost_Planned_Id = pmCostMade.Pm_Cost_Planned_Id;
-
-
-
                     _context.SaveChanges();
                     return true;
                 }
@@ -940,15 +940,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
             if (existingScopeTracking != null)
             {
-                existingScopeTracking.Local = pMScopeTraking.Local;
-                existingScopeTracking.ProjectReviewsPlanned = pMScopeTraking.ProjectReviewsPlanned;
-                existingScopeTracking.Item = pMScopeTraking.Item;
-                existingScopeTracking.Remote = pMScopeTraking.Remote;
-                existingScopeTracking.ProjectReviewsMade = pMScopeTraking.ProjectReviewsMade;
-                existingScopeTracking.PeportReviewsPlanned = pMScopeTraking.PeportReviewsPlanned;
-                existingScopeTracking.PeportReviewsMade = pMScopeTraking.PeportReviewsMade;
-                existingScopeTracking.DevelopSystemReviewsPlanned = pMScopeTraking.DevelopSystemReviewsPlanned;
-                existingScopeTracking.DevelopSystemReviewsMade = pMScopeTraking.DevelopSystemReviewsMade;
+                existingScopeTracking.ID = pMScopeTraking.ID;   
+                existingScopeTracking.ContractID = pMScopeTraking.ContractID;
+                existingScopeTracking.TextField = pMScopeTraking.TextField; 
+                existingScopeTracking.DateField = pMScopeTraking.DateField; 
+
+
+      
                 _context.SaveChanges();
 
             }
@@ -966,15 +964,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
             if (existingScopeTracking != null)
             {
-                existingScopeTracking.Local = pMScopeTraking.Local;
-                existingScopeTracking.ProjectReviewsPlanned = pMScopeTraking.ProjectReviewsPlanned;
-                existingScopeTracking.Item = pMScopeTraking.Item;
-                existingScopeTracking.Remote = pMScopeTraking.Remote;
-                existingScopeTracking.ProjectReviewsMade = pMScopeTraking.ProjectReviewsMade;
-                existingScopeTracking.PeportReviewsPlanned = pMScopeTraking.PeportReviewsPlanned;
-                existingScopeTracking.PeportReviewsMade = pMScopeTraking.PeportReviewsMade;
-                existingScopeTracking.DevelopSystemReviewsPlanned = pMScopeTraking.DevelopSystemReviewsPlanned;
-                existingScopeTracking.DevelopSystemReviewsMade = pMScopeTraking.DevelopSystemReviewsMade;
+
+                existingScopeTracking.ID = pMScopeTraking.ID;
+                existingScopeTracking.ContractID = pMScopeTraking.ContractID;
+                existingScopeTracking.TextField = pMScopeTraking.TextField;
+                existingScopeTracking.DateField = pMScopeTraking.DateField;
                 _context.SaveChanges();
 
             }
@@ -1580,6 +1574,22 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.MilestonesItem.ToList();
         }
 
+        public List<OrderManagementInfo> OrderManagementInfo(int contractID)
+        {
+            return  _context.OrderManagementInfo.Where( a => a.ContractID == contractID ).ToList(); 
+        }
+
+        public List<vRightCardValue> RightCardValues(int contractID)
+        {
+            return _context.vRightCardValue.Where(a => a.ContractID == contractID).ToList();
+        }
+
+        public List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID)
+        {
+            return _context.vIndirectcostChart
+                           .Where(a => a.ContractID == contractID)
+                           .ToList();
+        }
     }
 }
 

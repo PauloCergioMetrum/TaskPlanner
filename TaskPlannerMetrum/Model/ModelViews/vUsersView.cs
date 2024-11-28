@@ -16,27 +16,19 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public int? DepartmentId { get; set; }
         public int? WorkspaceID { get; set; }
-
         public bool IsActive { get; set; }
-
         public int? functionID { get; set; }
         public string? FunctionHH { get; set; }
         public int? ManagementID { get; set; }
         public DateTime? CreationDate { get; set; }
-
         public string ManagementName { get; set; }
-
-        public int?  role { get; set; }
-
+        public int? role { get; set; }
         public string? PermissionName { get; set; }
         public string? DepartamentName { get; set; }
-
         public int? PermissionID { get; set; }
-
-
+        public string? FunctionName { get; set; }
 
     }
+
+
 }
-
-
- 

@@ -9,6 +9,8 @@
         public string Description { get; set; }
         public int ContractID { get; set; }
         public double? Total {  get; set; }  
+        public double TotalPlanned { get; set; }  
+        public double? Difference {  get; set; } 
 
     }
 }
