@@ -148,15 +148,14 @@ namespace TaskPlannerMetrum.Business
         public List<UserVO> GetAllUsersGercon();
 
         // GET ALL TAP  MODAL DE CADASTRDO
-
-
         public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId);
-
         public List<OrderManagementInfo> OrderManagementInfo(int contractID);
         public List<vRightCardValue> RightCardValues(int contractID);
-
+        
         // STATUS REPORTS
-        public List<object> GetUniquePlannedTotalCharts(int contractID);
+        object GetCombinedCharts(int contractID);
+
+
 
     }
   

@@ -110,8 +110,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<MilestonesItem> GetAllMilestones();
         public List<vRightCardValue>RightCardValues(int contractID);
         // STATUS REPORTS
-
         List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID);
+        List<vStatusReportsGraph> GetStatusReportsGraph(int contractID);
+        List<vhhGraphicDetail> GetHhGraphicDetail(int contractID);  
+
+       
+
 
 
 

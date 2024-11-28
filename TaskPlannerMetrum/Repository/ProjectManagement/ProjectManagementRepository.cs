@@ -343,17 +343,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
-        {
-            var AcquisitionList = _context.vPM_Acquisition_Combined.Where(r => r.ContractID == ContractID).ToList();
-            return AcquisitionList;
-        }
-
-        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
-        {
-            var AcquisitionsMadeList = _context.vPM_Acquisition_Cost.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
-            return AcquisitionsMadeList;
-        }
+     
+   
 
        
 
@@ -1574,14 +1565,24 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.MilestonesItem.ToList();
         }
 
-        public List<OrderManagementInfo> OrderManagementInfo(int contractID)
-        {
-            return  _context.OrderManagementInfo.Where( a => a.ContractID == contractID ).ToList(); 
-        }
-
+    
         public List<vRightCardValue> RightCardValues(int contractID)
         {
             return _context.vRightCardValue.Where(a => a.ContractID == contractID).ToList();
+        }
+
+
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
+        {
+            var AcquisitionList = _context.vPM_Acquisition_Combined.Where(r => r.ContractID == ContractID).ToList();
+            return AcquisitionList;
+        }
+
+
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
+        {
+            var AcquisitionsMadeList = _context.vPM_Acquisition_Cost.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
+            return AcquisitionsMadeList;
         }
 
         public List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID)
@@ -1589,6 +1590,22 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.vIndirectcostChart
                            .Where(a => a.ContractID == contractID)
                            .ToList();
+        }
+
+        public List<vStatusReportsGraph> GetStatusReportsGraph(int contractID)
+        {
+            return _context.vStatusReportsGraph
+                           .Where(a => a.ContractID == contractID)
+                           .ToList();
+        }
+        public List<OrderManagementInfo> OrderManagementInfo(int contractID)
+        {
+            return _context.OrderManagementInfo.Where(a => a.ContractID == contractID).ToList();
+        }
+
+        public List<vhhGraphicDetail> GetHhGraphicDetail(int contractID)
+        {
+           return _context.vhhGraphicDetail.Where(a =>a.ContractID == contractID).ToList();       
         }
     }
 }

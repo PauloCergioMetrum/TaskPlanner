@@ -342,16 +342,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
-        {
-            return _projectmanagementRepository.GetAcquisitions(ContractID);
-        }
-
-        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
-        {
-            return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
-        }
-
+       
 
 
         public bool DeleteTypeOfCost(int ID)
@@ -785,15 +776,15 @@ namespace TaskPlannerMetrum.Business.Implementations
                                 MilesTonesName = dt.MilestoneName,
                                 PlannedManHour = dt.PlannedManHour,
                                 SeniorLevel = dt.ExecutorSeniorityLevel
-                            }).ToList()  
-                    }).ToList() 
+                            }).ToList()
+                    }).ToList()
                 };
                 milesTonesLsit.Add(milesTone);
             }
 
 
 
-            
+
 
             activitPlanDetaisByContractID.ActivicPlannGrupByMilesTone = milesTonesLsit;
             return activitPlanDetaisByContractID;
@@ -802,41 +793,191 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public List<OrderManagementInfo> OrderManagementInfo(int contractID)
         {
-           return _projectmanagementRepository.OrderManagementInfo(contractID); 
+            return _projectmanagementRepository.OrderManagementInfo(contractID);
         }
 
         public List<vRightCardValue> RightCardValues(int contractID)
         {
-           return _projectmanagementRepository.RightCardValues(contractID); 
+            return _projectmanagementRepository.RightCardValues(contractID);
         }
 
-        public List<object> GetUniquePlannedTotalCharts(int contractID)
-        {
-        
-            var fullList = _projectmanagementRepository.GetIndirectCostChartsByContract(contractID);
 
-       
-            var groupedResult = fullList
-                .GroupBy(chart => new { chart.ContractID, chart.PlannedId, chart.TypeID, chart.TypeDescription, chart.PlannedTotal })
+
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
+        {
+            return _projectmanagementRepository.GetAcquisitions(ContractID);
+        }
+
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
+        {
+            return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
+        }
+
+
+
+
+        public object GetCombinedCharts(int contractID)
+        {
+            // Custos Indiretos
+            var indirectCosts = _projectmanagementRepository.GetIndirectCostChartsByContract(contractID);
+
+            var indirectGrouped = indirectCosts
+                .GroupBy(chart => new
+                {
+                    chart.ContractID,
+                    chart.PlannedId,
+                    chart.TypeID,
+                    chart.TypeDescription,
+                    chart.PlannedTotal
+                })
                 .Select(group => new
                 {
-                    contractID = group.Key.ContractID,
+                    ContractID = group.Key.ContractID,
                     PlannedId = group.Key.PlannedId,
                     TypeID = group.Key.TypeID,
                     TypeDescription = group.Key.TypeDescription,
-                    PlannedTotal = group.Key.PlannedTotal,
+                    PlannedTotal = group.Key.PlannedTotal ?? 0.0,
                     MadeDetails = group.Select(x => new
                     {
-                        x.MadeId,
-                        x.MadeTotal
+                        AcquisitionMadeDTO = x,
+                        MadeTotal = x.MadeTotal ?? 0.0
                     }).ToList()
-                })
-                .ToList<object>(); 
+                }).ToList();
 
-            return groupedResult;
+            // Mobilização
+            var mobilizationData = _projectmanagementRepository.GetMobilization(contractID);
+
+            var mobilizationGrouped = mobilizationData
+                .GroupBy(m => m.ContractID)
+                .Select(group => new
+                {
+                    HospedagemPrevisto = group.Sum(x => x.CountAccommodation),
+                    AlimentacaoPrevisto = group.Sum(x => x.CountFood),
+                    TransporteAereoPrevisto = group.Sum(x => x.CountAirTransport),
+                    TransporteTerrestrePrevisto = group.Sum(x => x.CountGroundTransport),
+                    OutrosPrevisto = group.Sum(x => x.CountOthers),
+                    MobilizacaoMade = mobilizationData
+                        .SelectMany(m => _projectmanagementRepository.GetMobilizationMade(m.ID.ToString()))
+                        .GroupBy(m => m.MobilizationPlannedID)
+                        .Select(madeGroup => new
+                        {
+                            HospedagemReal = madeGroup.Sum(x => x.CountAccommodation),
+                            AlimentacaoReal = madeGroup.Sum(x => x.CountFood),
+                            TransporteAereoReal = madeGroup.Sum(x => x.CountAirTransport),
+                            TransporteTerrestreReal = madeGroup.Sum(x => x.CountGroundTransport),
+                            OutrosReal = madeGroup.Sum(x => x.CountOthers)
+                        })
+                        .FirstOrDefault()
+                })
+                .ToList();
+
+            // Status Relatórios
+            var statusReports = _projectmanagementRepository.GetStatusReportsGraph(contractID);
+
+            var statusGrouped = statusReports
+                .GroupBy(chart => new
+                {
+                    chart.ContractID,
+                    chart.AquisitionPlannedID,
+                    chart.TypeAcquisitionID,
+                    chart.TypeAcquisitionDescription,
+                    chart.PredictedTotal
+                })
+                .Select(group => new
+                {
+                    ContractID = group.Key.ContractID,
+                    PlannedId = group.Key.AquisitionPlannedID,
+                    TypeID = group.Key.TypeAcquisitionID,
+                    TypeDescription = group.Key.TypeAcquisitionDescription,
+                    PlannedTotal = group.Key.PredictedTotal,
+                    MadeDetails = group.Select(x => new
+                    {
+                        MadeId = x.AquisitionPlannedID,
+                        MadeTotal = x.TotalMade
+                    }).ToList()
+                }).ToList();
+
+            // Gerenciamento de Pedidos
+            var orderManagementData = _projectmanagementRepository.OrderManagementInfo(contractID);
+
+            var orderManagementGrouped = orderManagementData
+                .GroupBy(info => info.ContractID)
+                .Select(group => new
+                {
+                    ContractID = group.Key,
+                    TotalDifferenceExpectedExecuted = group.Sum(x => x.TotalDifferenceExpectedExecuted ?? 0.0),
+                    TotalCostHoursPlanned = group.Sum(x => x.TotalCostHoursPlanned ?? 0.0)
+                }).ToList();
+
+            // Serviços Terceirizados
+            var outsourcedServices = _projectmanagementRepository.GetOutsourcedServicesCombined(contractID);
+
+            var outsourcedGrouped = outsourcedServices
+                .GroupBy(service => service.ContractID)
+                .Select(group => new
+                {
+                    ContractID = group.Key,
+                    TotalOutsourcedServices_Planned = group.Sum(x => x.TotalOutsourcedServices_Planned),
+                    TotalOutsourcedServices_Made = group.Sum(x => x.TotalOutsourcedServices_Made)
+                }).ToList();
+
+            // Dados de HhGraphicDetail
+            var hhGraphicDetails = _projectmanagementRepository.GetHhGraphicDetail(contractID);
+
+            // Caso deseje agrupar os detalhes
+            var hhGraphicGrouped = hhGraphicDetails
+                .GroupBy(m => m.ContractID)
+                .Select(group => new
+                {
+                    ContractID = group.Key,
+                    Details = group.Select(detail => new
+                    {
+                        detail.MilestoneItemID,
+                        detail.MilestoneValueID,
+                        detail.MilestonesID,
+                        detail.DisplacementServiceName,
+                        detail.DisplacementServicesID,
+                        detail.ValueHour,
+                        detail.HoursExpected,
+                        detail.HoursPlanned,
+                        detail.HoursExecuted,
+                        detail.CostHoursExpected,
+                        detail.CostHoursPlanned,
+                        detail.CostHoursExecuted
+                    }).ToList()
+                }).ToList();
+
+            // Combinação Final
+            var result = new
+            {
+                CustosIndiretos = indirectGrouped,
+                Mobilizacao = mobilizationGrouped,
+                StatusRelatorios = statusGrouped,
+                OrderManagement = orderManagementGrouped,
+                OutsourcedServices = outsourcedGrouped,
+                HhGraphicDetails = hhGraphicGrouped
+            };
+
+            return result;
         }
+
+
+
+
+
+
+
+
+
     }
 }
+
+
+
+
+
+
+
 
 
 
