@@ -906,7 +906,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 {
                     ContractID = group.Key,
                     TotalDifferenceExpectedExecuted = group.Sum(x => x.TotalDifferenceExpectedExecuted ?? 0.0),
-                    TotalCostHoursPlanned = group.Sum(x => x.TotalCostHoursPlanned ?? 0.0)
+                    TotalCostHoursExecuted = group.Sum(x => x.TotalCostHoursExecuted ?? 0.0)
                 }).ToList();
 
             // Serviços Terceirizados
