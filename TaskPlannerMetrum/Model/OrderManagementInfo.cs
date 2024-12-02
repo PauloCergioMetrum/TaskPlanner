@@ -8,7 +8,7 @@ namespace TaskPlannerMetrum.Model
 
 
         public int ContractID { get; set; }
-
+         
         public double? TotalCostHoursPlanned { get; set; }
 
         public double? TotalCostHoursExecuted { get; set; }

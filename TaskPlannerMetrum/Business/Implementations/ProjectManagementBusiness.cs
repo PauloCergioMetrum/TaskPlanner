@@ -901,13 +901,15 @@ namespace TaskPlannerMetrum.Business.Implementations
             var orderManagementData = _projectmanagementRepository.OrderManagementInfo(contractID);
 
             var orderManagementGrouped = orderManagementData
-                .GroupBy(info => info.ContractID)
-                .Select(group => new
-                {
-                    ContractID = group.Key,
-                    TotalDifferenceExpectedExecuted = group.Sum(x => x.TotalDifferenceExpectedExecuted ?? 0.0),
-                    TotalCostHoursExecuted = group.Sum(x => x.TotalCostHoursExecuted ?? 0.0)
-                }).ToList();
+     .GroupBy(info => info.ContractID)
+     .Select(group => new
+     {
+         ContractID = group.Key,
+         TotalDifferenceExpectedExecuted = group.Sum(x => x.TotalDifferenceExpectedExecuted ?? 0.0), // 0.0 para double
+         TotalCostHoursExecuted = group.Sum(x => x.TotalCostHoursExecuted ?? 0.0) // 0.0 para double
+     }).ToList();
+
+
 
             // Serviços Terceirizados
             var outsourcedServices = _projectmanagementRepository.GetOutsourcedServicesCombined(contractID);
