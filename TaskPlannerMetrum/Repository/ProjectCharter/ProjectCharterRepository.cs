@@ -2,10 +2,12 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.ProjectCharter
 {
@@ -33,10 +35,17 @@ namespace TaskPlannerMetrum.Repository.ProjectCharter
       return _context.GetTechLeaders(contractID);
     }
 
-    public dynamic Consualtant(int userID)
-    {
-          return _context.Users.Where( u => u.Id == userID).Select(s => new {s.UserName , s.PhoneNumber, s.UserEmail}).FirstOrDefault();
-    }
+        public dynamic Consualtant(int ContractID)
+        {
+            var vendorName = _context.vContractList
+                .Where(a => a.ContractID == ContractID)
+                .Select(a => a.VendorName)
+                .FirstOrDefault();
+
+            return vendorName; 
+        }
+
+
 
 
 
@@ -44,5 +53,7 @@ namespace TaskPlannerMetrum.Repository.ProjectCharter
         {
          return _context.PM_TAP_Resources.Where(a => a.ContractID == contractID).ToList();
         }
+
+        
     }
 }
