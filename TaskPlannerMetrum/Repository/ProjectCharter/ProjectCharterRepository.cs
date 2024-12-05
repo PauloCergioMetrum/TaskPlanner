@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -34,19 +35,25 @@ namespace TaskPlannerMetrum.Repository.ProjectCharter
     {
       return _context.GetTechLeaders(contractID);
     }
-
-        public dynamic Consualtant(int ContractID)
+        public dynamic Consualtant(int contractID)
         {
             var vendorName = _context.vContractList
-                .Where(a => a.ContractID == ContractID)
+                .Where(a => a.ContractID == contractID)
                 .Select(a => a.VendorName)
                 .FirstOrDefault();
 
-            return vendorName; 
+            if (vendorName == null)
+            {
+                throw new Exception($"VendorName não encontrado para ContractID {contractID}");
+            }
+
+            var userEmail = _context.Users
+                .Where(u => u.UserName == vendorName)
+                .Select(u => u.UserEmail)
+                .FirstOrDefault();
+
+            return new { VendorName = vendorName, UserEmail = userEmail };
         }
-
-
-
 
 
         public List<PM_TAP_Resources> Resources(int contractID)
