@@ -13,22 +13,15 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public double? MadeTotal { get; set; }
     }
 
-    public class vStatusReportsGraph
+    public class vAcquisitionChart
     {
-        public int? TypeAcquisitionID { get; set; }
-        public string? TypeAcquisitionDescription { get; set; }
-        public int? AmountPlanned { get; set; }
-        public double? PredictedTotal { get; set; }
-        public double? TotalCost { get; set; }
-        public double? AmountValue { get; set; }
-        public string? AcquisitionDescription { get; set; }
-        public int? ContractID { get; set; }
-        public double? Amount { get; set; }
-        public string? AquisitionPlannedID { get; set; }
-        public double? Value { get; set; }
-        public DateTime? DateAcquisition { get; set; }
-        public DateTime? DateAcquisitionDelivery { get; set; }
-        public double? TotalMade { get; set; }
+        public string ID { get; set; }
+        public int TypeAcquisitionID { get; set; }
+        public string TypeAcquisitionDescription { get; set; }
+        public double PredictedTotal { get; set; } 
+        public double TotalCost { get; set; }
+        public double? CombinedTotal { get; set; } 
+        public int ContractID { get; set; }
     }
 
     public class vhhGraphicDetail
