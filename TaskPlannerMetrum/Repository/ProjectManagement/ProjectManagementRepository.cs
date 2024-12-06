@@ -10,6 +10,7 @@ using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Model;
 
 namespace TaskPlannerMetrum.Repository.ProjectManagement
 {
@@ -342,17 +343,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
-        {
-            var AcquisitionList = _context.vPM_Acquisition_Combined.Where(r => r.ContractID == ContractID).ToList();
-            return AcquisitionList;
-        }
-
-        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
-        {
-            var AcquisitionsMadeList = _context.vPM_Acquisition_Cost.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
-            return AcquisitionsMadeList;
-        }
+     
+   
 
        
 
@@ -383,6 +375,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 existingCost.ValueUnit = pmCostPlanned.ValueUnit;
                 existingCost.Description = pmCostPlanned.Description;
                 existingCost.ContractID = pmCostPlanned.ContractID;
+                //existingCost.TotalPlanned = pmCostPlanned.TotalPlanned;    
 
                 _context.SaveChanges();
                 return true;
@@ -419,7 +412,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     ValueUnit = pm.ValueUnit,
                     Description = pm.Description,
                     ContractID = pm.ContractID,
-                    Total = pm.Total ?? 0
+                    Total = pm.Total ?? 0,
+                    TotalPlanned = pm.TotalPlanned,
+                    Difference = pm.Difference ?? 0
                 })
                 .ToList();
 
@@ -433,7 +428,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             try
             {
                 var existingCostMade = _context.PmCostMade.FirstOrDefault(c => c.Id == pmCostMade.Id);
-
                 if (existingCostMade != null)
                 {
 
@@ -441,9 +435,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
                     existingCostMade.Pm_Cost_Planned_Id = pmCostMade.Pm_Cost_Planned_Id;
-
-
-
                     _context.SaveChanges();
                     return true;
                 }
@@ -484,7 +475,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             var ListGetCostMade = _context.vPmCostMade.Where(i => i.Pm_Cost_Planned_Id == Pm_Cost_PlannedID).ToList();
             return ListGetCostMade;
         }
-
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
         {
             throw new NotImplementedException();
@@ -941,15 +931,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
             if (existingScopeTracking != null)
             {
-                existingScopeTracking.Local = pMScopeTraking.Local;
-                existingScopeTracking.ProjectReviewsPlanned = pMScopeTraking.ProjectReviewsPlanned;
-                existingScopeTracking.Item = pMScopeTraking.Item;
-                existingScopeTracking.Remote = pMScopeTraking.Remote;
-                existingScopeTracking.ProjectReviewsMade = pMScopeTraking.ProjectReviewsMade;
-                existingScopeTracking.PeportReviewsPlanned = pMScopeTraking.PeportReviewsPlanned;
-                existingScopeTracking.PeportReviewsMade = pMScopeTraking.PeportReviewsMade;
-                existingScopeTracking.DevelopSystemReviewsPlanned = pMScopeTraking.DevelopSystemReviewsPlanned;
-                existingScopeTracking.DevelopSystemReviewsMade = pMScopeTraking.DevelopSystemReviewsMade;
+                existingScopeTracking.ID = pMScopeTraking.ID;   
+                existingScopeTracking.ContractID = pMScopeTraking.ContractID;
+                existingScopeTracking.TextField = pMScopeTraking.TextField; 
+                existingScopeTracking.DateField = pMScopeTraking.DateField; 
+
+
+      
                 _context.SaveChanges();
 
             }
@@ -967,15 +955,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
             if (existingScopeTracking != null)
             {
-                existingScopeTracking.Local = pMScopeTraking.Local;
-                existingScopeTracking.ProjectReviewsPlanned = pMScopeTraking.ProjectReviewsPlanned;
-                existingScopeTracking.Item = pMScopeTraking.Item;
-                existingScopeTracking.Remote = pMScopeTraking.Remote;
-                existingScopeTracking.ProjectReviewsMade = pMScopeTraking.ProjectReviewsMade;
-                existingScopeTracking.PeportReviewsPlanned = pMScopeTraking.PeportReviewsPlanned;
-                existingScopeTracking.PeportReviewsMade = pMScopeTraking.PeportReviewsMade;
-                existingScopeTracking.DevelopSystemReviewsPlanned = pMScopeTraking.DevelopSystemReviewsPlanned;
-                existingScopeTracking.DevelopSystemReviewsMade = pMScopeTraking.DevelopSystemReviewsMade;
+
+                existingScopeTracking.ID = pMScopeTraking.ID;
+                existingScopeTracking.ContractID = pMScopeTraking.ContractID;
+                existingScopeTracking.TextField = pMScopeTraking.TextField;
+                existingScopeTracking.DateField = pMScopeTraking.DateField;
                 _context.SaveChanges();
 
             }
@@ -1565,6 +1549,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             var activityPlanHH = _context.ActivityPlanHH(contractID).FirstOrDefault();
             var activityPlanHHTable = _context.ActivityPlanHHTable(contractID).ToList();
 
+            
             var activityPlanDetail = new ActivityPlanHHDetail
             {
                 ActivityPlanHH = activityPlanHH,
@@ -1574,6 +1559,54 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return activityPlanDetail;
         }
 
+
+        public List<MilestonesItem> GetAllMilestones()
+        {
+            return _context.MilestonesItem.ToList();
+        }
+
+    
+        public List<vRightCardValue> RightCardValues(int contractID)
+        {
+            return _context.vRightCardValue.Where(a => a.ContractID == contractID).ToList();
+        }
+
+
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
+        {
+            var AcquisitionList = _context.vPM_Acquisition_Combined.Where(r => r.ContractID == ContractID).ToList();
+            return AcquisitionList;
+        }
+
+
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
+        {
+            var AcquisitionsMadeList = _context.vPM_Acquisition_Cost.Where(r => r.AquisitionPlannedID == AquisitionPlannedID).ToList();
+            return AcquisitionsMadeList;
+        }
+
+        public List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID)
+        {
+            return _context.vIndirectcostChart
+                           .Where(a => a.ContractID == contractID)
+                           .ToList();
+        }
+
+        public List<vStatusReportsGraph> GetStatusReportsGraph(int contractID)
+        {
+            return _context.vStatusReportsGraph
+                           .Where(a => a.ContractID == contractID)
+                           .ToList();
+        }
+        public List<OrderManagementInfo> OrderManagementInfo(int contractID)
+        {
+            return _context.OrderManagementInfo.Where(a => a.ContractID == contractID).ToList();
+        }
+
+        public List<vhhGraphicDetail> GetHhGraphicDetail(int contractID)
+        {
+           return _context.vhhGraphicDetail.Where(a =>a.ContractID == contractID).ToList();       
+        }
     }
 }
 

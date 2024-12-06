@@ -35,7 +35,7 @@ namespace TaskPlannerMetrum
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>(); //apagar
+                    webBuilder.UseStartup<Startup>(); 
                 });
     }
 }

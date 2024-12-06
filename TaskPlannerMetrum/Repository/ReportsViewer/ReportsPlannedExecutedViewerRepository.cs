@@ -9,17 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-
-
-
-
-
-
 
 namespace TaskPlannerMetrum.Repository.ReportsViewer
 {
@@ -37,7 +32,6 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = "EXECUTE [dbo].[ExpectedHour] @Start,@End,@ContractID ";
-                //command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@Start", startDate));
                 command.Parameters.Add(new SqlParameter("@End", endDate));
                 command.Parameters.Add(new SqlParameter("@ContractID", contractID));
@@ -61,12 +55,10 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                             {
                                 hourResult = Convert.ToDouble(reader.GetValue(0));
                             }
-                          
-
                         }
 
                     }
-                    
+
                 }
                 return hourResult;
             }
@@ -77,15 +69,12 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = "EXECUTE [dbo].[HoursCost] @startDate,@endDate,@contractID,@userID";
-                //command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@startDate", startDate));
+                 command.Parameters.Add(new SqlParameter("@startDate", startDate));
                 command.Parameters.Add(new SqlParameter("@endDate", endDate));
                 command.Parameters.Add(new SqlParameter("@contractID", Convert.ToInt64(0)));
                 command.Parameters.Add(new SqlParameter("@userID", Convert.ToInt64(0)));
                 _context.Database.OpenConnection();
-                using (var reader = command.ExecuteReader())
-                {
-
+                using (var reader = command.ExecuteReader()){
                     while (reader.Read())
                     {
                         int index = 0;
@@ -96,13 +85,11 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                             UserID = reader.GetInt32(index++),
                             ScheduleDate = reader.GetDateTime(index++),
                             DayCost = reader.GetDouble(index++),
-
                         };
 
                         listHoursCost.Add(register);
 
                     }
-
                 }
 
 
@@ -123,12 +110,11 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 return list;
 
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return null;
             }
         }
-
         public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO)
         {
             var contractIDs = string.Join(",", operationalReportReportDTO.ContractIDs);
@@ -136,26 +122,35 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                                         .Where(bu => operationalReportReportDTO.BusinessUnitIDs.Contains(bu.Id))
                                         .ToList();
             var businessUnitNames = string.Join(",", filteredBusinessUnits.Select(bu => bu.Name));
-
-            // Verifica se a lista de contratos está vazia e ajusta para "null" se for o caso
+            var startDate = operationalReportReportDTO.StartDate != null ?
+                               operationalReportReportDTO.StartDate.ToString("yyyy/MM") :
+                               "null";
+            var endDate = operationalReportReportDTO.EndDate != null ?
+                                operationalReportReportDTO.EndDate.ToString("yyyy/MM") :
+                                "null";
             if (operationalReportReportDTO.ContractIDs.Count == 0)
             {
                 contractIDs = "null";
             }
 
-            // Verifica se a lista de IDs de unidades de negócio está vazia e ajusta para "null" se for o caso
             if (operationalReportReportDTO.BusinessUnitIDs.Count == 0)
             {
                 businessUnitNames = "null";
             }
 
             var sql = "EXEC [dbo].[GetNumberOfContractsForBusinessUnit] " +
-                      $"@ContractIDs = {contractIDs}, " +
-                      $"@BusinessUnitNames = {(businessUnitNames == "null" ? "null" : $"'{businessUnitNames}'")}";  // Inclui null ou os nomes das unidades de negócio
+            $"@ContractIDs = {contractIDs}, " +
+            $"@BusinessUnitNames = {(businessUnitNames == "null" ? "null" : $"'{businessUnitNames}'")}, " +
+            $"@StartPeriod = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
+            $"@EndPeriod = {(endDate != "null" ? $"'{endDate}'" : "null")}";
+
 
             return _context.Set<NumberOfContractsForBusinessUnit>().FromSqlRaw(sql).ToList();
         }
-        public List<StatusForPeriod> getStatusPerPeriod( OperationalReportReportDTO OperationalReportReportDTO)
+
+
+
+        public List<StatusForPeriod> getStatusPerPeriod(OperationalReportReportDTO OperationalReportReportDTO)
         {
             var startDate = OperationalReportReportDTO.StartDate != null ?
                                 OperationalReportReportDTO.StartDate.ToString("yyyy-MM-dd") :
@@ -220,11 +215,12 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
             return _context.Set<OperationalRelationshipTable>().FromSqlRaw(sql).ToList();
         }
+
         public List<OptionsFilterTechLead> GetAllTechLeader()
         {
 
-            var allPermissions =_context.Permissions.ToList();  
-            var idPermissions = allPermissions.Where(n=> n.Description =="Admin" || n.Description =="Supervisor").Select(i=> i.id).ToList();
+            var allPermissions = _context.Permissions.ToList();
+            var idPermissions = allPermissions.Where(n => n.Description == "Admin" || n.Description == "Supervisor").Select(i => i.id).ToList();
             return _context.Users
             .Where(u => idPermissions.Contains(u.PermissionId) && u.IsActive == true).Select(u => new OptionsFilterTechLead
             {
@@ -234,7 +230,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
         public List<OptionsListFilterProjectInspector> GetAllInspector()
         {
-            var getIdSFiscalList =_context.Department.Where(d=> d.Name == "DEPCNT").Select(i=> i.ID).ToList();
+            var getIdSFiscalList = _context.Department.Where(d => d.Name == "DEPCNT").Select(i => i.ID).ToList();
             return _context.Users
             .Where(u => getIdSFiscalList.Contains(u.DepartmentId) && u.IsActive == true).Select(u => new OptionsListFilterProjectInspector
             {
@@ -250,20 +246,137 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
+        public List<PredictedInvoiced> GetMaterialAndService(ReportInvoice parameters)
+        {
+           
+            string businessUnits = parameters.BusinessUnits.Any() ? string.Join(",", parameters.BusinessUnits) : null;
+            string inspectorIDs = parameters.InspectorIDs.Any() ? string.Join(",", parameters.InspectorIDs) : null;  
+            var sql = "EXEC [dbo].[GetPredictedInvoiced] " +
+                      "@startDate, " +
+                      "@endDate, " +
+                      "@businessUnits, " +
+                      "@inspectorIDs";
+            return _context.Set<PredictedInvoiced>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@startDate", (object)parameters.StartDate ?? DBNull.Value),
+                    new SqlParameter("@endDate", (object)parameters.EndDate ?? DBNull.Value),
+                    new SqlParameter("@businessUnits", (object)businessUnits ?? DBNull.Value),
+                    new SqlParameter("@inspectorIDs", (object)inspectorIDs ?? DBNull.Value))
+                .ToList();
+        }
+
+
+        public List<MaterialServices> GetPredictedInvoicedReport(ReportInvoice parameters)
+        {
+          
+            string businessUnits = parameters.BusinessUnits != null && parameters.BusinessUnits.Any()
+                ? string.Join(",", parameters.BusinessUnits)
+                : null;
+            string inspectorIDs = parameters.InspectorIDs != null && parameters.InspectorIDs.Any()
+                ? string.Join(",", parameters.InspectorIDs)
+                : null;
+            var sql = "EXEC [dbo].[GetMaterialAndServiceCount] @startDate, @endDate, @BusinessUnits, @InspectorIDs";
+            return _context.Set<MaterialServices>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@startDate", parameters.StartDate.HasValue ? (object)parameters.StartDate.Value : DBNull.Value),
+                    new SqlParameter("@endDate", parameters.EndDate.HasValue ? (object)parameters.EndDate.Value : DBNull.Value),
+                    new SqlParameter("@BusinessUnits", businessUnits ?? (object)DBNull.Value),
+                    new SqlParameter("@InspectorIDs", inspectorIDs ?? (object)DBNull.Value))
+                .ToList();
+        }
+
+
+        public List<BillingPerBusinessUnit> GetBillingPerBusinessUnit(ReportInvoice filter)
+        {
+           
+            var businessUnits = filter.BusinessUnits != null && filter.BusinessUnits.Count > 0
+                ? string.Join(",", filter.BusinessUnits)
+                : null;
+            var inspectorIDs = filter.InspectorIDs != null && filter.InspectorIDs.Count > 0
+                ? string.Join(",", filter.InspectorIDs)
+                : null;
+            var sql = "EXEC [dbo].[BillingPerBusinessUnit] @startDate, @endDate, @BusinessUnits, @InspectorIDs";
+            return _context.Set<BillingPerBusinessUnit>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@startDate", (object)filter.StartDate ?? DBNull.Value),
+                    new SqlParameter("@endDate", (object)filter.EndDate ?? DBNull.Value),
+                    new SqlParameter("@BusinessUnits", (object)businessUnits ?? DBNull.Value),
+                    new SqlParameter("@InspectorIDs", (object)inspectorIDs ?? DBNull.Value))
+                .ToList();
+        }
+
+
+
+
+        public List<ReportDetailsTable> GetReportDetailsTable(ReportInvoice filter)
+        {
+          
+            var businessUnits = filter.BusinessUnits != null && filter.BusinessUnits.Count > 0
+                ? string.Join(",", filter.BusinessUnits)
+                : null;
+            var inspectorIDs = filter.InspectorIDs != null && filter.InspectorIDs.Count > 0
+                ? string.Join(",", filter.InspectorIDs)
+                : null;
+            var sql = "EXEC [dbo].[GetReportDetailsTable] @startDate, @endDate, @BusinessUnits, @InspectorIDs";
+            return _context.Set<ReportDetailsTable>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@startDate", (object)filter.StartDate ?? DBNull.Value),
+                    new SqlParameter("@endDate", (object)filter.EndDate ?? DBNull.Value),
+                    new SqlParameter("@BusinessUnits", (object)businessUnits ?? DBNull.Value),
+                    new SqlParameter("@InspectorIDs", (object)inspectorIDs ?? DBNull.Value))
+                .ToList();
+        }
 
 
 
 
 
+        public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter)
+        {
+          
+            if (!filter.StartDate.HasValue)
+                throw new ArgumentException("StartDate is required.");
+            string year = filter.StartDate.Value.Year.ToString();
+
+            var sql = "EXEC [dbo].[GetGoalsAndRealized] @year, @startDate, @endDate";
+
+            var result = _context.Set<GoalRealizationReport>()
+                .FromSqlRaw(sql,
+                    new SqlParameter("@year", year),
+                    new SqlParameter("@startDate", filter.StartDate ?? (object)DBNull.Value),
+                    new SqlParameter("@endDate", filter.EndDate ?? (object)DBNull.Value))
+                .AsEnumerable()
+                .FirstOrDefault();
+
+            return result ?? new GoalRealizationReport();
+        }
 
 
+        public async Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode)
+        {
+            var contractIDParam = contractID.HasValue
+                ? new SqlParameter("@ContractID", contractID.Value)
+                : new SqlParameter("@ContractID", DBNull.Value);
 
+            var internalCodeParam = string.IsNullOrEmpty(internalCode)
+                ? new SqlParameter("@InternalCode", DBNull.Value)
+                : new SqlParameter("@InternalCode", internalCode);
 
+            var result = await _context.ContractGraphics
+                .FromSqlRaw("EXEC GetAllContractsGraphic @ContractID, @InternalCode", contractIDParam, internalCodeParam)
+                .ToListAsync();
 
-
+            return result;
+        }
     }
 
 }
+
+
+
+
+
+
 
 
 

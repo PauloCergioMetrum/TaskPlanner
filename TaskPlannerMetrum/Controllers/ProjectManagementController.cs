@@ -16,18 +16,15 @@ namespace TaskPlannerMetrum.Controllers
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
     [Authorize(Roles = "1,4,DEPCNT")]
-
     public class ProjectManagementController : ControllerBase
     {
-
         private readonly IProjectManagementBusiness _projectManagementBusiness;
-
         public ProjectManagementController(IProjectManagementBusiness projectManagementBusiness)
         {
             _projectManagementBusiness = projectManagementBusiness;
         }
 
-       
+
 
 
         [HttpGet("GetOrderInfo")]
@@ -292,7 +289,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-      
+
 
         [HttpDelete("DeleteTypeOf")]
         [ProducesResponseType(200)]
@@ -312,7 +309,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-       
+
 
         [HttpPost("CreateOrUpdatePredictedCost")]
         [ProducesResponseType(200)]
@@ -888,7 +885,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        //  ACOMPANHAMENTO DE ESCOPO  Mudança de Escopo 
+      
 
 
         [HttpPost("CreateScopeChange")]
@@ -955,7 +952,7 @@ namespace TaskPlannerMetrum.Controllers
 
         //MARCO  FATURADO 
 
-        
+
 
         [HttpGet("GetAllMilestonesItem")]
         [ProducesResponseType(200)]
@@ -1338,6 +1335,70 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+
+        [HttpGet("GetOrderManagementInfo")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult OrderManagementInfo(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.OrderManagementInfo(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpGet("GetRightCardValues")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+
+        public IActionResult RightCardValues(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.RightCardValues(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
+        [HttpGet("GetCombinedCharts")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetCombinedCharts(int contractID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.GetCombinedCharts(contractID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 

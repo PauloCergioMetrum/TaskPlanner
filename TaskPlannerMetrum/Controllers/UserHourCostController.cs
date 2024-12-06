@@ -10,6 +10,10 @@ using TaskPlannerMetrum.Model.DTO;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using Microsoft.AspNetCore.Http;
+using CsvHelper;
+using System.Threading.Tasks;
+using TaskPlannerMetrum.Repository.Generic;
+using System.Linq;
 
 namespace TaskPlannerMetrum.Controllers
 {
@@ -101,6 +105,25 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("GetLatestFunctionByUser")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> GetLatestFunctionByUser()
+        {
+            var result = await _userHourCost.GetLatestFunctionByAllUsersAsync();
+
+            if (result == null || !result.Any())
+                return NotFound("No data found for any user.");
+
+            return Ok(result.Select(r => new
+            {
+                r.FunctionName,
+                r.CreationDate,
+                r.UserID
+            }));
+        }
 
 
 
@@ -109,10 +132,17 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult CreatHoursCostByExcel([FromForm] IFormFile file, [FromForm] DateTime startDate, [FromForm] DateTime endDate)
+        public IActionResult CreatHoursCostByExcel(
+    [FromForm] IFormFile file,
+    [FromForm] DateTime startDate,
+    [FromForm] DateTime endDate,
+    [FromForm] DateTime? creationDate)
         {
             try
             {
+
+                var calculatedCreationDate = creationDate ?? startDate.Date + DateTime.Now.TimeOfDay;
+
                 var userHourCostList = _userHourCost.CreatHoursCostByExcel(file, startDate, endDate);
 
                 if (userHourCostList.Result)
@@ -130,14 +160,26 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("GetAllFunctions()")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetAllFunctions()
+        {
+            try
+            {
+                return Ok(_userHourCost.GetAllFunctions());
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
-
-
-
-
-
-
-
 }
 
 

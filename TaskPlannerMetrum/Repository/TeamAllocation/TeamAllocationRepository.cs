@@ -5,6 +5,7 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
+using System.Linq;
 
 namespace TaskPlannerMetrum.Repository.TeamAllocation
 {
@@ -17,52 +18,111 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             _context = context;
         }
 
-        public List<TeamAllocationDTO> GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, string function = null, string project = null)
+
+        //public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null)
+        //{
+        //    List<TeamAllocationDTO> teamAllocationList = new List<TeamAllocationDTO>();
+
+        //    using (var command = _context.Database.GetDbConnection().CreateCommand())
+        //    {
+        //        command.CommandText = "[dbo].[GetTeamAllocationTable]";
+        //        command.CommandType = CommandType.StoredProcedure;
+
+        //        var businessUnitList = businessUnit != null && businessUnit.Any()
+        //            ? string.Join(",", businessUnit)
+        //            : null;
+
+        //        command.Parameters.Add(new SqlParameter("@BusinessUnit", SqlDbType.NVarChar, -1)
+        //        {
+        //            Value = (object)businessUnitList ?? DBNull.Value
+        //        });
+
+        //        command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date)
+        //        {
+        //            Value = (object)startDate ?? DBNull.Value
+        //        });
+
+        //        command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date)
+        //        {
+        //            Value = (object)endDate ?? DBNull.Value
+        //        });
+
+        //        var functionIDList = functionID != null && functionID.Any()
+        //            ? string.Join(",", functionID)
+        //            : null;
+
+        //        command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, -1)
+        //        {
+        //            Value = (object)functionIDList ?? DBNull.Value
+        //        });
+
+
+        //        var projectList = project != null && project.Any()
+        //            ? string.Join(",", project)
+        //            : null;
+
+        //        command.Parameters.Add(new SqlParameter("@Project", SqlDbType.NVarChar, -1)
+        //        {
+        //            Value = (object)projectList ?? DBNull.Value
+        //        });
+
+        //        _context.Database.OpenConnection();
+
+        //        using (var reader = command.ExecuteReader())
+        //        {
+        //            while (reader.Read())
+        //            {
+        //                int index = 0;
+        //                var teamAllocation = new TeamAllocationDTO
+        //                {
+        //                    ID = reader.IsDBNull(index) ? 0 : reader.GetInt64(index++),
+        //                    SaleOrder = reader.IsDBNull(index) ? null : reader.GetString(index++),
+        //                    Client = reader.IsDBNull(index) ? null : reader.GetString(index++),
+        //                    BusinessUnit = reader.IsDBNull(index) ? null : reader.GetString(index++),
+        //                    PlannedHours = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
+        //                    ExecutedHours = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
+        //                    ScheduledDate = reader.IsDBNull(index) ? DateTime.MinValue : reader.GetDateTime(index++),
+        //                    Executor = reader.IsDBNull(index) ? null : reader.GetString(index++)
+        //                };
+
+        //                teamAllocationList.Add(teamAllocation);
+        //            }
+        //        }
+
+        //        _context.Database.CloseConnection();
+        //    }
+
+        //    return teamAllocationList;
+        //}
+
+        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null)
         {
-            List<TeamAllocationDTO> teamAllocationList = new List<TeamAllocationDTO>();
-
-            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            var businessUnitList = businessUnit != null && businessUnit.Any() ? string.Join(",", businessUnit) : null;
+            var functionIDList = functionID != null && functionID.Any() ? string.Join(",", functionID) : null;  // Certifique-se de que os valores de função estão corretos
+            var projectList = project != null && project.Any() ? string.Join(",", project) : null;
+            var parameters = new[]
             {
-                command.CommandText = "[dbo].[GetTeamAllocationTable]";
-                command.CommandType = CommandType.StoredProcedure;
+        new SqlParameter("@BusinessUnit", (object)businessUnitList ?? DBNull.Value),
+        new SqlParameter("@StartDate", (object)startDate ?? DBNull.Value),
+        new SqlParameter("@EndDate", (object)endDate ?? DBNull.Value),
+        new SqlParameter("@FunctionIDs", (object)functionIDList ?? DBNull.Value),
+        new SqlParameter("@Project", (object)projectList ?? DBNull.Value)
+    };
 
-                command.Parameters.Add(new SqlParameter("@BusinessUnit", SqlDbType.NVarChar, 100) { Value = (object)businessUnit ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date) { Value = (object)startDate ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date) { Value = (object)endDate ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@Function", SqlDbType.NVarChar, 100) { Value = (object)function ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@Project", SqlDbType.NVarChar, 100) { Value = (object)project ?? DBNull.Value });
-
-                _context.Database.OpenConnection();
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        int index = 0;
-                        var teamAllocation = new TeamAllocationDTO
-                        {
-                            ID = reader.IsDBNull(index) ? 0 : (int)reader.GetInt64(index++),
-                            SaleOrder = reader.IsDBNull(index) ? null : reader.GetString(index++),
-                            Client = reader.IsDBNull(index) ? null : reader.GetString(index++),
-                            BusinessUnit = reader.IsDBNull(index) ? null : reader.GetString(index++),
-                            PlannedHours = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
-                            ExecutedHours = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
-                            ScheduledDate = reader.IsDBNull(index) ? DateTime.MinValue : reader.GetDateTime(index++),
-                            Executor = reader.IsDBNull(index) ? null : reader.GetString(index++)
-                        };
-
-                        teamAllocationList.Add(teamAllocation);
-                    }
-                }
-
-                _context.Database.CloseConnection();
-            }
+            var teamAllocationList = _context
+                .Set<TeamAllocationDTO>()
+                .FromSqlRaw("EXEC [dbo].[GetTeamAllocationTable] @BusinessUnit, @StartDate, @EndDate, @FunctionIDs, @Project", parameters)
+                .ToList();
 
             return teamAllocationList;
         }
 
 
-        public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, string functionName = null)
+
+
+
+
+        public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null)
         {
             List<TeamAllocationDTO.TeamAllocationGraphicDTO> teamAllocationGraphicList = new List<TeamAllocationDTO.TeamAllocationGraphicDTO>();
 
@@ -71,9 +131,25 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 command.CommandText = "[dbo].[GetTeamAllocationGraphic]";
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date) { Value = (object)startDate ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date) { Value = (object)endDate ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@FunctionName", SqlDbType.NVarChar, 255) { Value = (object)functionName ?? DBNull.Value });
+                command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date)
+                {
+                    Value = (object)startDate ?? DBNull.Value
+                });
+
+                command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date)
+                {
+                    Value = (object)endDate ?? DBNull.Value
+                });
+
+
+                var functionIDList = functionID != null && functionID.Any()
+                    ? string.Join(",", functionID)
+                    : null;
+
+                command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, 255)
+                {
+                    Value = (object)functionIDList ?? DBNull.Value
+                });
 
                 _context.Database.OpenConnection();
 
@@ -143,7 +219,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             return GetTeamAllocationCards;
         }
 
-        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions()
+        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions(DateTime? startDate = null, DateTime? endDate = null, List<int> functionIDs = null)
         {
             List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> teamAllocationGraphicFunctions = new List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions>();
 
@@ -151,16 +227,18 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             {
                 command.CommandText = "[dbo].[GetTeamAllocationGraphicFunctions]";
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-
+                command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date) { Value = (object)startDate ?? DBNull.Value });
+                command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date) { Value = (object)endDate ?? DBNull.Value });
+                var functionIDList = functionIDs != null && functionIDs.Any() ? string.Join(",", functionIDs) : null;
+                command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, 255) { Value = (object)functionIDList ?? DBNull.Value });
                 _context.Database.OpenConnection();
-
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         var function = new TeamAllocationDTO.GetTeamAllocationGraphicFunctions
                         {
-                            SeniorityLevel = reader["SeniorityLevel"].ToString(),
+                            FunctionName = reader["FunctionName"].ToString(),
                             Quantity = Convert.ToInt32(reader["Quantity"])
                         };
 
@@ -173,6 +251,8 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
             return teamAllocationGraphicFunctions;
         }
+
+
 
 
 
@@ -212,8 +292,6 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
             return businessUnitList;
         }
-
-
 
 
     }

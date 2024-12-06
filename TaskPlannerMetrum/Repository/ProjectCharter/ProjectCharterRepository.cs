@@ -1,11 +1,14 @@
 ﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.ProjectCharter
 {
@@ -32,17 +35,32 @@ namespace TaskPlannerMetrum.Repository.ProjectCharter
     {
       return _context.GetTechLeaders(contractID);
     }
+        public dynamic Consualtant(int contractID)
+        {
+            var vendorName = _context.vContractList
+                .Where(a => a.ContractID == contractID)
+                .Select(a => a.VendorName)
+                .FirstOrDefault();
 
-    public dynamic Consualtant(int userID)
-    {
-          return _context.Users.Where( u => u.Id == userID).Select(s => new {s.UserName , s.PhoneNumber, s.UserEmail}).FirstOrDefault();
-    }
+            if (vendorName == null)
+            {
+                throw new Exception($"VendorName não encontrado para ContractID {contractID}");
+            }
 
+            var userEmail = _context.Users
+                .Where(u => u.UserName == vendorName)
+                .Select(u => u.UserEmail)
+                .FirstOrDefault();
+
+            return new { VendorName = vendorName, UserEmail = userEmail };
+        }
 
 
         public List<PM_TAP_Resources> Resources(int contractID)
         {
          return _context.PM_TAP_Resources.Where(a => a.ContractID == contractID).ToList();
         }
+
+        
     }
 }

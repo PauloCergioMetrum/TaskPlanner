@@ -7,6 +7,8 @@ namespace TaskPlannerMetrum.Model.DTO
     public class OperationalReportReportDTO
     {
         public DateTime StartDate { get; set; }
+        public string StartPeriod { get; set; }
+        public string EndPeriod { get; set; }
 
         public DateTime EndDate { get; set; }
         public List<int> ContractIDs { get; set; }

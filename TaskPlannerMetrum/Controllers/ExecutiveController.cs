@@ -8,38 +8,48 @@ using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.Executive;
-
 namespace TaskPlannerMetrum.Controllers
 {
+   
+
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
     [Authorize]
+
+
     public class ExecutiveController : ControllerBase
     {
         private readonly ILogger<ExecutiveController> _logger;
         private readonly IExecutiveBussines _executiveBussines;
-        private readonly IExecutiveRepository _executiveRepository;
 
-        public ExecutiveController(ILogger<ExecutiveController> logger, IExecutiveBussines executiveBussines, IExecutiveRepository executiveRepository)
+        public ExecutiveController(ILogger<ExecutiveController> logger, IExecutiveBussines executiveBussines)
         {
             _logger = logger;
             _executiveBussines = executiveBussines;
-            _executiveRepository = executiveRepository;
         }
 
-        [HttpGet("GetPvExecutiveTable")]
-        public IActionResult GetPvExecutiveTable([FromQuery] string inspectorIDs, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        [HttpPost("GetExecutiveData")]
+        public IActionResult GetExecutiveData([FromBody] ExecutiveRequestDto request)
         {
             try
             {
-                var result = _executiveRepository.GetPvExecutiveTable(inspectorIDs, startDate, endDate);
-                return Ok(result);
+                var result = _executiveBussines.CreateExecutiveDtoAll(request.InspectorIDs, request.StartDate, request.EndDate , request.BusinessUnit);
+                var openCloseResults = _executiveBussines.GetExecutivePvGraphicsOpenClose(request.Closed, request.Open);
+
+          
+                var response = new
+                {
+                    ExecutiveData = result,
+                    OpenCloseGraphics = openCloseResults
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
-             
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
     }
+
 }

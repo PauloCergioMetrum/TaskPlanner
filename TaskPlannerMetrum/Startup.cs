@@ -51,6 +51,7 @@ using TaskPlannerMetrum.Repository.ProjectCharter;
 using TaskPlannerMetrum.Repository.TeamAllocation;
 using TaskPlannerMetrum.Repository.Executive;
 using TaskPlannerMetrum.Repository.PvExecutive;
+using TaskPlannerMetrum.Repository.CustomerSatisfaction;
 
 namespace TaskPlannerMetrum
 {
@@ -182,6 +183,12 @@ namespace TaskPlannerMetrum
             services.AddScoped<IProjectCharterBusiness, ProjectCharterBusiness>();
             services.AddScoped<ITeamAllocationBusiness, TeamAllocationBussinessImplementation>();
             services.AddScoped<IExecutiveBussines, ExecutiveImplentations>();
+            services.AddScoped<ICustomerSatisfactionBusiness , CustomerSatisfactionImplementation>();
+            services.AddScoped<IConfigureSettingsBusinesss, ConfigureSettingsBusiness>();
+
+
+            
+
 
 
 
@@ -211,6 +218,11 @@ namespace TaskPlannerMetrum
             services.AddScoped<ITechnicalLeaderRepository, TechnicalLeaderRepository>();
             services.AddScoped<ITeamAllocationRepository, TeamAllocationRepository>();
             services.AddScoped<IExecutiveRepository, ExecutiveRepository>();
+            services.AddScoped<ICustomerSatisfactionRepository , CustomerSatisfactionRepository>();
+           
+
+
+
 
         }
 

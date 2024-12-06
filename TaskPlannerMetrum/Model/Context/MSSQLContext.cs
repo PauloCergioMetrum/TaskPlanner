@@ -70,9 +70,23 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<PM_TAP_General_Info> PM_TAP_General_Info { get; set; }
         public DbSet<PM_TAP_Scope> PM_TAP_Scope { get; set; }
         public DbSet<PM_Information_General> PM_Information_General { get; set; }
+        public DbSet<Satisfaction_Customer> Satisfaction_Customer {  get; set; }    
 
         public DbSet<PM_TAP_Resources> PM_TAP_Resources { get; set; }
         public DbSet<PM_MilestonesType> PM_MilestonesType { get; set; }
+        public DbSet<MilestoneType_HH_Details> MilestoneType_HH_Details {  get; set; }  
+        public DbSet<OrderManagementInfo> OrderManagementInfo {  get; set; }  
+        public DbSet<MilestoneEntity> MilestoneEntities { get; set; }
+        public DbSet<ContractGraphic> ContractGraphics { get; set; }
+
+
+
+        public DbSet<vhhGraphicDetail> vhhGraphicDetail { get; set; }
+
+
+
+
+
         //VIEWS
         public DbSet<vPmCostMade> vPmCostMade { get; set; }     
         public DbSet<vCalendar> vCalendar { get; set; }
@@ -105,9 +119,21 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<Management> Management { get; set; }
         public DbSet<vPmCostPlanned> vPmCostPlanned {  get; set; }
         public DbSet<vPm_Cost_Planned> vPm_Cost_Planned { get; set; }
+        public DbSet<ClientFeedbackDetailsView> ClientFeedbackDetailsView { get; set; }
+        public DbSet<vPM_SummaryPlannedData> VPM_SummaryPlannedData {  get; set; }
+        public DbSet<vRightCardValue> vRightCardValue { get; set; }
+        public DbSet<vIndirectcostChart> vIndirectcostChart { get; set; }
+        public DbSet<vStatusReportsGraph> vStatusReportsGraph { get; set; }
+
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<vRightCardValue>().HasNoKey();
+            modelBuilder.Entity<vIndirectcostChart>().HasNoKey();
+            modelBuilder.Entity<vStatusReportsGraph>().HasNoKey();
+            modelBuilder.Entity<vhhGraphicDetail>().HasNoKey();
             modelBuilder.Entity<HoursExecutor>().HasNoKey();
             modelBuilder.Entity<ActivePlansByExecutor>().HasNoKey();
             modelBuilder.Entity<GetEquipamentAvaibilaity>().HasNoKey();
@@ -121,12 +147,26 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<BalancePerProject>().HasNoKey();
             modelBuilder.Entity<GetNumberOfContractsForBusinessUnit>().HasNoKey();
             modelBuilder.Entity<OperationalRelationshipTable>().HasNoKey();
+            modelBuilder.Entity<PredictedInvoiced>().HasNoKey();
+            modelBuilder.Entity<MaterialServices>().HasNoKey();
+            modelBuilder.Entity<BillingPerBusinessUnit>().HasNoKey();
+            modelBuilder.Entity<ReportDetailsTable>().HasNoKey();
+            modelBuilder.Entity<GoalRealizationReport>().HasNoKey();
             modelBuilder.Entity<ActivityPlanHH>().HasNoKey();
             modelBuilder.Entity<ActivityPlanHHTable>().HasNoKey();
+            base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey();
+            base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
+            modelBuilder.Entity<TeamAllocationDTO>().HasNoKey();
+            modelBuilder.Entity<OrderManagementInfo>().HasNoKey();
 
-
-
+            
         }
+
+
+
+
+
+            
 
 
 

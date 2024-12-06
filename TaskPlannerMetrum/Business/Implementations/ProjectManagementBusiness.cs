@@ -9,12 +9,16 @@ using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Model.ModelViews;
 using System.Diagnostics.Contracts;
 using TaskPlannerMetrum.Data.VO;
+using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Security.Principal;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
     public class ProjectManagementBusiness : IProjectManagementBusiness
     {
         private readonly IProjectManagementRepository _projectmanagementRepository;
+        private int dynamic;
 
         public ProjectManagementBusiness(IProjectManagementRepository projectmanagementBusiness)
         {
@@ -67,6 +71,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                         SalesOrder = OrderInformationByID.InternalCode,
                         Validity = validityDateFormatter,
                         BusinessUnit = OrderInformationByID.BusinessUnit,
+                        WorkspaceName = OrderInformationByID.WorkspaceName,
 
                         PredictedSavings = OrderInformationByID.PredictedSavings == null ? "" : OrderInformationByID.PredictedSavings.ToString(),
 
@@ -160,7 +165,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool DeleteMilestones(string ID, int MilestonesID)
         {
-            return _projectmanagementRepository.DeleteMilestones(ID , MilestonesID);
+            return _projectmanagementRepository.DeleteMilestones(ID, MilestonesID);
         }
 
 
@@ -337,16 +342,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
-        {
-            return _projectmanagementRepository.GetAcquisitions(ContractID);
-        }
-
-        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
-        {
-            return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
-        }
-
+       
 
 
         public bool DeleteTypeOfCost(int ID)
@@ -613,9 +609,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetAllMilestonesItem(contractID);
         }
 
-    
 
-        
+
+
 
         public List<Functions> GetAllFunctions()
         {
@@ -748,12 +744,242 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public ActivityPlanHHDetail GetActivityPlanDetails(int contractID)
         {
-            return _projectmanagementRepository.GetActivityPlanDetails(contractID); 
+            List<MilestonesItem> milesTonesList = _projectmanagementRepository.GetAllMilestones();
+            List<MilestonesItem> milesTonesByContractID = milesTonesList.Where(c => c.ContractID == contractID).ToList();
+            var activitPlanDetaisByContractID = _projectmanagementRepository.GetActivityPlanDetails(contractID);
+            List<string> seniorityLevelList = activitPlanDetaisByContractID.ActivityPlanHHTable.Select(p => p.ExecutorSeniorityLevel).Distinct().ToList();
+            List<ActivicPlannGrupByMilesTone> ListTotals = new List<ActivicPlannGrupByMilesTone>();
+            List<Details> detailsList = new List<Details>();
+
+            List<ActivicPlannGrupByMilesTone> milesTonesLsit = new List<ActivicPlannGrupByMilesTone>();
+
+            foreach (var milestones in milesTonesByContractID)
+            {
+                ActivicPlannGrupByMilesTone milesTone = new ActivicPlannGrupByMilesTone
+                {
+                    MilestonesID = milestones.ID,
+                    MilestoneName = milestones.Name,
+                    Executers = activitPlanDetaisByContractID.ActivityPlanHHTable
+                    .Where(ex => ex.MilestoneName == milestones.Name)
+                    .Select(ex => new Executors
+                    {
+                        Executor = ex.ExecutorUserName,
+                        TotalHours = ex.TotalHours,
+                        MilesTonesName = milestones.Name,
+                        Details = activitPlanDetaisByContractID.ActivityPlanHHTable
+                            .Where(n => n.MilestoneName == milestones.Name)
+                            .Select(dt => new Model.Details
+                            {
+                                BusinesUnit = dt.BusinessUnit,
+                                ExecutedManHour = dt.ExecutedManHour,
+                                ExecutorSeniorityLevel = dt.ExecutorSeniorityLevel,
+                                MilesTonesName = dt.MilestoneName,
+                                PlannedManHour = dt.PlannedManHour,
+                                SeniorLevel = dt.ExecutorSeniorityLevel
+                            }).ToList()
+                    }).ToList()
+                };
+                milesTonesLsit.Add(milesTone);
+            }
+
+
+
+
+
+            activitPlanDetaisByContractID.ActivicPlannGrupByMilesTone = milesTonesLsit;
+            return activitPlanDetaisByContractID;
+
         }
-       
+
+        public List<OrderManagementInfo> OrderManagementInfo(int contractID)
+        {
+            return _projectmanagementRepository.OrderManagementInfo(contractID);
+        }
+
+        public List<vRightCardValue> RightCardValues(int contractID)
+        {
+            return _projectmanagementRepository.RightCardValues(contractID);
+        }
+
+
+
+        public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID)
+        {
+            return _projectmanagementRepository.GetAcquisitions(ContractID);
+        }
+
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID)
+        {
+            return _projectmanagementRepository.GetAcquisitionsMade(AquisitionPlannedID);
+        }
+
+
+
+
+        public object GetCombinedCharts(int contractID)
+        {
+            // Custos Indiretos
+            var indirectCosts = _projectmanagementRepository.GetIndirectCostChartsByContract(contractID);
+
+            var indirectGrouped = indirectCosts
+                .GroupBy(chart => new
+                {
+                    chart.ContractID,
+                    chart.PlannedId,
+                    chart.TypeID,
+                    chart.TypeDescription,
+                    chart.PlannedTotal
+                })
+                .Select(group => new
+                {
+                    ContractID = group.Key.ContractID,
+                    PlannedId = group.Key.PlannedId,
+                    TypeID = group.Key.TypeID,
+                    TypeDescription = group.Key.TypeDescription,
+                    PlannedTotal = group.Key.PlannedTotal ?? 0.0,
+                    MadeDetails = group.Select(x => new
+                    {
+                        AcquisitionMadeDTO = x,
+                        MadeTotal = x.MadeTotal ?? 0.0
+                    }).ToList()
+                }).ToList();
+
+            // Mobilização
+            var mobilizationData = _projectmanagementRepository.GetMobilization(contractID);
+
+            var mobilizationGrouped = mobilizationData
+                .GroupBy(m => m.ContractID)
+                .Select(group => new
+                {
+                    HospedagemPrevisto = group.Sum(x => x.CountAccommodation),
+                    AlimentacaoPrevisto = group.Sum(x => x.CountFood),
+                    TransporteAereoPrevisto = group.Sum(x => x.CountAirTransport),
+                    TransporteTerrestrePrevisto = group.Sum(x => x.CountGroundTransport),
+                    OutrosPrevisto = group.Sum(x => x.CountOthers),
+                    MobilizacaoMade = mobilizationData
+                        .SelectMany(m => _projectmanagementRepository.GetMobilizationMade(m.ID.ToString()))
+                        .GroupBy(m => m.MobilizationPlannedID)
+                        .Select(madeGroup => new
+                        {
+                            HospedagemReal = madeGroup.Sum(x => x.CountAccommodation),
+                            AlimentacaoReal = madeGroup.Sum(x => x.CountFood),
+                            TransporteAereoReal = madeGroup.Sum(x => x.CountAirTransport),
+                            TransporteTerrestreReal = madeGroup.Sum(x => x.CountGroundTransport),
+                            OutrosReal = madeGroup.Sum(x => x.CountOthers)
+                        })
+                        .FirstOrDefault()
+                })
+                .ToList();
+
+            // Status Relatórios
+            var statusReports = _projectmanagementRepository.GetStatusReportsGraph(contractID);
+
+            var statusGrouped = statusReports
+                .GroupBy(chart => new
+                {
+                    chart.ContractID,
+                    chart.AquisitionPlannedID,
+                    chart.TypeAcquisitionID,
+                    chart.TypeAcquisitionDescription,
+                    chart.PredictedTotal
+                })
+                .Select(group => new
+                {
+                    ContractID = group.Key.ContractID,
+                    PlannedId = group.Key.AquisitionPlannedID,
+                    TypeID = group.Key.TypeAcquisitionID,
+                    TypeDescription = group.Key.TypeAcquisitionDescription,
+                    PlannedTotal = group.Key.PredictedTotal,
+                    MadeDetails = group.Select(x => new
+                    {
+                        MadeId = x.AquisitionPlannedID,
+                        MadeTotal = x.TotalMade
+                    }).ToList()
+                }).ToList();
+
+            // Gerenciamento de Pedidos
+            var orderManagementData = _projectmanagementRepository.OrderManagementInfo(contractID);
+
+            var orderManagementGrouped = orderManagementData
+     .GroupBy(info => info.ContractID)
+     .Select(group => new
+     {
+         ContractID = group.Key,
+         TotalDifferenceExpectedExecuted = group.Sum(x => x.TotalDifferenceExpectedExecuted ?? 0.0), // 0.0 para double
+         TotalCostHoursExecuted = group.Sum(x => x.TotalCostHoursExecuted ?? 0.0) // 0.0 para double
+     }).ToList();
+
+
+
+            // Serviços Terceirizados
+            var outsourcedServices = _projectmanagementRepository.GetOutsourcedServicesCombined(contractID);
+
+            var outsourcedGrouped = outsourcedServices
+                .GroupBy(service => service.ContractID)
+                .Select(group => new
+                {
+                    ContractID = group.Key,
+                    TotalOutsourcedServices_Planned = group.Sum(x => x.TotalOutsourcedServices_Planned),
+                    TotalOutsourcedServices_Made = group.Sum(x => x.TotalOutsourcedServices_Made)
+                }).ToList();
+
+            // Dados de HhGraphicDetail
+            var hhGraphicDetails = _projectmanagementRepository.GetHhGraphicDetail(contractID);
+
+            // Caso deseje agrupar os detalhes
+            var hhGraphicGrouped = hhGraphicDetails
+                .GroupBy(m => m.ContractID)
+                .Select(group => new
+                {
+                    ContractID = group.Key,
+                    Details = group.Select(detail => new
+                    {
+                        detail.MilestoneItemID,
+                        detail.MilestoneValueID,
+                        detail.MilestonesID,
+                        detail.DisplacementServiceName,
+                        detail.DisplacementServicesID,
+                        detail.ValueHour,
+                        detail.HoursExpected,
+                        detail.HoursPlanned,
+                        detail.HoursExecuted,
+                        detail.CostHoursExpected,
+                        detail.CostHoursPlanned,
+                        detail.CostHoursExecuted
+                    }).ToList()
+                }).ToList();
+
+            // Combinação Final
+            var result = new
+            {
+                CustosIndiretos = indirectGrouped,
+                Mobilizacao = mobilizationGrouped,
+                StatusRelatorios = statusGrouped,
+                OrderManagement = orderManagementGrouped,
+                OutsourcedServices = outsourcedGrouped,
+                HhGraphicDetails = hhGraphicGrouped
+            };
+
+            return result;
+        }
+
+
+
+
+
+
 
 
 
     }
 }
+
+
+
+
+
+
+
+
+
 

@@ -10,20 +10,20 @@ namespace TaskPlannerMetrum.Model.DTO
         public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> TeamAllocationGraphicFunctions { get; set; }
         public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards { get; set; }
 
-        public List<string> BusinessUnits { get; set; }
+        public string[] BusinessUnits { get; set; }
     }
 
     public class TeamAllocationDTO
     {
-        public int ID { get; set; }
+        public long? ID { get; set; }  // O ID agora é nullable
         public string SaleOrder { get; set; }
         public string Client { get; set; }
         public string BusinessUnit { get; set; }
-        public double PlannedHours { get; set; }
-        public double ExecutedHours { get; set; }
-        public DateTime ScheduledDate { get; set; }
-        public string ScheduledDateFormatted { get; set; }
+        public double? PlannedHours { get; set; }  // Agora é nullable
+        public double? ExecutedHours { get; set; }  // Agora é nullable
+        public DateTime? ScheduledDate { get; set; }  // Agora é nullable
         public string Executor { get; set; }
+        public string FunctionName { get; set; }
 
         public class TeamAllocationGraphicDTO
         {
@@ -36,8 +36,11 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public class GetTeamAllocationGraphicFunctions
         {
-            public string SeniorityLevel { get; set; }
+            public string FunctionName { get; set; }
             public int Quantity { get; set; }
+            public int id { get; set; }
+
+
         }
 
         public class GetTeamAllocationCards
@@ -51,7 +54,7 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public class GetTeamFilterBusinessUnit
         {
-            public List<string> BusinessUnits { get; set; }
+            public string[] BusinessUnits { get; set; }
         }
     }
 }

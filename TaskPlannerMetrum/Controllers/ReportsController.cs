@@ -5,10 +5,15 @@ using Memt.Logger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Repository.Generic;
+using TaskPlannerMetrum.Repository.ReportsViewer;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskPlannerMetrum.Controllers
@@ -82,15 +87,54 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return Ok(_reportsPlannedExecutedViewerBusiness.OptionsListFilter());
             }
+            catch (Exception ex) { 
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+        [HttpPost("InvoiceReport")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult InvoiceReport(ReportInvoice reportInvoice)
+        {
+            try
+            {
+                return Ok(_reportsPlannedExecutedViewerBusiness.InvoiceReport(reportInvoice));
+            }
             catch (Exception ex)
             {
                 Logger.Log(ex.Message, ELoggerType.Debug);
                 return BadRequest(ex.Message);
             }
         }
-        
+
+        [HttpPost("ContractGraphicRequest")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> GetContracts([FromBody] ContractGraphicRequest request)
+        {
+            var contractsResult = await _reportsPlannedExecutedViewerBusiness.GetContractsByRequestAsync(request);
+            return contractsResult.Any() ? Ok(contractsResult) : NoContent();
+        }
     }
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 

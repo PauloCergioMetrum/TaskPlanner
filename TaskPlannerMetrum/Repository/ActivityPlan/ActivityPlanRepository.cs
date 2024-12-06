@@ -5,6 +5,8 @@
 
 using log4net.Util;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using MySqlConnector;
 using System;
@@ -14,6 +16,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
@@ -33,21 +36,39 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         public bool Create(Model.ActivityPlan activityPlan)
         {
+            if (activityPlan == null) return false;
+
             try
             {
+                int plannerTeamID = _context.Team
+                    .Where(t => t.UserID == activityPlan.PlannerTeamID)
+                    .Select(t => t.ID)
+                    .FirstOrDefault();
 
-
-                int pmtemaID = _context.Team.Where(t => t.UserID == activityPlan.PlannerTeamID).Select(t => t.ID).FirstOrDefault();
-                _context.Add(new Model.ActivityPlan
+                if (plannerTeamID == 0)
                 {
+                    return false;
+                }
 
+                int executorTeamID = _context.Team
+                    .Where(t => t.UserID == activityPlan.ExecutorTeamID)
+                    .Select(t => t.ID)
+                    .FirstOrDefault();
+
+                if (executorTeamID == 0)
+                {
+                    return false;
+                }
+
+                var newActivityPlan = new Model.ActivityPlan
+                {
                     ActivitiesScopeListID = activityPlan.ActivitiesScopeListID,
                     ExecutedManHour = activityPlan.ExecutedManHour,
-                    ExecutorTeamID = _context.Team.Where(i => i.UserID == activityPlan.ExecutorTeamID).Select(i => i.ID).FirstOrDefault(),
+                    ExecutorTeamID = executorTeamID,
                     NotesFromExecutor = activityPlan.NotesFromExecutor,
                     NotesFromPlanner = activityPlan.NotesFromPlanner,
                     PlannedManHour = activityPlan.PlannedManHour,
-                    PlannerTeamID = pmtemaID,
+                    PlannerTeamID = plannerTeamID,
                     TaskDescription = activityPlan.TaskDescription,
                     ContractID = activityPlan.ContractID,
                     ScheduledDate = activityPlan.ScheduledDate,
@@ -57,38 +78,20 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                     DepartamentID = activityPlan.DepartamentID,
                     BusinessUnit = activityPlan.BusinessUnit,
                     MilestonesID = activityPlan.MilestonesID,
-                    EquipmentID =activityPlan.EquipmentID,
-                });
+                    EquipmentID = activityPlan.EquipmentID
+                };
+
+                _context.ActivityPlan.Add(newActivityPlan);
                 _context.SaveChanges();
-
-
-                CreateAllRatings(new UserTask
-                {
-                    ContractID = activityPlan.ContractID,
-                    ActivitiesScopeListID = activityPlan.ActivitiesScopeListID,
-                    UserID = activityPlan.ExecutorTeamID,
-                    Rating = 0,
-                    ActivityPlanID = _context.ActivityPlan.OrderBy(i => i.ID).Select(i => i.ID).LastOrDefault()
-                },
-                (new RatingProject
-                {
-                    ProjectID = activityPlan.ContractID,
-
-                    UserID = activityPlan.ExecutorTeamID,
-
-                }
-                ));
-
-
-
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
         }
+
 
         public bool CreateAllRatings(UserTask RatingforTasks, RatingProject ratingProjects)
         {
@@ -180,11 +183,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
             catch { return false; }
         }
+   
 
-        public List<vActivePlans> FindAllTaskByProject(string projectId)
-        {
-            return _context.vActivePlans.Where(c => c.ContractID == Convert.ToInt32(projectId)).OrderBy(d => d.ScheduledDate).ToList();
-        }
 
 
 
@@ -299,10 +299,10 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
         }
 
-        public vActivityPlan GetActivityPlanById(string activityPlanId)
+        public vActivityPlan GetActivityPlanById(int MilestonesID)
         {
 
-            var activity = _context.ActivityPlan.FirstOrDefault(a => a.ID == Convert.ToInt32(activityPlanId));
+            var activity = _context.ActivityPlan.FirstOrDefault(a => a.MilestonesID == Convert.ToInt32(MilestonesID));
 
             if (activity == null)
             {
@@ -313,7 +313,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             var activityPlan = new vActivityPlan
             {
 
-                ID = Convert.ToInt32(activityPlanId),
+                ID = Convert.ToInt32(MilestonesID),
                 ExecutedManHour = activity.ExecutedManHour,
                 NotesFromExecutor = activity.NotesFromExecutor,
                 statusName = GetStatusName(activity.Status.ToString(), activity.ScheduledDate),
@@ -331,10 +331,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
             return activityPlan;
         }
-
-
-
-
         public bool UpdateActivityPlan(vActivityPlan activityPlan)
         {
             var newActivityPlan = _context.ActivityPlan.FirstOrDefault(a => a.ID == activityPlan.ID);
@@ -367,7 +363,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID == 0 ? newActivityPlan.ExecutorTeamID : activityPlan.ExecutorTeamID;
             newActivityPlan.MilestonesID = activityPlan.MilestonesID;
             newActivityPlan.EquipmentID = activityPlan.EquipmentID;
-            newActivityPlan.ExecutorTeamID = activityPlan.ExecutorTeamID;
+
 
             _context.ActivityPlan.Update(newActivityPlan);
             _context.SaveChanges();
@@ -376,13 +372,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
             return true;
         }
-
-
-
-
-
-
-
         public void updateRatingExecutor(int newUserID, int oldUserID, int contractID)
         {
             var userIDNew = _context.Team.Where(i => i.ID == newUserID).Select(u => u.UserID).FirstOrDefault();
@@ -433,9 +422,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
         }
 
-
-
-
         public void deleteProjectRating(int contractID, int UserID)
         {
             var getRatingProjectID = _context.RatingProject.Where(c => c.ProjectID == contractID && c.UserID == UserID).FirstOrDefault();
@@ -451,15 +437,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 _context.SaveChanges();
             }
         }
-
-
-
-
-
-
-
-
-
         public bool DeleteId(int id)
         {
             var deleteActivyplan = _context.ActivityPlan.FirstOrDefault(i => i.ID == id);
@@ -590,19 +567,8 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         public dynamic GetUserforTask(int id)
         {
 
-            //id = _context.Team.Where(i => i.UserID == id).Select(u => u.ID).FirstOrDefault();
             return _context.GetActivityPlanDetailsByExecutorID(id);
-
-
         }
-
-
-
-
-
-
-
-
 
         public string getClientName(int id)
         {
@@ -653,9 +619,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             return BusinessOptions;
         }
 
-
-
-
         public List<HoursDTO> ExecutorHourForPeriod(HoursExecutorDTO executors)
         {
             string executorTeamIDs = executors.ExecutorsTeamID;
@@ -663,9 +626,6 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             DateTime endDate = executors.EndDate;
             double Hours = executors.Hours;
             bool IsOverAllocated = executors.IsOverAllocated;
-
-
-
             List<HoursDTO> hoursDto = new List<HoursDTO>();
 
             var hoursExecutorsList = _context.GetActivityPlanByExecutorTeamIDAndPeriod(executorTeamIDs, startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"), Hours.ToString());
@@ -741,6 +701,49 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
         {
             return _context.GetEquipmentAvailability(EquipamentID, StartDate, EndDate);
         }
+
+
+        public async Task<List<MilestoneDetailDTO>> GetMilestonesByContractAsync(int contractId)
+        {
+            var contractIdParam = new SqlParameter("@ContractID", contractId);
+            var result = await _context.Set<MilestoneEntity>()
+           .FromSqlRaw("EXEC [dbo].[GetMilestoneDetails] @ContractID", contractIdParam)
+           .ToListAsync();
+            var dtoResult = result.Select(m => new MilestoneDetailDTO
+            {
+                ContractID = m.ContractID,
+                MilestonesID = m.MilestonesID,
+                MilestoneName = m.MilestoneName,
+                TechLeadName = m.TechLeadName,
+                BusinessUnit = m.BusinessUnit,
+                Delayed = m.Delayed,
+
+                ScheduledDate = m.ScheduledDate,
+                RescheduledDate = m.RescheduledDate,
+                ExpectedHours = m.ExpectedHours,
+                TotalExecutedManHour = m.TotalExecutedManHour,
+                TotalPlannedManHour = m.TotalPlannedManHour,
+
+
+            }).ToList();
+
+            return dtoResult;
+        }
+
+
+
+        public List<vActivePlans> FindAllTaskByProject(int MilestonesID, int ContractID)
+        {
+            return _context.vActivePlans
+                .Where(c => (MilestonesID == 0 ? c.MilestonesID == null : c.MilestonesID == MilestonesID)
+                            && c.ContractID == ContractID)
+                .OrderBy(d => d.ScheduledDate)
+                .ToList();
+        }
+
+
+
+
     }
 }
 

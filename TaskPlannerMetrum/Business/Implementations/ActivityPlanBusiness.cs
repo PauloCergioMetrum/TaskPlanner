@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Data.Converter.Implementations;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
@@ -32,14 +34,13 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public bool Create(ActivePlanList activityPlan)
         {
-
             ActivityPlan task = new ActivityPlan();
 
             try
             {
+                // Itera sobre os executores e cria as tarefas correspondentes
                 foreach (var item in activityPlan.ExecutorTeamID)
                 {
-
                     task.ID = activityPlan.ID;
                     task.PlannerTeamID = activityPlan.PlannerTeamID;
                     task.Status = "5";
@@ -56,23 +57,20 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.DepartamentID = activityPlan.DepartamentID;
                     task.TaskDescription = activityPlan.TaskDescription;
                     task.BusinessUnit = activityPlan.BusinessUnit;
-                    task.MilestonesID = activityPlan.MilestonesID;
                     task.EquipmentID = activityPlan.EquipmentID == 0 ? (int?)null : activityPlan.EquipmentID;
+                    task.MilestonesID = activityPlan.MilestonesID;
 
+                    // Chama o repositório para salvar a tarefa
                     _activiesRepository.Create(task);
                 }
                 return true;
-
-
-
-
             }
             catch (Exception)
             {
                 return false;
             }
-
         }
+
 
 
 
@@ -85,42 +83,64 @@ namespace TaskPlannerMetrum.Business.Implementations
             return false;
         }
 
-        public dynamic GetActivityPlan(string activityId, int? MilestonesID, string MilestoneName)
+
+        public dynamic GetActivityPlan(int MilestonesID, int ContractID)
         {
-            var activitList = _activiesRepository.FindAllTaskByProject(activityId);
-            if (activitList == null)
+            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID, ContractID);
+            if (activitList == null || !activitList.Any())
             {
                 return new
                 {
-                    MilestonesGroups = new List<object>(),
+                    Activities = new List<object>(),
                     totalRecords = 0
                 };
             }
 
-            var groupedActivities = activitList
-                .GroupBy(
-                    a => new
-                    {
-                        MilestonesID = a.MilestonesID ?? 0,
-                        MilestoneName = string.IsNullOrEmpty(a.MilestoneName) ? "Sem marco" : a.MilestoneName
-                    },
-                    (key, group) => new
-                    {
-                        MilestonesID = key.MilestonesID,
-                        MilestoneName = key.MilestoneName,
-                        Activities = group.ToList()
-                    })
-                .OrderBy(g => g.MilestonesID)
-                .ToList(); // Ensure the result is a list
-
             int totalRecords = activitList.Count();
+
             var result = new
             {
-                MilestonesGroups = groupedActivities,
+                Activities = activitList,
                 totalRecords = totalRecords
             };
 
             return result;
+        }
+
+
+
+        public async Task<dynamic> GetMilestonesByContractAsync(int contractID)
+        {
+            // Espera o resultado da tarefa para obter a lista de milestones
+            var milestonesList = await _activiesRepository.GetMilestonesByContractAsync(contractID);
+
+            if (milestonesList == null || !milestonesList.Any())
+            {
+                return new
+                {
+                    Milestones = new List<object>(),
+                    totalRecords = 0
+                };
+            }
+
+            var result = milestonesList.Select(m => new
+            {
+                m.MilestonesID,
+                m.MilestoneName
+            }).ToList();
+
+            int totalRecords = result.Count;
+
+            return new
+            {
+                Milestones = result,
+                totalRecords = totalRecords
+            };
+        }
+
+        public Task<List<MilestoneDetailDTO>> FindAllMilestonesByContractAsync(int contractID)
+        {
+            return _activiesRepository.GetMilestonesByContractAsync(contractID);
         }
 
         public dynamic GetExecutorPlan(string projectId)
@@ -128,9 +148,13 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _activiesRepository.GetExecutorPlan(projectId);
         }
 
-        public dynamic TasksByProject(string projectId, int? page, int? size, string searchExecutor)
+
+
+
+        public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor, int ContractID)
         {
-            var activitList = _activiesRepository.FindAllTaskByProject(projectId).OrderBy(s => s.ScheduledDate).AsEnumerable();
+            var activitList = _activiesRepository.FindAllTaskByProject(MilestonesID, ContractID).OrderBy(s => s.ScheduledDate).AsEnumerable();
+
             int totalRecords = activitList.Count();
             if (!string.IsNullOrEmpty(searchExecutor))
             {
@@ -142,12 +166,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             {
                 activitList = activitList.OrderBy(x => x.ScheduledDate).Skip((page.Value - 1) * size.Value).Take(size.Value);
             }
+
             var result = new
             {
                 activitList = activitList,
                 totalRecords = totalRecords
             };
-
 
             return result;
         }
@@ -269,5 +293,13 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _activiesRepository.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate);
         }
+
+
+        public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor)
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

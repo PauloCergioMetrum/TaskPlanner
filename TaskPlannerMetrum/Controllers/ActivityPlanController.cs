@@ -4,12 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Business.Implementations;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using System.Linq;
+
 
 namespace TaskPlannerMetrum.Controllers
 {
@@ -42,29 +47,36 @@ namespace TaskPlannerMetrum.Controllers
 
             return Ok(_activityPlanBusiness.GetExecutorPlan(projectId));
         }
+
+
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult Create(ActivePlanList activityPlan)
-
+        public IActionResult Create([FromBody] List<ActivePlanList> activityPlans) // Recebe uma lista de ActivePlanList
         {
             try
             {
-                return Ok(_activityPlanBusiness.Create(activityPlan));
+                // Itera sobre cada objeto na lista e chama o método `Create` para cada um
+                foreach (var activityPlan in activityPlans)
+                {
+                    bool result = _activityPlanBusiness.Create(activityPlan); // Chama o método `Create` para cada item
+                    if (!result)
+                    {
+                        return BadRequest("Falha ao processar uma ou mais atividades.");
+                    }
+                }
+                return Ok("Todas as atividades foram criadas com sucesso.");
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-
-
         }
 
 
-    
+
         [HttpPost("ExecutorHourForPeriod")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -93,13 +105,15 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         //[TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult FindTask(string projectId, int? page, int? size, string searchExecutor)
+        public IActionResult FindTask(int MilestonesID, int? page, int? size, string searchExecutor, int ContractID)
         {
             int pageSize = (size ?? 10);
             int pageNumber = (page ?? 1);
 
-            return Ok(_activityPlanBusiness.TasksByProject(projectId, pageNumber, pageSize, searchExecutor));
+            return Ok(_activityPlanBusiness.TasksByProject(MilestonesID, pageNumber, pageSize, searchExecutor, ContractID));
         }
+
+
         [HttpGet("TasksByUser")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -134,11 +148,11 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult FindActivityPlan(string activityId, int? MilestonesID, string MilestoneName)
+        public IActionResult FindActivityPlan(int MilestonesID, int ContractID)
         {
             try
             {
-                return Ok(_activityPlanBusiness.GetActivityPlan(activityId , MilestonesID ,MilestoneName));
+                return Ok(_activityPlanBusiness.GetActivityPlan(MilestonesID, ContractID));
 
             }
             catch (Exception ex)
@@ -147,6 +161,42 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
+
+       
+
+
+
+
+
+        [HttpGet("FindAllMilestonesByContract")]
+        [ProducesResponseType(typeof(List<MilestoneDetailDTO>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> FindAllMilestonesByContractAsync(int contractID)
+        {
+            try
+            {
+                var result = await _activityPlanBusiness.FindAllMilestonesByContractAsync(contractID);
+
+
+                if (result == null || !result.Any())
+                {
+                    return NoContent();
+                }
+
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
         [HttpPut("UpdateTaskExecutor")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -359,7 +409,8 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return Ok(_activityPlanBusiness.GetBusinessUnitByContract(ContractID));
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Logger.Log(ex.Message, ELoggerType.Debug);
                 return BadRequest(ex.Message);
             }
