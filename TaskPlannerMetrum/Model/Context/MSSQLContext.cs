@@ -123,7 +123,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPM_SummaryPlannedData> VPM_SummaryPlannedData {  get; set; }
         public DbSet<vRightCardValue> vRightCardValue { get; set; }
         public DbSet<vIndirectcostChart> vIndirectcostChart { get; set; }
-        public DbSet<vStatusReportsGraph> vStatusReportsGraph { get; set; }
+        public DbSet<vAcquisitionChart> vAcquisitionChart { get; set; }
 
 
 
@@ -132,7 +132,7 @@ namespace TaskPlannerMetrum.Model.Context
         {
             modelBuilder.Entity<vRightCardValue>().HasNoKey();
             modelBuilder.Entity<vIndirectcostChart>().HasNoKey();
-            modelBuilder.Entity<vStatusReportsGraph>().HasNoKey();
+            modelBuilder.Entity<vAcquisitionChart>().HasNoKey();
             modelBuilder.Entity<vhhGraphicDetail>().HasNoKey();
             modelBuilder.Entity<HoursExecutor>().HasNoKey();
             modelBuilder.Entity<ActivePlansByExecutor>().HasNoKey();

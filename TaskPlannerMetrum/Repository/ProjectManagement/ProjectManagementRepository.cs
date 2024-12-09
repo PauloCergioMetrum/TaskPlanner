@@ -1592,9 +1592,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                            .ToList();
         }
 
-        public List<vStatusReportsGraph> GetStatusReportsGraph(int contractID)
+        public List<vAcquisitionChart> GetStatusReportsGraph(int contractID)
         {
-            return _context.vStatusReportsGraph
+            return _context.vAcquisitionChart
                            .Where(a => a.ContractID == contractID)
                            .ToList();
         }
@@ -1603,10 +1603,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.OrderManagementInfo.Where(a => a.ContractID == contractID).ToList();
         }
 
-        public List<vhhGraphicDetail> GetHhGraphicDetail(int contractID)
-        {
-           return _context.vhhGraphicDetail.Where(a =>a.ContractID == contractID).ToList();       
-        }
+        //public List<vhhGraphicDetail> GetHhGraphicDetail(int contractID)
+        //{
+        //   return _context.vhhGraphicDetail.Where(a =>a.ContractID == contractID).ToList();       
+        //}
     }
 }
 

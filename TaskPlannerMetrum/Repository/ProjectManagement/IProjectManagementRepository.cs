@@ -92,8 +92,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<OrderManagementInfo> OrderManagementInfo(int contractID);
 
 
-
-
         public List<Functions> GetAllFunctions();
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID);
         public List<DisplacementServices> GetAllDisplacementServices();
@@ -111,16 +109,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vRightCardValue>RightCardValues(int contractID);
         // STATUS REPORTS
         List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID);
-        List<vStatusReportsGraph> GetStatusReportsGraph(int contractID);
-        List<vhhGraphicDetail> GetHhGraphicDetail(int contractID);  
-
-       
-
-
-
-
-
-
+        List<vAcquisitionChart> GetStatusReportsGraph(int contractID);
+        //List<vhhGraphicDetail> GetHhGraphicDetail(int contractID);   
 
         // DELETE Methods
 
