@@ -110,7 +110,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         // STATUS REPORTS
         List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID);
         List<vAcquisitionChart> GetStatusReportsGraph(int contractID);
-        //List<vhhGraphicDetail> GetHhGraphicDetail(int contractID);   
+        List<vhhGraphicDetail> GetHhGraphicDetail(int contractID);   
 
         // DELETE Methods
 
