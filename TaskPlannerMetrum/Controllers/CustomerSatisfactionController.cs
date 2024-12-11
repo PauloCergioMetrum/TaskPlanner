@@ -20,8 +20,7 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-        [HttpGet("
-            ")]
+        [HttpGet("CustomerSatisfaction")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
