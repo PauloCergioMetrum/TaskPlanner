@@ -45,6 +45,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
                 updateCotract.ClientOrder = contract.ClientOrder;
                 updateCotract.StatusID = contract.StatusID;
                 updateCotract.PaymentCondition = contract.PaymentCondition;
+                updateCotract.DateFineshed = contract.DateFineshed; 
                 //updateCotract.WorkSpaceID = contract.WorkSpaceID;
 
 

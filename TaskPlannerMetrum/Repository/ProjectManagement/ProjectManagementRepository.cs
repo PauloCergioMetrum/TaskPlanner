@@ -1603,10 +1603,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.OrderManagementInfo.Where(a => a.ContractID == contractID).ToList();
         }
 
-        //public List<vhhGraphicDetail> GetHhGraphicDetail(int contractID)
-        //{
-        //   return _context.vhhGraphicDetail.Where(a =>a.ContractID == contractID).ToList();       
-        //}
+        public List<vhhGraphicDetail> GetHhGraphicDetail(int contractID)
+        {
+            return _context.vhhGraphicDetail.Where(a => a.ContractID == contractID).ToList();
+        }
     }
 }
 

@@ -923,32 +923,28 @@ namespace TaskPlannerMetrum.Business.Implementations
                   TotalOutsourcedServices_Made = group.Sum(x => x.TotalOutsourcedServices_Made)
               }).ToList();
 
-
-            //var hhGraphicDetails = _projectmanagementRepository.GetHhGraphicDetail(contractID);
-
-            // HH
-            //var hhGraphicGrouped = hhGraphicDetails
-            //  .GroupBy(m => m.ContractID)
-            //  .Select(group => new
-            //  {
-            //      ContractID = group.Key,
-            //      Details = group.Select(detail => new
-            //      {
-            //          detail.MilestoneItemID,
-            //          detail.MilestoneValueID,
-            //          detail.MilestonesID,
-            //          detail.DisplacementServiceName,
-            //          detail.DisplacementServicesID,
-            //          detail.ValueHour,
-            //          detail.HoursExpected,
-            //          detail.HoursPlanned,
-            //          detail.HoursExecuted,
-            //          detail.CostHoursExpected,
-            //          detail.CostHoursPlanned,
-            //          detail.CostHoursExecuted
-            //      }).ToList()
-            //  }).ToList();
-
+            var hhGraphicDetails = _projectmanagementRepository.GetHhGraphicDetail(contractID);
+            var hhGraphicGrouped = hhGraphicDetails
+                .GroupBy(detail => detail.ContractID)
+                .Select(group => new
+                {
+                    ContractID = group.Key,
+                    Details = group.Select(detail => new
+                    {
+                        detail.MilestoneTypeID,
+                        detail.MilestonesValueID,
+                        detail.MilestonesID,
+                        detail.DisplacementServiceName,
+                        detail.DisplacementServicesID,
+                        detail.ValueHour,
+                        detail.HoursExpected,
+                        detail.HoursPlanned,
+                        detail.HoursExecuted,
+                        detail.CostHoursExpected,
+                        detail.CostHoursPlanned,
+                        detail.CostHoursExecuted
+                    }).ToList()
+                }).ToList();
             // Combinação Final
             var result = new
             {
@@ -957,7 +953,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 StatusRelatorios = statusGrouped,
                 OrderManagement = orderManagementGrouped,
                 OutsourcedServices = outsourcedGrouped,
-                //HhGraphicDetails = hhGraphicGrouped
+                HhGraphicDetails = hhGraphicGrouped
             };
 
             return result;
