@@ -9,7 +9,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string? MadeId { get; set; }
         public int? TypeID { get; set; }
         public string? TypeDescription { get; set; }
-        public double? PlannedTotal { get; set; }
+        public double? TotalPlanned { get; set; }
         public double? MadeTotal { get; set; }
     }
 
@@ -22,6 +22,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public double TotalCost { get; set; }
         public double? CombinedTotal { get; set; } 
         public int ContractID { get; set; }
+
     }
 
     public class vhhGraphicDetail
