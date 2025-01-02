@@ -894,46 +894,44 @@ namespace TaskPlannerMetrum.Business.Implementations
         private List<StatusReportsResult> GetStatusReportsGrouped(int contractID)
         {
             var statusReports = _projectmanagementRepository.GetStatusReportsGraph(contractID);
-            return statusReports
-                .GroupBy(chart => new
+
+            // Agrupamento dos relatórios
+            var groupedResults = statusReports
+                .GroupBy(report => new
                 {
-                    chart.ContractID,
-                    PredictedTotal = (float)chart.PredictedTotal,
-                    chart.TypeAcquisitionID,
-                    chart.TypeAcquisitionDescription,
+                    report.ContractID,
+                    report.TypeAcquisitionID,
+                    report.TypeAcquisitionDescription
                 })
-                .Select(group => new
+                .Select(group => new StatusReportsResult
                 {
-                    ContractID = group.Key.ContractID,
                     TypeID = group.Key.TypeAcquisitionID,
                     TypeDescription = group.Key.TypeAcquisitionDescription,
-                    PlannedTotal = group.Key.PredictedTotal,
-                    MadeDetails = group.Select(x => new
+                    PlannedTotal = group.Sum(x => (double?)x.PredictedTotal ?? 0.0),
+                    TotalPlanned = group.Sum(x => (double?)x.PredictedTotal ?? 0.0),
+                    TotalMade = group.Sum(x => (double?)x.TotalCost ?? 0.0),
+                    MadeDetails = group.Select(x => new MadeDetailsStatusResult
                     {
                         MadeId = x.TypeAcquisitionID,
                         MadeTotal = x.TotalCost
                     }).ToList()
                 })
-                .ToList()
-                .GroupBy(item => new { item.TypeID, item.TypeDescription })
-                .Select(group => new StatusReportsResult
-                {
-                    TypeID = group.Key.TypeID,
-                    TypeDescription = group.Key.TypeDescription,
-                    PlannedTotal = group.Sum(x => x.PlannedTotal),
-                    MadeDetails = group.SelectMany(x => x.MadeDetails)
-                        .GroupBy(md => md.MadeId)
-                        .Select(mdGroup => new MadeDetailsStatusResult
-                        {
-                            MadeId = mdGroup.Key,
-                            MadeTotal = mdGroup.Sum(md => md.MadeTotal)
-                        })
-                        .ToList(),
-                    TotalPlanned = group.Sum(x => x.PlannedTotal),
-                    TotalMade = group.SelectMany(x => x.MadeDetails).Sum(md => md.MadeTotal)
-                })
-                .ToList();
+                .ToList();    
+            var totalPlannedSum = groupedResults.Sum(result => result.TotalPlanned ?? 0.0);
+            var totalMadeSum = groupedResults.Sum(result => result.TotalMade ?? 0.0);     
+            groupedResults.Add(new StatusReportsResult
+            {
+           
+                TypeDescription = "Resumo Geral",          
+                TotalPlanned = totalPlannedSum,
+                TotalMade = totalMadeSum
+            });
+
+            return groupedResults;
         }
+
+
+
 
         private List<OrderManagementResult> GetOrderManagementGrouped(int contractID)
         {
