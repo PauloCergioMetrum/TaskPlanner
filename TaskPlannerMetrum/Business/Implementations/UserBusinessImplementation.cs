@@ -16,74 +16,95 @@ namespace TaskPlannerMetrum.Business.Implementations
     {
         private readonly IRepository<User> _repository;
         private readonly IUserRepository _userRepository;
-
-
-
-
         private readonly UserConverter _converter;
 
         public UserBusinessImplementation(IRepository<User> repository, IUserRepository userRepository)
         {
-            _userRepository= userRepository;
+            _userRepository = userRepository;
             _repository = repository;
             _converter = new UserConverter();
         }
-
-        // Method responsible for returning all people,
         public List<UserViewDto> FindAll()
         {
             return _userRepository.FindAll();
         }
-
-
-
-        // Method responsible for returning one person by ID
         public UserVO FindByID(int id)
         {
             return _converter.Parse(_repository.FindByID(id));
         }
 
         // Method responsible to crete one new person
+        //public bool Create(TeamUsers user)
+        //{
+
+        //    var userId = _userRepository.Create(new User
+        //    {
+        //        CreationDate = DateTime.Now,
+        //        DepartmentId = user.DepartmentId,
+        //        FullName = user.FullName,
+        //        UserName = user.UserName,
+        //        Password = _userRepository.ComputeHash("123456", new SHA256CryptoServiceProvider()),  
+        //        PhoneNumber = user.PhoneNumber,
+        //        PermissionId = user.PermissionId,
+        //        WorkspaceID = user.WorkspaceID,
+        //        UserEmail = user.UserEmail,
+        //        IsActive = true
+
+        //    });
+        //    if (userId != null)
+        //    {
+        //        return _userRepository.CreateTeam(new Team
+        //        {
+        //            DepartmentID = user.DepartmentId,
+        //            HoursAvailability = 8,
+        //            isLeader = user.isLeader,
+        //            UserID = userId,
+        //            SeniorityLevel = user.SeniorityLevel,
+        //            WorkForceType = user.WorkForceType,
+        //            WorkForceClass = user.WorkForceClass,
+        //            ManHourCost = 15,
+
+        //        });
+
+        //    }
+
+        //    return false;
+        //}
         public bool Create(TeamUsers user)
         {
-
-            var userId = _userRepository.Create(new User
+            using (var algorithm = SHA256.Create())
             {
-                CreationDate = DateTime.Now,
-                DepartmentId = user.DepartmentId,
-                FullName = user.FullName,
-                UserName = user.UserName,
-                Password = _userRepository.ComputeHash("123456", new SHA256CryptoServiceProvider()),
-                PhoneNumber = user.PhoneNumber,
-                PermissionId = user.PermissionId,
-                WorkspaceID = user.WorkspaceID,
-                UserEmail = user.UserEmail,
-                IsActive = true
-
-            });
-            if (userId != null)
-            {
-                return _userRepository.CreateTeam(new Team
+                var userId = _userRepository.Create(new User
                 {
-                    DepartmentID = user.DepartmentId,
-                    HoursAvailability = 8,
-                    isLeader = user.isLeader,
-                    UserID = userId,
-                    SeniorityLevel = user.SeniorityLevel,
-                    WorkForceType = user.WorkForceType,
-                    WorkForceClass = user.WorkForceClass,
-                    ManHourCost = 15,
-
+                    CreationDate = DateTime.Now,
+                    DepartmentId = user.DepartmentId,
+                    FullName = user.FullName,
+                    UserName = user.UserName,
+                    Password = _userRepository.ComputeHash("123456", algorithm),
+                    PhoneNumber = user.PhoneNumber,
+                    PermissionId = user.PermissionId,
+                    WorkspaceID = user.WorkspaceID,
+                    UserEmail = user.UserEmail,
+                    IsActive = true
                 });
 
+                if (userId >0)
+                {
+                    return _userRepository.CreateTeam(new Team
+                    {
+                        DepartmentID = user.DepartmentId,
+                        HoursAvailability = 8,
+                        isLeader = user.isLeader,
+                        UserID = userId,
+                        SeniorityLevel = user.SeniorityLevel,
+                        WorkForceType = user.WorkForceType,
+                        WorkForceClass = user.WorkForceClass,
+                        ManHourCost = 15,
+                    });
+                }
             }
-
             return false;
         }
-
-
-
-        // Method responsible for updating one person
         public UserVO Update(UserVO user)
         {
 
@@ -105,19 +126,19 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             try
             {
-                var userEntity = _repository.FindByID(user.Id);
-                userEntity.Password = _userRepository.ComputeHash(user.Password, new SHA256CryptoServiceProvider());
-                _repository.Update(userEntity);
-                return true;
+                using (var algorithm = SHA256.Create())
+                {
+                    var userEntity = _repository.FindByID(user.Id);
+                    userEntity.Password = _userRepository.ComputeHash(user.Password, algorithm);
+                    _repository.Update(userEntity);
+                    return true;
+                }
             }
             catch (Exception)
             {
                 return false;
             }
-
         }
-
-        // Method responsible for deleting a person from an ID
         public void Delete(int id)
         {
             _repository.Delete(id);
@@ -127,20 +148,14 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             throw new System.NotImplementedException();
         }
-
-
-      
-
         public bool isDarkMode(int id)
         {
             return _userRepository.isDarkMode(id);
         }
-
         public bool IsActiveDarkMode(int id)
         {
-            return _userRepository.IsActiveDarkMode(id);    
+            return _userRepository.IsActiveDarkMode(id);
         }
-
         public dynamic GetAllUsers()
         {
             return _userRepository.GetAllUsers();

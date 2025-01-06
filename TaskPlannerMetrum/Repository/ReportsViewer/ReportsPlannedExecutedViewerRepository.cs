@@ -122,12 +122,14 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                                         .Where(bu => operationalReportReportDTO.BusinessUnitIDs.Contains(bu.Id))
                                         .ToList();
             var businessUnitNames = string.Join(",", filteredBusinessUnits.Select(bu => bu.Name));
-            var startDate = operationalReportReportDTO.StartDate != null ?
-                               operationalReportReportDTO.StartDate.ToString("yyyy/MM") :
-                               "null";
-            var endDate = operationalReportReportDTO.EndDate != null ?
-                                operationalReportReportDTO.EndDate.ToString("yyyy/MM") :
-                                "null";
+
+            var startDate = operationalReportReportDTO.StartDate != default(DateTime)
+                                ? operationalReportReportDTO.StartDate.ToString("yyyy/MM")
+                                : "null";
+            var endDate = operationalReportReportDTO.EndDate != default(DateTime)
+                                ? operationalReportReportDTO.EndDate.ToString("yyyy/MM")
+                                : "null";
+
             if (operationalReportReportDTO.ContractIDs.Count == 0)
             {
                 contractIDs = "null";
@@ -139,11 +141,10 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             }
 
             var sql = "EXEC [dbo].[GetNumberOfContractsForBusinessUnit] " +
-            $"@ContractIDs = {contractIDs}, " +
-            $"@BusinessUnitNames = {(businessUnitNames == "null" ? "null" : $"'{businessUnitNames}'")}, " +
-            $"@StartPeriod = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
-            $"@EndPeriod = {(endDate != "null" ? $"'{endDate}'" : "null")}";
-
+                      $"@ContractIDs = {contractIDs}, " +
+                      $"@BusinessUnitNames = {(businessUnitNames == "null" ? "null" : $"'{businessUnitNames}'")}, " +
+                      $"@StartPeriod = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
+                      $"@EndPeriod = {(endDate != "null" ? $"'{endDate}'" : "null")}";
 
             return _context.Set<NumberOfContractsForBusinessUnit>().FromSqlRaw(sql).ToList();
         }
@@ -152,15 +153,17 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         public List<StatusForPeriod> getStatusPerPeriod(OperationalReportReportDTO OperationalReportReportDTO)
         {
-            var startDate = OperationalReportReportDTO.StartDate != null ?
-                                OperationalReportReportDTO.StartDate.ToString("yyyy-MM-dd") :
-                                "null";
-            var endDate = OperationalReportReportDTO.EndDate != null ?
-                                OperationalReportReportDTO.EndDate.ToString("yyyy-MM-dd") :
-                                "null";
-            var sql = "EXEC [dbo].[getStatusPerPeriod]" +
-                        $"@StartDate = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
-                        $"@EndDate = {(endDate != "null" ? $"'{endDate}'" : "null")}";
+            var startDate = OperationalReportReportDTO.StartDate != default(DateTime)
+                                ? OperationalReportReportDTO.StartDate.ToString("yyyy-MM-dd")
+                                : "null";
+            var endDate = OperationalReportReportDTO.EndDate != default(DateTime)
+                                ? OperationalReportReportDTO.EndDate.ToString("yyyy-MM-dd")
+                                : "null";
+
+            var sql = "EXEC [dbo].[getStatusPerPeriod] " +
+                      $"@StartDate = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
+                      $"@EndDate = {(endDate != "null" ? $"'{endDate}'" : "null")}";
+
             return _context.Set<StatusForPeriod>().FromSqlRaw(sql).ToList();
         }
 
@@ -168,17 +171,13 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         public List<BalancePerProject> GetBalancePerProject(OperationalReportReportDTO operationalReportReportDTO)
         {
             var contractIDs = string.Join(",", operationalReportReportDTO.ContractIDs);
-            var startDate = operationalReportReportDTO.StartDate != null ?
-                                operationalReportReportDTO.StartDate.ToString("yyyy-MM-dd") :
-                                "null";
-            var endDate = operationalReportReportDTO.EndDate != null ?
-                                operationalReportReportDTO.EndDate.ToString("yyyy-MM-dd") :
-                                "null";
+            var startDate = operationalReportReportDTO.StartDate.ToString("yyyy-MM-dd");
+            var endDate = operationalReportReportDTO.EndDate.ToString("yyyy-MM-dd");
 
             var sql = "EXEC [dbo].[getBalancePerProject] " +
-                        $"@ContractIDs = {(string.IsNullOrEmpty(contractIDs) ? "null" : $"'{contractIDs}'")}, " +
-                        $"@StartDate = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
-                        $"@EndDate = {(endDate != "null" ? $"'{endDate}'" : "null")}";
+                      $"@ContractIDs = {(string.IsNullOrEmpty(contractIDs) ? "null" : $"'{contractIDs}'")}, " +
+                      $"@StartDate = '{startDate}', " +
+                      $"@EndDate = '{endDate}'";
 
             return _context.Set<BalancePerProject>().FromSqlRaw(sql).ToList();
         }
@@ -197,13 +196,14 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
             var businessUnitNames = filteredBusinessUnits.Select(bu => bu.Name).ToList();
 
-            string startDate = operationalReportReportDTO.StartDate != null ?
-                                operationalReportReportDTO.StartDate.ToString("yyyy-MM-dd") :
-                                "null";
+            string startDate = operationalReportReportDTO.StartDate != default(DateTime)
+                     ? operationalReportReportDTO.StartDate.ToString("yyyy-MM-dd")
+                     : "null";
 
-            string endDate = operationalReportReportDTO.EndDate != null ?
-                                operationalReportReportDTO.EndDate.ToString("yyyy-MM-dd") :
-                                "null";
+            string endDate = operationalReportReportDTO.EndDate != default(DateTime)
+                              ? operationalReportReportDTO.EndDate.ToString("yyyy-MM-dd")
+                              : "null";
+
 
             var sql = $"EXEC [dbo].[GetContractDetails] " +
                       $"@ContractIDs = {(string.IsNullOrEmpty(contractIDs) ? "null" : $"'{contractIDs}'")}, " +

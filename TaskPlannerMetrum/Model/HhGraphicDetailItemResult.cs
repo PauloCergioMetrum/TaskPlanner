@@ -1,5 +1,6 @@
 ﻿namespace TaskPlannerMetrum.Model
 {
+#nullable enable
     public class HhGraphicDetailItemResult
     {
         public string? MilestoneTypeID { get; set; }

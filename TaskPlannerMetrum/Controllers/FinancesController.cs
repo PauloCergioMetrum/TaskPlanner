@@ -22,7 +22,7 @@ namespace TaskPlannerMetrum.Controllers
 
     public class FinancesController:ControllerBase
     {
-        private readonly ILogger<FinancesController> _logger;
+        ////private readonly ILogger<FinancesController> _logger;
 
      
         private IFinancesBusiness _financestBusiness;

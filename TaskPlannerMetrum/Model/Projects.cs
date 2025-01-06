@@ -5,6 +5,7 @@ using TaskPlannerMetrum.Model.Base;
 
 namespace TaskPlannerMetrum.Model
 {
+#nullable enable
     public class Projects 
     {
        

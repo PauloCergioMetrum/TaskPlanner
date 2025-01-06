@@ -2,6 +2,7 @@
 
 namespace TaskPlannerMetrum.Model
 {
+#nullable enable
     public class MadeDetailsResult
     {
         public vIndirectcostChart? AcquisitionMadeDTO { get; set; }

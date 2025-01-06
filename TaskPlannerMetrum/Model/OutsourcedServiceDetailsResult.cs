@@ -1,5 +1,6 @@
 ﻿namespace TaskPlannerMetrum.Model
 {
+#nullable enable
     public class OutsourcedServiceDetailsResult
     {
         public string? ID { get; set; }

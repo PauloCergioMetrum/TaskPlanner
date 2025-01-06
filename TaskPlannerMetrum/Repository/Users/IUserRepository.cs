@@ -27,7 +27,9 @@ namespace TaskPlannerMetrum.Repository.Users
 
         public bool CreateTeam(Team id);
 
-        public string ComputeHash(string input, SHA256CryptoServiceProvider algorithm);
+        //public string ComputeHash(string input, SHA256CryptoServiceProvider algorithm);
+        public string ComputeHash(string input, HashAlgorithm algorithm);
+
 
         public bool isDarkMode(int id);
 

@@ -88,6 +88,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Erro ao criar o ActivityPlan: {ex.Message}");
                 return false;
             }
         }

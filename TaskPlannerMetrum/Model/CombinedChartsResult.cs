@@ -5,6 +5,7 @@ namespace TaskPlannerMetrum.Model
 {
     public class CombinedChartsResult
     {
+#nullable enable
         public List<IndirectCostsResult>? IndirectCosts { get; set; }
         public List<MobilizationResult>? Mobilization { get; set; }
         public List<StatusReportsResult>? StatusReports { get; set; }

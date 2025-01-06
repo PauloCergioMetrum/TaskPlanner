@@ -1,16 +1,13 @@
 ﻿using Memt.Logger;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
-using TaskPlannerMetrum.Model;
+
 
 namespace TaskPlannerMetrum.Repository.ProjectManagement
 {

@@ -19,7 +19,7 @@ namespace TaskPlannerMetrum.Business.Implementations
     public class ProjectManagementBusiness : IProjectManagementBusiness
     {
         private readonly IProjectManagementRepository _projectmanagementRepository;
-        private int dynamic;
+        //private int dynamic;
 
         public ProjectManagementBusiness(IProjectManagementRepository projectmanagementBusiness)
         {

@@ -45,7 +45,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                 InvoicedDate = newfinance.InvoicedDate,
                 Status = newfinance.Status,
                 StatusDpv = newfinance.StatusDpv,
-                paymentCondition = newfinance.paymentCondition,
+                paymentCondition = newfinance.PaymentCondition,
                 InvoicedValue = newfinance.InvoicedValue,
                 Value = newfinance.Value,
                 Guarantee = newfinance.Guarantee,
