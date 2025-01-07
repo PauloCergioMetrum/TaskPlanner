@@ -221,10 +221,10 @@ namespace TaskPlannerMetrum.Repository.Financs
             {
                 return finance.Status;
             }
-            //SE DATAREPROGRAMDA É DIFERENTE DE NULO
+          
             if (finance.EndDate.Date != Convert.ToDateTime("01/01/1901"))
             {
-                //SE DATA FATURADA É DIFERENTE DE NULA
+               
                 if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/1901"))
                 {
 
@@ -248,10 +248,10 @@ namespace TaskPlannerMetrum.Repository.Financs
             else
             {
 
-                //SE A DATA FATURADA  NÃO É NULA
+             
                 if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/1901"))
                 {
-                    //SE A DATA FATURADA É MAIOR QUE DATA BASE
+                 
                     if (finance.InvoicedDate > finance.BaseDate)
                     {
                         return "ATRASADO";
@@ -264,7 +264,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                 }
                 else
                 {
-                    //SE A DATA BASE É MAIOR QUE A DATA DE AGORA
+                   
                     if (finance.BaseDate.Date >= DateTime.Now.Date)
                     {
                         return "NO PRAZO";
@@ -305,7 +305,7 @@ namespace TaskPlannerMetrum.Repository.Financs
 
             if (updatefinances != null)
             {
-                // Update other properties as before
+               
                 updatefinances.InvoicedValue = finances.InvoicedValue;
                 updatefinances.Value = finances.Value;
                 updatefinances.Status = finances.Status;
@@ -379,12 +379,7 @@ namespace TaskPlannerMetrum.Repository.Financs
             try
             {
 
-                //Nao foi possivel fazer dessa forma por que o ID duplica 
-                // var duplicateFinance = financeMatriz;
-                // duplicateFinance.BusinessUnit = Finance.BusinessUnit;
-                // duplicateFinance.BaseDate = Finance.BaseDate;
-
-                //Dados do objeto Matriz que será utilizado para duplicar a Finança
+               
                 Model.Finances financeMatriz = _context.Finances.Where(i => i.id == Finance.id).FirstOrDefault();
                 var duplicateFinance = new Model.Finances();
 
@@ -406,7 +401,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                     duplicateFinance.InvoicedValue = financeMatriz.InvoicedValue;
                     duplicateFinance.Status = financeMatriz.Status;
                     duplicateFinance.WorkSpaceID = financeMatriz.WorkSpaceID;
-                    //Dados que o front enviou 
+             
                     duplicateFinance.BusinessUnit = Finance.BusinessUnit;
                     duplicateFinance.BaseDate = Finance.BaseDate;
                     _context.Finances.Add(duplicateFinance);

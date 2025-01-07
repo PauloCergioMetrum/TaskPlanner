@@ -439,7 +439,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        // MOBILIZAÇÃO
+     
 
         [HttpGet("GetMobilization")]
         [ProducesResponseType(200)]
@@ -556,7 +556,6 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
-        // SERVIÇO TERCERIZADO 
 
 
         [HttpGet("GetAllOutsourcedServiceNames")]
@@ -698,8 +697,7 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
-        // HH
-
+ 
         [HttpGet("GetpmTypeHH")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -798,7 +796,6 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
-        // ACOMPANHAMENTO DE ESCOPO 
 
 
         [HttpPost("CreatScopeTraking")]
@@ -950,7 +947,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-        //MARCO  FATURADO 
+
 
 
 
@@ -1140,7 +1137,7 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-        // HH
+   
         [HttpGet("GetHHByID")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -1181,7 +1178,7 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-        //TAP
+      
         [HttpPut("UpdateInfoProject")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]

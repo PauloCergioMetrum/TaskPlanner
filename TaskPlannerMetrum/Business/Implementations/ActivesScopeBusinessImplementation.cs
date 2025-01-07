@@ -15,7 +15,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
         public dynamic GetActivesScopeByProject(string projectId)
         {
-           //return _activiesRepository.GetTaskById(projectId);
+        
             return _activiesRepository.GetActiviesScopeByProject(projectId).Select(a => new { a.ID, a.Description});
 
         }

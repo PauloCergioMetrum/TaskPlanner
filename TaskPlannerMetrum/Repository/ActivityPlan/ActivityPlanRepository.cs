@@ -396,8 +396,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
                     getUserRatingProject.UserID = userIDNew;
                     _context.Update(getUserRatingProject);
-                    _context.SaveChanges();
-                    //ResetRating(getUserRatingProject.ID);
+                    _context.SaveChanges();             
 
                 }
 

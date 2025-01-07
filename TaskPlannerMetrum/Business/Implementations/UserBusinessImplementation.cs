@@ -33,43 +33,6 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _converter.Parse(_repository.FindByID(id));
         }
 
-        // Method responsible to crete one new person
-        //public bool Create(TeamUsers user)
-        //{
-
-        //    var userId = _userRepository.Create(new User
-        //    {
-        //        CreationDate = DateTime.Now,
-        //        DepartmentId = user.DepartmentId,
-        //        FullName = user.FullName,
-        //        UserName = user.UserName,
-        //        Password = _userRepository.ComputeHash("123456", new SHA256CryptoServiceProvider()),  
-        //        PhoneNumber = user.PhoneNumber,
-        //        PermissionId = user.PermissionId,
-        //        WorkspaceID = user.WorkspaceID,
-        //        UserEmail = user.UserEmail,
-        //        IsActive = true
-
-        //    });
-        //    if (userId != null)
-        //    {
-        //        return _userRepository.CreateTeam(new Team
-        //        {
-        //            DepartmentID = user.DepartmentId,
-        //            HoursAvailability = 8,
-        //            isLeader = user.isLeader,
-        //            UserID = userId,
-        //            SeniorityLevel = user.SeniorityLevel,
-        //            WorkForceType = user.WorkForceType,
-        //            WorkForceClass = user.WorkForceClass,
-        //            ManHourCost = 15,
-
-        //        });
-
-        //    }
-
-        //    return false;
-        //}
         public bool Create(TeamUsers user)
         {
             using (var algorithm = SHA256.Create())
@@ -114,8 +77,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             userEntity.Password = userPassword.Password;
             userEntity.UserEmail = user.UserEmail;
             userEntity.UserName = user.UserName;
-            userEntity.PermissionId = user.PermissionId;
-            //userEntity.PermissionName = user.PermissionName;    
+            userEntity.PermissionId = user.PermissionId;         
 
 
 

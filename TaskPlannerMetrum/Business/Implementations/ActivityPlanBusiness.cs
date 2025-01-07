@@ -22,7 +22,7 @@ namespace TaskPlannerMetrum.Business.Implementations
     {
         private readonly IActivityPlanRepository _activiesRepository;
 
-        //private MSSQLContext _context;
+     
 
         public ActivityPlanBusiness(IActivityPlanRepository activiesRepository)
         {

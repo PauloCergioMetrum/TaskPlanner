@@ -73,12 +73,7 @@ namespace TaskPlannerMetrum.Repository.Users
             return result;
         }
 
-        //public string ComputeHash(string input, SHA256CryptoServiceProvider algorithm)
-        //{
-        //    Byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-        //    Byte[] hashedBytes = algorithm.ComputeHash(inputBytes);
-        //    return BitConverter.ToString(hashedBytes);
-        //}
+       
         public string ComputeHash(string input, HashAlgorithm algorithm)
         {
             Byte[] inputBytes = Encoding.UTF8.GetBytes(input);
@@ -117,8 +112,6 @@ namespace TaskPlannerMetrum.Repository.Users
             var departamento = _context.Department.Where(d => d.ID == id).Select(n => n.Name).FirstOrDefault().ToString();
             return departamento;
         }
-
-        //public string sha256(string randomString) { var crypt = new SHA256CryptoServiceProvider(); string hash = String.Empty; byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(randomString)); foreach (byte theByte in crypto) { hash += theByte.ToString("x2"); } return hash; }
         public string sha256(string randomString)
         {
             using (var crypt = SHA256.Create())
@@ -215,21 +208,6 @@ namespace TaskPlannerMetrum.Repository.Users
 
 
 
-
-        //var users = _context.Users.ToList();
-
-        //return users.Select(u => new
-        //{
-        //    u.UserName,
-        //    Id = _context.Team.Where(i => i.UserID == u.Id).Select(i => i.ID).FirstOrDefault(),
-        //    u.PhoneNumber,
-        //    u.UserEmail,
-        //    u.WorkspaceID,
-        //    u.DepartmentId,
-        //    u.FullName,
-        //    u.CreationDate,
-        //    u.IsActive,
-        //}).ToList();
 
 
 
