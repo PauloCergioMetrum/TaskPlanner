@@ -187,17 +187,12 @@ namespace TaskPlannerMetrum.Business.Implementations
         public async Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate)
         {
 
-            string triggerName = "trg_UpdateFunctionNameOnUserHourCosts";
-            bool triggerDisabled = false;
 
-          
 
 
             try
             {
-                // Desabilitar o trigger
-                await _repository.ExecuteSqlCommandAsync($"DISABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
-                triggerDisabled = true;
+
 
                 var functionsDict = _repository.GetAllFunction()
                     .ToDictionary(f => RemoveAccents(f.Name).ToUpper().Replace(" ", ""), f => f.ID);
@@ -245,10 +240,10 @@ namespace TaskPlannerMetrum.Business.Implementations
 
                             string userNameKey = NormalizeString(colaborador);
 
-                            
+
                             if (!usersDict.TryGetValue(userNameKey, out User user))
                             {
-                                
+
                                 user = usersDict.Values
                                     .OrderByDescending(u => Similarity(NormalizeString(u.FullName), userNameKey))
                                     .FirstOrDefault(u => Similarity(NormalizeString(u.FullName), userNameKey) > 0.8);
@@ -276,7 +271,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                             }
 
                             user.FunctionID = functionId;
-                         
+
                             usersToUpdate.Add(user);
                         }
 
@@ -299,14 +294,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 return false;
             }
 
-            finally
-            {
-                // Reabilitar o trigger
-                if (triggerDisabled)
-                {
-                    await _repository.ExecuteSqlCommandAsync($"ENABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
-                }
-            }
+
         }
 
         public static string NormalizeString(string input)
