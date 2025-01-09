@@ -112,6 +112,9 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                                 StartDate = reader.IsDBNull(reader.GetOrdinal("StartDate"))
                                     ? (DateTime?)null
                                     : reader.GetDateTime(reader.GetOrdinal("StartDate")),
+                                DateFineshed = reader.IsDBNull(reader.GetOrdinal("DateFineshed"))
+                                    ? (DateTime?)null
+                                    : reader.GetDateTime(reader.GetOrdinal("DateFineshed")),
 
 
                                 Status_satisfaction_Customer = reader.IsDBNull(reader.GetOrdinal("status_satisfaction_Customer"))
