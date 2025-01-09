@@ -39,7 +39,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             List<vCalendar> UsersProjects = _repository.UsersForProjects(contractID);
 
-            // Dictionary para rastrear elementos únicos
+          
             var taskDict = new Dictionary<(int userID, string start), dynamic>();
             var distinctTasks = new List<dynamic>();
 
@@ -53,7 +53,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                         .Where(s => s.ScheduledDate == u.ScheduledDate && s.UserID == u.UserID)
                         .Select(s => new { s.ScheduledDate, s.ActivityDescription, s.ActivityDepartment, s.PlannedManHour, s.InternalCode, status = SetStatus(s.Status) })
                         .Distinct()
-                        .ToList(); // Use ToList to materialize the collection
+                        .ToList(); 
 
                     var backgroundColor = setColor(taskItems.Sum(s => s.PlannedManHour));
 

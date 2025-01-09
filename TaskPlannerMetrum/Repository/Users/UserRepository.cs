@@ -26,12 +26,17 @@ namespace TaskPlannerMetrum.Repository.Users
         }
         public User ValidateCredentials(UserVO user)
         {
-            var pass = ComputeHash(user.Password, new SHA256CryptoServiceProvider());
-            var ActiveUser = _context.Users.FirstOrDefault(u => (u.UserEmail == user.UserEmail) && (u.Password == pass));
-            if (ActiveUser.IsActive == true) { return ActiveUser; }
-            else { return null; }
+            using (var algorithm = SHA256.Create())
+            {
+                var pass = ComputeHash(user.Password, algorithm);
+                var ActiveUser = _context.Users.FirstOrDefault(u => (u.UserEmail == user.UserEmail) && (u.Password == pass));
+                if (ActiveUser != null && ActiveUser.IsActive == true)
+                {
+                    return ActiveUser;
+                }
+            }
+            return null;
         }
-
         public User ValidateCredentials(string userName)
         {
 
@@ -68,7 +73,8 @@ namespace TaskPlannerMetrum.Repository.Users
             return result;
         }
 
-        public string ComputeHash(string input, SHA256CryptoServiceProvider algorithm)
+       
+        public string ComputeHash(string input, HashAlgorithm algorithm)
         {
             Byte[] inputBytes = Encoding.UTF8.GetBytes(input);
             Byte[] hashedBytes = algorithm.ComputeHash(inputBytes);
@@ -87,7 +93,7 @@ namespace TaskPlannerMetrum.Repository.Users
                 UserEmail = u.UserEmail,
                 DepartmentId = u.DepartmentId,
                 DepartamentName = u.DepartamentName,
-                Role = u.role.ToString(),
+                Role = u.Role.ToString(),
                 PermissionId = u.PermissionID,
                 PhoneNumber = u.PhoneNumber,
                 WorkspaceID = u.WorkspaceID,
@@ -106,9 +112,19 @@ namespace TaskPlannerMetrum.Repository.Users
             var departamento = _context.Department.Where(d => d.ID == id).Select(n => n.Name).FirstOrDefault().ToString();
             return departamento;
         }
-
-        public string sha256(string randomString) { var crypt = new SHA256CryptoServiceProvider(); string hash = String.Empty; byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(randomString)); foreach (byte theByte in crypto) { hash += theByte.ToString("x2"); } return hash; }
-
+        public string sha256(string randomString)
+        {
+            using (var crypt = SHA256.Create())
+            {
+                string hash = string.Empty;
+                byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(randomString));
+                foreach (byte theByte in crypto)
+                {
+                    hash += theByte.ToString("x2");
+                }
+                return hash;
+            }
+        }
         public int Create(User user)
         {
             _context.Users.Add(user);
@@ -192,21 +208,6 @@ namespace TaskPlannerMetrum.Repository.Users
 
 
 
-
-        //var users = _context.Users.ToList();
-
-        //return users.Select(u => new
-        //{
-        //    u.UserName,
-        //    Id = _context.Team.Where(i => i.UserID == u.Id).Select(i => i.ID).FirstOrDefault(),
-        //    u.PhoneNumber,
-        //    u.UserEmail,
-        //    u.WorkspaceID,
-        //    u.DepartmentId,
-        //    u.FullName,
-        //    u.CreationDate,
-        //    u.IsActive,
-        //}).ToList();
 
 
 

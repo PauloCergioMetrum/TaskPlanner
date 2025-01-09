@@ -28,14 +28,12 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-        // Maps GET requests to https://localhost:{port}/api/person
-        // Get no parameters for FindAll -> Search All
+      
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType(401)]       
         public IActionResult Get( string projectId)
         {
             try

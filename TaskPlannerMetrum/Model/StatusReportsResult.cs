@@ -2,6 +2,7 @@
 
 namespace TaskPlannerMetrum.Model
 {
+#nullable enable
     public class StatusReportsResult
     {
         public int? TypeID { get; set; }

@@ -2,6 +2,7 @@
 
 namespace TaskPlannerMetrum.Model
 {
+#nullable enable
     public class IndirectCostsResult
     {
         public int? ContractID { get; set; }

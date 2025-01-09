@@ -2,6 +2,7 @@
 
 namespace TaskPlannerMetrum.Model
 {
+    #nullable enable
     public class HhGraphicDetailsResult
     {
         public int ContractID { get; set; }

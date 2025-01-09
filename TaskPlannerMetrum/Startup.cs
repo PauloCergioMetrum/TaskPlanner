@@ -134,6 +134,15 @@ namespace TaskPlannerMetrum
             var connection = Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"];
             services.AddDbContext<MSSQLContext>(options => options.UseSqlServer(connection));
 
+            var mssqlServer = Environment.GetEnvironmentVariable("MSSQL_SERVER") ?? "172.16.9.73,1589";
+            var mssqlDatabase = Environment.GetEnvironmentVariable("MSSQL_DATABASE") ?? "TaskPlanner";
+            var mssqlUser = Environment.GetEnvironmentVariable("MSSQL_USER") ?? "sa";
+            var mssqlPassword = Environment.GetEnvironmentVariable("MSSQL_PASSWORD") ?? "Metrum2002*";
+
+            var mssqlConnectionString = $"Data Source={mssqlServer};Initial Catalog={mssqlDatabase};User ID={mssqlUser};Password={mssqlPassword};Pooling=False;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False";
+
+            services.AddDbContext<MSSQLContext>(options => options.UseSqlServer(mssqlConnectionString));
+
             services.AddMvc(options =>
             {
                 options.RespectBrowserAcceptHeader = true;

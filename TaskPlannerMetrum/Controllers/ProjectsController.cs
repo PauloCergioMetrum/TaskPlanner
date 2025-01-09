@@ -23,7 +23,7 @@ namespace TaskPlannerMetrum.Controllers
     {
         private readonly ILogger<ProjectsController> _logger;
 
-        // Declaration of the service used
+   
         private IProjectsBusiness _projectBusiness;
 
         public ProjectsController(ILogger<ProjectsController> logger, IProjectsBusiness projectBusiness)
@@ -33,14 +33,12 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-        // Maps GET requests to https://localhost:{port}/api/person
-        // Get no parameters for FindAll -> Search All
+      
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType(401)]      
         public IActionResult Get()
         {
 
@@ -84,7 +82,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
+       
         public IActionResult GetManagerPlanner()
         {
             try
@@ -103,8 +101,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType(401)]      
         public IActionResult Create(ProjectDTO project)
         {
             try

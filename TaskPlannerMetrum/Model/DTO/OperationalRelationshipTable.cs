@@ -2,6 +2,7 @@
 
 namespace TaskPlannerMetrum.Model.DTO
 {
+#nullable enable
     public class OperationalRelationshipTable
     {
         public int? ContractID { get; set; }

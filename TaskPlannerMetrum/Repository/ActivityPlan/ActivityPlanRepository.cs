@@ -88,6 +88,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Erro ao criar o ActivityPlan: {ex.Message}");
                 return false;
             }
         }
@@ -395,8 +396,7 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
 
                     getUserRatingProject.UserID = userIDNew;
                     _context.Update(getUserRatingProject);
-                    _context.SaveChanges();
-                    //ResetRating(getUserRatingProject.ID);
+                    _context.SaveChanges();             
 
                 }
 

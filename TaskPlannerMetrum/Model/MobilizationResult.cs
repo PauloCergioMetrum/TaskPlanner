@@ -1,5 +1,6 @@
 ﻿namespace TaskPlannerMetrum.Model
 {
+#nullable enable
     public class MobilizationResult
     {
         public double? AccommodationPlanned { get; set; }

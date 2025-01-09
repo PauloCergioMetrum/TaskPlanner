@@ -5,12 +5,13 @@ namespace TaskPlannerMetrum.Model.ModelViews
 {
     public class vUsersView
     {
+#nullable enable
         public int Id { get; set; }
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
-        public string UserEmail { get; set; }
+        public string? UserEmail { get; set; }
 
         public string? PhoneNumber { get; set; }
 
@@ -21,8 +22,8 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string? FunctionHH { get; set; }
         public int? ManagementID { get; set; }
         public DateTime? CreationDate { get; set; }
-        public string ManagementName { get; set; }
-        public int? role { get; set; }
+        public string? ManagementName { get; set; }
+        public int? Role { get; set; }
         public string? PermissionName { get; set; }
         public string? DepartamentName { get; set; }
         public int? PermissionID { get; set; }

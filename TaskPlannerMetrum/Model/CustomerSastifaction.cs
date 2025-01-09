@@ -19,7 +19,10 @@ namespace TaskPlannerMetrum.Model
         public string VendorName { get; set; }
         public string InspectorName{ get; set; }
         public DateTime? StartDate { get; set; }
-        public int? Status_satisfaction_Customer { get; set; }       
+        public int? Status_satisfaction_Customer { get; set; }    
+        public DateTime? DateFineshed {  get; set; } 
+
+
 
 
     }

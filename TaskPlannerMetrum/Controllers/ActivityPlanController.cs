@@ -13,7 +13,7 @@ using TaskPlannerMetrum.Business.Implementations;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
-using System.Linq;
+
 
 
 namespace TaskPlannerMetrum.Controllers
@@ -38,10 +38,8 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-
         [ProducesResponseType(401)]
 
-        //[TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult GetExecutorPlanner(string projectId)
         {
 
@@ -54,14 +52,14 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult Create([FromBody] List<ActivePlanList> activityPlans) // Recebe uma lista de ActivePlanList
+        public IActionResult Create([FromBody] List<ActivePlanList> activityPlans)
         {
             try
             {
-                // Itera sobre cada objeto na lista e chama o método `Create` para cada um
+
                 foreach (var activityPlan in activityPlans)
                 {
-                    bool result = _activityPlanBusiness.Create(activityPlan); // Chama o método `Create` para cada item
+                    bool result = _activityPlanBusiness.Create(activityPlan);
                     if (!result)
                     {
                         return BadRequest("Falha ao processar uma ou mais atividades.");
@@ -82,7 +80,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
+
         public IActionResult ExecutorHourForPeriod(HoursExecutorDTO activityPlan)
 
         {
@@ -104,7 +102,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
+
         public IActionResult FindTask(int MilestonesID, int? page, int? size, string searchExecutor, int ContractID)
         {
             int pageSize = (size ?? 10);
@@ -119,7 +117,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
+
         public IActionResult FindTaskByUser(string userId, int? page, int? size, string searchExecutor)
         {
             int pageSize = (size ?? 10);
@@ -162,7 +160,7 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-       
+
 
 
 
@@ -202,7 +200,6 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult UpadteTaskExecutor(vActivityPlan activityPlan)
         {
 
@@ -417,7 +414,7 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-        //ALOCAÇÃO DE EQUIPAMENTOS
+
 
         [HttpGet("GetAllEquipment")]
         [ProducesResponseType(200)]

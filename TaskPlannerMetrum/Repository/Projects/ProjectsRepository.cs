@@ -28,8 +28,6 @@ using DocumentFormat.OpenXml.Presentation;
 namespace TaskPlannerMetrum.Repository.Projects
 {
 
-
-
     public class ProjectsRepository : IProjectsRepository
     {
         private MSSQLContext _context;
@@ -38,6 +36,7 @@ namespace TaskPlannerMetrum.Repository.Projects
         public ProjectsRepository(MSSQLContext context) { _context = context; }
 
         public bool NewCreat(Model.NewContract.NewProject newproject)
+
         {
             try
             {
@@ -605,7 +604,10 @@ namespace TaskPlannerMetrum.Repository.Projects
             }
         }
 
-        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string? InspectorName)
+
+        
+        public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
+
         {
             List<vContractProject> vContractProjects = new List<vContractProject>();
 
@@ -613,14 +615,12 @@ namespace TaskPlannerMetrum.Repository.Projects
             {
                 command.CommandText = "GetContractProjectsByTechLeader";
                 command.CommandType = CommandType.StoredProcedure;
-
-                // Verifica se TechLeaderID é nulo
+               
                 if (TechLeaderID.HasValue)
                     command.Parameters.Add(new SqlParameter("@TechLeaderID", TechLeaderID));
                 else
                     command.Parameters.Add(new SqlParameter("@TechLeaderID", DBNull.Value));
-
-                // Verifica se InspectorName é nulo
+             
                 if (!string.IsNullOrEmpty(InspectorName))
                     command.Parameters.Add(new SqlParameter("@InspectorName", InspectorName));
                 else

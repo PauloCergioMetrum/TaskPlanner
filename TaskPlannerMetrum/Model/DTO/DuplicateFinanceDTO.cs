@@ -4,13 +4,9 @@ namespace TaskPlannerMetrum.Model.DTO
 {
     public class DuplicateFinanceDTO
     {
-        
+        #nullable enable
         public int id { get; set; }
-
-     
-
         public DateTime BaseDate { get; set; }
-
         public string? BusinessUnit { get; set; }
 
 

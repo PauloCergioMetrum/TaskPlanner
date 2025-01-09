@@ -22,10 +22,7 @@ namespace TaskPlannerMetrum.Business.Implementations
     {
         private readonly IActivityPlanRepository _activiesRepository;
 
-        private MSSQLContext _context;
-
-
-
+     
 
         public ActivityPlanBusiness(IActivityPlanRepository activiesRepository)
         {
@@ -38,7 +35,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             try
             {
-                // Itera sobre os executores e cria as tarefas correspondentes
+            
                 foreach (var item in activityPlan.ExecutorTeamID)
                 {
                     task.ID = activityPlan.ID;
@@ -59,8 +56,6 @@ namespace TaskPlannerMetrum.Business.Implementations
                     task.BusinessUnit = activityPlan.BusinessUnit;
                     task.EquipmentID = activityPlan.EquipmentID == 0 ? (int?)null : activityPlan.EquipmentID;
                     task.MilestonesID = activityPlan.MilestonesID;
-
-                    // Chama o repositório para salvar a tarefa
                     _activiesRepository.Create(task);
                 }
                 return true;
@@ -111,7 +106,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public async Task<dynamic> GetMilestonesByContractAsync(int contractID)
         {
-            // Espera o resultado da tarefa para obter a lista de milestones
+          
             var milestonesList = await _activiesRepository.GetMilestonesByContractAsync(contractID);
 
             if (milestonesList == null || !milestonesList.Any())
@@ -147,7 +142,6 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _activiesRepository.GetExecutorPlan(projectId);
         }
-
 
 
 
@@ -295,10 +289,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public dynamic TasksByProject(int MilestonesID, int? page, int? size, string searchExecutor)
-        {
-            throw new NotImplementedException();
-        }
+       
 
 
     }

@@ -14,7 +14,7 @@ namespace TaskPlannerMetrum.Repository.Generic
     {
         private MSSQLContext _context;
 
-        private readonly UserConverter _converter;
+        //private readonly UserConverter _converter;
 
         private DbSet<T> dataset;
         public GenericRepository(MSSQLContext context)
@@ -51,21 +51,24 @@ namespace TaskPlannerMetrum.Repository.Generic
 
         private UserVO ConvertUser(TeamUsers User)
         {
-            UserVO user = new UserVO();
-            user.CreationDate =  User.CreationDate;
-            user.UserName = User.UserName;
-            user.UserEmail = User.UserEmail;
-            user.RefreshTokenExpiryTime = User.RefreshTokenExpiryTime;
-            user.PhoneNumber = User.PhoneNumber;
-            user.UserName = User.UserName;
-            user.DepartmentId = User.DepartmentId;
-            user.WorkspaceID= User.WorkspaceID;
-            user.RefreshToken = User.RefreshToken;
-            user.Id= User.Id;
-            user.DepartamentName = User.DepartamentName;
-            user.Password= User.Password;
-            user.RefreshTokenExpiryTime = User.RefreshTokenExpiryTime;
-            return user;
+            var  user = new UserVO();
+            {
+                user.CreationDate = User.CreationDate;
+                user.UserName = User.UserName;
+                user.UserEmail = User.UserEmail;
+                user.RefreshTokenExpiryTime = User.RefreshTokenExpiryTime;
+                user.PhoneNumber = User.PhoneNumber;
+                user.UserName = User.UserName;
+                user.DepartmentId = User.DepartmentId;
+                user.WorkspaceID = User.WorkspaceID;
+                user.RefreshToken = User.RefreshToken;
+                user.Id = User.Id;
+                user.DepartamentName = User.DepartamentName;
+                user.Password = User.Password;
+                user.RefreshTokenExpiryTime = User.RefreshTokenExpiryTime;
+                return user;
+            }
+           
         }
         
 
