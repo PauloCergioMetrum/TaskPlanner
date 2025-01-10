@@ -54,7 +54,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _financestRepository.getAllServices(type);
         }
-        public dynamic CreateAllService(Service service)
+        public string CreateAllService(Service service)
         {
             return _financestRepository.CreateAllService(service);
         }
@@ -64,7 +64,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 
         }
 
-        public dynamic UpdateAllService(Service service)
+        public string UpdateAllService(Service service)
         {
             return _financestRepository.UpdateAllService(service);
         }

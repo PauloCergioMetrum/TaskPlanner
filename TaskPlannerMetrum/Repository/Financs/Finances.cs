@@ -385,9 +385,8 @@ namespace TaskPlannerMetrum.Repository.Financs
 
             if (services.Any())            {
                 _context.Service.RemoveRange(services); 
-                _context.SaveChanges(); 
-                return true; 
-
+                _context.SaveChanges();
+                return true;
             }
 
             return false; 
@@ -396,36 +395,37 @@ namespace TaskPlannerMetrum.Repository.Financs
 
 
 
-        public dynamic UpdateAllService(Service service)
+        public string UpdateAllService(Service service)
         {
             var newService = new Service
             {
                 Type = service.Type,
                 Description = service.Description,
-                ID = service.ID,        
-
+                ID = service.ID,
             };
+
             _context.Service.UpdateRange(newService);
             _context.SaveChanges();
-            return newService;
-            
+            return "Atualização realizada com sucesso";
         }
 
 
 
 
-        public dynamic CreateAllService(Service service)
+
+        public string CreateAllService(Service service)
         {
             var newService = new Service
             {
                 Type = service.Type,
                 Description = service.Description,
-
             };
-            _context.Service.Add(newService);   
-            _context.SaveChanges(); 
-            return newService;  
+
+            _context.Service.Add(newService);
+            _context.SaveChanges();
+            return "Material criado com sucesso";  
         }
+
         public dynamic DuplicateFinance(DuplicateFinanceDTO Finance)
         {
             try

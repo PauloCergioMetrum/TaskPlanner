@@ -19,10 +19,10 @@ namespace TaskPlannerMetrum.Repository.Financs
         public dynamic GetContractInfo(int id);
 
         public dynamic getAllServices(string type);
-        public dynamic CreateAllService(Service service);
+        public string CreateAllService(Service service);
 
         public bool DeleteAllService( int ID);
-        public dynamic UpdateAllService(Service service);
+        public string UpdateAllService(Service service);
         public dynamic DuplicateFinance(Model.DTO.DuplicateFinanceDTO Finance);
 
     }
