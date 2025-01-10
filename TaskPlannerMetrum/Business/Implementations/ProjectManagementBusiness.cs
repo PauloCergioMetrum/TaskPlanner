@@ -764,7 +764,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                         .Select(ex => new Executors
                         {
                             Executor = ex.ExecutorUserName ?? "Unknown",
-                            TotalHours = ex.TotalHours ?? 0, // Substitui null por 0
+                            TotalHours = ex.TotalHours ?? 0, 
                             MilesTonesName = milestones.Name,
                             Details = activitPlanDetaisByContractID.ActivityPlanHHTable?
                                 .Where(n => n.MilestoneName == milestones.Name)
