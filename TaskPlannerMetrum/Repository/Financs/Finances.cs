@@ -1,4 +1,5 @@
-﻿using log4net.Util;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using log4net.Util;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 using System;
@@ -107,8 +108,8 @@ namespace TaskPlannerMetrum.Repository.Financs
         {
 
 
-            var blockContract = _context.Contracts.Where(i => i.id == contractId).FirstOrDefault(); 
-          
+            var blockContract = _context.Contracts.Where(i => i.id == contractId).FirstOrDefault();
+
 
             if (blockContract != null)
             {
@@ -141,7 +142,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                     ClientName = _context.Clients.Where(i => i.Id == ClientId).Select(n => n.Name).FirstOrDefault().ToString(),
                     totalbilled = invoicevalues.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
                     WorkSpace = WorkSpace,
-                    StatusID = blockContract.StatusID, 
+                    StatusID = blockContract.StatusID,
                     Finances = financas.Select(f => new
                     {
                         f.id,
@@ -174,8 +175,8 @@ namespace TaskPlannerMetrum.Repository.Financs
             }
             else
             {
-              
-                return null; 
+
+                return null;
             }
 
 
@@ -221,10 +222,10 @@ namespace TaskPlannerMetrum.Repository.Financs
             {
                 return finance.Status;
             }
-          
+
             if (finance.EndDate.Date != Convert.ToDateTime("01/01/1901"))
             {
-               
+
                 if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/1901"))
                 {
 
@@ -248,10 +249,10 @@ namespace TaskPlannerMetrum.Repository.Financs
             else
             {
 
-             
+
                 if (finance.InvoicedDate.Date != Convert.ToDateTime("01/01/1901"))
                 {
-                 
+
                     if (finance.InvoicedDate > finance.BaseDate)
                     {
                         return "ATRASADO";
@@ -264,7 +265,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                 }
                 else
                 {
-                   
+
                     if (finance.BaseDate.Date >= DateTime.Now.Date)
                     {
                         return "NO PRAZO";
@@ -305,7 +306,7 @@ namespace TaskPlannerMetrum.Repository.Financs
 
             if (updatefinances != null)
             {
-               
+
                 updatefinances.InvoicedValue = finances.InvoicedValue;
                 updatefinances.Value = finances.Value;
                 updatefinances.Status = finances.Status;
@@ -374,12 +375,24 @@ namespace TaskPlannerMetrum.Repository.Financs
             return _context.Service.Where(i => i.Type == type).ToList();
         }
 
+        public dynamic CreateAllService(Service service)
+        {
+            var newService = new Service
+            {
+                Type = service.Type,
+                Description = service.Description,
+
+            };
+            _context.Service.Add(newService);   
+            _context.SaveChanges(); 
+            return newService;  
+        }
         public dynamic DuplicateFinance(DuplicateFinanceDTO Finance)
         {
             try
             {
 
-               
+
                 Model.Finances financeMatriz = _context.Finances.Where(i => i.id == Finance.id).FirstOrDefault();
                 var duplicateFinance = new Model.Finances();
 
@@ -401,7 +414,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                     duplicateFinance.InvoicedValue = financeMatriz.InvoicedValue;
                     duplicateFinance.Status = financeMatriz.Status;
                     duplicateFinance.WorkSpaceID = financeMatriz.WorkSpaceID;
-             
+
                     duplicateFinance.BusinessUnit = Finance.BusinessUnit;
                     duplicateFinance.BaseDate = Finance.BaseDate;
                     _context.Finances.Add(duplicateFinance);
@@ -422,5 +435,7 @@ namespace TaskPlannerMetrum.Repository.Financs
             }
 
         }
+
+
     }
 }

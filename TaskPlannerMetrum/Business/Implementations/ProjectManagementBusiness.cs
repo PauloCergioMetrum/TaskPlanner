@@ -753,39 +753,34 @@ namespace TaskPlannerMetrum.Business.Implementations
             List<Details> detailsList = new List<Details>();
 
             List<ActivicPlannGrupByMilesTone> milesTonesLsit = new List<ActivicPlannGrupByMilesTone>();
-
             foreach (var milestones in milesTonesByContractID)
             {
                 ActivicPlannGrupByMilesTone milesTone = new ActivicPlannGrupByMilesTone
                 {
                     MilestonesID = milestones.ID,
                     MilestoneName = milestones.Name,
-                    Executers = activitPlanDetaisByContractID.ActivityPlanHHTable
-              .Where(ex => ex.MilestoneName == milestones.Name)
-              .Select(ex => new Executors
-              {
-                  Executor = ex.ExecutorUserName,
-                  TotalHours = ex.TotalHours,
-                  MilesTonesName = milestones.Name,
-                  Details = activitPlanDetaisByContractID.ActivityPlanHHTable
-                    .Where(n => n.MilestoneName == milestones.Name)
-                    .Select(dt => new Model.Details
-                    {
-                        BusinesUnit = dt.BusinessUnit,
-                        ExecutedManHour = dt.ExecutedManHour,
-                        ExecutorSeniorityLevel = dt.ExecutorSeniorityLevel,
-                        MilesTonesName = dt.MilestoneName,
-                        PlannedManHour = dt.PlannedManHour,
-                        SeniorLevel = dt.ExecutorSeniorityLevel
-                    }).ToList()
-              }).ToList()
+                    Executers = activitPlanDetaisByContractID.ActivityPlanHHTable?
+                        .Where(ex => ex.MilestoneName == milestones.Name)
+                        .Select(ex => new Executors
+                        {
+                            Executor = ex.ExecutorUserName ?? "Unknown",
+                            TotalHours = ex.TotalHours ?? 0, // Substitui null por 0
+                            MilesTonesName = milestones.Name,
+                            Details = activitPlanDetaisByContractID.ActivityPlanHHTable?
+                                .Where(n => n.MilestoneName == milestones.Name)
+                                .Select(dt => new Model.Details
+                                {
+                                    BusinesUnit = dt.BusinessUnit ?? "N/A",
+                                    ExecutedManHour = dt.ExecutedManHour ?? 0,
+                                    ExecutorSeniorityLevel = dt.ExecutorSeniorityLevel ?? "Unknown",
+                                    MilesTonesName = dt.MilestoneName ?? "Unknown",
+                                    PlannedManHour = dt.PlannedManHour ?? 0,
+                                    SeniorLevel = dt.ExecutorSeniorityLevel ?? "Unknown"
+                                }).ToList()
+                        }).ToList()
                 };
                 milesTonesLsit.Add(milesTone);
             }
-
-
-
-
 
             activitPlanDetaisByContractID.ActivicPlannGrupByMilesTone = milesTonesLsit;
             return activitPlanDetaisByContractID;

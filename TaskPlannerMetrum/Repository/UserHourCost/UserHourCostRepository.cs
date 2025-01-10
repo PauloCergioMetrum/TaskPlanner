@@ -34,12 +34,11 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
         }
         public bool CreateUserHourCost(UserHourCosts newCost)
         {
-            string triggerName = "trg_UpdateFunctionNameOnUserHourCosts";
+        
 
             try
             {
-                // Desabilitar o trigger importante 
-                _context.Database.ExecuteSqlRaw($"DISABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
+   
 
                 var conflictingCost = _context.UserHourCosts
                     .FirstOrDefault(u => u.UserID == newCost.UserID &&
@@ -62,11 +61,7 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
                 Console.WriteLine($"Erro ao criar custo horário: {ex.Message}");
                 return false;
             }
-            finally
-            {
-                // Reabilitar o trigger importante
-                _context.Database.ExecuteSqlRaw($"ENABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
-            }
+            
         }
 
 
