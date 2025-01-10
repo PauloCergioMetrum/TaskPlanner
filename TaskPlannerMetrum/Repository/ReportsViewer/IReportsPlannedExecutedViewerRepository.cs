@@ -13,18 +13,13 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         public List<HoursCostModel> GetHourCost(DateTime startDate, DateTime endDate);
         public double GetHourExpectedHour(DateTime startDate, DateTime endDate, int contractID);
 
-       // public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit();
 
-        public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO);
-        
+
+        public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO);        
 
         public List<StatusForPeriod> getStatusPerPeriod(OperationalReportReportDTO OperationalReportReportDTO);
 
         public List<BalancePerProject> GetBalancePerProject(OperationalReportReportDTO operationalReportReportDTO);
-
-
-
-
 
         public List<OperationalRelationshipTable> GetContractDetails(OperationalReportReportDTO OperationalReportReportDTO);
 
@@ -36,22 +31,12 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         public List<PredictedInvoiced> GetMaterialAndService(ReportInvoice parameters);
 
-
         public List<MaterialServices> GetPredictedInvoicedReport(ReportInvoice parameters);
-
 
         public List<BillingPerBusinessUnit> GetBillingPerBusinessUnit(ReportInvoice filter);
 
-
         public List<ReportDetailsTable> GetReportDetailsTable(ReportInvoice filter);
-
-
-        public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter);
-
-      
-
-
-    
+        public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter);       
 
         Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode);
 

@@ -18,29 +18,18 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public int inspectorID { get; set; }
         public string InternalCode { get; set; }
         public DateTime ScheduledDate { get; set; }
-        public double PlannedManHour { get; set; }
-        public double ExecutedManHour { get; set; }
-
+        public double PlannedManHour { get; set; } 
+        public double? ExecutedManHour { get; set; } 
         public string InspectorName { get; set; }
         public string ExecutorName { get; set; }
-
         public int ExecutorID { get; set; }
-
         public int ContractID { get; set; }
-
         public int TechLeaderID { get; set; }
-
         public string TechLeaderName { get; set; }
-
         public string TaskDescription { get; set; }
-
-
-
-
-
-
-
+        public DateTime? EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public double? HourCost { get; set; } // Alterado para double?
     }
 }
-
 

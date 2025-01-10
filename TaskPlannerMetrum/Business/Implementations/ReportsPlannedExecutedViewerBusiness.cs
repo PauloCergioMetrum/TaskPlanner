@@ -26,30 +26,43 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public List<vReports_PlannedExecuted> SearchReport(ReportPlannedExecutedDTO reportPlannedExecuted)
         {
-            var listPlannedExecuted = _repository.ReportsPlannedExecuted(reportPlannedExecuted.startDate, reportPlannedExecuted.endDate).AsQueryable();
+            // Forneça valores padrão caso startDate ou endDate sejam nulos
+            var startDate = reportPlannedExecuted.startDate ?? DateTime.MinValue;
+            var endDate = reportPlannedExecuted.endDate ?? DateTime.MaxValue;
 
-            if (reportPlannedExecuted.lExecutedID.Count() != 0)
+            var listPlannedExecuted = _repository.ReportsPlannedExecuted(startDate, endDate).AsQueryable();
+
+            if (reportPlannedExecuted.lExecutedID?.Count > 0)
             {
-                listPlannedExecuted = listPlannedExecuted.Where(c => reportPlannedExecuted.lExecutedID.Any(u => u == c.ExecutorID)).AsQueryable();
+                listPlannedExecuted = listPlannedExecuted
+                    .Where(c => reportPlannedExecuted.lExecutedID.Any(u => u == c.ExecutorID))
+                    .AsQueryable();
             }
 
-            if (reportPlannedExecuted.lContractID.Count() != 0)
+            if (reportPlannedExecuted.lContractID?.Count > 0)
             {
-
-                listPlannedExecuted = listPlannedExecuted.Where(c => reportPlannedExecuted.lContractID.Any(u => u == c.ContractID)).AsQueryable();
+                listPlannedExecuted = listPlannedExecuted
+                    .Where(c => reportPlannedExecuted.lContractID.Any(u => u == c.ContractID))
+                    .AsQueryable();
             }
 
-            if (reportPlannedExecuted.lInspectorID.Count() != 0)
+            if (reportPlannedExecuted.lInspectorID?.Count > 0)
             {
-                listPlannedExecuted = listPlannedExecuted.Where(c => reportPlannedExecuted.lInspectorID.Any(u => u == c.inspectorID)).AsQueryable();
+                listPlannedExecuted = listPlannedExecuted
+                    .Where(c => reportPlannedExecuted.lInspectorID.Any(u => u == c.inspectorID))
+                    .AsQueryable();
             }
 
-            if (reportPlannedExecuted.lTechLeaderID.Count() != 0)
+            if (reportPlannedExecuted.lTechLeaderID?.Count > 0)
             {
-                listPlannedExecuted = listPlannedExecuted.Where(c => reportPlannedExecuted.lTechLeaderID.Any(u => u == c.TechLeaderID)).AsQueryable();
+                listPlannedExecuted = listPlannedExecuted
+                    .Where(c => reportPlannedExecuted.lTechLeaderID.Any(u => u == c.TechLeaderID))
+                    .AsQueryable();
             }
+
             return listPlannedExecuted.ToList();
         }
+
 
         public double HoursCostSearch(List<vReports_PlannedExecuted> reportPlannedExecuted)
         {
@@ -58,7 +71,6 @@ namespace TaskPlannerMetrum.Business.Implementations
             var listExecutedID = reportPlannedExecuted.Select(e => e.ExecutorID).ToList();
             var listContractID = reportPlannedExecuted.Select(e => e.ContractID).ToList();
             var listHoursCost = _repository.GetHourCost(startDate, endDate).AsQueryable();
-
 
             if (reportPlannedExecuted.Select(e => e.ExecutorID).ToList().Count != 0)
             {
@@ -69,69 +81,91 @@ namespace TaskPlannerMetrum.Business.Implementations
             {
                 listHoursCost = listHoursCost.Where(l => listContractID.Any(u => u == l.ContractID)).AsQueryable();
             }
+
             return Math.Round(listHoursCost.Select(d => d.DayCost).Sum(), 2);
         }
 
 
         public ReportPlannedExecuted GetPlannedExecuted(ReportPlannedExecutedDTO reportPlannedExecuted)
         {
-            //Lista Filtadra com todos os paramentros para a geração do relatorio
+         
             var listPlannedExecuted = SearchReport(reportPlannedExecuted);
 
+          
+            double totalExecutedCost = listPlannedExecuted
+                .Sum(a => (a.ExecutedManHour.HasValue ? a.ExecutedManHour.Value : 0.0) *
+                          (a.HourCost.HasValue ? a.HourCost.Value : 0.0));
 
+          
+            double totalPlanned = listPlannedExecuted
+                .Sum(s => s.PlannedManHour); 
 
+            double totalExecuted = listPlannedExecuted
+                .Sum(s => s.ExecutedManHour.HasValue ? s.ExecutedManHour.Value : 0.0);
+
+         
             var plannedExecuted = new ReportPlannedExecuted
             {
                 listPlannedExecuted = listPlannedExecuted,
-                totalPlanned = Math.Round(listPlannedExecuted.Sum(s => s.PlannedManHour), 2),
-                totalExecuted = Math.Round(listPlannedExecuted.Sum(s => s.ExecutedManHour), 2),
-                totalCost = HoursCostSearch(listPlannedExecuted),
-                totalExpectedHour = Math.Round(HoursExpetcted(reportPlannedExecuted.startDate, reportPlannedExecuted.endDate, reportPlannedExecuted.lContractID), 2)
-
+                totalPlanned = Math.Round(totalPlanned, 2),
+                totalExecuted = Math.Round(totalExecuted, 2),
+                totalCost = Math.Round(totalExecutedCost, 2),
+                totalExpectedHour = Math.Round(HoursExpetcted(
+                    reportPlannedExecuted.startDate ?? DateTime.MinValue,
+                    reportPlannedExecuted.endDate ?? DateTime.MaxValue,
+                    reportPlannedExecuted.lContractID), 2)
             };
 
             return plannedExecuted;
         }
 
-        public double HoursExpetcted(DateTime startDate, DateTime endDate, List<int> contractID)
+
+
+        public double HoursExpetcted(DateTime? startDate, DateTime? endDate, List<int> contractID)
         {
             double ExpectedHours = 0;
+
+          
+            DateTime start = startDate ?? DateTime.MinValue;
+            DateTime end = endDate ?? DateTime.MaxValue;
+
             foreach (var contract in contractID)
             {
-                ExpectedHours += _repository.GetHourExpectedHour(startDate, endDate, contract);
+                ExpectedHours += _repository.GetHourExpectedHour(start, end, contract);
             }
+
             return ExpectedHours;
-
         }
-
 
         public List<PreparetBalancePerProject> PreparetBalancePerProject(OperationalReportReportDTO OperationalReportReportDTO)
         {
             List<BalancePerProject> allBalancePerProject = _repository.GetBalancePerProject(OperationalReportReportDTO);
             var distinctBalanceProjects = allBalancePerProject.ToList().Distinct();
             List<PreparetBalancePerProject> balanceDetailsFullList = new List<PreparetBalancePerProject>();
-         
+
             foreach (var businessUnit in distinctBalanceProjects)
             {
-                if(balanceDetailsFullList.Where(b=> b.BusinessUnit == businessUnit.BusinessUnit).Count()<1)
+                if (balanceDetailsFullList.Where(b => b.BusinessUnit == businessUnit.BusinessUnit).Count() < 1)
                 {
                     balanceDetailsFullList.Add(new PreparetBalancePerProject
                     {
-                        BusinessUnit =  businessUnit.BusinessUnit,
-                        Details = allBalancePerProject.Where(b => b.BusinessUnit ==  businessUnit.BusinessUnit).Select(b => new BalancePerProject
-                        {
-                            BusinessUnit = b.BusinessUnit,
-                            Period = b.Period,
-                            AumontClose = b.AumontClose,
-                            AumontOpen = b.AumontOpen,
-                        }).Distinct().ToList()
-
+                        BusinessUnit = businessUnit.BusinessUnit,
+                        Details = allBalancePerProject
+                                .Where(b => b.BusinessUnit == businessUnit.BusinessUnit)
+                                .Select(b => new BalancePerProject
+                                {
+                                    BusinessUnit = b.BusinessUnit,
+                                    Period = b.Period,
+                                    AumontClose = b.AumontClose,
+                                    AumontOpen = b.AumontOpen,
+                                })
+                                .Distinct()
+                                .ToList()
                     });
                 }
-                
             }
-            return balanceDetailsFullList;
 
+            return balanceDetailsFullList;
         }
 
 
@@ -154,10 +188,10 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return new OptionsListFilter
             {
-                BusinessUnits =_repository.GetAllBusinesUnit(),
+                BusinessUnits = _repository.GetAllBusinesUnit(),
                 ProjectInspector = _repository.GetAllInspector(),
                 TechLeader = _repository.GetAllTechLeader(),
-                Status = new List<string>{ "ABERTO", "FECHADO"}
+                Status = new List<string> { "ABERTO", "FECHADO" }
 
             };
         }
@@ -167,7 +201,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             List<PredictedInvoiced> PredictedInvoiced = _repository.GetMaterialAndService(filters);
             List<MaterialServices> MaterialServices = _repository.GetPredictedInvoicedReport(filters);
-            List<BillingPerBusinessUnit> BillingPerBusinessUnit  =_repository.GetBillingPerBusinessUnit(filters);
+            List<BillingPerBusinessUnit> BillingPerBusinessUnit = _repository.GetBillingPerBusinessUnit(filters);
             List<ReportDetailsTable> ReportDetailsTable = _repository.GetReportDetailsTable(filters);
             GoalRealizationReport GoalRealizationReport = _repository.GetGoalsAndRealized(filters);
             return new ReportInvoiceDetails
@@ -175,8 +209,8 @@ namespace TaskPlannerMetrum.Business.Implementations
                 PredictedInvoiced = PredictedInvoiced,
                 MaterialAndService = MaterialServices,
                 BillingPerBusinessUnit = BillingPerBusinessUnit,
-                ReportDetailsTable = ReportDetailsTable ,
-                GoalRealizationReport = GoalRealizationReport   
+                ReportDetailsTable = ReportDetailsTable,
+                GoalRealizationReport = GoalRealizationReport
 
             };
         }
