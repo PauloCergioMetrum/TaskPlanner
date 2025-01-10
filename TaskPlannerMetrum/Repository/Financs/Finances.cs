@@ -396,6 +396,24 @@ namespace TaskPlannerMetrum.Repository.Financs
 
 
 
+        public dynamic UpdateAllService(Service service)
+        {
+            var newService = new Service
+            {
+                Type = service.Type,
+                Description = service.Description,
+                ID = service.ID,        
+
+            };
+            _context.Service.UpdateRange(newService);
+            _context.SaveChanges();
+            return newService;
+            
+        }
+
+
+
+
         public dynamic CreateAllService(Service service)
         {
             var newService = new Service

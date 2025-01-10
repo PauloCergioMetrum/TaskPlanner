@@ -193,6 +193,27 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpPut("UpdateAllService")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult UpdateAllService(Service service)
+        {
+            try
+            {
+
+                var result = _financestBusiness.UpdateAllService(service);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+
         [HttpPost("DuplicateFinance")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]

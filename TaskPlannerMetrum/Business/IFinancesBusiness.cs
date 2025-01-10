@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Business
@@ -18,6 +19,7 @@ namespace TaskPlannerMetrum.Business
 
         public dynamic getAllServices(string type);
         public bool DeleteAllService(int ID);
+        public dynamic UpdateAllService(Service service);
         public dynamic DuplicateFinance(DuplicateFinanceDTO Finance);
         public dynamic CreateAllService(Model.Service service); 
     }

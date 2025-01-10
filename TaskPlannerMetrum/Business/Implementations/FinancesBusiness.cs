@@ -64,6 +64,11 @@ namespace TaskPlannerMetrum.Business.Implementations
                 
         }
 
+        public dynamic UpdateAllService(Service service)
+        {
+            return _financestRepository.UpdateAllService(service);
+        }
+
         public dynamic DuplicateFinance(DuplicateFinanceDTO Finance)
         {
             return _financestRepository.DuplicateFinance(Finance);
