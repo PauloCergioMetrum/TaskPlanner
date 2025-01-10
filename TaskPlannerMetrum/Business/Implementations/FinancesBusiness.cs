@@ -58,6 +58,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _financestRepository.CreateAllService(service);
         }
+        public bool DeleteAllService(int ID)
+        {
+            return _financestRepository.DeleteAllService(ID);   
+                
+        }
 
         public dynamic DuplicateFinance(DuplicateFinanceDTO Finance)
         {

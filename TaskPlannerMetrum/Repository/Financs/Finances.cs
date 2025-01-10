@@ -375,6 +375,27 @@ namespace TaskPlannerMetrum.Repository.Financs
             return _context.Service.Where(i => i.Type == type).ToList();
         }
 
+       
+
+
+
+        public bool DeleteAllService(int ID)
+        {
+           var services = _context.Service.Where(i => i.ID == ID).ToList();        
+
+            if (services.Any())            {
+                _context.Service.RemoveRange(services); 
+                _context.SaveChanges(); 
+                return true; 
+
+            }
+
+            return false; 
+
+        }
+
+
+
         public dynamic CreateAllService(Service service)
         {
             var newService = new Service
@@ -436,6 +457,6 @@ namespace TaskPlannerMetrum.Repository.Financs
 
         }
 
-
+       
     }
 }

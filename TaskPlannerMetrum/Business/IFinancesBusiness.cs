@@ -17,7 +17,7 @@ namespace TaskPlannerMetrum.Business
         public dynamic GetContractInfo(int id);
 
         public dynamic getAllServices(string type);
-
+        public bool DeleteAllService(int ID);
         public dynamic DuplicateFinance(DuplicateFinanceDTO Finance);
         public dynamic CreateAllService(Model.Service service); 
     }
