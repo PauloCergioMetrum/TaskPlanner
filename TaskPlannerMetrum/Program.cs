@@ -17,7 +17,7 @@ namespace TaskPlannerMetrum
         {
 
             Logger.CreateLogger("TaskPlanner");
-            
+
             Logger.SetLogLevel(ELoggerType.Debug);
             Logger.AddNewAppender(EAppenderType.File);
             Logger.AddNewAppender(EAppenderType.Console);
@@ -27,15 +27,11 @@ namespace TaskPlannerMetrum
             Logger.EnableDebugMode();
             CreateHostBuilder(args).Build().Run();
         }
-
-
-       
-
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>(); 
+                    webBuilder.UseStartup<Startup>();
                 });
     }
 }

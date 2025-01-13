@@ -152,6 +152,66 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        [HttpPost("CreateService")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CreateService(Service serviceRequest)
+        {
+            try
+            {
+        
+                var result = _financestBusiness.CreateAllService(serviceRequest);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        [HttpDelete("DeleteAllService")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult DeleteAllService(int ID)
+        {
+            try
+            {
+
+                var result = _financestBusiness.DeleteAllService(ID);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+
+        [HttpPut("UpdateAllService")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult UpdateAllService(Service service)
+        {
+            try
+            {
+
+                var result = _financestBusiness.UpdateAllService(service);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
 
 
         [HttpPost("DuplicateFinance")]
