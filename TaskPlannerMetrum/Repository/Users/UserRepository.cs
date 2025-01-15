@@ -73,7 +73,7 @@ namespace TaskPlannerMetrum.Repository.Users
             return result;
         }
 
-       
+
         public string ComputeHash(string input, HashAlgorithm algorithm)
         {
             Byte[] inputBytes = Encoding.UTF8.GetBytes(input);
@@ -97,15 +97,15 @@ namespace TaskPlannerMetrum.Repository.Users
                 PermissionId = u.PermissionID,
                 PhoneNumber = u.PhoneNumber,
                 WorkspaceID = u.WorkspaceID,
-                IsActive=   u.IsActive,
+                IsActive = u.IsActive,
                 CreationDate = u.CreationDate,
                 PermissionName = u.PermissionName,
                 FunctionName = u.FunctionName,
                 ManagementID = u.ManagementID,
-                ManagementName =u.ManagementName
+                ManagementName = u.ManagementName
             }).ToList();
             return userList;
-          
+
         }
         public string GetDepartament(int id)
         {
@@ -185,26 +185,32 @@ namespace TaskPlannerMetrum.Repository.Users
         }
 
 
+
+
+
         public dynamic GetAllUsers()
         {
+            var users = _context.Users
+                .Select(u => new
+                {
+                    u.UserName,
+                    Id = _context.Team
+                              .Where(i => i.UserID == u.Id)
+                              .Select(i => i.ID)
+                              .FirstOrDefault(),
+                    u.PhoneNumber,
+                    u.UserEmail,
+                    u.WorkspaceID,
+                    u.DepartmentId,
+                    u.FullName,
+                    u.CreationDate,
+                    u.IsActive,
+                })
+                .ToList();
 
-            var users = _context.Users.ToList();
-
-
-
-            return users.Select(u => new
-            {
-                u.UserName,
-                Id = _context.Team.Where(i => i.UserID == u.Id).Select(i => i.ID).FirstOrDefault(),
-                u.PhoneNumber,
-                u.UserEmail,
-                u.WorkspaceID,
-                u.DepartmentId,
-                u.FullName,
-                u.CreationDate,
-                u.IsActive,
-            }).ToList();
+            return users;
         }
+
 
 
 
