@@ -187,8 +187,14 @@ namespace TaskPlannerMetrum.Business.Implementations
         public async Task<bool> CreatHoursCostByExcel(IFormFile excelFile, DateTime startDate, DateTime endDate)
         {
 
+
             try
             {
+
+
+
+
+
                 var functionsDict = _repository.GetAllFunction()
                     .ToDictionary(f => RemoveAccents(f.Name).ToUpper().Replace(" ", ""), f => f.ID);
 
@@ -288,6 +294,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 Console.WriteLine($"Erro ao processar arquivo: {ex.Message}");
                 return false;
             }
+
 
         }
 
