@@ -20,7 +20,7 @@ namespace TaskPlannerMetrum.Model
         public double? CostHoursPlanned { get; set; } 
         public double? CostHoursExecuted { get; set; } 
         public DateTime? ScheduledDate { get; set; }  
-        //public double? HourCost { get; set; }  
+        public double? HourCost { get; set; }  
 
        
     }
