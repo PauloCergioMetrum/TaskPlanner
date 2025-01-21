@@ -48,5 +48,6 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string? MilestoneName {  get; set; }    
 
         public int ?EquipmentID { get; set; }    
-    }
+        public DateTime? EndofActivities { get; set; }
+}
 }
