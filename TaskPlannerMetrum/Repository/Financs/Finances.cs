@@ -52,6 +52,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                 Guarantee = newfinance.Guarantee,
                 GuaranteePeriod = newfinance.GuaranteePeriod,
                 WorkSpaceID = newfinance.WorkSpaceID,
+               
             });
             _context.SaveChanges();
             int FinanceID = _context.Finances.Where(f => f.ContractID == newfinance.ContractID).OrderBy(i => i.id).Select(f => f.id).LastOrDefault();
@@ -141,7 +142,7 @@ namespace TaskPlannerMetrum.Repository.Financs
                     percents = totalpercents.ToString("0.00").Replace(",", "."),
                     ClientName = _context.Clients.Where(i => i.Id == ClientId).Select(n => n.Name).FirstOrDefault().ToString(),
                     totalbilled = invoicevalues.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
-                    WorkSpace = WorkSpace,
+                 
                     StatusID = blockContract.StatusID,
                     Finances = financas.Select(f => new
                     {
@@ -169,6 +170,8 @@ namespace TaskPlannerMetrum.Repository.Financs
                         f.GuaranteePeriod,
                         f.DateExpectedGarantee,
                         f.StatusGuarantee,
+                        f.WorkspaceName,
+                       
                     })
                 };
                 return contractfinances;
