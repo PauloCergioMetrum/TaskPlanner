@@ -6,7 +6,6 @@ namespace TaskPlannerMetrum.Model.DTO
     {
         public long ID { get; set; }
         public string ContractName { get; set; }
-        public string? Contact { get; set; }
         public string? Scope { get; set; }
         public DateTime? LatestScheduledDate { get; set; }
         public DateTime? LastContactDate { get; set; }
@@ -16,7 +15,13 @@ namespace TaskPlannerMetrum.Model.DTO
         public int ContractID { get; set; }
         public DateTime? FeedbackDate { get; set; }
         public DateTime? MaxScheduledDate { get; set; }
-        public DateTime? EndofActivities { get; set; } 
+        public DateTime? EndofActivities { get; set; }
+    
+        public string? Name { get; set; }
+        public string ?Email { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Role { get; set; }
+        public int? Type { get; set; }
 
 
 

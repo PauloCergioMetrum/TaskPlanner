@@ -23,11 +23,45 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
 
         public List<ClientFeedbackDetailsView> ClientFeedbackDetailsModel(int contractID)
         {
-             var ExixteContractID = _context.ClientFeedbackDetailsView.Where(a => a.ContractID == contractID).ToList();
+            var ExixteContractID = _context.ClientFeedbackDetailsView.Where(a => a.ContractID == contractID).ToList();
             return ExixteContractID;
         }
 
-        public bool CreateCustomerFeedback(DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint , int? Status)
+        public object CustomerContacts(int contractID)
+        {
+           
+            var contacts = _context.ClientFeedbackDetailsView
+                .Where(a => a.ContractID == contractID)
+                .ToList();
+
+            var technicalContact = contacts.FirstOrDefault(c => c.Type == 1); 
+            var generalContact = contacts.FirstOrDefault(c => c.Type == 2);   
+
+            return new
+            {
+                TechnicalContact = technicalContact != null ? new
+                {
+                    ContractID = technicalContact.ContractID,
+                    Name = technicalContact.Name,
+                    Email = technicalContact.Email,
+                    PhoneNumber = technicalContact.PhoneNumber,
+                    Role = technicalContact.Role
+                } : null,
+                GeneralContact = generalContact != null ? new
+                {
+                    ContractID = generalContact.ContractID,
+                    Name = generalContact.Name,
+                    Email = generalContact.Email,
+                    PhoneNumber = generalContact.PhoneNumber,
+                    Role = generalContact.Role
+                } : null
+            };
+        }
+
+
+
+
+        public bool CreateCustomerFeedback(DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint, int? Status)
         {
             try
             {
@@ -39,8 +73,8 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                     existingFeedback.ClientResponse = clientResponse;
                     existingFeedback.ClientRating = clientRating;
                     existingFeedback.ReceivedComplaint = receivedComplaint;
-                    existingFeedback.FeedbackDate = FeedbackDate; 
-                    existingFeedback.status = Status;   
+                    existingFeedback.FeedbackDate = FeedbackDate;
+                    existingFeedback.status = Status;
                 }
                 else
                 {
@@ -51,7 +85,7 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
                         ClientRating = clientRating,
                         ReceivedComplaint = receivedComplaint,
                         FeedbackDate = FeedbackDate,
-                        status = Status 
+                        status = Status
                     };
 
 
@@ -118,7 +152,7 @@ namespace TaskPlannerMetrum.Repository.CustomerSatisfaction
 
 
                                 Status_satisfaction_Customer = reader.IsDBNull(reader.GetOrdinal("status_satisfaction_Customer"))
-                            ? 0 
+                            ? 0
                             : reader.GetInt32(reader.GetOrdinal("status_satisfaction_Customer"))
                             };
 
