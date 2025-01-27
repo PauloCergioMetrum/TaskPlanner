@@ -2,21 +2,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
 
 namespace TaskPlannerMetrum.Controllers
 {
     [Route("api/[controller]/v{version:apiVersion}")]
-    public class CustomerSatisfactionController:ControllerBase
+    public class CustomerSatisfactionController : ControllerBase
     {
 
         private readonly ICustomerSatisfactionBusiness _customerSatisfactionBusiness;
 
         public CustomerSatisfactionController(ICustomerSatisfactionBusiness customerSatisfactionBusiness)
         {
-          
-            _customerSatisfactionBusiness = customerSatisfactionBusiness;   
+
+            _customerSatisfactionBusiness = customerSatisfactionBusiness;
 
         }
 
@@ -39,17 +41,45 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("customerContacts")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CustomerContacts(int ContractID)
+        {
+            try
+            {
+                var contacts = _customerSatisfactionBusiness.CustomerContacts(ContractID);
+
+
+                dynamic contactsDynamic = contacts;
+
+
+                if (contactsDynamic.TechnicalContact == null && contactsDynamic.GeneralContact == null)
+                {
+                    return NoContent();
+                }
+
+                return Ok(contacts);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPut("CreateCustomerFeedback")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult CreateCustomerFeedback (DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint , int? Status)
+        public IActionResult CreateCustomerFeedback(DateTime? FeedbackDate, int contractID, string clientResponse, int? clientRating, string receivedComplaint, int? Status)
         {
             try
             {
-                return Ok(_customerSatisfactionBusiness.CreateCustomerFeedback(FeedbackDate, contractID ,clientResponse ,clientRating,receivedComplaint , Status));
+                return Ok(_customerSatisfactionBusiness.CreateCustomerFeedback(FeedbackDate, contractID, clientResponse, clientRating, receivedComplaint, Status));
 
             }
             catch (Exception ex)

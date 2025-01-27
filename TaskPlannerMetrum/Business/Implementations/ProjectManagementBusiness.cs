@@ -76,6 +76,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
                         PredictedSavings = OrderInformationByID.PredictedSavings == null ? "" : OrderInformationByID.PredictedSavings.ToString(),
 
+
                         PredictedMarkup = OrderInformationByID.PredictedMarkup == null ? "" : OrderInformationByID.PredictedMarkup.ToString(),
 
                         ValidityStartDate = validityStartDate,

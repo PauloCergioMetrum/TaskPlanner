@@ -21,7 +21,7 @@ namespace TaskPlannerMetrum.Repository.Financs
         public dynamic getAllServices(string type);
         public string CreateAllService(Service service);
 
-        public bool DeleteAllService( int ID);
+        public bool DeleteAllService(int ID, int userId, string userName);
         public string UpdateAllService(Service service);
         public dynamic DuplicateFinance(Model.DTO.DuplicateFinanceDTO Finance);
 
