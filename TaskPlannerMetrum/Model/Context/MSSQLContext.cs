@@ -78,10 +78,8 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<OrderManagementInfo> OrderManagementInfo {  get; set; }  
         public DbSet<MilestoneEntity> MilestoneEntities { get; set; }
         public DbSet<ContractGraphic> ContractGraphics { get; set; }
-
-
-
         public DbSet<vhhGraphicDetail> vhhGraphicDetail { get; set; }
+        public DbSet<Log> Log { get; set; }
 
 
 

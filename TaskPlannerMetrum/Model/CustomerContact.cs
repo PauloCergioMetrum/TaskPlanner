@@ -1,5 +1,6 @@
 ﻿namespace TaskPlannerMetrum.Model
 {
+#nullable enable
     public class CustomerContact
     {
         public int? ContractID { get; set; }

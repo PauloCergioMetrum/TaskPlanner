@@ -58,9 +58,9 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _financestRepository.CreateAllService(service);
         }
-        public bool DeleteAllService(int ID)
+        public bool DeleteAllService(int ID, int userId, string userName)
         {
-            return _financestRepository.DeleteAllService(ID);   
+            return _financestRepository.DeleteAllService(ID ,userId,userName);   
                 
         }
 

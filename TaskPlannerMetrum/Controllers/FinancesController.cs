@@ -20,33 +20,34 @@ namespace TaskPlannerMetrum.Controllers
     [Route("api/[controller]/v{version:apiVersion}")]
     [Authorize(Roles = "4,1,DEPCNT")]
 
-    public class FinancesController:ControllerBase
+    public class FinancesController : ControllerBase
     {
-  
 
-     
+
+
         private IFinancesBusiness _financestBusiness;
 
         public FinancesController(ILogger<ProjectsController> logger, IFinancesBusiness financeBusiness)
         {
-          
+
             _financestBusiness = financeBusiness;
 
         }
-        
+
         [HttpGet("GetAllFinances")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-       
+
         public IActionResult GetAllContracts()
         {
             try
             {
                 return Ok(_financestBusiness.GetAllFinances());
 
-            }catch (Exception ex) 
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -64,9 +65,10 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return Ok(_financestBusiness.GetFinancesById(contractId));
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                return BadRequest(ex.Message);  
+                return BadRequest(ex.Message);
             }
         }
 
@@ -81,8 +83,10 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return Ok(_financestBusiness.Create(newfinance));
 
-            }catch(Exception ex) { 
-                return BadRequest(ex.Message);  
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 
@@ -97,7 +101,8 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return Ok(_financestBusiness.UpdateFinances(newfinance));
 
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
@@ -112,7 +117,8 @@ namespace TaskPlannerMetrum.Controllers
             try
             {
                 return Ok(_financestBusiness.DeleteFinance(id));
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -128,9 +134,10 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return Ok(_financestBusiness.GetContractInfo(contractid));
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                return BadRequest(ex.Message);  
+                return BadRequest(ex.Message);
             }
         }
         [HttpGet("getAllServices")]
@@ -144,11 +151,11 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return Ok(_financestBusiness.getAllServices(type));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Log(ex.Message, ELoggerType.Debug);
 
-                return BadRequest( ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -161,7 +168,7 @@ namespace TaskPlannerMetrum.Controllers
         {
             try
             {
-        
+
                 var result = _financestBusiness.CreateAllService(serviceRequest);
                 return Ok(result);
             }
@@ -171,26 +178,40 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
-
         [HttpDelete("DeleteAllService")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult DeleteAllService(int ID)
+        public IActionResult DeleteAllService(int ID, int userId, string userName) 
         {
             try
             {
+          
+                if (userId == 0 || string.IsNullOrEmpty(userName))
+                {
+                    return BadRequest(new { Message = "ID ou nome do usuário inválido." });
+                }
 
-                var result = _financestBusiness.DeleteAllService(ID);
-                return Ok(result);
+          
+                var result = _financestBusiness.DeleteAllService(ID, userId, userName);
+
+                if (result)
+                {
+                    return Ok(new { Message = "Serviços deletados com sucesso." });
+                }
+                else
+                {
+                    return NotFound(new { Message = "Nenhum serviço encontrado para o ID fornecido." });
+                }
             }
             catch (Exception ex)
             {
-                Logger.Log(ex.Message, ELoggerType.Debug);
-                return BadRequest(new { Message = ex.Message });
+            
+                return BadRequest(new { Message = "Ocorreu um erro ao processar sua solicitação.", Details = ex.Message });
             }
         }
+
+
 
 
         [HttpPut("UpdateAllService")]

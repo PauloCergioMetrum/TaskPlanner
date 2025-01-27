@@ -4,8 +4,9 @@ namespace TaskPlannerMetrum.Model.DTO
 {
     public class ClientFeedbackDetailsView
     {
+#nullable enable
         public long ID { get; set; }
-        public string ContractName { get; set; }
+        public string ContractName { get; set; } = string.Empty;
         public string? Scope { get; set; }
         public DateTime? LatestScheduledDate { get; set; }
         public DateTime? LastContactDate { get; set; }

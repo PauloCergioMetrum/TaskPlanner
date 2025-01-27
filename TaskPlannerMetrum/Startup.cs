@@ -52,6 +52,7 @@ using TaskPlannerMetrum.Repository.TeamAllocation;
 using TaskPlannerMetrum.Repository.Executive;
 using TaskPlannerMetrum.Repository.PvExecutive;
 using TaskPlannerMetrum.Repository.CustomerSatisfaction;
+using TaskPlannerMetrum.Repository.Log;
 
 namespace TaskPlannerMetrum
 {
@@ -160,16 +161,16 @@ namespace TaskPlannerMetrum
             {
                 c.SwaggerDoc("v1",
                     new OpenApiInfo
+                    {
+                        Title = "Task Planner Metrum API",
+                        Version = "v1",
+                        Description = "API RESTful developed for Task Planner Metrum'",
+                        Contact = new OpenApiContact
                         {
-                            Title = "Task Planner Metrum API",
-                            Version = "v1",
-                            Description = "API RESTful developed for Task Planner Metrum'",
-                            Contact = new OpenApiContact
-                            {
-                                Name = "Augusto Morais",
-                                Url = new Uri("https://github.com/augustomemt")
-                            }
-                        });
+                            Name = "Augusto Morais",
+                            Url = new Uri("https://github.com/augustomemt")
+                        }
+                    });
             });
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserBusiness, UserBusinessImplementation>();
@@ -192,16 +193,9 @@ namespace TaskPlannerMetrum
             services.AddScoped<IProjectCharterBusiness, ProjectCharterBusiness>();
             services.AddScoped<ITeamAllocationBusiness, TeamAllocationBussinessImplementation>();
             services.AddScoped<IExecutiveBussines, ExecutiveImplentations>();
-            services.AddScoped<ICustomerSatisfactionBusiness , CustomerSatisfactionImplementation>();
+            services.AddScoped<ICustomerSatisfactionBusiness, CustomerSatisfactionImplementation>();
             services.AddScoped<IConfigureSettingsBusinesss, ConfigureSettingsBusiness>();
-
-
-            
-
-
-
-
-
+            services.AddScoped<ILogBusinesssImplementation, LogBusinesssImplementation>();
 
 
             services.AddTransient<ITokenService, TokenService>();
@@ -227,8 +221,9 @@ namespace TaskPlannerMetrum
             services.AddScoped<ITechnicalLeaderRepository, TechnicalLeaderRepository>();
             services.AddScoped<ITeamAllocationRepository, TeamAllocationRepository>();
             services.AddScoped<IExecutiveRepository, ExecutiveRepository>();
-            services.AddScoped<ICustomerSatisfactionRepository , CustomerSatisfactionRepository>();
-           
+            services.AddScoped<ICustomerSatisfactionRepository, CustomerSatisfactionRepository>();
+            services.AddScoped<ILogRepository, LogRepository>();
+
 
 
 

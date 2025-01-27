@@ -378,24 +378,44 @@ namespace TaskPlannerMetrum.Repository.Financs
             return _context.Service.Where(i => i.Type == type).ToList();
         }
 
-       
 
 
 
-        public bool DeleteAllService(int ID)
+
+        public bool DeleteAllService(int ID, int userId, string userName)
         {
-           var services = _context.Service.Where(i => i.ID == ID).ToList();        
+            if (string.IsNullOrEmpty(userName))
+            {
+                throw new ArgumentException("O nome do usuário não pode ser nulo ou vazio.");
+            }          
+            var services = _context.Service.Where(i => i.ID == ID).ToList();
+            if (services.Any())
+            {
+                foreach (var service in services)
+                {
+                    var log = new Model.Log
+                    {
+                        UserId = userId,
+                        UserName = userName, 
+                        Action = "DeleteAllService",
+                        Description = $"Serviço deletado: ID {service.ID}, Descrição {service.Description}",
+                        CreatedAt = DateTime.UtcNow,
+                        Status = "Deleted",
+                        SeverityLevel = "Info",
+                        ErrorDetails = null
+                    };                  
+                    _context.Log.Add(log);
+                }
 
-            if (services.Any())            {
-                _context.Service.RemoveRange(services); 
+            
+                _context.Service.RemoveRange(services);
                 _context.SaveChanges();
+
                 return true;
             }
 
-            return false; 
-
+            return false;
         }
-
 
 
         public string UpdateAllService(Service service)
