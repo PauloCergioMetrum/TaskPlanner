@@ -12,7 +12,7 @@ CREATE TABLE [dbo].[PM_Scope_Traking](
 	[ID] [nvarchar](100) NOT NULL,
 	[ContractID] [int] NOT NULL,
 	[DateField] [datetime] NULL,
-	[TextField] [nvarchar](max) NULL
+	[Item] [nvarchar](max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 

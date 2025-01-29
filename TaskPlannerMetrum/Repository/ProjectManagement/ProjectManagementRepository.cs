@@ -930,7 +930,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             {
                 existingScopeTracking.ID = pMScopeTraking.ID;   
                 existingScopeTracking.ContractID = pMScopeTraking.ContractID;
-                existingScopeTracking.TextField = pMScopeTraking.TextField; 
+                existingScopeTracking.Item = pMScopeTraking.Item; 
                 existingScopeTracking.DateField = pMScopeTraking.DateField; 
 
 
@@ -955,7 +955,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
                 existingScopeTracking.ID = pMScopeTraking.ID;
                 existingScopeTracking.ContractID = pMScopeTraking.ContractID;
-                existingScopeTracking.TextField = pMScopeTraking.TextField;
+                existingScopeTracking.Item = pMScopeTraking.Item;
                 existingScopeTracking.DateField = pMScopeTraking.DateField;
                 _context.SaveChanges();
 
