@@ -1,0 +1,30 @@
+USE [TaskPlanner]
+GO
+
+/****** Object:  Table [dbo].[PM_TAP_General_Info]    Script Date: 16/01/2025 11:02:37 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[PM_TAP_General_Info](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Local] [nvarchar](300) NULL,
+	[RiskLevelID] [int] NOT NULL,
+	[ContractID] [int] NOT NULL,
+	[ConsultantID] [int] NOT NULL,
+ CONSTRAINT [PK_PM_TAP_General_Info] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[PM_TAP_General_Info]  WITH NOCHECK ADD  CONSTRAINT [FK_PM_TAP_General_Info_RiskLevel] FOREIGN KEY([RiskLevelID])
+REFERENCES [dbo].[PM_TAP_RiskLevel] ([ID])
+GO
+
+ALTER TABLE [dbo].[PM_TAP_General_Info] CHECK CONSTRAINT [FK_PM_TAP_General_Info_RiskLevel]
+GO
+

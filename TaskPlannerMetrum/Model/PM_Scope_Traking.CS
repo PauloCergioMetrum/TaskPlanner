@@ -8,7 +8,7 @@ namespace TaskPlannerMetrum.Model
         public string ID { get; set; } =string.Empty;
         public int ContractID { get; set; }
         public DateTime? DateField { get; set; }
-        public string? TextField { get; set; }
+        public string? Item { get; set; }
 
 
     }
