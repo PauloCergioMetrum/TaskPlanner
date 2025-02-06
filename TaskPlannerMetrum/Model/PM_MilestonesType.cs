@@ -12,6 +12,8 @@
         public int FunctionID {  get; set; } 
 
         public double ValueHour {  get; set; }  
+        
+        public string DetailsHH {  get; set; }  
 
 
 
