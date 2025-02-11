@@ -8,7 +8,10 @@ namespace TaskPlannerMetrum.Model.ModelViews
     {
         public int? ID { get; set; }
         public int? ContractID { get; set; }
-        
+        public double? PlannedManHour { get; set; }
+        public double? Total_PlannedManHour { get; set; }
+        public double? Total_ExecutedManHour { get; set; }
+
         public int? ExecutorTeamID { get; set; }
         public double? ExecutedManHour { get; set; }
         public int? DepartamentID { get; set; }       

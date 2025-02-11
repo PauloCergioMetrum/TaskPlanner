@@ -43,7 +43,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<PmCostMade> PmCostMade { get; set; }
         public DbSet<ContractTechLeaders> ContractTechLeaders { get; set; }
         public DbSet<PM_Mobilization_Made> PM_Mobilization_Made { get; set; }
-        public DbSet<vPM_Mobilization_Made>vPM_Mobilization_Made { get; set; } 
+        public DbSet<vPM_Mobilization_Made> vPM_Mobilization_Made { get; set; }
         public DbSet<PM_Mobilization_Planned> PM_Mobilization_Planned { get; set; }
         public DbSet<PM_OutsourcedServices_Planned> PM_OutsourcedServices_Planned { get; set; }
         public DbSet<PM_Type_OutsourcedServices> PM_Type_OutsourcedServices { get; set; }
@@ -70,12 +70,12 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<PM_TAP_General_Info> PM_TAP_General_Info { get; set; }
         public DbSet<PM_TAP_Scope> PM_TAP_Scope { get; set; }
         public DbSet<PM_Information_General> PM_Information_General { get; set; }
-        public DbSet<Satisfaction_Customer> Satisfaction_Customer {  get; set; }    
+        public DbSet<Satisfaction_Customer> Satisfaction_Customer { get; set; }
 
         public DbSet<PM_TAP_Resources> PM_TAP_Resources { get; set; }
         public DbSet<PM_MilestonesType> PM_MilestonesType { get; set; }
-        public DbSet<MilestoneType_HH_Details> MilestoneType_HH_Details {  get; set; }  
-        public DbSet<OrderManagementInfo> OrderManagementInfo {  get; set; }  
+        public DbSet<MilestoneType_HH_Details> MilestoneType_HH_Details { get; set; }
+        public DbSet<OrderManagementInfo> OrderManagementInfo { get; set; }
         public DbSet<MilestoneEntity> MilestoneEntities { get; set; }
         public DbSet<ContractGraphic> ContractGraphics { get; set; }
         public DbSet<vhhGraphicDetail> vhhGraphicDetail { get; set; }
@@ -86,7 +86,7 @@ namespace TaskPlannerMetrum.Model.Context
 
 
         //VIEWS
-        public DbSet<vPmCostMade> vPmCostMade { get; set; }     
+        public DbSet<vPmCostMade> vPmCostMade { get; set; }
         public DbSet<vCalendar> vCalendar { get; set; }
         public DbSet<vPlannedHours> VPlannedHours { get; set; }
         public DbSet<UserProjects> UserProjects { get; set; }
@@ -115,14 +115,14 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPM_MilestoneType> vPM_MilestoneType { get; set; }
         public DbSet<vUsersView> vUsersView { get; set; }
         public DbSet<Management> Management { get; set; }
-        public DbSet<vPmCostPlanned> vPmCostPlanned {  get; set; }
+        public DbSet<vPmCostPlanned> vPmCostPlanned { get; set; }
         public DbSet<vPm_Cost_Planned> vPm_Cost_Planned { get; set; }
         public DbSet<ClientFeedbackDetailsView> ClientFeedbackDetailsView { get; set; }
-        public DbSet<vPM_SummaryPlannedData> VPM_SummaryPlannedData {  get; set; }
+        public DbSet<vPM_SummaryPlannedData> VPM_SummaryPlannedData { get; set; }
         public DbSet<vRightCardValue> vRightCardValue { get; set; }
         public DbSet<vIndirectcostChart> vIndirectcostChart { get; set; }
         public DbSet<vAcquisitionChart> vAcquisitionChart { get; set; }
-        public DbSet<VgetMilestoneType_HH_Details>VgetMilestoneType_HH_Details { get; set; }
+        public DbSet<VgetMilestoneType_HH_Details> VgetMilestoneType_HH_Details { get; set; }
 
 
 
@@ -160,15 +160,6 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<VgetMilestoneType_HH_Details>().HasNoKey();
         }
 
-
-
-
-
-            
-
-
-
-
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)
         {
             var query = $"EXECUTE [dbo].[GetActivityPlanByExecutorTeamIDAndPeriod] @ExecutorTeamIDs='{executorTeamIDs}', @StartDate='{startDate}', @EndDate='{endDate}', @HoraSchedule={horaSchedule.Replace(",", ".")}";
@@ -176,15 +167,8 @@ namespace TaskPlannerMetrum.Model.Context
             return this.Set<HoursExecutor>().FromSqlRaw(query).ToList();
         }
 
-
-
-
         public List<GetEquipamentAvaibilaity> GetEquipmentAvailability(int EquipamentID, DateTime StartDate, DateTime EndDate)
-        {
-
-            var sql = "EXEC [dbo].[GetEquipamentAvaibilaity] @EquipamentID, @StartDate, @EndDate";
-
-
+        {     var sql = "EXEC [dbo].[GetEquipamentAvaibilaity] @EquipamentID, @StartDate, @EndDate";
             return this.Set<GetEquipamentAvaibilaity>()
                         .FromSqlRaw(sql,
                             new SqlParameter("@EquipamentID", EquipamentID),
