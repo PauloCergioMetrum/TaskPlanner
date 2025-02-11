@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
@@ -7,13 +8,8 @@ using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.ProjectManagement
 {
-    public interface IProjectManagementRepository
-    {
+    public interface IProjectManagementRepository    {
 
-
-
-
-        // CREATE Methods
 
         public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
         public int CreateMilestonesItem(MilestonesItem milestones);
@@ -98,6 +94,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vPM_MilestoneType> GetAllPM_MilestonesType(string MilestonesValueID);
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
+        public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID);
+
+
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();
         public List<UserVO> GetAllUsersGercon();
         public ProjectInfoGeneralDTO GetProjectInfoByContractId(int contractId);

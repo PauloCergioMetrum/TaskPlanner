@@ -1158,6 +1158,27 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
+
+        [HttpGet("GetHHByIDTaskAsync")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetHHByIDTaskAsync(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetHHByIDTaskAsync(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
         [HttpGet("GetAllMileStonesValue")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]

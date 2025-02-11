@@ -13,6 +13,7 @@ using System.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Security.Principal;
 using DocumentFormat.OpenXml.Wordprocessing;
+using System.Threading.Tasks;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -999,8 +1000,16 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
+
+        public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID)
+        {
+            return _projectmanagementRepository.GetHHByIDTaskAsync(ContractID);
+        }
+
+       
     }
 }
+
 
 
 

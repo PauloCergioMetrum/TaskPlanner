@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
@@ -137,6 +138,9 @@ namespace TaskPlannerMetrum.Business
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
+        public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID);
+
+
 
 
         //TAP
@@ -156,6 +160,8 @@ namespace TaskPlannerMetrum.Business
 
 
         CombinedChartsResult GetCombinedCharts(int contractId);
+
+
 
 
 

@@ -1,7 +1,7 @@
 USE [TaskPlanner]
 GO
 
-/****** Object:  Table [dbo].[PM_MilestonesType]    Script Date: 16/01/2025 11:00:55 ******/
+/****** Object:  Table [dbo].[PM_MilestonesType]    Script Date: 11/02/2025 13:49:17 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -16,7 +16,9 @@ CREATE TABLE [dbo].[PM_MilestonesType](
 	[DisplacementServicesID] [int] NOT NULL,
 	[FunctionID] [int] NOT NULL,
 	[ValueHour] [float] NULL,
-	[TotalMilesStone]  AS ([Hours]*[ValueHour])
-) ON [PRIMARY]
+	[TotalMilesStone]  AS ([Hours]*[ValueHour]),
+	[DetailsHH] [nvarchar](max) NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
+
 
