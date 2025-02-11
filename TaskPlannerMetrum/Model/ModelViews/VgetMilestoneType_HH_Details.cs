@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace TaskPlannerMetrum.Model.ModelViews
 {
+#nullable enable
     public class VgetMilestoneType_HH_Details
     {
         public int? ID { get; set; }

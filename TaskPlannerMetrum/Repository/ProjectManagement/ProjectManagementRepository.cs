@@ -1613,8 +1613,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID)
         {
             return _context.VgetMilestoneType_HH_Details
-                .Where(a => a.ContractID == ContractID) // 🔹 Corrigido o erro
-                .ToList(); // 🔹 Corrigido "Tolist" para "ToList()"
+                .Where(a => a.ContractID == ContractID) 
+                .ToList(); 
         }
 
 

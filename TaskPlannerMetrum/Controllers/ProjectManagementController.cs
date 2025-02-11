@@ -439,7 +439,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-     
+
 
         [HttpGet("GetMobilization")]
         [ProducesResponseType(200)]
@@ -697,7 +697,7 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
- 
+
         [HttpGet("GetpmTypeHH")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -882,7 +882,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-      
+
 
 
         [HttpPost("CreateScopeChange")]
@@ -1137,7 +1137,7 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-   
+
         [HttpGet("GetHHByID")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -1199,7 +1199,7 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-      
+
         [HttpPut("UpdateInfoProject")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
