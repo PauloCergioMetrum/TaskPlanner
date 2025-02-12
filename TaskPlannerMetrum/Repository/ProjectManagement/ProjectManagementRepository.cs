@@ -1,7 +1,10 @@
 ﻿using Memt.Logger;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Threading.Tasks;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
@@ -1606,6 +1609,18 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             return _context.vhhGraphicDetail.Where(a => a.ContractID == contractID).ToList();
         }
+
+        public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID)
+        {
+            return _context.VgetMilestoneType_HH_Details
+                .Where(a => a.ContractID == ContractID) 
+                .ToList(); 
+        }
+
+
+
+
+
     }
 }
 

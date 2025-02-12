@@ -439,7 +439,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-     
+
 
         [HttpGet("GetMobilization")]
         [ProducesResponseType(200)]
@@ -697,7 +697,7 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
- 
+
         [HttpGet("GetpmTypeHH")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -882,7 +882,7 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-      
+
 
 
         [HttpPost("CreateScopeChange")]
@@ -1137,7 +1137,7 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-   
+
         [HttpGet("GetHHByID")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -1157,6 +1157,27 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
+
+
+        [HttpGet("GetHHByIDTaskAsync")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetHHByIDTaskAsync(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetHHByIDTaskAsync(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpGet("GetAllMileStonesValue")]
         [ProducesResponseType(200)]
@@ -1178,7 +1199,7 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-      
+
         [HttpPut("UpdateInfoProject")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]

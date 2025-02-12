@@ -13,6 +13,7 @@ using System.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Security.Principal;
 using DocumentFormat.OpenXml.Wordprocessing;
+using System.Threading.Tasks;
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
@@ -765,7 +766,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                         .Select(ex => new Executors
                         {
                             Executor = ex.ExecutorUserName ?? "Unknown",
-                            TotalHours = ex.TotalHours ?? 0, 
+                            TotalHours = ex.TotalHours ?? 0,
                             MilesTonesName = milestones.Name,
                             Details = activitPlanDetaisByContractID.ActivityPlanHHTable?
                                 .Where(n => n.MilestoneName == milestones.Name)
@@ -912,13 +913,13 @@ namespace TaskPlannerMetrum.Business.Implementations
                         MadeTotal = x.TotalCost
                     }).ToList()
                 })
-                .ToList();    
+                .ToList();
             var totalPlannedSum = groupedResults.Sum(result => result.TotalPlanned ?? 0.0);
-            var totalMadeSum = groupedResults.Sum(result => result.TotalMade ?? 0.0);     
+            var totalMadeSum = groupedResults.Sum(result => result.TotalMade ?? 0.0);
             groupedResults.Add(new StatusReportsResult
             {
-           
-                TypeDescription = "Resumo Geral",          
+
+                TypeDescription = "Resumo Geral",
                 TotalPlanned = totalPlannedSum,
                 TotalMade = totalMadeSum
             });
@@ -999,8 +1000,16 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
+
+        public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID)
+        {
+            return _projectmanagementRepository.GetHHByIDTaskAsync(ContractID);
+        }
+
+
     }
 }
+
 
 
 
