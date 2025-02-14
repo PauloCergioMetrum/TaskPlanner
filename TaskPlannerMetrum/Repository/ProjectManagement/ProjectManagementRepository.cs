@@ -1,7 +1,9 @@
 ﻿using Memt.Logger;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
@@ -239,23 +241,23 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeleteMilestones(string ID, int MilestonesID)
         {
-          
+
             var milestone = _context.MilestonesValue.FirstOrDefault(m => m.ID == ID);
 
-        
+
             if (milestone != null)
             {
-         
+
                 int milestoneId = milestone.MilestonesID;
 
-             
+
                 _context.MilestonesValue.Remove(milestone);
                 _context.SaveChanges();
 
-            
+
                 int remainingMilestonesCount = _context.MilestonesValue.Count(m => m.MilestonesID == milestoneId);
 
-            
+
                 int milestonesItemCount = _context.MilestonesItem.Count(m => m.ID == MilestonesID);
 
                 if (remainingMilestonesCount > 0 || milestonesItemCount > 1)
@@ -343,10 +345,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-     
-   
 
-       
+
+
+
 
         public bool DeleteTypeOfCost(int ID)
         {
@@ -931,13 +933,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
             if (existingScopeTracking != null)
             {
-                existingScopeTracking.ID = pMScopeTraking.ID;   
+                existingScopeTracking.ID = pMScopeTraking.ID;
                 existingScopeTracking.ContractID = pMScopeTraking.ContractID;
-                existingScopeTracking.Item = pMScopeTraking.Item; 
-                existingScopeTracking.DateField = pMScopeTraking.DateField; 
+                existingScopeTracking.Item = pMScopeTraking.Item;
+                existingScopeTracking.DateField = pMScopeTraking.DateField;
 
 
-      
+
                 _context.SaveChanges();
 
             }
@@ -1065,7 +1067,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
-      
+
 
 
 
@@ -1175,7 +1177,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 existingMilesType.DisplacementServicesID = dto.DisplacementServicesID;
                 existingMilesType.FunctionID = dto.FunctionID;
                 existingMilesType.ValueHour = dto.ValueHour;
-                existingMilesType.DetailsHH = dto.DetailsHH;    
+                existingMilesType.DetailsHH = dto.DetailsHH;
 
 
             }
@@ -1191,7 +1193,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     MilestonesValueID = dto.MilestonesValueID,
                     FunctionID = dto.FunctionID,
                     ValueHour = dto.ValueHour,
-                    DetailsHH = dto.DetailsHH,  
+                    DetailsHH = dto.DetailsHH,
                 };
                 _context.PM_MilestonesType.Add(newMilesType);
             }
@@ -1551,7 +1553,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             var activityPlanHH = _context.ActivityPlanHH(contractID).FirstOrDefault();
             var activityPlanHHTable = _context.ActivityPlanHHTable(contractID).ToList();
 
-            
+
             var activityPlanDetail = new ActivityPlanHHDetail
             {
                 ActivityPlanHH = activityPlanHH,
@@ -1567,7 +1569,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.MilestonesItem.ToList();
         }
 
-    
+
         public List<vRightCardValue> RightCardValues(int contractID)
         {
             return _context.vRightCardValue.Where(a => a.ContractID == contractID).ToList();
@@ -1613,16 +1615,19 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID)
         {
             return _context.VgetMilestoneType_HH_Details
-                .Where(a => a.ContractID == ContractID) 
-                .ToList(); 
+                .Where(a => a.ContractID == ContractID)
+                .ToList();
         }
 
 
 
-
-
+        public async Task<List<GetAllMilesStones>> GetMilestonesAsync(string milestoneId)
+        {
+            return await _context.GetAllMilesStones
+                .FromSqlRaw("EXEC GetAllMilesStones @MilestonesID={0}", milestoneId)
+                .ToListAsync();
+        }
     }
 }
-
 
 
