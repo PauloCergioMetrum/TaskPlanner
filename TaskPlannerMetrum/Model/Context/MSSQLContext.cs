@@ -124,6 +124,9 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vAcquisitionChart> vAcquisitionChart { get; set; }
         public DbSet<VgetMilestoneType_HH_Details> VgetMilestoneType_HH_Details { get; set; }
 
+        public DbSet<GetAllMilesStones> GetAllMilesStones { get; set; }
+        
+
 
 
 
@@ -134,6 +137,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<vAcquisitionChart>().HasNoKey();
             modelBuilder.Entity<vhhGraphicDetail>().HasNoKey();
             modelBuilder.Entity<HoursExecutor>().HasNoKey();
+            modelBuilder.Entity<GetAllMilesStones>().HasNoKey();
             modelBuilder.Entity<ActivePlansByExecutor>().HasNoKey();
             modelBuilder.Entity<GetEquipamentAvaibilaity>().HasNoKey();
             modelBuilder.Entity<GetFinanceMilestones>().HasNoKey();

@@ -161,6 +161,8 @@ namespace TaskPlannerMetrum.Business
 
         CombinedChartsResult GetCombinedCharts(int contractId);
 
+        Task<List<GetAllMilesStones>> GetMilestonesAsync(string milestoneId);
+
 
 
 
