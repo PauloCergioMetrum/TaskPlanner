@@ -88,28 +88,14 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public ReportPlannedExecuted GetPlannedExecuted(ReportPlannedExecutedDTO reportPlannedExecuted)
         {
-         
             var listPlannedExecuted = SearchReport(reportPlannedExecuted);
 
-          
-            double totalExecutedCost = listPlannedExecuted
-                .Sum(a => (a.ExecutedManHour.HasValue ? a.ExecutedManHour.Value : 0.0) *
-                          (a.HourCost.HasValue ? a.HourCost.Value : 0.0));
-
-          
-            double totalPlanned = listPlannedExecuted
-                .Sum(s => s.PlannedManHour); 
-
-            double totalExecuted = listPlannedExecuted
-                .Sum(s => s.ExecutedManHour.HasValue ? s.ExecutedManHour.Value : 0.0);
-
-         
             var plannedExecuted = new ReportPlannedExecuted
             {
                 listPlannedExecuted = listPlannedExecuted,
-                totalPlanned = Math.Round(totalPlanned, 2),
-                totalExecuted = Math.Round(totalExecuted, 2),
-                totalCost = Math.Round(totalExecutedCost, 2),
+                totalPlanned = listPlannedExecuted.Sum(x => x.TotalPlanned ?? 0.0),  
+                totalExecuted = listPlannedExecuted.Sum(x => x.TotalExecuted ?? 0.0),
+                totalCost = listPlannedExecuted.Sum(x => x.TotalExecutedCost ?? 0.0), 
                 totalExpectedHour = Math.Round(HoursExpetcted(
                     reportPlannedExecuted.startDate ?? DateTime.MinValue,
                     reportPlannedExecuted.endDate ?? DateTime.MaxValue,
@@ -118,6 +104,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             return plannedExecuted;
         }
+
 
 
 
