@@ -2,12 +2,12 @@
 {
     public class vRightCardValue
     {
-        public int ContractID { get; set; }                  
-        public double TotalValue { get; set; }              
-        public double TotalInvoicedValue { get; set; }      
-        public double TotalCostDifference { get; set; }      
-        public double TotalCostHoursExecuted { get; set; }  
-        public string PredictedMarkup { get; set; }         
-        public double TotalCostHoursExecutedPercentage { get; set; }
+        public int ContractID { get; set; }
+        public decimal TotalValue { get; set; }
+        public decimal TotalInvoicedValue { get; set; }
+        public decimal TotalCostDifference { get; set; }
+        public decimal TotalCostHoursExecuted { get; set; }
+        public string PredictedMarkup { get; set; }
+        public decimal TotalCostHoursExecutedPercentage { get; set; }
     }
-    }
+}
