@@ -163,7 +163,10 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-
+        public List<GetMilestones> GetMilestonesNames(int contractID)
+        {
+            return _projectmanagementRepository.GetMilestonesNames(contractID);
+        }
 
 
         public bool DeleteMilestones(string ID, int MilestonesID)
@@ -204,10 +207,6 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public List<GetMilestones> GetMilestonesNames(int contractID)
-        {
-            return _projectmanagementRepository.GetMilestonesNames(contractID);
-        }
 
         public List<Positions> GetPositionsByGrup()
         {
@@ -1010,6 +1009,35 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetMilestonesAsync(milestoneId);    
         }
+
+        public Task<List<GetMilestonesExpected>> GetMilestoneNoExpected(string milestoneId)
+        {
+            return _projectmanagementRepository.GetMilestoneNoExpected(milestoneId);
+        }
+
+        public Task<List<GetMilestonesExpected>> GetMilestonesExpected(string milestoneId)
+        {
+            return _projectmanagementRepository.GetMilestonesExpected(milestoneId);
+        }
+
+        public async Task<List<GetMilestonesExpected>> GetCombinedMilestones(string milestoneId)
+        {
+
+            List<GetMilestonesExpected> MilestonesExpectedsAndNoExpeecteds = new List<GetMilestonesExpected>();
+            var noExpected = await GetMilestoneNoExpected(milestoneId);
+            if (noExpected != null)
+            {
+                MilestonesExpectedsAndNoExpeecteds.AddRange(noExpected);
+
+            }
+            var expected = await GetMilestonesExpected(milestoneId);
+            if (expected != null)
+            {
+                MilestonesExpectedsAndNoExpeecteds.AddRange(expected);
+            }
+            return MilestonesExpectedsAndNoExpeecteds;
+        }
+
     }
 }
 

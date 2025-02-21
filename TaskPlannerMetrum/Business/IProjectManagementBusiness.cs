@@ -15,9 +15,9 @@ namespace TaskPlannerMetrum.Business
 
         public OrderInformationDTO GetOrderInformation(int id);
 
-
-        public bool CreateMilesTones(MilesTonesDTO milesTones);
         public List<GetMilestones> GetMilestonesNames(int contractID);
+        public bool CreateMilesTones(MilesTonesDTO milesTones);
+  
         public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO);
         public bool DeleteMilestones(string ID, int MilestonesID);
         public bool MilesTonesDelete(int ID);
@@ -163,7 +163,11 @@ namespace TaskPlannerMetrum.Business
 
         Task<List<GetAllMilesStones>> GetMilestonesAsync(string milestoneId);
 
+        Task<List<GetMilestonesExpected>> GetMilestoneNoExpected(string milestoneId);
 
+        Task<List<GetMilestonesExpected>> GetMilestonesExpected(string milestoneId);
+
+        Task<List<GetMilestonesExpected>> GetCombinedMilestones(string milestoneId);
 
 
 

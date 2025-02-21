@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Business.Implementations;
@@ -1421,28 +1422,29 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
-        [HttpGet("{milestoneId}")]
+       
+        [HttpGet("GetCombinedMilestones")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public async Task<ActionResult<List<GetAllMilesStones>>> GetMilestones(string milestoneId)
+        public async Task<IActionResult> GetCombinedMilestones(string milestoneId)
         {
-            try
-            {
-                var result = await _projectManagementBusiness.GetMilestonesAsync(milestoneId);
-                if (result == null || result.Count == 0)
-                    return NoContent();
+            var combinedMilestones = await _projectManagementBusiness.GetCombinedMilestones(milestoneId);
 
-                return Ok(result);
-            }
-            catch (Exception ex)
+            if (combinedMilestones == null || !combinedMilestones.Any())
             {
-                return BadRequest(ex.Message);
+                return NoContent();
             }
+
+            return Ok(combinedMilestones);
         }
 
-
-
     }
+
 }
+
+
+
+
+

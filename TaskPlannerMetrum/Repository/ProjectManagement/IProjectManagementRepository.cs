@@ -133,6 +133,19 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         Task<List<GetAllMilesStones>> GetMilestonesAsync(string milestoneId);
 
 
+        Task<List<GetMilestonesExpected>> GetMilestoneNoExpected(string milestoneId);
+
+        Task<List<GetMilestonesExpected>> GetMilestonesExpected(string milestoneId);
+
+
+
+
+
+
+
+
+
+
 
 
 

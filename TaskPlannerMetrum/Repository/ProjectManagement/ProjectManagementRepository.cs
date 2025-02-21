@@ -1,6 +1,10 @@
-﻿using Memt.Logger;
+﻿
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Math;
+using Memt.Logger;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -19,9 +23,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
     public class ProjectManagementRepository : IProjectManagementRepository
     {
         private readonly MSSQLContext _context;
-
-        public ProjectManagementRepository(MSSQLContext context)
+        public IConfiguration Configuration { get; }
+        public ProjectManagementRepository(MSSQLContext context , IConfiguration configuration)
         {
+            Configuration = configuration;
             _context = context;
         }
 
@@ -154,7 +159,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return false;
             }
         }
+        public List<GetMilestones> GetMilestonesNames(int contractID)
+        {
 
+            return _context.GetMilestones(contractID).ToList();
+        }
         public bool UpdateAcquisitionMadeItem(AcquisitionMadeDTO acquisitionMade)
         {
             try
@@ -850,11 +859,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-        public List<GetMilestones> GetMilestonesNames(int contractID)
-        {
-
-            return _context.GetMilestones(contractID).ToList();
-        }
+  
 
 
         public bool CreateHH(PM_Man_Hours createHH)
@@ -1627,6 +1632,111 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 .FromSqlRaw("EXEC GetAllMilesStones @MilestonesID={0}", milestoneId)
                 .ToListAsync();
         }
+
+        public async  Task<List<GetMilestonesExpected>> GetMilestoneNoExpected(string milestoneId)
+        {
+            try
+            {
+                var config = Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"];
+                List<GetMilestonesExpected> getMilestoneNoExpecteds = new List<GetMilestonesExpected>();
+
+                using (var conn = new SqlConnection(Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"]))
+                {
+                    conn.Open();
+                    using (var cmd = new SqlCommand("GetMilestoneNoExpected", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MilestonesValueID", milestoneId);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            
+                            while (reader.Read())
+                            {
+                                getMilestoneNoExpecteds.Add(new Model.GetMilestonesExpected
+                                {
+                                    FunctionName = reader["FunctionName"].ToString(),
+                                    DepartmentName = reader["DepartmentName"].ToString(),
+                                    DisplacementServiceName = reader["DisplacementServiceName"].ToString(),
+                                    Hours = Convert.ToDecimal(reader["Hours"]),
+                                    TotalMilestones  = Convert.ToDecimal(reader["TotalMilestones"]),
+                                    TotalExecutedManHour = Convert.ToDecimal(reader["TotalExecutedManHour"]),
+                                    TotalPlannedManHour = Convert.ToDecimal(reader["TotalPlannedManHour"]),
+                                    CustoPlanejado = Convert.ToDecimal(reader["CustoPlanejado"]),
+                                    CustoExecutado = Convert.ToDecimal(reader["CustoExecutado"])
+
+                                });
+                            }
+
+                        }
+                    }
+                    conn.Close();
+                }
+
+                return getMilestoneNoExpecteds;
+
+            }
+            catch( Exception ex)
+            {
+                return null;
+            }
+           
+
+        }
+
+        public async Task<List<GetMilestonesExpected>> GetMilestonesExpected(string milestoneId)
+        {
+            try
+            {
+                var config = Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"];
+                List<GetMilestonesExpected> getMilestoneExpecteds = new List<GetMilestonesExpected>();
+
+                using (var conn = new SqlConnection(Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"]))
+                {
+                    conn.Open();
+                    using (var cmd = new SqlCommand("GetMilestonesExpected", conn))
+                    {
+                        
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@MilestonesValueID", milestoneId);
+
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                              
+                                while (reader.Read())
+                                {
+                                    getMilestoneExpecteds.Add(new Model.GetMilestonesExpected
+                                    {
+                                        FunctionName = reader["FunctionName"].ToString(),
+                                        DepartmentName = reader["DepartmentName"].ToString(),
+                                        DisplacementServiceName = reader["DisplacementServiceName"].ToString(),
+                                        Hours = Convert.ToDecimal(reader["Hours"]),
+                                        ValueHour = Convert.ToDecimal(reader["ValueHour"]),
+                                        TotalMilestones = Convert.ToDecimal(reader["TotalMilesStone"]),
+                                        TotalExecutedManHour = Convert.ToDecimal(reader["TotalExecutedManHour"]),
+                                        TotalPlannedManHour = Convert.ToDecimal(reader["TotalPlannedManHour"]),
+                                        CustoPlanejado = Convert.ToDecimal(reader["CustoPlanejado"]),
+                                        CustoExecutado = Convert.ToDecimal(reader["CustoExecutado"])
+
+                                    });
+                                }
+
+                            }
+                        
+                    }
+                }
+
+                return getMilestoneExpecteds;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+
+       
     }
 }
 

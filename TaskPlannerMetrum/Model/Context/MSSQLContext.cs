@@ -125,7 +125,10 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<VgetMilestoneType_HH_Details> VgetMilestoneType_HH_Details { get; set; }
 
         public DbSet<GetAllMilesStones> GetAllMilesStones { get; set; }
-        
+        // PRIVISTO E PLANEJADO DE HH
+        public DbSet<GetMilestoneNoExpected> GetMilestoneNoExpected { get; set; }
+        public DbSet<GetMilestonesExpected> GetMilestonesExpected { get; set; }
+
 
 
 
@@ -162,6 +165,8 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<TeamAllocationDTO>().HasNoKey();
             modelBuilder.Entity<OrderManagementInfo>().HasNoKey();
             modelBuilder.Entity<VgetMilestoneType_HH_Details>().HasNoKey();
+            modelBuilder.Entity<GetMilestoneNoExpected>().HasNoKey();
+            modelBuilder.Entity<GetMilestonesExpected>().HasNoKey();
         }
 
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)
