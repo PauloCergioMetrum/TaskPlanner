@@ -1024,17 +1024,32 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
 
             List<GetMilestonesExpected> MilestonesExpectedsAndNoExpeecteds = new List<GetMilestonesExpected>();
-            var noExpected = await GetMilestoneNoExpected(milestoneId);
-            if (noExpected != null)
-            {
-                MilestonesExpectedsAndNoExpeecteds.AddRange(noExpected);
 
-            }
             var expected = await GetMilestonesExpected(milestoneId);
             if (expected != null)
             {
                 MilestonesExpectedsAndNoExpeecteds.AddRange(expected);
             }
+
+
+            var noExpected = await GetMilestoneNoExpected(milestoneId);
+            if (noExpected != null)
+            {
+                foreach (var noExp in noExpected)
+                {
+
+                    bool check = MilestonesExpectedsAndNoExpeecteds.Any(s => s.DepartmentName == noExp.DepartmentName && s.DisplacementServiceName == noExp.DisplacementServiceName && s.FunctionName == noExp.FunctionName);
+
+                    if (!check)
+                    {
+                        MilestonesExpectedsAndNoExpeecteds.Add(noExp);
+                    }
+
+
+
+                }
+
+            }           
             return MilestonesExpectedsAndNoExpeecteds;
         }
 
