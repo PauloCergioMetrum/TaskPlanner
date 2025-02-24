@@ -16,6 +16,7 @@ namespace TaskPlannerMetrum.Model
         public Guid ID { get; set; }
 
         public double? Value { get; set; }
+        public double? InvoicedValue { get; set; }
         public int ContractID { get; set; }
 
         public string? TypeMilestonesID { get; set; }
@@ -28,3 +29,6 @@ namespace TaskPlannerMetrum.Model
 
     }
 }
+
+
+
