@@ -23,6 +23,6 @@ namespace TaskPlannerMetrum.Model
 
         public string? FunctionName { get; set; }
         public DateTime? ScheduledDate { get; set; }
-        public string? DetailsHH { get; set; }
+      
     }
 }
