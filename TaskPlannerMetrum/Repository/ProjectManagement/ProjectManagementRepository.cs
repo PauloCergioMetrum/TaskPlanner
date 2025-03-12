@@ -1617,12 +1617,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.vhhGraphicDetail.Where(a => a.ContractID == contractID).ToList();
         }
 
-        public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID)
-        {
-            return _context.VgetMilestoneType_HH_Details
-                .Where(a => a.ContractID == ContractID)
-                .ToList();
-        }
+        //public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID)
+        //{
+        //    return _context.VgetMilestoneType_HH_Details
+        //        .Where(a => a.ContractID == ContractID)
+        //        .ToList();
+        //}
 
 
 
@@ -1633,56 +1633,51 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 .ToListAsync();
         }
 
-        public async  Task<List<GetMilestonesExpected>> GetMilestoneNoExpected(string milestoneId)
+        public async Task<List<GetMilestonesExpected>> GetMilestoneNoExpected(string milestoneId)
         {
             try
             {
                 var config = Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"];
                 List<GetMilestonesExpected> getMilestoneNoExpecteds = new List<GetMilestonesExpected>();
 
-                using (var conn = new SqlConnection(Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"]))
+                using (var conn = new SqlConnection(config))
                 {
-                    conn.Open();
+                    await conn.OpenAsync(); 
                     using (var cmd = new SqlCommand("GetMilestoneNoExpected", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@MilestonesValueID", milestoneId);
 
-                        using (var reader = cmd.ExecuteReader())
+                        using (var reader = await cmd.ExecuteReaderAsync()) 
                         {
-                            
-                            while (reader.Read())
+                            while (await reader.ReadAsync()) 
                             {
-                                getMilestoneNoExpecteds.Add(new Model.GetMilestonesExpected
+                                getMilestoneNoExpecteds.Add(new GetMilestonesExpected
                                 {
-                                    FunctionName = reader["FunctionName"].ToString(),
-                                    DepartmentName = reader["DepartmentName"].ToString(),
-                                    DisplacementServiceName = reader["DisplacementServiceName"].ToString(),
-                                    Hours = Convert.ToDecimal(reader["Hours"]),
-                                    TotalMilestones  = Convert.ToDecimal(reader["TotalMilestones"]),
-                                    TotalExecutedManHour = Convert.ToDecimal(reader["TotalExecutedManHour"]),
-                                    TotalPlannedManHour = Convert.ToDecimal(reader["TotalPlannedManHour"]),
-                                    CustoPlanejado = Convert.ToDecimal(reader["CustoPlanejado"]),
-                                    CustoExecutado = Convert.ToDecimal(reader["CustoExecutado"])
-
+                                    FunctionName = reader["FunctionName"]?.ToString(),
+                                    DepartmentName = reader["DepartmentName"]?.ToString(),
+                                    DisplacementServiceName = reader["DisplacementServiceName"]?.ToString(),
+                                    Hours = reader["Hours"] != DBNull.Value ? Convert.ToDecimal(reader["Hours"]) : (decimal?)null,
+                                    TotalMilestones = reader["TotalMilestones"] != DBNull.Value ? Convert.ToDecimal(reader["TotalMilestones"]) : (decimal?)null,
+                                    TotalExecutedManHour = reader["TotalExecutedManHour"] != DBNull.Value ? Convert.ToDecimal(reader["TotalExecutedManHour"]) : (decimal?)null,
+                                    TotalPlannedManHour = reader["TotalPlannedManHour"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPlannedManHour"]) : (decimal?)null,
+                                    CustoPlanejado = reader["CustoPlanejado"] != DBNull.Value ? Convert.ToDecimal(reader["CustoPlanejado"]) : (decimal?)null,
+                                    CustoExecutado = reader["CustoExecutado"] != DBNull.Value ? Convert.ToDecimal(reader["CustoExecutado"]) : (decimal?)null
                                 });
                             }
-
                         }
                     }
-                    conn.Close();
                 }
 
                 return getMilestoneNoExpecteds;
-
             }
-            catch( Exception ex)
+            catch (Exception ex)
             {
-                return null;
+                Console.WriteLine($"Erro: {ex.Message}");
+                return new List<GetMilestonesExpected>(); 
             }
-           
-
         }
+
 
         public async Task<List<GetMilestonesExpected>> GetMilestonesExpected(string milestoneId)
         {
@@ -1691,52 +1686,48 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 var config = Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"];
                 List<GetMilestonesExpected> getMilestoneExpecteds = new List<GetMilestonesExpected>();
 
-                using (var conn = new SqlConnection(Configuration["MSSQLServerSQLConnection:MSSQLServerSQLConnectionString"]))
+                using (var conn = new SqlConnection(config))
                 {
-                    conn.Open();
+                    await conn.OpenAsync(); 
+
                     using (var cmd = new SqlCommand("GetMilestonesExpected", conn))
                     {
-                        
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@MilestonesValueID", milestoneId);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MilestonesValueID", milestoneId);
 
-                            using (var reader = cmd.ExecuteReader())
+                        using (var reader = await cmd.ExecuteReaderAsync()) 
+                        {
+                            while (await reader.ReadAsync()) 
                             {
-                              
-                                while (reader.Read())
+                                getMilestoneExpecteds.Add(new GetMilestonesExpected
                                 {
-                                    getMilestoneExpecteds.Add(new Model.GetMilestonesExpected
-                                    {
-                                        FunctionName = reader["FunctionName"].ToString(),
-                                        DepartmentName = reader["DepartmentName"].ToString(),
-                                        DisplacementServiceName = reader["DisplacementServiceName"].ToString(),
-                                        Hours = Convert.ToDecimal(reader["Hours"]),
-                                        ValueHour = Convert.ToDecimal(reader["ValueHour"]),
-                                        TotalMilestones = Convert.ToDecimal(reader["TotalMilesStone"]),
-                                        TotalExecutedManHour = Convert.ToDecimal(reader["TotalExecutedManHour"]),
-                                        TotalPlannedManHour = Convert.ToDecimal(reader["TotalPlannedManHour"]),
-                                        CustoPlanejado = Convert.ToDecimal(reader["CustoPlanejado"]),
-                                        CustoExecutado = Convert.ToDecimal(reader["CustoExecutado"])
-
-                                    });
-                                }
-
+                                    FunctionName = reader["FunctionName"]?.ToString(),
+                                    DepartmentName = reader["DepartmentName"]?.ToString(),
+                                    DisplacementServiceName = reader["DisplacementServiceName"]?.ToString(),
+                                    Hours = reader["Hours"] != DBNull.Value ? Convert.ToDecimal(reader["Hours"]) : (decimal?)null,
+                                    ValueHour = reader["ValueHour"] != DBNull.Value ? Convert.ToDecimal(reader["ValueHour"]) : (decimal?)null,
+                                    TotalMilestones = reader["TotalMilesStone"] != DBNull.Value ? Convert.ToDecimal(reader["TotalMilesStone"]) : (decimal?)null,
+                                    TotalExecutedManHour = reader["TotalExecutedManHour"] != DBNull.Value ? Convert.ToDecimal(reader["TotalExecutedManHour"]) : (decimal?)null,
+                                    TotalPlannedManHour = reader["TotalPlannedManHour"] != DBNull.Value ? Convert.ToDecimal(reader["TotalPlannedManHour"]) : (decimal?)null,
+                                    CustoPlanejado = reader["CustoPlanejado"] != DBNull.Value ? Convert.ToDecimal(reader["CustoPlanejado"]) : (decimal?)null,
+                                    CustoExecutado = reader["CustoExecutado"] != DBNull.Value ? Convert.ToDecimal(reader["CustoExecutado"]) : (decimal?)null
+                                });
                             }
-                        
+                        }
                     }
                 }
 
                 return getMilestoneExpecteds;
-
             }
             catch (Exception ex)
             {
-                return null;
+                Console.WriteLine($"Erro: {ex.Message}");
+                return new List<GetMilestonesExpected>(); 
             }
-
         }
 
-       
+
+
     }
 }
 

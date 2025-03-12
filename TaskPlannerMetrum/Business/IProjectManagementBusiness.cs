@@ -138,7 +138,7 @@ namespace TaskPlannerMetrum.Business
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
-        public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID);
+        //public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID);
 
 
 

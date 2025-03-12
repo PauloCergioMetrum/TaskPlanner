@@ -122,7 +122,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vRightCardValue> vRightCardValue { get; set; }
         public DbSet<vIndirectcostChart> vIndirectcostChart { get; set; }
         public DbSet<vAcquisitionChart> vAcquisitionChart { get; set; }
-        public DbSet<VgetMilestoneType_HH_Details> VgetMilestoneType_HH_Details { get; set; }
+        //public DbSet<VgetMilestoneType_HH_Details> VgetMilestoneType_HH_Details { get; set; }
 
         public DbSet<GetAllMilesStones> GetAllMilesStones { get; set; }
         // PRIVISTO E PLANEJADO DE HH
@@ -164,7 +164,7 @@ namespace TaskPlannerMetrum.Model.Context
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
             modelBuilder.Entity<TeamAllocationDTO>().HasNoKey();
             modelBuilder.Entity<OrderManagementInfo>().HasNoKey();
-            modelBuilder.Entity<VgetMilestoneType_HH_Details>().HasNoKey();
+            //modelBuilder.Entity<VgetMilestoneType_HH_Details>().HasNoKey();
             modelBuilder.Entity<GetMilestoneNoExpected>().HasNoKey();
             modelBuilder.Entity<GetMilestonesExpected>().HasNoKey();
         }

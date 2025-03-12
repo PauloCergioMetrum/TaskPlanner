@@ -1,9 +1,11 @@
-﻿using DocumentFormat.OpenXml.Math;
+﻿#nullable enable
+using DocumentFormat.OpenXml.Math;
 
 namespace TaskPlannerMetrum.Model
 {
     public class GetMilestonesExpected
     {
+         
         public string? FunctionName { get; set; }
         public string? DepartmentName { get; set; }
         public string? DisplacementServiceName { get; set; }
