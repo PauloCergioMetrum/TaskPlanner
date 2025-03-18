@@ -197,13 +197,16 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             var businessUnitNames = filteredBusinessUnits.Select(bu => bu.Name).ToList();
 
             string startDate = operationalReportReportDTO.StartDate != default(DateTime)
-                     ? operationalReportReportDTO.StartDate.ToString("yyyy-MM-dd")
-                     : "null";
+                ? operationalReportReportDTO.StartDate.ToString("yyyy-MM-dd")
+                : "null";
 
             string endDate = operationalReportReportDTO.EndDate != default(DateTime)
-                              ? operationalReportReportDTO.EndDate.ToString("yyyy-MM-dd")
-                              : "null";
+                ? operationalReportReportDTO.EndDate.ToString("yyyy-MM-dd")
+                : "null";
 
+            string statusFilter = !string.IsNullOrEmpty(operationalReportReportDTO.StatusFilter)
+                ? $"'{operationalReportReportDTO.StatusFilter}'"
+                : "null";
 
             var sql = $"EXEC [dbo].[GetContractDetails] " +
                       $"@ContractIDs = {(string.IsNullOrEmpty(contractIDs) ? "null" : $"'{contractIDs}'")}, " +
@@ -211,10 +214,16 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                       $"@InspectorIDs = {(string.IsNullOrEmpty(inspectorIDs) ? "null" : $"'{inspectorIDs}'")}, " +
                       $"@BusinessUnitIDs = {(businessUnitNames.Count > 0 ? $"'{string.Join(",", businessUnitNames)}'" : "null")}, " +
                       $"@StartDate = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
-                      $"@EndDate = {(endDate != "null" ? $"'{endDate}'" : "null")}";
+                      $"@EndDate = {(endDate != "null" ? $"'{endDate}'" : "null")}, " +
+                      $"@StatusFilter = {statusFilter}";
+
+            // Log para depuração
+            Console.WriteLine("Query SQL gerada:");
+            Console.WriteLine(sql);
 
             return _context.Set<OperationalRelationshipTable>().FromSqlRaw(sql).ToList();
         }
+
 
         public List<OptionsFilterTechLead> GetAllTechLeader()
         {

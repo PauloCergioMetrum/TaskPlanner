@@ -14,7 +14,8 @@ namespace TaskPlannerMetrum.Model.DTO
         public List<int> ProjectInspectorIDs { get; set; }
         public List<int> BusinessUnitIDs { get; set; }
         public DateTime StartDate { get; set; } 
-        public DateTime EndDate { get; set; } 
+        public DateTime EndDate { get; set; }
+        public string StatusFilter { get; set; }
 
 
     }
