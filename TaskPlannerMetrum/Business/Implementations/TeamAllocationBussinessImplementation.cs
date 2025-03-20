@@ -14,9 +14,9 @@ namespace TaskPlannerMetrum.Business
             _teamAllocationRepository = teamAllocationRepository;
         }
 
-        public TeamAllocationResponseDTO GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null)
+        public TeamAllocationResponseDTO GetTeamAllocation(string[] businessUnit, DateTime? startDate, DateTime? endDate, List<int> functionID, string[] project, string techLeadName = null)
         {
-            var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit, startDate, endDate, functionID, project);
+            var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit, startDate, endDate, functionID, project , techLeadName);
             var graphics = _teamAllocationRepository.GetTeamAllocationGraphic(startDate, endDate, functionID);
             var functions = _teamAllocationRepository.GetTeamAllocationGraphicFunctions(startDate, endDate, functionID);
             var cards = _teamAllocationRepository.GetTeamAllocationCards(startDate ?? DateTime.MinValue, endDate ?? DateTime.MaxValue);
@@ -32,11 +32,7 @@ namespace TaskPlannerMetrum.Business
             };
         }
 
-        public TeamAllocationResponseDTO GetTeamAllocation(string[] businessUnit, DateTime? startDate, DateTime? endDate, List<int> functionID, string project)
-        {
-            throw new NotImplementedException();
-        }
-
+      
         public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd)
         {
             return _teamAllocationRepository.GetTeamAllocationCards(DateStart, DateEnd);

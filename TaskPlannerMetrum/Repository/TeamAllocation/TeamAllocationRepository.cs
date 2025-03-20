@@ -19,105 +19,32 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
         }
 
 
-        //public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null)
-        //{
-        //    List<TeamAllocationDTO> teamAllocationList = new List<TeamAllocationDTO>();
-
-        //    using (var command = _context.Database.GetDbConnection().CreateCommand())
-        //    {
-        //        command.CommandText = "[dbo].[GetTeamAllocationTable]";
-        //        command.CommandType = CommandType.StoredProcedure;
-
-        //        var businessUnitList = businessUnit != null && businessUnit.Any()
-        //            ? string.Join(",", businessUnit)
-        //            : null;
-
-        //        command.Parameters.Add(new SqlParameter("@BusinessUnit", SqlDbType.NVarChar, -1)
-        //        {
-        //            Value = (object)businessUnitList ?? DBNull.Value
-        //        });
-
-        //        command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date)
-        //        {
-        //            Value = (object)startDate ?? DBNull.Value
-        //        });
-
-        //        command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date)
-        //        {
-        //            Value = (object)endDate ?? DBNull.Value
-        //        });
-
-        //        var functionIDList = functionID != null && functionID.Any()
-        //            ? string.Join(",", functionID)
-        //            : null;
-
-        //        command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, -1)
-        //        {
-        //            Value = (object)functionIDList ?? DBNull.Value
-        //        });
 
 
-        //        var projectList = project != null && project.Any()
-        //            ? string.Join(",", project)
-        //            : null;
-
-        //        command.Parameters.Add(new SqlParameter("@Project", SqlDbType.NVarChar, -1)
-        //        {
-        //            Value = (object)projectList ?? DBNull.Value
-        //        });
-
-        //        _context.Database.OpenConnection();
-
-        //        using (var reader = command.ExecuteReader())
-        //        {
-        //            while (reader.Read())
-        //            {
-        //                int index = 0;
-        //                var teamAllocation = new TeamAllocationDTO
-        //                {
-        //                    ID = reader.IsDBNull(index) ? 0 : reader.GetInt64(index++),
-        //                    SaleOrder = reader.IsDBNull(index) ? null : reader.GetString(index++),
-        //                    Client = reader.IsDBNull(index) ? null : reader.GetString(index++),
-        //                    BusinessUnit = reader.IsDBNull(index) ? null : reader.GetString(index++),
-        //                    PlannedHours = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
-        //                    ExecutedHours = reader.IsDBNull(index) ? 0 : reader.GetDouble(index++),
-        //                    ScheduledDate = reader.IsDBNull(index) ? DateTime.MinValue : reader.GetDateTime(index++),
-        //                    Executor = reader.IsDBNull(index) ? null : reader.GetString(index++)
-        //                };
-
-        //                teamAllocationList.Add(teamAllocation);
-        //            }
-        //        }
-
-        //        _context.Database.CloseConnection();
-        //    }
-
-        //    return teamAllocationList;
-        //}
-
-        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null)
+        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null, string techLeadName = null)
         {
             var businessUnitList = businessUnit != null && businessUnit.Any() ? string.Join(",", businessUnit) : null;
-            var functionIDList = functionID != null && functionID.Any() ? string.Join(",", functionID) : null;  // Certifique-se de que os valores de função estão corretos
+            var functionIDList = functionID != null && functionID.Any() ? string.Join(",", functionID) : null;
             var projectList = project != null && project.Any() ? string.Join(",", project) : null;
+            var techLeadNameValue = !string.IsNullOrWhiteSpace(techLeadName) ? techLeadName : null; // Corrigido aqui
+
             var parameters = new[]
             {
         new SqlParameter("@BusinessUnit", (object)businessUnitList ?? DBNull.Value),
         new SqlParameter("@StartDate", (object)startDate ?? DBNull.Value),
         new SqlParameter("@EndDate", (object)endDate ?? DBNull.Value),
         new SqlParameter("@FunctionIDs", (object)functionIDList ?? DBNull.Value),
-        new SqlParameter("@Project", (object)projectList ?? DBNull.Value)
+        new SqlParameter("@Project", (object)projectList ?? DBNull.Value),
+        new SqlParameter("@TechLeadName", (object)techLeadNameValue ?? DBNull.Value) // Corrigido aqui
     };
 
             var teamAllocationList = _context
                 .Set<TeamAllocationDTO>()
-                .FromSqlRaw("EXEC [dbo].[GetTeamAllocationTable] @BusinessUnit, @StartDate, @EndDate, @FunctionIDs, @Project", parameters)
+                .FromSqlRaw("EXEC [dbo].[GetTeamAllocationTable] @BusinessUnit, @StartDate, @EndDate, @FunctionIDs, @Project, @TechLeadName", parameters) // Corrigido aqui
                 .ToList();
 
             return teamAllocationList;
         }
-
-
 
 
 
