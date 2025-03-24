@@ -94,7 +94,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vPM_MilestoneType> GetAllPM_MilestonesType(string MilestonesValueID);
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
-        public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID);
+        //public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID);
 
 
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();

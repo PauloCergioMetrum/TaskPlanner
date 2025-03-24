@@ -18,7 +18,8 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
 
 
-        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null);
+        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null , string techLeadName = null);
+
 
 
 

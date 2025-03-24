@@ -27,12 +27,14 @@ namespace TaskPlannerMetrum.Controllers
                     teamAlocatTable.startDate,
                     teamAlocatTable.endDate,
                     teamAlocatTable.FunctionIds,
-                    teamAlocatTable.project
+                    teamAlocatTable.project,
+                    teamAlocatTable.TechLeadName
                 );
 
                 if (result == null || (result.TeamAllocations.Count == 0 && result.TeamAllocationGraphics.Count == 0))
                 {
                     result = _teamAllocationBusiness.GetTeamAllocation(
+                        null,
                         null,
                         null,
                         null,

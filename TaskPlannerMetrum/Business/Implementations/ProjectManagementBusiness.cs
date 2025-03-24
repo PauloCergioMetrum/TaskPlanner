@@ -1000,10 +1000,10 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID)
-        {
-            return _projectmanagementRepository.GetHHByIDTaskAsync(ContractID);
-        }
+        //public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID)
+        //{
+        //    return _projectmanagementRepository.GetHHByIDTaskAsync(ContractID);
+        //}
 
         public Task<List<GetAllMilesStones>> GetMilestonesAsync(string milestoneId)
         {
