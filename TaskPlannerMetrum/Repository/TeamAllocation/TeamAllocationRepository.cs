@@ -21,12 +21,12 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
 
 
-        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null, string techLeadName = null)
+        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null, string[] techLeadName = null)
         {
             var businessUnitList = businessUnit != null && businessUnit.Any() ? string.Join(",", businessUnit) : null;
             var functionIDList = functionID != null && functionID.Any() ? string.Join(",", functionID) : null;
             var projectList = project != null && project.Any() ? string.Join(",", project) : null;
-            var techLeadNameValue = !string.IsNullOrWhiteSpace(techLeadName) ? techLeadName : null; // Corrigido aqui
+            var techLeadNameValue = techLeadName != null && techLeadName.Any()? string.Join(",", techLeadName) : null;
 
             var parameters = new[]
             {
