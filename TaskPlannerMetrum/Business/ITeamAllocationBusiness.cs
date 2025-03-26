@@ -12,7 +12,6 @@ namespace TaskPlannerMetrum.Business
         List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions();
         string[] GetTeamFilterBusinessUnit(string selectedBusinessUnit = null);
 
-
         TeamAllocationResponseDTO GetTeamAllocation(string[] businessUnit, DateTime? startDate, DateTime? endDate, List<int> functionID, string[] project , string[] techLeadName = null);
 
 

@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using System.Linq;
+using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.TeamAllocation
 {
@@ -26,7 +27,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             var businessUnitList = businessUnit != null && businessUnit.Any() ? string.Join(",", businessUnit) : null;
             var functionIDList = functionID != null && functionID.Any() ? string.Join(",", functionID) : null;
             var projectList = project != null && project.Any() ? string.Join(",", project) : null;
-            var techLeadNameValue = techLeadName != null && techLeadName.Any()? string.Join(",", techLeadName) : null;
+            var techLeadNameValue = techLeadName != null && techLeadName.Any() ? string.Join(",", techLeadName) : null;
 
             var parameters = new[]
             {
@@ -49,8 +50,8 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
 
 
-        public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null)
-        {
+        public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null)
+                        {
             List<TeamAllocationDTO.TeamAllocationGraphicDTO> teamAllocationGraphicList = new List<TeamAllocationDTO.TeamAllocationGraphicDTO>();
 
             using (var command = _context.Database.GetDbConnection().CreateCommand())
@@ -76,6 +77,20 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, 255)
                 {
                     Value = (object)functionIDList ?? DBNull.Value
+                });
+
+
+                var projectList = project != null && project.Any()
+                    ? string.Join(",", project)
+                    : null;
+
+
+
+                command.Parameters.Add(new SqlParameter("@Project", SqlDbType.NVarChar, 255)
+                {
+
+                    Value = (object)projectList ?? DBNull.Value
+
                 });
 
                 _context.Database.OpenConnection();
