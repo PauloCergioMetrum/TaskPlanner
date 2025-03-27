@@ -50,7 +50,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
 
 
-        public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null)
+        public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null)
                         {
             List<TeamAllocationDTO.TeamAllocationGraphicDTO> teamAllocationGraphicList = new List<TeamAllocationDTO.TeamAllocationGraphicDTO>();
 
@@ -80,18 +80,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 });
 
 
-                var projectList = project != null && project.Any()
-                    ? string.Join(",", project)
-                    : null;
-
-
-
-                command.Parameters.Add(new SqlParameter("@Project", SqlDbType.NVarChar, 255)
-                {
-
-                    Value = (object)projectList ?? DBNull.Value
-
-                });
+               
 
                 _context.Database.OpenConnection();
 
