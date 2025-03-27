@@ -55,8 +55,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                             {
                                 hourResult = Convert.ToDouble(reader.GetValue(0));
                             }
-                        }
-
+                        }                  
                     }
 
                 }
@@ -88,14 +87,9 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                         };
 
                         listHoursCost.Add(register);
-
                     }
                 }
-
-
                 return listHoursCost;
-
-
             }
 
         }
@@ -118,36 +112,47 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO)
         {
             var contractIDs = string.Join(",", operationalReportReportDTO.ContractIDs);
+
             var filteredBusinessUnits = _context.BusinessUnit
                                         .Where(bu => operationalReportReportDTO.BusinessUnitIDs.Contains(bu.Id))
                                         .ToList();
             var businessUnitNames = string.Join(",", filteredBusinessUnits.Select(bu => bu.Name));
 
             var startDate = operationalReportReportDTO.StartDate != default(DateTime)
-                                ? operationalReportReportDTO.StartDate.ToString("yyyy/MM")
+                                ? operationalReportReportDTO.StartDate.ToString("yyyy-MM-dd")
                                 : "null";
             var endDate = operationalReportReportDTO.EndDate != default(DateTime)
-                                ? operationalReportReportDTO.EndDate.ToString("yyyy/MM")
+                                ? operationalReportReportDTO.EndDate.ToString("yyyy-MM-dd")
+                                : "null";
+
+            var projectInspectorIDs = operationalReportReportDTO.ProjectInspectorIDs != null && operationalReportReportDTO.ProjectInspectorIDs.Any()
+                                ? string.Join(",", operationalReportReportDTO.ProjectInspectorIDs)
+                                : "null";
+
+            var techLeadIDs = operationalReportReportDTO.TechLeadIDs != null && operationalReportReportDTO.TechLeadIDs.Any()
+                                ? string.Join(",", operationalReportReportDTO.TechLeadIDs)
                                 : "null";
 
             if (operationalReportReportDTO.ContractIDs.Count == 0)
             {
                 contractIDs = "null";
             }
-
             if (operationalReportReportDTO.BusinessUnitIDs.Count == 0)
             {
                 businessUnitNames = "null";
             }
 
             var sql = "EXEC [dbo].[GetNumberOfContractsForBusinessUnit] " +
-                      $"@ContractIDs = {contractIDs}, " +
                       $"@BusinessUnitNames = {(businessUnitNames == "null" ? "null" : $"'{businessUnitNames}'")}, " +
+                      $"@ProjectInspectorIDS = {(projectInspectorIDs == "null" ? "null" : $"'{projectInspectorIDs}'")}, " +
+                      $"@TechLeadIDs = {(techLeadIDs == "null" ? "null" : $"'{techLeadIDs}'")}, " +
                       $"@StartPeriod = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
                       $"@EndPeriod = {(endDate != "null" ? $"'{endDate}'" : "null")}";
 
             return _context.Set<NumberOfContractsForBusinessUnit>().FromSqlRaw(sql).ToList();
         }
+
+
 
 
 
@@ -178,10 +183,8 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                       $"@ContractIDs = {(string.IsNullOrEmpty(contractIDs) ? "null" : $"'{contractIDs}'")}, " +
                       $"@StartDate = '{startDate}', " +
                       $"@EndDate = '{endDate}'";
-
             return _context.Set<BalancePerProject>().FromSqlRaw(sql).ToList();
         }
-
 
 
         public List<OperationalRelationshipTable> GetContractDetails(OperationalReportReportDTO operationalReportReportDTO)
@@ -215,11 +218,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                       $"@BusinessUnitIDs = {(businessUnitNames.Count > 0 ? $"'{string.Join(",", businessUnitNames)}'" : "null")}, " +
                       $"@StartDate = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
                       $"@EndDate = {(endDate != "null" ? $"'{endDate}'" : "null")}, " +
-                      $"@StatusFilter = {statusFilter}";
-
-            // Log para depuração
-            Console.WriteLine("Query SQL gerada:");
-            Console.WriteLine(sql);
+                      $"@StatusFilter = {statusFilter}";    
 
             return _context.Set<OperationalRelationshipTable>().FromSqlRaw(sql).ToList();
         }
@@ -293,8 +292,6 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                     new SqlParameter("@InspectorIDs", inspectorIDs ?? (object)DBNull.Value))
                 .ToList();
         }
-
-
         public List<BillingPerBusinessUnit> GetBillingPerBusinessUnit(ReportInvoice filter)
         {
            
@@ -311,12 +308,8 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                     new SqlParameter("@endDate", (object)filter.EndDate ?? DBNull.Value),
                     new SqlParameter("@BusinessUnits", (object)businessUnits ?? DBNull.Value),
                     new SqlParameter("@InspectorIDs", (object)inspectorIDs ?? DBNull.Value))
-                .ToList();
+               .ToList();
         }
-
-
-
-
         public List<ReportDetailsTable> GetReportDetailsTable(ReportInvoice filter)
         {
           
@@ -335,10 +328,6 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                     new SqlParameter("@InspectorIDs", (object)inspectorIDs ?? DBNull.Value))
                 .ToList();
         }
-
-
-
-
 
         public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter)
         {
@@ -359,7 +348,6 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
             return result ?? new GoalRealizationReport();
         }
-
 
         public async Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode)
         {
