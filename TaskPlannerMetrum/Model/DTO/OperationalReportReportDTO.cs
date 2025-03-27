@@ -17,6 +17,12 @@ namespace TaskPlannerMetrum.Model.DTO
         public DateTime EndDate { get; set; }
         public string StatusFilter { get; set; }
 
+        public List<int> InspectorIDs { get; set; }
+
+     
+
+
+
 
     }
 

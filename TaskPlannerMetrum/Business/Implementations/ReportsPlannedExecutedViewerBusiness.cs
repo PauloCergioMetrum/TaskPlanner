@@ -26,7 +26,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public List<vReports_PlannedExecuted> SearchReport(ReportPlannedExecutedDTO reportPlannedExecuted)
         {
-            // Forneça valores padrão caso startDate ou endDate sejam nulos
+
             var startDate = reportPlannedExecuted.startDate ?? DateTime.MinValue;
             var endDate = reportPlannedExecuted.endDate ?? DateTime.MaxValue;
 
