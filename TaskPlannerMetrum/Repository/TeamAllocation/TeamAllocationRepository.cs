@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using System.Linq;
+using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.TeamAllocation
 {
@@ -21,12 +22,12 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
 
 
-        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null, string techLeadName = null)
+        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null, string[] techLeadName = null)
         {
             var businessUnitList = businessUnit != null && businessUnit.Any() ? string.Join(",", businessUnit) : null;
             var functionIDList = functionID != null && functionID.Any() ? string.Join(",", functionID) : null;
             var projectList = project != null && project.Any() ? string.Join(",", project) : null;
-            var techLeadNameValue = !string.IsNullOrWhiteSpace(techLeadName) ? techLeadName : null; // Corrigido aqui
+            var techLeadNameValue = techLeadName != null && techLeadName.Any() ? string.Join(",", techLeadName) : null;
 
             var parameters = new[]
             {
@@ -50,7 +51,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
 
         public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null)
-        {
+                        {
             List<TeamAllocationDTO.TeamAllocationGraphicDTO> teamAllocationGraphicList = new List<TeamAllocationDTO.TeamAllocationGraphicDTO>();
 
             using (var command = _context.Database.GetDbConnection().CreateCommand())
@@ -77,6 +78,9 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 {
                     Value = (object)functionIDList ?? DBNull.Value
                 });
+
+
+               
 
                 _context.Database.OpenConnection();
 

@@ -14,7 +14,7 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public List<int> FunctionIds { get; set; }
 
-        public string TechLeadName { get; set; }
+        public string[] TechLeadName { get; set; }
         // Atualizar para ser um array de strings
         public string[] project { get; set; }
     }

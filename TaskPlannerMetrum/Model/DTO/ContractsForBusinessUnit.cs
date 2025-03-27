@@ -6,13 +6,9 @@ namespace TaskPlannerMetrum.Model.DTO
 {
     public class NumberOfContractsForBusinessUnit
     {
-        public string label { get; set; }
-
-        public int value { get; set; }
-        //public string StartPeriod { get; set; }
-        //public string EndPeriod { get; set; }
-
-
-
+        public string BusinessUnit { get; set; }
+        public int Value { get; set; }
+        public string ProjectInspectorName { get; set; }
+        public string TechLeadName { get; set; }
     }
 }
