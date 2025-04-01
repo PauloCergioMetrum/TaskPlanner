@@ -928,8 +928,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-
-        private List<OrderManagementResult> GetOrderManagementGrouped(int contractID)
+        public List<OrderManagementResult> GetOrderManagementGrouped(int contractID)
         {
             var orderManagementData = _projectmanagementRepository.OrderManagementInfo(contractID);
 
@@ -938,11 +937,15 @@ namespace TaskPlannerMetrum.Business.Implementations
                 .Select(group => new OrderManagementResult
                 {
                     ContractID = group.Key,
-                    TotalDifferenceExpectedExecuted = (float)group.Sum(x => x.TotalCostExecuted ?? 0.0),
-                    TotalCostHoursExecuted = (float)group.Sum(x => x.TotalCostHoursExecuted ?? 0.0)
+                    TotalDifferenceExpectedExecuted = (float?)((group.Sum(x => x.TotalCostExpected ?? 0) -
+                                                     group.Sum(x => x.TotalCostExecuted ?? 0))),
+                    TotalCostExpected = (decimal?)group.Sum(x => x.TotalCostExpected ?? 0),
+                    ManagementGrandTotal = (decimal?)group.Sum(x => x.ManagementGrandTotal ?? 0)
                 })
                 .ToList();
         }
+
+
 
         private List<OutsourcedServicesResult> GetOutsourcedServicesGrouped(int contractID)
         {
