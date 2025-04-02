@@ -937,13 +937,14 @@ namespace TaskPlannerMetrum.Business.Implementations
                 .Select(group => new OrderManagementResult
                 {
                     ContractID = group.Key,
-                    TotalDifferenceExpectedExecuted = (float?)((group.Sum(x => x.TotalCostExpected ?? 0) -
-                                                     group.Sum(x => x.TotalCostExecuted ?? 0))),
-                    TotalCostExpected = (decimal?)group.Sum(x => x.TotalCostExpected ?? 0),
-                    ManagementGrandTotal = (decimal?)group.Sum(x => x.ManagementGrandTotal ?? 0)
+                    TotalDifferenceExpectedExecuted = (double)(group.Sum(x => x.TotalCostExpected ?? 0) - group.Sum(x => x.TotalCostExecuted ?? 0)),
+                    TotalCostExpected = (double)group.Sum(x => x.TotalCostExpected ?? 0),
+                    ManagementGrandTotal = (double)group.Sum(x => x.ManagementGrandTotal ?? 0),
+                    TotalCostHoursExecuted = (double)group.Sum(x => x.TotalCostHoursExecuted ?? 0)
                 })
                 .ToList();
         }
+
 
 
 

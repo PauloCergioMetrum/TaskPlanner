@@ -22,10 +22,10 @@ namespace TaskPlannerMetrum.Model
     public class OrderManagementResult
     {
         public int? ContractID { get; set; }
-        public float? TotalDifferenceExpectedExecuted { get; set; }
-        public float? TotalCostHoursExecuted { get; set; }
-        public decimal? ManagementGrandTotal { get; set; }
-        public decimal? TotalCostExpected { get; set; }
+        public double? TotalDifferenceExpectedExecuted { get; set; }
+        public double? TotalCostHoursExecuted { get; set; }
+        public double? ManagementGrandTotal { get; set; }
+        public double? TotalCostExpected { get; set; }
 
     }
 
