@@ -18,6 +18,8 @@ namespace TaskPlannerMetrum.Model.DTO
         public double? ExpectedHours { get; set; }
         public double? TotalPlannedManHour { get; set; }
         public double? TotalExecutedManHour { get; set; }
+        public DateTime? DateRetroactive { get; set; }
+        public int ? Status { get; set; }   
 
 
 

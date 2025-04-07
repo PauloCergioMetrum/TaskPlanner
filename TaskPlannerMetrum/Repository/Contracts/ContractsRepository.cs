@@ -292,27 +292,39 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         public bool CompareDate(int contractID)
         {
-            var contract = _context.Contracts.FirstOrDefault(c => c.id == contractID);
+            if (contractID <= 0)
+                return false;
 
-            if (contract != null && contract.DateRetroactive != null)
+            try
             {
-                if (DateTime.TryParse(contract.DateRetroactive.ToString(), out DateTime dateRetroactive))
-                {
-                    if (dateRetroactive.Date >= DateTime.Now.Date)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-            }
+                var contract = _context.Contracts
+                    .AsNoTracking()
+                    .FirstOrDefault(c => c.id == contractID);
 
-            return false;
+                if (contract?.DateRetroactive == null)
+                    return false;
+
+                // Se já for DateTime, verifica se é igual ou maior que hoje
+                if (contract.DateRetroactive is DateTime dateRetroactive)
+                {
+                    return dateRetroactive.Date >= DateTime.Today;
+                }
+
+                // Se for string ou outro tipo, tenta converter e verifica
+                if (DateTime.TryParse(contract.DateRetroactive.ToString(), out DateTime parsedDate))
+                {
+                    return parsedDate.Date >= DateTime.Today;
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-     
+
 
         public bool DeleteObservation( string id)
         {

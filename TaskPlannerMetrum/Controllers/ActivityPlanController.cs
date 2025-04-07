@@ -160,12 +160,6 @@ namespace TaskPlannerMetrum.Controllers
 
         }
 
-
-
-
-
-
-
         [HttpGet("FindAllMilestonesByContract")]
         [ProducesResponseType(typeof(List<MilestoneDetailDTO>), 200)]
         [ProducesResponseType(204)]
