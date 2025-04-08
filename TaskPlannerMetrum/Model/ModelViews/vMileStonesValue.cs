@@ -23,7 +23,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string? TypeMilestonesID { get; set; }
         public int BusinessUnitID { get; set; }
         public string? FinanceBusinessUnit { get; set; }
-        public string? Status { get;set; }
+        //public string? Status { get;set; }
 
     }
 }
