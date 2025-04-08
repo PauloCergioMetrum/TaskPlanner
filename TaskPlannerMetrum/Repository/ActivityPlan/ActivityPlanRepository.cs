@@ -720,18 +720,20 @@ namespace TaskPlannerMetrum.Repository.ActivityPlan
                 TechLeadName = m.TechLeadName,
                 BusinessUnit = m.BusinessUnit,
                 Delayed = m.Delayed,
-
                 ScheduledDate = m.ScheduledDate,
                 RescheduledDate = m.RescheduledDate,
                 ExpectedHours = m.ExpectedHours,
                 TotalExecutedManHour = m.TotalExecutedManHour,
                 TotalPlannedManHour = m.TotalPlannedManHour,
+                DateRetroactive = m.DateRetroactive,
+                Status = m.Status,
 
 
             }).ToList();
 
             return dtoResult;
         }
+
 
 
 

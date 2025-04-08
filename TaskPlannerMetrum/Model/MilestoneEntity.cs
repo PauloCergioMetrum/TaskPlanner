@@ -20,7 +20,8 @@ namespace TaskPlannerMetrum.Model
         public double? ExpectedHours { get; set; }
         public double? TotalPlannedManHour { get; set; }
         public double? TotalExecutedManHour { get; set; }
-
+        public DateTime? DateRetroactive { get; internal set; }
+        public int? Status { get; set; }
 
     }
 }
