@@ -191,7 +191,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                 }
                 return true;
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return false;
             }
@@ -324,11 +324,11 @@ namespace TaskPlannerMetrum.Repository.Projects
 
             foreach (var item in info)
             {
-                var users = _context.Users .Where(u => (u.PermissionId == 1 || u.PermissionId == 4) && u.IsActive == true)
+                var users = _context.Users.Where(u => (u.PermissionId == 1 || u.PermissionId == 4) && u.IsActive == true)
 
-              //.Where(i => ((i.DepartmentId == item.DepartmentID && i.PermissionId != null) || (i.PermissionId == 1 || i.PermissionId == 4)) && i.IsActive)
+                    //.Where(i => ((i.DepartmentId == item.DepartmentID && i.PermissionId != null) || (i.PermissionId == 1 || i.PermissionId == 4)) && i.IsActive)
 
-               
+
 
 
 
@@ -564,7 +564,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                 _context.SaveChanges();
                 return true;
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return false;
             }
@@ -605,7 +605,7 @@ namespace TaskPlannerMetrum.Repository.Projects
         }
 
 
-        
+
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName)
 
         {
@@ -615,12 +615,12 @@ namespace TaskPlannerMetrum.Repository.Projects
             {
                 command.CommandText = "GetContractProjectsByTechLeader";
                 command.CommandType = CommandType.StoredProcedure;
-               
+
                 if (TechLeaderID.HasValue)
                     command.Parameters.Add(new SqlParameter("@TechLeaderID", TechLeaderID));
                 else
                     command.Parameters.Add(new SqlParameter("@TechLeaderID", DBNull.Value));
-             
+
                 if (!string.IsNullOrEmpty(InspectorName))
                     command.Parameters.Add(new SqlParameter("@InspectorName", InspectorName));
                 else
@@ -662,12 +662,64 @@ namespace TaskPlannerMetrum.Repository.Projects
 
         public List<vPM_SummaryPlannedData> Tapscope(int contractID)
         {
-           
+
             var tapList = _context.VPM_SummaryPlannedData
                            .Where(spd => spd.ContractID == contractID)
                            .ToList();
 
             return tapList;
+        }
+
+
+        // BLOQUEAR BOTAO DE ATRIBUIR TAREFA 
+
+        public ProjectStatusInfo GetProjectStatusById(int id, string internalCode)
+        {
+            var project = _context.vContractProject
+                .FirstOrDefault(p => p.id == id && p.InternalCode == internalCode);
+
+            if (project == null)
+                return null;
+
+     
+            bool isBlocked = DetermineIfProjectIsBlocked(project.Status, project.DateRetroactive);
+
+            return new ProjectStatusInfo
+            {
+                id = project.id,
+                InternalCode = project.InternalCode,
+                Status = project.Status,
+                DateRetroactive = project.DateRetroactive,
+                IsBlocked = isBlocked
+            };
+        }
+
+        private bool DetermineIfProjectIsBlocked(int status, DateTime? dateRetroactive)
+        {
+            
+            if (dateRetroactive == null)
+                return true; 
+
+            DateTime today = DateTime.Today;
+            bool isDateBeforeToday = dateRetroactive.Value.Date < today;
+            bool isDateAfterToday = dateRetroactive.Value.Date > today;
+                  
+            if (isDateBeforeToday && status == 5)
+                return true; // Bloqueado
+
+            if (isDateBeforeToday && status == 1)
+                return true; // Bloqueado
+
+            if (isDateAfterToday && status == 1)
+                return false; // Liberado (not blocked)
+
+            if (isDateAfterToday && status == 3)
+                return true; // Bloqueado
+
+            if (isDateAfterToday && status == 2)
+                return true; // Bloqueado
+
+            return false;
         }
 
     }

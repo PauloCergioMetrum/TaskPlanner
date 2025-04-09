@@ -63,6 +63,8 @@ namespace TaskPlannerMetrum.Repository.Projects
 
         public List<vPM_SummaryPlannedData> Tapscope(int contractID);
 
+        ProjectStatusInfo GetProjectStatusById(int id, string internalCode);
+
 
 
 

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using TaskPlannerMetrum.Business;
+using TaskPlannerMetrum.Business.Implementations;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.NewContract;
@@ -458,8 +459,31 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        [HttpGet("GetProjectStatus")]
+        [ProducesResponseType(typeof(ProjectStatusInfo), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetProjectStatus([FromQuery] int id, [FromQuery] string internalCode)
+        {
+            try
+            {
+                var result = _projectBusiness.GetProjectStatusById(id, internalCode);
 
+                if (result == null)
+                    return NoContent();
 
-
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+       
+                return BadRequest(ex.Message);
+            }
+        }
     }
+
+
+
 }
+
