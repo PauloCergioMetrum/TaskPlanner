@@ -263,6 +263,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
               return  _projectRepository.Tapscope(contractID);  
         }
+
+        public ProjectStatusInfo GetProjectStatusById(int id, string internalCode)
+        {
+         return _projectRepository.GetProjectStatusById(id, internalCode);  
+        }
     }
 
 
