@@ -700,10 +700,6 @@ namespace TaskPlannerMetrum.Repository.Projects
             if (status == 2 || status == 3 || status == 5)
                 return true;
 
-            // Regra 2: se não tem data, bloqueia
-            if (dateRetroactive == null)
-                return true;
-
             // Regra 3: se data é menor que hoje, bloqueia
             DateTime today = DateTime.Today;
             DateTime retroDate = dateRetroactive.Value.Date;
