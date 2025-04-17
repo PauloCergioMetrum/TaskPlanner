@@ -1024,6 +1024,11 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetMilestonesExpected(milestoneId);
         }
 
+        public List<CombinedMilestonesData> vCombinedMilestonesData(int contractID)
+        {
+           return _projectmanagementRepository.vCombinedMilestonesData(contractID);
+        }
+
         public async Task<List<GetMilestonesExpected>> GetCombinedMilestones(string milestoneId)
         {
 
@@ -1057,6 +1062,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return MilestonesExpectedsAndNoExpeecteds;
         }
 
+       
     }
 }
 

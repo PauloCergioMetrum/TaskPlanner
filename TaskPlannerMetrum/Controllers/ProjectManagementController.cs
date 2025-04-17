@@ -1440,6 +1440,26 @@ namespace TaskPlannerMetrum.Controllers
             return Ok(combinedMilestones);
         }
 
+
+
+        [HttpGet("GetCombinedMilestonesData")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult vCombinedMilestonesData(int contractID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.vCombinedMilestonesData(contractID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 
 }

@@ -129,6 +129,8 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<GetMilestoneNoExpected> GetMilestoneNoExpected { get; set; }
         public DbSet<GetMilestonesExpected> GetMilestonesExpected { get; set; }
 
+        public DbSet<CombinedMilestonesData> vCombinedMilestonesData { get; set; }
+
 
 
 
@@ -167,6 +169,21 @@ namespace TaskPlannerMetrum.Model.Context
             //modelBuilder.Entity<VgetMilestoneType_HH_Details>().HasNoKey();
             modelBuilder.Entity<GetMilestoneNoExpected>().HasNoKey();
             modelBuilder.Entity<GetMilestonesExpected>().HasNoKey();
+
+            base.OnModelCreating(modelBuilder);
+            modelBuilder
+     .Entity<CombinedMilestonesData>(entity =>
+     {
+         entity.HasNoKey();
+         // Se for view no SQL Server:
+         entity.ToView("vCombinedMilestonesData");
+         // ou, se for tabela física:
+         // entity.ToTable("CombinedMilestonesData");
+     });
+
+
+
+
         }
 
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)
@@ -177,7 +194,8 @@ namespace TaskPlannerMetrum.Model.Context
         }
 
         public List<GetEquipamentAvaibilaity> GetEquipmentAvailability(int EquipamentID, DateTime StartDate, DateTime EndDate)
-        {     var sql = "EXEC [dbo].[GetEquipamentAvaibilaity] @EquipamentID, @StartDate, @EndDate";
+        {
+            var sql = "EXEC [dbo].[GetEquipamentAvaibilaity] @EquipamentID, @StartDate, @EndDate";
             return this.Set<GetEquipamentAvaibilaity>()
                         .FromSqlRaw(sql,
                             new SqlParameter("@EquipamentID", EquipamentID),

@@ -1601,6 +1601,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                            .ToList();
         }
 
+        public List<CombinedMilestonesData> vCombinedMilestonesData(int contractID)
+        {
+            return _context.vCombinedMilestonesData
+                           .Where(a => a.ContractID == contractID)
+                           .ToList();   
+        }
+
         public List<vAcquisitionChart> GetStatusReportsGraph(int contractID)
         {
             return _context.vAcquisitionChart
@@ -1726,8 +1733,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-
-
+       
     }
 }
 

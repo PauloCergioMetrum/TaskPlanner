@@ -169,6 +169,8 @@ namespace TaskPlannerMetrum.Business
 
         Task<List<GetMilestonesExpected>> GetCombinedMilestones(string milestoneId);
 
+        public List<CombinedMilestonesData> vCombinedMilestonesData(int contractID);
+
 
 
 
