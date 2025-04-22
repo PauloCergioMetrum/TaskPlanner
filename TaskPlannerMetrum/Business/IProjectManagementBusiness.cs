@@ -171,6 +171,8 @@ namespace TaskPlannerMetrum.Business
 
         public List<CombinedMilestonesData> vCombinedMilestonesData(int contractID);
 
+        public List<vMilestonesStatistics> vMilestonesStatistics(int contractID);
+
 
 
 

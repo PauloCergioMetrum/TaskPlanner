@@ -122,14 +122,16 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vRightCardValue> vRightCardValue { get; set; }
         public DbSet<vIndirectcostChart> vIndirectcostChart { get; set; }
         public DbSet<vAcquisitionChart> vAcquisitionChart { get; set; }
-        //public DbSet<VgetMilestoneType_HH_Details> VgetMilestoneType_HH_Details { get; set; }
+    
 
         public DbSet<GetAllMilesStones> GetAllMilesStones { get; set; }
-        // PRIVISTO E PLANEJADO DE HH
+   
         public DbSet<GetMilestoneNoExpected> GetMilestoneNoExpected { get; set; }
         public DbSet<GetMilestonesExpected> GetMilestonesExpected { get; set; }
 
         public DbSet<CombinedMilestonesData> vCombinedMilestonesData { get; set; }
+
+        public DbSet<vMilestonesStatistics> vMilestonesStatistics { get; set; }
 
 
 
@@ -166,7 +168,7 @@ namespace TaskPlannerMetrum.Model.Context
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
             modelBuilder.Entity<TeamAllocationDTO>().HasNoKey();
             modelBuilder.Entity<OrderManagementInfo>().HasNoKey();
-            //modelBuilder.Entity<VgetMilestoneType_HH_Details>().HasNoKey();
+        
             modelBuilder.Entity<GetMilestoneNoExpected>().HasNoKey();
             modelBuilder.Entity<GetMilestonesExpected>().HasNoKey();
 
@@ -175,10 +177,9 @@ namespace TaskPlannerMetrum.Model.Context
      .Entity<CombinedMilestonesData>(entity =>
      {
          entity.HasNoKey();
-         // Se for view no SQL Server:
+      
          entity.ToView("vCombinedMilestonesData");
-         // ou, se for tabela física:
-         // entity.ToTable("CombinedMilestonesData");
+      
      });
 
 

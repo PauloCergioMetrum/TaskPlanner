@@ -140,6 +140,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<CombinedMilestonesData> vCombinedMilestonesData(int contractID);
 
+        public List<vMilestonesStatistics> vMilestonesStatistics(int contractID);
+
 
 
 
