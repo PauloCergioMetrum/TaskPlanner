@@ -1004,10 +1004,10 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        //public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID)
-        //{
-        //    return _projectmanagementRepository.GetHHByIDTaskAsync(ContractID);
-        //}
+        public List<vMilestonesStatistics> vMilestonesStatistics(int contractID)
+        {
+          return _projectmanagementRepository.vMilestonesStatistics(contractID);
+        }
 
         public Task<List<GetAllMilesStones>> GetMilestonesAsync(string milestoneId)
         {
@@ -1022,6 +1022,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         public Task<List<GetMilestonesExpected>> GetMilestonesExpected(string milestoneId)
         {
             return _projectmanagementRepository.GetMilestonesExpected(milestoneId);
+        }
+
+        public List<CombinedMilestonesData> vCombinedMilestonesData(int contractID)
+        {
+           return _projectmanagementRepository.vCombinedMilestonesData(contractID);
         }
 
         public async Task<List<GetMilestonesExpected>> GetCombinedMilestones(string milestoneId)
@@ -1057,6 +1062,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return MilestonesExpectedsAndNoExpeecteds;
         }
 
+       
     }
 }
 

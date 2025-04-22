@@ -1601,6 +1601,13 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                            .ToList();
         }
 
+        public List<CombinedMilestonesData> vCombinedMilestonesData(int contractID)
+        {
+            return _context.vCombinedMilestonesData
+                           .Where(a => a.ContractID == contractID)
+                           .ToList();   
+        }
+
         public List<vAcquisitionChart> GetStatusReportsGraph(int contractID)
         {
             return _context.vAcquisitionChart
@@ -1617,13 +1624,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             return _context.vhhGraphicDetail.Where(a => a.ContractID == contractID).ToList();
         }
 
-        //public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID)
-        //{
-        //    return _context.VgetMilestoneType_HH_Details
-        //        .Where(a => a.ContractID == ContractID)
-        //        .ToList();
-        //}
-
+        public List<vMilestonesStatistics> vMilestonesStatistics(int contractID)
+        {
+            return _context.vMilestonesStatistics
+                           .Where(a => a.ContractID == contractID)
+                           .ToList();   
+        }
 
 
         public async Task<List<GetAllMilesStones>> GetMilestonesAsync(string milestoneId)
@@ -1726,8 +1732,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-
-
+        
     }
 }
 

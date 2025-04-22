@@ -1422,7 +1422,26 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
-       
+        [HttpGet("HhGraphicDetails")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult HhGraphicDetails(int contractID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.vMilestonesStatistics(contractID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
         [HttpGet("GetCombinedMilestones")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -1439,6 +1458,26 @@ namespace TaskPlannerMetrum.Controllers
 
             return Ok(combinedMilestones);
         }
+
+
+
+        [HttpGet("GetCombinedMilestonesData")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult vCombinedMilestonesData(int contractID)
+        {
+            try
+            {
+                return Ok(_projectManagementBusiness.vCombinedMilestonesData(contractID));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 

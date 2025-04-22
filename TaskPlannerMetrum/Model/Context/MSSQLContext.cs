@@ -122,12 +122,16 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vRightCardValue> vRightCardValue { get; set; }
         public DbSet<vIndirectcostChart> vIndirectcostChart { get; set; }
         public DbSet<vAcquisitionChart> vAcquisitionChart { get; set; }
-        //public DbSet<VgetMilestoneType_HH_Details> VgetMilestoneType_HH_Details { get; set; }
+    
 
         public DbSet<GetAllMilesStones> GetAllMilesStones { get; set; }
-        // PRIVISTO E PLANEJADO DE HH
+   
         public DbSet<GetMilestoneNoExpected> GetMilestoneNoExpected { get; set; }
         public DbSet<GetMilestonesExpected> GetMilestonesExpected { get; set; }
+
+        public DbSet<CombinedMilestonesData> vCombinedMilestonesData { get; set; }
+
+        public DbSet<vMilestonesStatistics> vMilestonesStatistics { get; set; }
 
 
 
@@ -164,9 +168,23 @@ namespace TaskPlannerMetrum.Model.Context
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
             modelBuilder.Entity<TeamAllocationDTO>().HasNoKey();
             modelBuilder.Entity<OrderManagementInfo>().HasNoKey();
-            //modelBuilder.Entity<VgetMilestoneType_HH_Details>().HasNoKey();
+        
             modelBuilder.Entity<GetMilestoneNoExpected>().HasNoKey();
             modelBuilder.Entity<GetMilestonesExpected>().HasNoKey();
+
+            base.OnModelCreating(modelBuilder);
+            modelBuilder
+     .Entity<CombinedMilestonesData>(entity =>
+     {
+         entity.HasNoKey();
+      
+         entity.ToView("vCombinedMilestonesData");
+      
+     });
+
+
+
+
         }
 
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)
@@ -177,7 +195,8 @@ namespace TaskPlannerMetrum.Model.Context
         }
 
         public List<GetEquipamentAvaibilaity> GetEquipmentAvailability(int EquipamentID, DateTime StartDate, DateTime EndDate)
-        {     var sql = "EXEC [dbo].[GetEquipamentAvaibilaity] @EquipamentID, @StartDate, @EndDate";
+        {
+            var sql = "EXEC [dbo].[GetEquipamentAvaibilaity] @EquipamentID, @StartDate, @EndDate";
             return this.Set<GetEquipamentAvaibilaity>()
                         .FromSqlRaw(sql,
                             new SqlParameter("@EquipamentID", EquipamentID),

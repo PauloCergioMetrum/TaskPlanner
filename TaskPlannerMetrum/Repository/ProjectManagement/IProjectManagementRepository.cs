@@ -138,6 +138,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         Task<List<GetMilestonesExpected>> GetMilestonesExpected(string milestoneId);
 
 
+        public List<CombinedMilestonesData> vCombinedMilestonesData(int contractID);
+
+        public List<vMilestonesStatistics> vMilestonesStatistics(int contractID);
+
 
 
 
