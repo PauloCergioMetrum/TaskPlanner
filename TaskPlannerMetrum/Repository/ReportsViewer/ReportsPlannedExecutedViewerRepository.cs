@@ -379,6 +379,18 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
+        public List<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO(DateTime startDate, DateTime endDate)
+        {
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
+
+            return _context.GetContractsStatusByMonthDTO.FromSqlRaw(
+                "EXEC dbo.GetContractsStatusByMonth @StartDate, @EndDate",
+                startParam, endParam
+            ).ToList();
+        }
+
+
     }
 
 }
