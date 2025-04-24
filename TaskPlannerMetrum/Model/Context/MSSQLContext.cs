@@ -171,6 +171,7 @@ namespace TaskPlannerMetrum.Model.Context
         
             modelBuilder.Entity<GetMilestoneNoExpected>().HasNoKey();
             modelBuilder.Entity<GetMilestonesExpected>().HasNoKey();
+            modelBuilder.Entity<GetContractsByMonthDto>().HasNoKey();
 
 
 

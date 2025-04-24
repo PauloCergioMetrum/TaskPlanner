@@ -162,12 +162,17 @@ namespace TaskPlannerMetrum.Business.Implementations
             List<OperationalRelationshipTable> OperationalRelationshipTable = _repository.GetContractDetails(OperationalReportReportDTO);
             List<StatusForPeriod> StatusForPeriod = _repository.getStatusPerPeriod(OperationalReportReportDTO);
             List<PreparetBalancePerProject> BalancePerProject = PreparetBalancePerProject(OperationalReportReportDTO);
+            List<GetContractsByMonthDto> ContractsByMonth = _repository.GetContractsByMonth(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate);
+
+
+
             return new ProjectOperational
             {
                 ContractsForBusinessUnit = ContractsForBusinessUnit,
                 StatusForPeriod = StatusForPeriod,
                 BalancePerProject = BalancePerProject,
-                OperationalRelationshipTable = OperationalRelationshipTable
+                OperationalRelationshipTable = OperationalRelationshipTable,
+                ContractsByMonth = ContractsByMonth
             };
         }
 

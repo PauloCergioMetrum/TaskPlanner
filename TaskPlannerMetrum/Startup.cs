@@ -53,7 +53,7 @@ using TaskPlannerMetrum.Repository.Executive;
 using TaskPlannerMetrum.Repository.PvExecutive;
 using TaskPlannerMetrum.Repository.CustomerSatisfaction;
 using TaskPlannerMetrum.Repository.Log;
-using TaskPlannerMetrum.Repository.GetContractsByMonthRepository;
+
 
 namespace TaskPlannerMetrum
 {
@@ -224,7 +224,7 @@ namespace TaskPlannerMetrum
             services.AddScoped<IExecutiveRepository, ExecutiveRepository>();
             services.AddScoped<ICustomerSatisfactionRepository, CustomerSatisfactionRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
-            services.AddScoped<IGetContractsByMonthRepository, GetContractsByMonthRepository>();
+
 
 
 

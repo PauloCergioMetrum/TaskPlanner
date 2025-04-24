@@ -40,8 +40,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode);
 
-
-
+        List<GetContractsByMonthDto> GetContractsByMonth(DateTime startDate, DateTime endDate);
 
 
 
