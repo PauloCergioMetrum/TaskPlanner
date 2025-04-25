@@ -173,6 +173,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetMilestonesExpected>().HasNoKey();
             modelBuilder.Entity<GetContractsByMonthDto>().HasNoKey();
             modelBuilder.Entity<GetContractsStatusByMonthDTO>().HasNoKey();
+            modelBuilder.Entity<GetProjectStatusPeriodDTO>().HasNoKey();
 
 
 
@@ -192,8 +193,8 @@ namespace TaskPlannerMetrum.Model.Context
         }
 
         public DbSet<GetContractsByMonthDto> GetContractsByMonthDto { get; set; }
-
         public DbSet<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO { get; set; }
+        public DbSet<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO { get; set; }
 
 
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)

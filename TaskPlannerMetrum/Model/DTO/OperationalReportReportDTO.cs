@@ -19,7 +19,10 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public List<int> InspectorIDs { get; set; }
 
-     
+        public int FiltroStatusID { get; set; }
+
+
+
 
 
 
