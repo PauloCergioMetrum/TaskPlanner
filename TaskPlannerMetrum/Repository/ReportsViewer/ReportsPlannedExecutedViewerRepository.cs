@@ -365,6 +365,32 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
             return result;
         }
+
+
+        public List<GetContractsByMonthDto> GetContractsByMonth(DateTime startDate, DateTime endDate)
+        {
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
+
+            return _context.GetContractsByMonthDto.FromSqlRaw(
+                "EXEC dbo.GetContractsByMonth @StartDate, @EndDate",
+                startParam, endParam
+            ).ToList();
+        }
+
+
+        public List<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO(DateTime startDate, DateTime endDate)
+        {
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
+
+            return _context.GetContractsStatusByMonthDTO.FromSqlRaw(
+                "EXEC dbo.GetContractsStatusByMonth @StartDate, @EndDate",
+                startParam, endParam
+            ).ToList();
+        }
+
+
     }
 
 }

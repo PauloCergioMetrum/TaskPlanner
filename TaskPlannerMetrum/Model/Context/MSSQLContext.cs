@@ -171,6 +171,10 @@ namespace TaskPlannerMetrum.Model.Context
         
             modelBuilder.Entity<GetMilestoneNoExpected>().HasNoKey();
             modelBuilder.Entity<GetMilestonesExpected>().HasNoKey();
+            modelBuilder.Entity<GetContractsByMonthDto>().HasNoKey();
+            modelBuilder.Entity<GetContractsStatusByMonthDTO>().HasNoKey();
+
+
 
             base.OnModelCreating(modelBuilder);
             modelBuilder
@@ -186,6 +190,11 @@ namespace TaskPlannerMetrum.Model.Context
 
 
         }
+
+        public DbSet<GetContractsByMonthDto> GetContractsByMonthDto { get; set; }
+
+        public DbSet<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO { get; set; }
+
 
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)
         {

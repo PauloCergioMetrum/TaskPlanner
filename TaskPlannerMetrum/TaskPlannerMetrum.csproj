@@ -5,14 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repository\GetContractsByMonthRepository\**" />
     <Compile Remove="Repository\NovaPasta1\**" />
+    <Content Remove="Repository\GetContractsByMonthRepository\**" />
     <Content Remove="Repository\NovaPasta1\**" />
+    <EmbeddedResource Remove="Repository\GetContractsByMonthRepository\**" />
     <EmbeddedResource Remove="Repository\NovaPasta1\**" />
+    <None Remove="Repository\GetContractsByMonthRepository\**" />
     <None Remove="Repository\NovaPasta1\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Business\IUserHourCostsUserID.cs" />
+    <Compile Remove="Controllers\GetContractsByMonthController.cs" />
+    <Compile Remove="Model\DTO\GetContractsByMonthDto.cs" />
     <Compile Remove="Model\ModelViews\vPmCostPlanned.cs" />
   </ItemGroup>
 

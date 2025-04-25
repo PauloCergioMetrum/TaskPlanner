@@ -54,6 +54,7 @@ using TaskPlannerMetrum.Repository.PvExecutive;
 using TaskPlannerMetrum.Repository.CustomerSatisfaction;
 using TaskPlannerMetrum.Repository.Log;
 
+
 namespace TaskPlannerMetrum
 {
     public class Startup
@@ -223,6 +224,7 @@ namespace TaskPlannerMetrum
             services.AddScoped<IExecutiveRepository, ExecutiveRepository>();
             services.AddScoped<ICustomerSatisfactionRepository, CustomerSatisfactionRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
+
 
 
 
