@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace TaskPlannerMetrum.Model.DTO
 {
@@ -22,6 +23,15 @@ namespace TaskPlannerMetrum.Model.DTO
         public int FiltroStatusID { get; set; }
 
 
+
+        public DateTime DateFineshed { get; set; }
+        public string InspectorName { get; set; }
+
+        public string BusinessUnit { get; set; }
+
+        public string TechLeaderName { get; set; }
+
+        public int Status { get; set; }
 
 
 

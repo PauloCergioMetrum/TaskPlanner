@@ -17,5 +17,6 @@ namespace TaskPlannerMetrum.Model.DTO
         public List<GetContractsByMonthDto> ContractsByMonth { get; set; }
         public List<GetContractsStatusByMonthDTO> ContractsStatusByMonth { get; set; }
         public List<GetProjectStatusPeriodDTO> ProjectStatusPeriod { get; internal set; }
+        public List<GetTableProjectExecutiveReportDTO> TableProjectExecutiveReport { get; internal set; }
     }
 }

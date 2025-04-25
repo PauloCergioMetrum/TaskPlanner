@@ -168,6 +168,8 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             List<GetProjectStatusPeriodDTO> ProjectStatusPeriod = _repository.GetProjectStatusPeriodDTO(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate, OperationalReportReportDTO.FiltroStatusID);
 
+            List<GetTableProjectExecutiveReportDTO> TableProjectExecutiveReport = _repository.GetTableProjectExecutiveReportDTO(OperationalReportReportDTO.BusinessUnit, OperationalReportReportDTO.InspectorName, OperationalReportReportDTO.TechLeaderName, OperationalReportReportDTO.Status, OperationalReportReportDTO.StartDate, OperationalReportReportDTO.DateFineshed);
+
 
 
             return new ProjectOperational
@@ -178,7 +180,8 @@ namespace TaskPlannerMetrum.Business.Implementations
                 OperationalRelationshipTable = OperationalRelationshipTable,
                 ContractsByMonth = ContractsByMonth,  // grafico STATUS POR UNIDADE DE NEGÓCIO
                 ContractsStatusByMonth = ContractsStatusByMonth, // grafico PROJETOS ABERTOS E FECHADOS
-                ProjectStatusPeriod = ProjectStatusPeriod
+                ProjectStatusPeriod = ProjectStatusPeriod, // (Projeto por unidade de Negocio)
+                TableProjectExecutiveReport = TableProjectExecutiveReport
             };
         }
 

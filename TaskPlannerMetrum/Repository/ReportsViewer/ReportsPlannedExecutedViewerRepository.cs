@@ -55,7 +55,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                             {
                                 hourResult = Convert.ToDouble(reader.GetValue(0));
                             }
-                        }                  
+                        }
                     }
 
                 }
@@ -68,12 +68,13 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = "EXECUTE [dbo].[HoursCost] @startDate,@endDate,@contractID,@userID";
-                 command.Parameters.Add(new SqlParameter("@startDate", startDate));
+                command.Parameters.Add(new SqlParameter("@startDate", startDate));
                 command.Parameters.Add(new SqlParameter("@endDate", endDate));
                 command.Parameters.Add(new SqlParameter("@contractID", Convert.ToInt64(0)));
                 command.Parameters.Add(new SqlParameter("@userID", Convert.ToInt64(0)));
                 _context.Database.OpenConnection();
-                using (var reader = command.ExecuteReader()){
+                using (var reader = command.ExecuteReader())
+                {
                     while (reader.Read())
                     {
                         int index = 0;
@@ -218,7 +219,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                       $"@BusinessUnitIDs = {(businessUnitNames.Count > 0 ? $"'{string.Join(",", businessUnitNames)}'" : "null")}, " +
                       $"@StartDate = {(startDate != "null" ? $"'{startDate}'" : "null")}, " +
                       $"@EndDate = {(endDate != "null" ? $"'{endDate}'" : "null")}, " +
-                      $"@StatusFilter = {statusFilter}";    
+                      $"@StatusFilter = {statusFilter}";
 
             return _context.Set<OperationalRelationshipTable>().FromSqlRaw(sql).ToList();
         }
@@ -256,9 +257,9 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         public List<PredictedInvoiced> GetMaterialAndService(ReportInvoice parameters)
         {
-           
+
             string businessUnits = parameters.BusinessUnits.Any() ? string.Join(",", parameters.BusinessUnits) : null;
-            string inspectorIDs = parameters.InspectorIDs.Any() ? string.Join(",", parameters.InspectorIDs) : null;  
+            string inspectorIDs = parameters.InspectorIDs.Any() ? string.Join(",", parameters.InspectorIDs) : null;
             var sql = "EXEC [dbo].[GetPredictedInvoiced] " +
                       "@startDate, " +
                       "@endDate, " +
@@ -276,7 +277,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         public List<MaterialServices> GetPredictedInvoicedReport(ReportInvoice parameters)
         {
-          
+
             string businessUnits = parameters.BusinessUnits != null && parameters.BusinessUnits.Any()
                 ? string.Join(",", parameters.BusinessUnits)
                 : null;
@@ -294,7 +295,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
         public List<BillingPerBusinessUnit> GetBillingPerBusinessUnit(ReportInvoice filter)
         {
-           
+
             var businessUnits = filter.BusinessUnits != null && filter.BusinessUnits.Count > 0
                 ? string.Join(",", filter.BusinessUnits)
                 : null;
@@ -312,7 +313,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
         public List<ReportDetailsTable> GetReportDetailsTable(ReportInvoice filter)
         {
-          
+
             var businessUnits = filter.BusinessUnits != null && filter.BusinessUnits.Count > 0
                 ? string.Join(",", filter.BusinessUnits)
                 : null;
@@ -331,7 +332,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter)
         {
-          
+
             if (!filter.StartDate.HasValue)
                 throw new ArgumentException("StartDate is required.");
             string year = filter.StartDate.Value.Year.ToString();
@@ -402,6 +403,27 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             ).ToList();
         }
 
+
+
+
+
+
+
+
+        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(string BusinessUnit, string InspectorName, string TechLeaderName, int Status, DateTime StartDate, DateTime DateFineshed)
+        {
+            var businessUnitParam = new SqlParameter("@BusinessUnit", BusinessUnit ?? (object)DBNull.Value);
+            var InspectorNameParam = new SqlParameter("@InspectorName", InspectorName ?? (object)DBNull.Value);
+            var techLeaderNameParam = new SqlParameter("@TechLeaderName", TechLeaderName ?? (object)DBNull.Value);
+            var StatusParam = new SqlParameter("@Status", Status);
+            var StartDateParam = new SqlParameter("@StartDate", StartDate.Year < 1753 ? (object)DBNull.Value : StartDate);
+            var DateFineshedParam = new SqlParameter("@DateFineshed", DateFineshed.Year < 1753 ? (object)DBNull.Value : DateFineshed);
+
+            return _context.GetTableProjectExecutiveReportDTO.FromSqlRaw(
+                "EXEC dbo.GetTableProjectExecutiveReport @BusinessUnit, @InspectorName, @TechLeaderName, @Status, @StartDate, @DateFineshed",
+                businessUnitParam, InspectorNameParam, techLeaderNameParam, StatusParam, StartDateParam, DateFineshedParam
+            ).ToList();
+        }
 
     }
 
