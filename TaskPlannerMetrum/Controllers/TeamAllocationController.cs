@@ -35,5 +35,26 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(new { message = "Erro ao buscar dados de alocação de equipe.", error = ex.Message });
             }
         }
+
+        [HttpGet("GetTeamAllocationReport")]
+        public IActionResult GetTeamAllocationComplete([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string functionName = null)
+        {
+            try
+            {
+                var result = _teamAllocationBusiness.GetTeamAllocationComplete(startDate, endDate, functionName);
+
+                if (result == null || result.ExecutorHoursTable.Count == 0)
+                    return NoContent();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Erro ao buscar alocação de equipe completa.", error = ex.Message });
+            }
+        }
+
+
+
     }
 }

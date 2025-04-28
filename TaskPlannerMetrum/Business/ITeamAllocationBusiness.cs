@@ -7,6 +7,10 @@ namespace TaskPlannerMetrum.Business
     public interface ITeamAllocationBusiness
     {
         List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate);
+        TeamAllocationResultDTO GetTeamAllocationComplete(DateTime startDate, DateTime endDate);
+        TeamAllocationResultDTO GetTeamAllocationComplete(DateTime startDate, DateTime endDate, string functionName = null);
+
+
 
 
     }

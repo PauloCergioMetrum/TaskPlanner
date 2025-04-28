@@ -31,6 +31,31 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             return result;
         }
 
-        // novo 
+        public TaskExecutionMetricsDTO GetTaskExecutionMetrics(DateTime startDate, DateTime endDate)
+        {
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
+
+            var result = _context.Set<TaskExecutionMetricsDTO>()
+                .FromSqlRaw("EXEC GetTaskExecutionMetrics @StartDate, @EndDate", startParam, endParam)
+                .AsEnumerable()
+                .FirstOrDefault();
+
+            return result ?? new TaskExecutionMetricsDTO();
+        }
+
+        public List<FunctionEmployeeCountTableDTO> GetFunctionEmployeeCount(DateTime startDate, DateTime endDate, string functionName = null)
+        {
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
+            var functionNameParam = new SqlParameter("@FunctionName", (object)functionName ?? DBNull.Value);
+
+            var result = _context.Set<FunctionEmployeeCountTableDTO>()
+                .FromSqlRaw("EXEC GetFunctionEmployeeCount @StartDate, @EndDate, @FunctionName", startParam, endParam, functionNameParam)
+                .ToList();
+
+            return result;
+        }
+
     }
 }

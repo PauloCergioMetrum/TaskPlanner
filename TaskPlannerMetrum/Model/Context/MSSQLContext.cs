@@ -183,6 +183,9 @@ namespace TaskPlannerMetrum.Model.Context
 
             //NOVOS
             modelBuilder.Entity<ExecutorHoursTableDTO>().HasNoKey();
+            modelBuilder.Entity<TaskExecutionMetricsDTO>().HasNoKey();
+            modelBuilder.Entity<FunctionEmployeeCountTableDTO>().HasNoKey();
+
 
 
 
