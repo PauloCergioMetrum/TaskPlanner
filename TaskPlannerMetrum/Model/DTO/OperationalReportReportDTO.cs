@@ -34,6 +34,11 @@ namespace TaskPlannerMetrum.Model.DTO
         public int Status { get; set; }
 
 
+        public double? TotalExecutedHours { get; set; }
+        public double? TotalPlannedHours { get; set; }
+        public int? TotalAvailableHours { get; set; }
+
+
 
 
 

@@ -47,6 +47,8 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(string BusinessUnit, string InspectorName, string TechLeaderName, int Status, DateTime StartDate, DateTime DateFineshed);
 
+        List<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO(DateTime startDate, DateTime endDate);
+
 
     } 
 }

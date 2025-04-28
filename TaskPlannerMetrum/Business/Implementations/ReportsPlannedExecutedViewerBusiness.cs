@@ -170,6 +170,8 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             List<GetTableProjectExecutiveReportDTO> TableProjectExecutiveReport = _repository.GetTableProjectExecutiveReportDTO(OperationalReportReportDTO.BusinessUnit, OperationalReportReportDTO.InspectorName, OperationalReportReportDTO.TechLeaderName, OperationalReportReportDTO.Status, OperationalReportReportDTO.StartDate, OperationalReportReportDTO.DateFineshed);
 
+            List<GetTaskExecutionMetricsDTO> TaskExecutionMetrics = _repository.GetTaskExecutionMetricsDTO(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate);
+
 
 
             return new ProjectOperational
@@ -181,7 +183,8 @@ namespace TaskPlannerMetrum.Business.Implementations
                 ContractsByMonth = ContractsByMonth,  // grafico STATUS POR UNIDADE DE NEGÓCIO
                 ContractsStatusByMonth = ContractsStatusByMonth, // grafico PROJETOS ABERTOS E FECHADOS
                 ProjectStatusPeriod = ProjectStatusPeriod, // (Projeto por unidade de Negocio)
-                TableProjectExecutiveReport = TableProjectExecutiveReport
+                TableProjectExecutiveReport = TableProjectExecutiveReport, // (Tabela Relatório  Executivo  de projetos)
+                TaskExecutionMetrics = TaskExecutionMetrics // (Métricas de execução de tarefas)
             };
         }
 

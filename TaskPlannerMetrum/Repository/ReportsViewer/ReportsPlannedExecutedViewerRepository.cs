@@ -425,6 +425,22 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             ).ToList();
         }
 
+
+
+
+        public List<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO(DateTime startDate, DateTime endDate)
+        {
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
+
+            return _context.GetTaskExecutionMetricsDTO.FromSqlRaw(
+                "EXEC dbo.GetTaskExecutionMetrics @StartDate, @EndDate",
+                startParam, endParam
+            ).ToList();
+        }
+
+
+
     }
 
 }
