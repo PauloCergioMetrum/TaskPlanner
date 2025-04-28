@@ -1,6 +1,6 @@
-﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model.DTO;
 
@@ -17,45 +17,23 @@ namespace TaskPlannerMetrum.Controllers
         {
             _teamAllocationBusiness = teamAllocationBusiness;
         }
-        [HttpPost("GetAllTeamAllocation")]
-        public IActionResult GetTeamAllocation(TeamAlocationTableDTO teamAlocatTable)
+
+        [HttpGet("GetExecutorHoursTable")]
+        public IActionResult GetExecutorHoursTable([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
             try
             {
-                var result = _teamAllocationBusiness.GetTeamAllocation(
-                    teamAlocatTable.businessUnit,
-                    teamAlocatTable.startDate,
-                    teamAlocatTable.endDate,
-                    teamAlocatTable.FunctionIds,
-                    teamAlocatTable.project,
-                    teamAlocatTable.TechLeadName
-                );
+                var result = _teamAllocationBusiness.GetExecutorHoursTable(startDate, endDate);
 
-                if (result == null || (result.TeamAllocations.Count == 0 && result.TeamAllocationGraphics.Count == 0))
-                {
-                    result = _teamAllocationBusiness.GetTeamAllocation(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null
-                    );
-
-                    if (result == null || (result.TeamAllocations.Count == 0 && result.TeamAllocationGraphics.Count == 0))
-                    {
-                        return NoContent();
-                    }
-                }
+                if (result == null || result.Count == 0)
+                    return NoContent();
 
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = "Erro ao buscar dados de alocação de equipe.", error = ex.Message });
             }
         }
-
-
     }
 }

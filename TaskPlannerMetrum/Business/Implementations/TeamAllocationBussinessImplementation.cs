@@ -14,40 +14,9 @@ namespace TaskPlannerMetrum.Business
             _teamAllocationRepository = teamAllocationRepository;
         }
 
-        public TeamAllocationResponseDTO GetTeamAllocation(string[] businessUnit, DateTime? startDate, DateTime? endDate, List<int> functionID, string[] project, string[] techLeadName = null)
+        public List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate)
         {
-            var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit, startDate, endDate, functionID, project , techLeadName);
-            var graphics = _teamAllocationRepository.GetTeamAllocationGraphic(startDate, endDate, functionID);
-            var functions = _teamAllocationRepository.GetTeamAllocationGraphicFunctions(startDate, endDate, functionID);
-            var cards = _teamAllocationRepository.GetTeamAllocationCards(startDate ?? DateTime.MinValue, endDate ?? DateTime.MaxValue);
-            var filter = _teamAllocationRepository.GetTeamFilterBusinessUnit().ToArray();
-
-            return new TeamAllocationResponseDTO
-            {
-                TeamAllocations = allocations,
-                TeamAllocationGraphics = graphics,
-                TeamAllocationGraphicFunctions = functions,
-                GetTeamAllocationCards = cards,
-                BusinessUnits = filter,
-            };
+            return _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate);
         }
-
-      
-        public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd)
-        {
-            return _teamAllocationRepository.GetTeamAllocationCards(DateStart, DateEnd);
-        }
-
-        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions()
-        {
-            return _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
-        }
-
-        public string[] GetTeamFilterBusinessUnit(string selectedBusinessUnit = null)
-        {
-            return _teamAllocationRepository.GetTeamFilterBusinessUnit().ToArray();
-        }
-
-     
     }
 }

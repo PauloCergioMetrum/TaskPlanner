@@ -22,6 +22,10 @@ namespace TaskPlannerMetrum.Model.Context
         public MSSQLContext(DbContextOptions<MSSQLContext> options) : base(options) { }
 
 
+      
+
+
+
         //TABELAS
         public DbSet<RatingProject> RatingProject { get; set; }
         public DbSet<RatingDescription> RatingDescription { get; set; }
@@ -166,7 +170,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<ActivityPlanHHTable>().HasNoKey();
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey();
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
-            modelBuilder.Entity<TeamAllocationDTO>().HasNoKey();
+      
             modelBuilder.Entity<OrderManagementInfo>().HasNoKey();
         
             modelBuilder.Entity<GetMilestoneNoExpected>().HasNoKey();
@@ -176,6 +180,9 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetProjectStatusPeriodDTO>().HasNoKey();
             modelBuilder.Entity<GetTableProjectExecutiveReportDTO>().HasNoKey();
             modelBuilder.Entity<GetTaskExecutionMetricsDTO>().HasNoKey();
+
+            //NOVOS
+            modelBuilder.Entity<ExecutorHoursTableDTO>().HasNoKey();
 
 
 
