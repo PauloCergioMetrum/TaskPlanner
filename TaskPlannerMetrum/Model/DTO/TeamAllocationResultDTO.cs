@@ -6,6 +6,7 @@ namespace TaskPlannerMetrum.Model.DTO
     {
         public List<ExecutorHoursTableDTO> ExecutorHoursTable { get; set; }
         public TaskExecutionMetricsDTO TaskExecutionMetrics { get; set; }
-        public List<FunctionEmployeeCountTableDTO> FunctionEmployeeCountTable { get; set; } 
+        public List<FunctionEmployeeCountTableDTO> FunctionEmployeeCountTable { get; set; }
+        public List<AvailableHoursByFunctionTableDTO> AvailableHoursByFunctionTable { get; set; } 
     }
 }

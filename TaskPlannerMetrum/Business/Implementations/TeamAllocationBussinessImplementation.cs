@@ -5,11 +5,11 @@ using TaskPlannerMetrum.Repository.TeamAllocation;
 
 namespace TaskPlannerMetrum.Business
 {
-    public class TeamAllocationBussinessImplementation : ITeamAllocationBusiness
+    public class TeamAllocationBusinessImplementation : ITeamAllocationBusiness
     {
         private readonly ITeamAllocationRepository _teamAllocationRepository;
 
-        public TeamAllocationBussinessImplementation(ITeamAllocationRepository teamAllocationRepository)
+        public TeamAllocationBusinessImplementation(ITeamAllocationRepository teamAllocationRepository)
         {
             _teamAllocationRepository = teamAllocationRepository;
         }
@@ -19,32 +19,16 @@ namespace TaskPlannerMetrum.Business
             return _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate);
         }
 
-        public TeamAllocationResultDTO GetTeamAllocationComplete(DateTime startDate, DateTime endDate)
+        public TeamAllocationResultDTO GetTeamAllocationReport(DateTime startDate, DateTime endDate, string functionName = null)
         {
-            var executorHours = _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate);
-            var metrics = _teamAllocationRepository.GetTaskExecutionMetrics(startDate, endDate);
-
             return new TeamAllocationResultDTO
             {
-                ExecutorHoursTable = executorHours,
-                TaskExecutionMetrics = metrics
+                ExecutorHoursTable = _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate),
+                TaskExecutionMetrics = _teamAllocationRepository.GetTaskExecutionMetrics(startDate, endDate),
+                FunctionEmployeeCountTable = _teamAllocationRepository.GetFunctionEmployeeCount(startDate, endDate, functionName),
+                AvailableHoursByFunctionTable = _teamAllocationRepository.GetAvailableHoursByFunction(startDate, endDate, functionName)
             };
         }
-
-        public TeamAllocationResultDTO GetTeamAllocationComplete(DateTime startDate, DateTime endDate, string functionName = null)
-        {
-            var executorHours = _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate);
-            var metrics = _teamAllocationRepository.GetTaskExecutionMetrics(startDate, endDate);
-            var functionEmployeeCount = _teamAllocationRepository.GetFunctionEmployeeCount(startDate, endDate, functionName);
-
-            return new TeamAllocationResultDTO
-            {
-                ExecutorHoursTable = executorHours,
-                TaskExecutionMetrics = metrics,
-                FunctionEmployeeCountTable = functionEmployeeCount
-            };
-        }
-
 
     }
 }

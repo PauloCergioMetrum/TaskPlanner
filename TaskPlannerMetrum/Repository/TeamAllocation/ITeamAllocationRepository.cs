@@ -9,6 +9,6 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
         List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate);
         TaskExecutionMetricsDTO GetTaskExecutionMetrics(DateTime startDate, DateTime endDate);
         List<FunctionEmployeeCountTableDTO> GetFunctionEmployeeCount(DateTime startDate, DateTime endDate, string functionName = null);
-
+        List<AvailableHoursByFunctionTableDTO> GetAvailableHoursByFunction(DateTime startDate, DateTime endDate, string functionName = null);
     }
 }

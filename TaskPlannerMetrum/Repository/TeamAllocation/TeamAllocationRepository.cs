@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 using Microsoft.Data.SqlClient;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
-using System.Linq;
-using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.TeamAllocation
 {
@@ -24,11 +22,9 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
 
-            var result = _context.Set<ExecutorHoursTableDTO>()
+            return _context.Set<ExecutorHoursTableDTO>()
                 .FromSqlRaw("EXEC GetExecutorHoursTable @StartDate, @EndDate", startParam, endParam)
                 .ToList();
-
-            return result;
         }
 
         public TaskExecutionMetricsDTO GetTaskExecutionMetrics(DateTime startDate, DateTime endDate)
@@ -36,12 +32,10 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
 
-            var result = _context.Set<TaskExecutionMetricsDTO>()
+            return _context.Set<TaskExecutionMetricsDTO>()
                 .FromSqlRaw("EXEC GetTaskExecutionMetrics @StartDate, @EndDate", startParam, endParam)
                 .AsEnumerable()
-                .FirstOrDefault();
-
-            return result ?? new TaskExecutionMetricsDTO();
+                .FirstOrDefault() ?? new TaskExecutionMetricsDTO();
         }
 
         public List<FunctionEmployeeCountTableDTO> GetFunctionEmployeeCount(DateTime startDate, DateTime endDate, string functionName = null)
@@ -50,12 +44,20 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             var endParam = new SqlParameter("@EndDate", endDate);
             var functionNameParam = new SqlParameter("@FunctionName", (object)functionName ?? DBNull.Value);
 
-            var result = _context.Set<FunctionEmployeeCountTableDTO>()
+            return _context.Set<FunctionEmployeeCountTableDTO>()
                 .FromSqlRaw("EXEC GetFunctionEmployeeCount @StartDate, @EndDate, @FunctionName", startParam, endParam, functionNameParam)
                 .ToList();
-
-            return result;
         }
 
+        public List<AvailableHoursByFunctionTableDTO> GetAvailableHoursByFunction(DateTime startDate, DateTime endDate, string functionName = null)
+        {
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
+            var functionNameParam = new SqlParameter("@FunctionName", (object)functionName ?? DBNull.Value);
+
+            return _context.Set<AvailableHoursByFunctionTableDTO>()
+                .FromSqlRaw("EXEC GetAvailableHoursByFunction @StartDate, @EndDate, @FunctionName", startParam, endParam, functionNameParam)
+                .ToList();
+        }
     }
 }

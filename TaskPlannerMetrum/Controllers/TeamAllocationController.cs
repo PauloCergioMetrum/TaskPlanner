@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model.DTO;
 
@@ -21,40 +20,15 @@ namespace TaskPlannerMetrum.Controllers
         [HttpGet("GetExecutorHoursTable")]
         public IActionResult GetExecutorHoursTable([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
-            try
-            {
-                var result = _teamAllocationBusiness.GetExecutorHoursTable(startDate, endDate);
-
-                if (result == null || result.Count == 0)
-                    return NoContent();
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = "Erro ao buscar dados de alocação de equipe.", error = ex.Message });
-            }
+            var result = _teamAllocationBusiness.GetExecutorHoursTable(startDate, endDate);
+            return result == null || result.Count == 0 ? NoContent() : Ok(result);
         }
 
         [HttpGet("GetTeamAllocationReport")]
-        public IActionResult GetTeamAllocationComplete([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string functionName = null)
+        public IActionResult GetTeamAllocationReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string functionName = null)
         {
-            try
-            {
-                var result = _teamAllocationBusiness.GetTeamAllocationComplete(startDate, endDate, functionName);
-
-                if (result == null || result.ExecutorHoursTable.Count == 0)
-                    return NoContent();
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = "Erro ao buscar alocação de equipe completa.", error = ex.Message });
-            }
+            var result = _teamAllocationBusiness.GetTeamAllocationReport(startDate, endDate, functionName);
+            return result == null || result.ExecutorHoursTable.Count == 0 ? NoContent() : Ok(result);
         }
-
-
-
     }
 }
