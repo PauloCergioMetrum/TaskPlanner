@@ -64,26 +64,26 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public double HoursCostSearch(List<vReports_PlannedExecuted> reportPlannedExecuted)
-        {
-            var startDate = reportPlannedExecuted.OrderBy(s => s.ScheduledDate).Select(s => s.ScheduledDate).First();
-            var endDate = reportPlannedExecuted.OrderBy(s => s.ScheduledDate).Select(s => s.ScheduledDate).Last();
-            var listExecutedID = reportPlannedExecuted.Select(e => e.ExecutorID).ToList();
-            var listContractID = reportPlannedExecuted.Select(e => e.ContractID).ToList();
-            var listHoursCost = _repository.GetHourCost(startDate, endDate).AsQueryable();
+        //public double HoursCostSearch(List<vReports_PlannedExecuted> reportPlannedExecuted)
+        //{
+        //    var startDate = reportPlannedExecuted.OrderBy(s => s.ScheduledDate).Select(s => s.ScheduledDate).First();
+        //    var endDate = reportPlannedExecuted.OrderBy(s => s.ScheduledDate).Select(s => s.ScheduledDate).Last();
+        //    var listExecutedID = reportPlannedExecuted.Select(e => e.ExecutorID).ToList();
+        //    var listContractID = reportPlannedExecuted.Select(e => e.ContractID).ToList();
+        //    var listHoursCost = _repository.GetHourCost(startDate, endDate).AsQueryable();
 
-            if (reportPlannedExecuted.Select(e => e.ExecutorID).ToList().Count != 0)
-            {
-                listHoursCost = listHoursCost.Where(l => listExecutedID.Any(u => u == l.UserID)).AsQueryable();
-            }
+        //    if (reportPlannedExecuted.Select(e => e.ExecutorID).ToList().Count != 0)
+        //    {
+        //        listHoursCost = listHoursCost.Where(l => listExecutedID.Any(u => u == l.UserID)).AsQueryable();
+        //    }
 
-            if (reportPlannedExecuted.Select(e => e.ContractID).ToList().Count != 0)
-            {
-                listHoursCost = listHoursCost.Where(l => listContractID.Any(u => u == l.ContractID)).AsQueryable();
-            }
+        //    if (reportPlannedExecuted.Select(e => e.ContractID).ToList().Count != 0)
+        //    {
+        //        listHoursCost = listHoursCost.Where(l => listContractID.Any(u => u == l.ContractID)).AsQueryable();
+        //    }
 
-            return Math.Round(listHoursCost.Select(d => d.DayCost).Sum(), 2);
-        }
+        //    return Math.Round(listHoursCost.Select(d => d.DayCost).Sum(), 2);
+        //}
 
 
         public ReportPlannedExecuted GetPlannedExecuted(ReportPlannedExecutedDTO reportPlannedExecuted)
@@ -124,44 +124,47 @@ namespace TaskPlannerMetrum.Business.Implementations
             return ExpectedHours;
         }
 
-        public List<PreparetBalancePerProject> PreparetBalancePerProject(OperationalReportReportDTO OperationalReportReportDTO)
-        {
-            List<BalancePerProject> allBalancePerProject = _repository.GetBalancePerProject(OperationalReportReportDTO);
-            var distinctBalanceProjects = allBalancePerProject.ToList().Distinct();
-            List<PreparetBalancePerProject> balanceDetailsFullList = new List<PreparetBalancePerProject>();
+        //public List<PreparetBalancePerProject> PreparetBalancePerProject(OperationalReportReportDTO OperationalReportReportDTO)
+        //{
+        //    List<BalancePerProject> allBalancePerProject = _repository.GetBalancePerProject(OperationalReportReportDTO);
+        //    var distinctBalanceProjects = allBalancePerProject.ToList().Distinct();
+        //    List<PreparetBalancePerProject> balanceDetailsFullList = new List<PreparetBalancePerProject>();
 
-            foreach (var businessUnit in distinctBalanceProjects)
-            {
-                if (balanceDetailsFullList.Where(b => b.BusinessUnit == businessUnit.BusinessUnit).Count() < 1)
-                {
-                    balanceDetailsFullList.Add(new PreparetBalancePerProject
-                    {
-                        BusinessUnit = businessUnit.BusinessUnit,
-                        Details = allBalancePerProject
-                                .Where(b => b.BusinessUnit == businessUnit.BusinessUnit)
-                                .Select(b => new BalancePerProject
-                                {
-                                    BusinessUnit = b.BusinessUnit,
-                                    Period = b.Period,
-                                    AumontClose = b.AumontClose,
-                                    AumontOpen = b.AumontOpen,
-                                })
-                                .Distinct()
-                                .ToList()
-                    });
-                }
-            }
+        //    foreach (var businessUnit in distinctBalanceProjects)
+        //    {
+        //        if (balanceDetailsFullList.Where(b => b.BusinessUnit == businessUnit.BusinessUnit).Count() < 1)
+        //        {
+        //            balanceDetailsFullList.Add(new PreparetBalancePerProject
+        //            {
+        //                BusinessUnit = businessUnit.BusinessUnit,
+        //                Details = allBalancePerProject
+        //                        .Where(b => b.BusinessUnit == businessUnit.BusinessUnit)
+        //                        .Select(b => new BalancePerProject
+        //                        {
+        //                            BusinessUnit = b.BusinessUnit,
+        //                            Period = b.Period,
+        //                            AumontClose = b.AumontClose,
+        //                            AumontOpen = b.AumontOpen,
+        //                        })
+        //                        .Distinct()
+        //                        .ToList()
+        //            });
+        //        }
+        //    }
 
-            return balanceDetailsFullList;
-        }
+        //    return balanceDetailsFullList;
+        //}
 
 
         public ProjectOperational OperationalProjectReport(OperationalReportReportDTO OperationalReportReportDTO)
         {
-            List<NumberOfContractsForBusinessUnit> ContractsForBusinessUnit = _repository.CountContractsPerBusinessUnit(OperationalReportReportDTO);
-            List<OperationalRelationshipTable> OperationalRelationshipTable = _repository.GetContractDetails(OperationalReportReportDTO);
-            List<StatusForPeriod> StatusForPeriod = _repository.getStatusPerPeriod(OperationalReportReportDTO);
-            List<PreparetBalancePerProject> BalancePerProject = PreparetBalancePerProject(OperationalReportReportDTO);
+            //List<NumberOfContractsForBusinessUnit> ContractsForBusinessUnit = _repository.CountContractsPerBusinessUnit(OperationalReportReportDTO);
+            //List<OperationalRelationshipTable> OperationalRelationshipTable = _repository.GetContractDetails(OperationalReportReportDTO);
+            //List<StatusForPeriod> StatusForPeriod = _repository.getStatusPerPeriod(OperationalReportReportDTO);
+            //List<PreparetBalancePerProject> BalancePerProject = PreparetBalancePerProject(OperationalReportReportDTO);
+
+
+
             List<GetContractsByMonthDto> ContractsByMonth = _repository.GetContractsByMonth(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate);
 
             List<GetContractsStatusByMonthDTO> ContractsStatusByMonth = _repository.GetContractsStatusByMonthDTO(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate);
@@ -185,10 +188,10 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             return new ProjectOperational
             {
-                ContractsForBusinessUnit = ContractsForBusinessUnit,
-                StatusForPeriod = StatusForPeriod,
-                BalancePerProject = BalancePerProject,
-                OperationalRelationshipTable = OperationalRelationshipTable,
+                //ContractsForBusinessUnit = ContractsForBusinessUnit,
+                //StatusForPeriod = StatusForPeriod,
+                //BalancePerProject = BalancePerProject,
+                //OperationalRelationshipTable = OperationalRelationshipTable,
                 ContractsByMonth = ContractsByMonth,  // grafico STATUS POR UNIDADE DE NEGÓCIO
                 ContractsStatusByMonth = ContractsStatusByMonth, // grafico PROJETOS ABERTOS E FECHADOS
                 ProjectStatusPeriod = ProjectStatusPeriod, // (Projeto por unidade de Negocio)
