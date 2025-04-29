@@ -410,7 +410,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
 
-        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(
+        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(int InternalCode,
       string BusinessUnit,
       string ProjectManager,
       string TechLeader,
@@ -418,6 +418,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
       DateTime? StartDateFilter,
       DateTime? EndDateFilter)
         {
+            var InternalCodeParam = new SqlParameter("@InternalCode", (object?)InternalCode ?? DBNull.Value);
             var businessUnitParam = new SqlParameter("@BusinessUnit", (object?)BusinessUnit ?? DBNull.Value);
             var projectManagerParam = new SqlParameter("@ProjectManager", (object?)ProjectManager ?? DBNull.Value);
             var techLeaderParam = new SqlParameter("@TechLeader", (object?)TechLeader ?? DBNull.Value);
@@ -427,7 +428,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
             return _context.GetTableProjectExecutiveReportDTO.FromSqlRaw(
                 "EXEC dbo.GetTableProjectExecutiveReport @BusinessUnit, @ProjectManager, @TechLeader, @ProjectStatus, @StartDateFilter, @EndDateFilter",
-                businessUnitParam, projectManagerParam, techLeaderParam, projectStatusParam, startDateFilterParam, endDateFilterParam
+               InternalCodeParam, businessUnitParam, projectManagerParam, techLeaderParam, projectStatusParam, startDateFilterParam, endDateFilterParam
             ).ToList();
         }
 

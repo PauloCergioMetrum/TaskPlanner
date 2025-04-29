@@ -173,6 +173,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
             List<GetTableProjectExecutiveReportDTO> TableProjectExecutiveReport = _repository.GetTableProjectExecutiveReportDTO(
+                OperationalReportReportDTO.InternalCode,
                 OperationalReportReportDTO.BusinessUnit,
                 OperationalReportReportDTO.ProjectManager, 
                 OperationalReportReportDTO.TechLeaderName,

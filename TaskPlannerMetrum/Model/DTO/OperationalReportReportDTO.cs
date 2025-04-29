@@ -40,12 +40,12 @@ namespace TaskPlannerMetrum.Model.DTO
 
 
 
-        //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+       
 
-
-        public string ProjectManager { get; set; } // antes era InspectorName
-        public string TechLeader { get; set; } // antes era TechLeaderName
-        public string ProjectStatus { get; set; } // antes era int Status
+        public int InternalCode { get; set; }
+        public string ProjectManager { get; set; } 
+        public string TechLeader { get; set; } 
+        public string ProjectStatus { get; set; } 
         public DateTime? StartDateFilter { get; set; }
         public DateTime? EndDateFilter { get; set; }
 
