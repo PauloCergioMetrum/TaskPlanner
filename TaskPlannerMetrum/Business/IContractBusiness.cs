@@ -10,9 +10,9 @@ namespace TaskPlannerMetrum.Business
     public interface IContractBusiness
     {
         dynamic GetAllContracts();
-
+ 
         public bool UpdateContract(Model.Contracts contract);
-
+        bool ToggleContractDeletion(int contractID, bool isDeleted);
         dynamic GetFiscGest();
 
         dynamic GetSeller();

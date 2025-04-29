@@ -22,9 +22,36 @@ namespace TaskPlannerMetrum.Repository.Contracts
 
         public dynamic GetAllContracts()
         {
-            return _context.vContractList.Select(s => new { s.ContractID, s.EnableProject, s.PaymentMethod, s.InspectorName, s.ClientName, s.InternalCode, s.VendorName, s.StartDate, ValueTotal  = s.ValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.ClientOrder, InvoicedValueTotal = s.InvoicedValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")), s.Condition, s.BusinessUnit, s.Observation,  s.Status , s.StatusID ,s.StatusGuarantee, s.PaymentCondition, s.WorkSpaceID, s.WorkspaceName }).OrderBy(s => s.StartDate).ToList();
-
+            return _context.vContractList
+                .Select(s => new
+                {  
+                    s.ContractID,
+                    s.EnableProject,
+                    s.PaymentMethod,
+                    s.InspectorName,
+                    s.ClientName,
+                    s.InternalCode,
+                    s.VendorName,
+                    s.StartDate,
+                    ValueTotal = s.ValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
+                    s.ClientOrder,
+                    InvoicedValueTotal = s.InvoicedValueTotal.ToString("N", new System.Globalization.CultureInfo("pt-BR")),
+                    s.Condition,
+                    s.BusinessUnit,
+                    s.Observation,
+                    s.Status,
+                    s.StatusID,
+                    s.StatusGuarantee,
+                    s.PaymentCondition,
+                    s.WorkSpaceID,
+                    s.WorkspaceName,
+                    s.IsDeleted // <-- Aqui adiciona o status de deletado para controle
+                })
+                .OrderBy(s => s.StartDate)
+                .ToList();
         }
+
+
 
         public bool UpdateContract(Model.Contracts contract)
         {
@@ -110,7 +137,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
             try
             {
                 _context.Contracts.Add(new Model.Contracts
-                {
+                {   
                     inspectorID = newcontract.inspectorID,
                     VendorID = newcontract.VendorID,
                     ClientID = newcontract.ClientID,
@@ -383,7 +410,19 @@ namespace TaskPlannerMetrum.Repository.Contracts
             return true;
         }
 
+        public bool ToggleContractDeletion(int contractID, bool isDeleted)
+        {
+            var contract = _context.Contracts.FirstOrDefault(c => c.id == contractID
+);
 
+            if (contract == null)
+                return false; // Contrato não encontrado
+
+            contract.IsDeleted = isDeleted;
+            _context.SaveChanges();
+
+            return true;
+        }
 
     }
 

@@ -47,7 +47,8 @@ namespace TaskPlannerMetrum.Model
         public int ?StatusID { get;set; }
 
         public string? PaymentCondition { get; set; }
-        public DateTime? DateFineshed {  get; set; }     
+        public DateTime? DateFineshed {  get; set; }
+        public bool? IsDeleted { get; set; }
 
         //public int WorkSpaceID { get; set; }
 
