@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 using Microsoft.Data.SqlClient;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
-using System.Linq;
-using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.TeamAllocation
 {
@@ -19,211 +17,60 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             _context = context;
         }
 
-
-
-
-        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null, string[] techLeadName = null)
+        public List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate)
         {
-            var businessUnitList = businessUnit != null && businessUnit.Any() ? string.Join(",", businessUnit) : null;
-            var functionIDList = functionID != null && functionID.Any() ? string.Join(",", functionID) : null;
-            var projectList = project != null && project.Any() ? string.Join(",", project) : null;
-            var techLeadNameValue = techLeadName != null && techLeadName.Any() ? string.Join(",", techLeadName) : null;
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
 
-            var parameters = new[]
-            {
-        new SqlParameter("@BusinessUnit", (object)businessUnitList ?? DBNull.Value),
-        new SqlParameter("@StartDate", (object)startDate ?? DBNull.Value),
-        new SqlParameter("@EndDate", (object)endDate ?? DBNull.Value),
-        new SqlParameter("@FunctionIDs", (object)functionIDList ?? DBNull.Value),
-        new SqlParameter("@Project", (object)projectList ?? DBNull.Value),
-        new SqlParameter("@TechLeadName", (object)techLeadNameValue ?? DBNull.Value) // Corrigido aqui
-    };
-
-            var teamAllocationList = _context
-                .Set<TeamAllocationDTO>()
-                .FromSqlRaw("EXEC [dbo].[GetTeamAllocationTable] @BusinessUnit, @StartDate, @EndDate, @FunctionIDs, @Project, @TechLeadName", parameters) // Corrigido aqui
+            return _context.Set<ExecutorHoursTableDTO>()
+                .FromSqlRaw("EXEC GetExecutorHoursTable @StartDate, @EndDate", startParam, endParam)
                 .ToList();
-
-            return teamAllocationList;
         }
 
-
-
-
-        public List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null)
-                        {
-            List<TeamAllocationDTO.TeamAllocationGraphicDTO> teamAllocationGraphicList = new List<TeamAllocationDTO.TeamAllocationGraphicDTO>();
-
-            using (var command = _context.Database.GetDbConnection().CreateCommand())
-            {
-                command.CommandText = "[dbo].[GetTeamAllocationGraphic]";
-                command.CommandType = CommandType.StoredProcedure;
-
-                command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date)
-                {
-                    Value = (object)startDate ?? DBNull.Value
-                });
-
-                command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date)
-                {
-                    Value = (object)endDate ?? DBNull.Value
-                });
-
-
-                var functionIDList = functionID != null && functionID.Any()
-                    ? string.Join(",", functionID)
-                    : null;
-
-                command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, 255)
-                {
-                    Value = (object)functionIDList ?? DBNull.Value
-                });
-
-
-               
-
-                _context.Database.OpenConnection();
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        string formattedMonth = "Invalid Date";
-                        var monthValue = reader.IsDBNull(1) ? null : reader.GetString(1);
-
-                        if (!string.IsNullOrEmpty(monthValue) && DateTime.TryParse(monthValue, out DateTime parsedDate))
-                        {
-                            formattedMonth = parsedDate.ToString("MMMM/yyyy");
-                        }
-
-                        var teamAllocationGraphic = new TeamAllocationDTO.TeamAllocationGraphicDTO
-                        {
-                            FunctionName = reader.IsDBNull(0) ? null : reader.GetString(0),
-                            Month = formattedMonth,
-                            TotalPlannedHours = reader.IsDBNull(2) ? 0 : reader.GetDouble(2),
-                            TotalExecutedHours = reader.IsDBNull(3) ? 0 : reader.GetDouble(3),
-                            AvailableTime = reader.IsDBNull(4) ? 0 : reader.GetDouble(4)
-                        };
-
-                        teamAllocationGraphicList.Add(teamAllocationGraphic);
-                    }
-                }
-
-                _context.Database.CloseConnection();
-            }
-
-            return teamAllocationGraphicList;
-        }
-
-        public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd)
+        public TaskExecutionMetricsDTO GetTaskExecutionMetrics(DateTime startDate, DateTime endDate)
         {
-            List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards = new List<TeamAllocationDTO.GetTeamAllocationCards>();
-            DateTime validDateStart = DateStart == DateTime.MinValue ? new DateTime(1753, 1, 1) : DateStart;
-            DateTime validDateEnd = DateEnd == DateTime.MinValue ? new DateTime(9999, 12, 31) : DateEnd;
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
 
-            using (var command = _context.Database.GetDbConnection().CreateCommand())
-            {
-                command.CommandText = "[dbo].[GetTeamAllocationCards]";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@DateStart", validDateStart));
-                command.Parameters.Add(new SqlParameter("@DateEnd", validDateEnd));
-
-                _context.Database.OpenConnection();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        double? totalPlannedHours = reader.IsDBNull(0) ? (double?)null : reader.GetDouble(0);
-                        double? totalExecutedHours = reader.IsDBNull(1) ? (double?)null : reader.GetDouble(1);
-
-                        var teamAllocationGraphic = new TeamAllocationDTO.GetTeamAllocationCards()
-                        {
-                            TotalPlannedHours = totalPlannedHours,
-                            TotalExecutedHours = totalExecutedHours
-                        };
-
-                        GetTeamAllocationCards.Add(teamAllocationGraphic);
-                    }
-                }
-            }
-
-            return GetTeamAllocationCards;
+            return _context.Set<TaskExecutionMetricsDTO>()
+                .FromSqlRaw("EXEC GetTaskExecutionMetrics @StartDate, @EndDate", startParam, endParam)
+                .AsEnumerable()
+                .FirstOrDefault() ?? new TaskExecutionMetricsDTO();
         }
 
-        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions(DateTime? startDate = null, DateTime? endDate = null, List<int> functionIDs = null)
+        public List<FunctionEmployeeCountTableDTO> GetFunctionEmployeeCount(DateTime startDate, DateTime endDate, string functionName = null)
         {
-            List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> teamAllocationGraphicFunctions = new List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions>();
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
+            var functionNameParam = new SqlParameter("@FunctionName", (object)functionName ?? DBNull.Value);
 
-            using (var command = _context.Database.GetDbConnection().CreateCommand())
-            {
-                command.CommandText = "[dbo].[GetTeamAllocationGraphicFunctions]";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@StartDate", SqlDbType.Date) { Value = (object)startDate ?? DBNull.Value });
-                command.Parameters.Add(new SqlParameter("@EndDate", SqlDbType.Date) { Value = (object)endDate ?? DBNull.Value });
-                var functionIDList = functionIDs != null && functionIDs.Any() ? string.Join(",", functionIDs) : null;
-                command.Parameters.Add(new SqlParameter("@FunctionIDs", SqlDbType.NVarChar, 255) { Value = (object)functionIDList ?? DBNull.Value });
-                _context.Database.OpenConnection();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var function = new TeamAllocationDTO.GetTeamAllocationGraphicFunctions
-                        {
-                            FunctionName = reader["FunctionName"].ToString(),
-                            Quantity = Convert.ToInt32(reader["Quantity"])
-                        };
-
-                        teamAllocationGraphicFunctions.Add(function);
-                    }
-                }
-
-                _context.Database.CloseConnection();
-            }
-
-            return teamAllocationGraphicFunctions;
+            return _context.Set<FunctionEmployeeCountTableDTO>()
+                .FromSqlRaw("EXEC GetFunctionEmployeeCount @StartDate, @EndDate, @FunctionName", startParam, endParam, functionNameParam)
+                .ToList();
         }
 
-
-
-
-
-        public List<string> GetTeamFilterBusinessUnit(string selectedBusinessUnit = null)
+        public List<AvailableHoursByFunctionTableDTO> GetAvailableHoursByFunction(DateTime startDate, DateTime endDate, string functionName = null)
         {
-            List<string> businessUnitList = new List<string>();
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
+            var functionNameParam = new SqlParameter("@FunctionName", (object)functionName ?? DBNull.Value);
 
-            using (var command = _context.Database.GetDbConnection().CreateCommand())
-            {
-                command.CommandText = "[dbo].[GetTeamFilterBussinesUnit]";
-                command.CommandType = CommandType.StoredProcedure;
-
-                if (!string.IsNullOrEmpty(selectedBusinessUnit))
-                {
-                    var parameter = command.CreateParameter();
-                    parameter.ParameterName = "@SelectedBusinessUnit";
-                    parameter.Value = selectedBusinessUnit;
-                    command.Parameters.Add(parameter);
-                }
-
-                _context.Database.OpenConnection();
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var businessUnit = reader.IsDBNull(0) ? null : reader.GetString(0);
-                        if (businessUnit != null)
-                        {
-                            businessUnitList.Add(businessUnit);
-                        }
-                    }
-                }
-
-                _context.Database.CloseConnection();
-            }
-
-            return businessUnitList;
+            return _context.Set<AvailableHoursByFunctionTableDTO>()
+                .FromSqlRaw("EXEC GetAvailableHoursByFunction @StartDate, @EndDate, @FunctionName", startParam, endParam, functionNameParam)
+                .ToList();
         }
 
+
+        public List<GetPlannedAndExecutedByFunctionDTO> GetPlannedAndExecutedByFunction(DateTime startDate, DateTime endDate, string functionName = null)
+        {
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
+            var functionNameParam = new SqlParameter("@FunctionName", (object)functionName ?? DBNull.Value);
+
+            return _context.Set<GetPlannedAndExecutedByFunctionDTO>()
+                .FromSqlRaw("EXEC GetPlannedAndExecutedByFunction @StartDate, @EndDate, @FunctionName", startParam, endParam, functionNameParam)
+                .ToList();
+        }
 
     }
 }

@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model.DTO;
@@ -17,45 +16,19 @@ namespace TaskPlannerMetrum.Controllers
         {
             _teamAllocationBusiness = teamAllocationBusiness;
         }
-        [HttpPost("GetAllTeamAllocation")]
-        public IActionResult GetTeamAllocation(TeamAlocationTableDTO teamAlocatTable)
+
+        [HttpGet("GetExecutorHoursTable")]
+        public IActionResult GetExecutorHoursTable([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
-            try
-            {
-                var result = _teamAllocationBusiness.GetTeamAllocation(
-                    teamAlocatTable.businessUnit,
-                    teamAlocatTable.startDate,
-                    teamAlocatTable.endDate,
-                    teamAlocatTable.FunctionIds,
-                    teamAlocatTable.project,
-                    teamAlocatTable.TechLeadName
-                );
-
-                if (result == null || (result.TeamAllocations.Count == 0 && result.TeamAllocationGraphics.Count == 0))
-                {
-                    result = _teamAllocationBusiness.GetTeamAllocation(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null
-                    );
-
-                    if (result == null || (result.TeamAllocations.Count == 0 && result.TeamAllocationGraphics.Count == 0))
-                    {
-                        return NoContent();
-                    }
-                }
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = _teamAllocationBusiness.GetExecutorHoursTable(startDate, endDate);
+            return result == null || result.Count == 0 ? NoContent() : Ok(result);
         }
 
-
+        [HttpGet("GetTeamAllocationReport")]
+        public IActionResult GetTeamAllocationReport([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] string functionName = null)
+        {
+            var result = _teamAllocationBusiness.GetTeamAllocationReport(startDate, endDate, functionName);
+            return result == null || result.ExecutorHoursTable.Count == 0 ? NoContent() : Ok(result);
+        }
     }
 }

@@ -9,13 +9,13 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 {
     public interface IReportsPlannedExecutedViewerRepository
     {
-        public List<vReports_PlannedExecuted> ReportsPlannedExecuted(DateTime startDate, DateTime endDate );
+        public List<vReports_PlannedExecuted> ReportsPlannedExecuted(DateTime startDate, DateTime endDate);
         public List<HoursCostModel> GetHourCost(DateTime startDate, DateTime endDate);
         public double GetHourExpectedHour(DateTime startDate, DateTime endDate, int contractID);
 
 
 
-        public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO);        
+        public List<NumberOfContractsForBusinessUnit> CountContractsPerBusinessUnit(OperationalReportReportDTO operationalReportReportDTO);
 
         public List<StatusForPeriod> getStatusPerPeriod(OperationalReportReportDTO OperationalReportReportDTO);
 
@@ -36,21 +36,27 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         public List<BillingPerBusinessUnit> GetBillingPerBusinessUnit(ReportInvoice filter);
 
         public List<ReportDetailsTable> GetReportDetailsTable(ReportInvoice filter);
-        public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter);       
+        public GoalRealizationReport GetGoalsAndRealized(ReportInvoice filter);
 
         Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode);
 
         List<GetContractsByMonthDto> GetContractsByMonth(DateTime startDate, DateTime endDate);
         List<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO(DateTime startDate, DateTime endDate);
 
+        List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID);
+
+        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(
+            int InternalCode,
+         string BusinessUnit,
+         string ProjectManager,
+         string TechLeader,
+         string ProjectStatus,
+         DateTime? StartDateFilter,
+         DateTime? EndDateFilter);
 
 
+        List<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO(DateTime startDate, DateTime endDate);
 
 
-
-
-
-
-
-    }
+    } 
 }

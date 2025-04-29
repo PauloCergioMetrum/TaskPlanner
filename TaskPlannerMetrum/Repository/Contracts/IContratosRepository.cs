@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using System;
 using System.Collections.Generic;
 using System.Security;
 using TaskPlannerMetrum.Model;
@@ -11,7 +12,7 @@ namespace TaskPlannerMetrum.Repository.Contracts
     {
 
         public dynamic GetAllContracts();
-
+        public bool ToggleContractDeletion(int contractID, bool isDeleted);
         public bool UpdateContract(Model.Contracts contract);
 
         public List<Model.User> GetFiscGest();

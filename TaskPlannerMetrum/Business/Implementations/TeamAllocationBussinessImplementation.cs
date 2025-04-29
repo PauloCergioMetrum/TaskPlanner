@@ -5,49 +5,33 @@ using TaskPlannerMetrum.Repository.TeamAllocation;
 
 namespace TaskPlannerMetrum.Business
 {
-    public class TeamAllocationBussinessImplementation : ITeamAllocationBusiness
+    public class TeamAllocationBusinessImplementation : ITeamAllocationBusiness
     {
         private readonly ITeamAllocationRepository _teamAllocationRepository;
 
-        public TeamAllocationBussinessImplementation(ITeamAllocationRepository teamAllocationRepository)
+        public TeamAllocationBusinessImplementation(ITeamAllocationRepository teamAllocationRepository)
         {
             _teamAllocationRepository = teamAllocationRepository;
         }
 
-        public TeamAllocationResponseDTO GetTeamAllocation(string[] businessUnit, DateTime? startDate, DateTime? endDate, List<int> functionID, string[] project, string[] techLeadName = null)
+        public List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate)
         {
-            var allocations = _teamAllocationRepository.GetTeamAllocation(businessUnit, startDate, endDate, functionID, project , techLeadName);
-            var graphics = _teamAllocationRepository.GetTeamAllocationGraphic(startDate, endDate, functionID);
-            var functions = _teamAllocationRepository.GetTeamAllocationGraphicFunctions(startDate, endDate, functionID);
-            var cards = _teamAllocationRepository.GetTeamAllocationCards(startDate ?? DateTime.MinValue, endDate ?? DateTime.MaxValue);
-            var filter = _teamAllocationRepository.GetTeamFilterBusinessUnit().ToArray();
+            return _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate);
+        }
 
-            return new TeamAllocationResponseDTO
+        public TeamAllocationResultDTO GetTeamAllocationReport(DateTime startDate, DateTime endDate, string functionName = null)
+        {
+            return new TeamAllocationResultDTO
             {
-                TeamAllocations = allocations,
-                TeamAllocationGraphics = graphics,
-                TeamAllocationGraphicFunctions = functions,
-                GetTeamAllocationCards = cards,
-                BusinessUnits = filter,
+                ExecutorHoursTable = _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate),
+                TaskExecutionMetrics = _teamAllocationRepository.GetTaskExecutionMetrics(startDate, endDate),
+                FunctionEmployeeCountTable = _teamAllocationRepository.GetFunctionEmployeeCount(startDate, endDate, functionName),
+                AvailableHoursByFunctionTable = _teamAllocationRepository.GetAvailableHoursByFunction(startDate, endDate, functionName),
+                GetPlannedAndExecutedByFunction =_teamAllocationRepository.GetPlannedAndExecutedByFunction(startDate, endDate, functionName),
+
+
             };
         }
 
-      
-        public List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd)
-        {
-            return _teamAllocationRepository.GetTeamAllocationCards(DateStart, DateEnd);
-        }
-
-        public List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions()
-        {
-            return _teamAllocationRepository.GetTeamAllocationGraphicFunctions();
-        }
-
-        public string[] GetTeamFilterBusinessUnit(string selectedBusinessUnit = null)
-        {
-            return _teamAllocationRepository.GetTeamFilterBusinessUnit().ToArray();
-        }
-
-     
     }
 }

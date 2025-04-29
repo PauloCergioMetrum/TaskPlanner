@@ -33,6 +33,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
         public string? PaymentCondition { get; set; }
         public int? WorkSpaceID { get; set; }
         public string? WorkspaceName { get; set; }
+        public bool? IsDeleted { get; set; }
 
 
     }

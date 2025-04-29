@@ -120,6 +120,12 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             throw new NotImplementedException();
         }
+
+        public bool ToggleContractDeletion(int contractID, bool isDeleted)
+        {
+            return _contractRepository.ToggleContractDeletion(contractID, isDeleted);
+        }
+
     }
 }
 

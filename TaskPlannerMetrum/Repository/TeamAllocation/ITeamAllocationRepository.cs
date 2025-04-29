@@ -6,22 +6,10 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 {
     public interface ITeamAllocationRepository
     {
-        //List<TeamAllocationDTO> GetTeamAllocation(string businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> function = null, string project = null);
-
-        List<TeamAllocationDTO.TeamAllocationGraphicDTO> GetTeamAllocationGraphic(DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null);
-
-
-        List<TeamAllocationDTO.GetTeamAllocationGraphicFunctions> GetTeamAllocationGraphicFunctions(DateTime? startDate = null, DateTime? endDate = null, List<int> functionIDs = null);
-
-        List<TeamAllocationDTO.GetTeamAllocationCards> GetTeamAllocationCards(DateTime DateStart, DateTime DateEnd);
-        List<string> GetTeamFilterBusinessUnit(string selectedBusinessUnit = null);
-
-
-        public List<TeamAllocationDTO> GetTeamAllocation(string[] businessUnit = null, DateTime? startDate = null, DateTime? endDate = null, List<int> functionID = null, string[] project = null , string[] techLeadName = null);
-
-
-
-
-
+        List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate);
+        TaskExecutionMetricsDTO GetTaskExecutionMetrics(DateTime startDate, DateTime endDate);
+        List<FunctionEmployeeCountTableDTO> GetFunctionEmployeeCount(DateTime startDate, DateTime endDate, string functionName = null);
+        List<AvailableHoursByFunctionTableDTO> GetAvailableHoursByFunction(DateTime startDate, DateTime endDate, string functionName = null);
+        List<GetPlannedAndExecutedByFunctionDTO> GetPlannedAndExecutedByFunction(DateTime startDate, DateTime endDate, string functionName = null);
     }
 }

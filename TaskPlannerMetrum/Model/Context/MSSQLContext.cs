@@ -22,6 +22,10 @@ namespace TaskPlannerMetrum.Model.Context
         public MSSQLContext(DbContextOptions<MSSQLContext> options) : base(options) { }
 
 
+      
+
+
+
         //TABELAS
         public DbSet<RatingProject> RatingProject { get; set; }
         public DbSet<RatingDescription> RatingDescription { get; set; }
@@ -166,13 +170,24 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<ActivityPlanHHTable>().HasNoKey();
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey();
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
-            modelBuilder.Entity<TeamAllocationDTO>().HasNoKey();
+      
             modelBuilder.Entity<OrderManagementInfo>().HasNoKey();
         
             modelBuilder.Entity<GetMilestoneNoExpected>().HasNoKey();
             modelBuilder.Entity<GetMilestonesExpected>().HasNoKey();
             modelBuilder.Entity<GetContractsByMonthDto>().HasNoKey();
             modelBuilder.Entity<GetContractsStatusByMonthDTO>().HasNoKey();
+            modelBuilder.Entity<GetProjectStatusPeriodDTO>().HasNoKey();
+            modelBuilder.Entity<GetTableProjectExecutiveReportDTO>().HasNoKey();
+            modelBuilder.Entity<GetTaskExecutionMetricsDTO>().HasNoKey();
+
+ 
+            modelBuilder.Entity<ExecutorHoursTableDTO>().HasNoKey();
+            modelBuilder.Entity<TaskExecutionMetricsDTO>().HasNoKey();
+            modelBuilder.Entity<FunctionEmployeeCountTableDTO>().HasNoKey();
+            modelBuilder.Entity<AvailableHoursByFunctionTableDTO>().HasNoKey();
+            modelBuilder.Entity<GetPlannedAndExecutedByFunctionDTO>().HasNoKey();
+
 
 
 
@@ -192,8 +207,11 @@ namespace TaskPlannerMetrum.Model.Context
         }
 
         public DbSet<GetContractsByMonthDto> GetContractsByMonthDto { get; set; }
-
         public DbSet<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO { get; set; }
+        public DbSet<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO { get; set; }
+        public DbSet<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO { get; set; }
+
+        public DbSet<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO { get; set; }
 
 
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)

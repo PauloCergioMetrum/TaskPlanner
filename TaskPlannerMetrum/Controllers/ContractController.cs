@@ -49,6 +49,30 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        [HttpPatch("ToggleContractDeletion/{contractID}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult ToggleContractDeletion(int contractID, [FromQuery] bool isDeleted)
+        {
+            try
+            {
+                var result = _contractBusiness.ToggleContractDeletion(contractID, isDeleted);
+
+                if (!result)
+                    return NotFound($"Contrato com ID {contractID} não encontrado.");
+
+                string action = isDeleted ? "excluído logicamente" : "restaurado";
+                return Ok($"Contrato com ID {contractID} {action} com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
+        }
+
+
         [HttpPut("UpdateContract")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
