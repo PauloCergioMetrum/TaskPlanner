@@ -59,5 +59,18 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                 .FromSqlRaw("EXEC GetAvailableHoursByFunction @StartDate, @EndDate, @FunctionName", startParam, endParam, functionNameParam)
                 .ToList();
         }
+
+
+        public List<GetPlannedAndExecutedByFunctionDTO> GetPlannedAndExecutedByFunction(DateTime startDate, DateTime endDate, string functionName = null)
+        {
+            var startParam = new SqlParameter("@StartDate", startDate);
+            var endParam = new SqlParameter("@EndDate", endDate);
+            var functionNameParam = new SqlParameter("@FunctionName", (object)functionName ?? DBNull.Value);
+
+            return _context.Set<GetPlannedAndExecutedByFunctionDTO>()
+                .FromSqlRaw("EXEC GetPlannedAndExecutedByFunction @StartDate, @EndDate, @FunctionName", startParam, endParam, functionNameParam)
+                .ToList();
+        }
+
     }
 }

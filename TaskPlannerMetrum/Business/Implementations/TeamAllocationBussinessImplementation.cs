@@ -26,7 +26,10 @@ namespace TaskPlannerMetrum.Business
                 ExecutorHoursTable = _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate),
                 TaskExecutionMetrics = _teamAllocationRepository.GetTaskExecutionMetrics(startDate, endDate),
                 FunctionEmployeeCountTable = _teamAllocationRepository.GetFunctionEmployeeCount(startDate, endDate, functionName),
-                AvailableHoursByFunctionTable = _teamAllocationRepository.GetAvailableHoursByFunction(startDate, endDate, functionName)
+                AvailableHoursByFunctionTable = _teamAllocationRepository.GetAvailableHoursByFunction(startDate, endDate, functionName),
+                GetPlannedAndExecutedByFunction =_teamAllocationRepository.GetPlannedAndExecutedByFunction(startDate, endDate, functionName),
+
+
             };
         }
 
