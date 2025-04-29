@@ -46,6 +46,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID);
 
         public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(
+            int InternalCode,
          string BusinessUnit,
          string ProjectManager,
          string TechLeader,
