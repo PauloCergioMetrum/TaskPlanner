@@ -181,11 +181,11 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetTableProjectExecutiveReportDTO>().HasNoKey();
             modelBuilder.Entity<GetTaskExecutionMetricsDTO>().HasNoKey();
 
-            //NOVOS
+ 
             modelBuilder.Entity<ExecutorHoursTableDTO>().HasNoKey();
             modelBuilder.Entity<TaskExecutionMetricsDTO>().HasNoKey();
             modelBuilder.Entity<FunctionEmployeeCountTableDTO>().HasNoKey();
-            modelBuilder.Entity<AvailableHoursByFunctionTableDTO>().HasNoKey(); // 🔥 NOVO
+            modelBuilder.Entity<AvailableHoursByFunctionTableDTO>().HasNoKey();
 
 
 

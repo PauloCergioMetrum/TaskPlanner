@@ -410,20 +410,27 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
 
-        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(string BusinessUnit, string InspectorName, string TechLeaderName, int Status, DateTime StartDate, DateTime DateFineshed)
+        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(
+      string BusinessUnit,
+      string ProjectManager,
+      string TechLeader,
+      string ProjectStatus,
+      DateTime? StartDateFilter,
+      DateTime? EndDateFilter)
         {
-            var businessUnitParam = new SqlParameter("@BusinessUnit", BusinessUnit ?? (object)DBNull.Value);
-            var InspectorNameParam = new SqlParameter("@InspectorName", InspectorName ?? (object)DBNull.Value);
-            var techLeaderNameParam = new SqlParameter("@TechLeaderName", TechLeaderName ?? (object)DBNull.Value);
-            var StatusParam = new SqlParameter("@Status", Status);
-            var StartDateParam = new SqlParameter("@StartDate", StartDate.Year < 1753 ? (object)DBNull.Value : StartDate);
-            var DateFineshedParam = new SqlParameter("@DateFineshed", DateFineshed.Year < 1753 ? (object)DBNull.Value : DateFineshed);
+            var businessUnitParam = new SqlParameter("@BusinessUnit", (object?)BusinessUnit ?? DBNull.Value);
+            var projectManagerParam = new SqlParameter("@ProjectManager", (object?)ProjectManager ?? DBNull.Value);
+            var techLeaderParam = new SqlParameter("@TechLeader", (object?)TechLeader ?? DBNull.Value);
+            var projectStatusParam = new SqlParameter("@ProjectStatus", (object?)ProjectStatus ?? DBNull.Value);
+            var startDateFilterParam = new SqlParameter("@StartDateFilter", StartDateFilter.HasValue ? (object)StartDateFilter.Value : DBNull.Value);
+            var endDateFilterParam = new SqlParameter("@EndDateFilter", EndDateFilter.HasValue ? (object)EndDateFilter.Value : DBNull.Value);
 
             return _context.GetTableProjectExecutiveReportDTO.FromSqlRaw(
-                "EXEC dbo.GetTableProjectExecutiveReport @BusinessUnit, @InspectorName, @TechLeaderName, @Status, @StartDate, @DateFineshed",
-                businessUnitParam, InspectorNameParam, techLeaderNameParam, StatusParam, StartDateParam, DateFineshedParam
+                "EXEC dbo.GetTableProjectExecutiveReport @BusinessUnit, @ProjectManager, @TechLeader, @ProjectStatus, @StartDateFilter, @EndDateFilter",
+                businessUnitParam, projectManagerParam, techLeaderParam, projectStatusParam, startDateFilterParam, endDateFilterParam
             ).ToList();
         }
+
 
 
 
