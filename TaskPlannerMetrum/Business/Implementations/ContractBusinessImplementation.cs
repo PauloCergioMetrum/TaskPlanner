@@ -121,9 +121,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             throw new NotImplementedException();
         }
 
-        public bool ToggleContractDeletion(int contractID, bool isDeleted)
+        public bool ToggleContractDeletion(int contractID, bool isDeleted, int userId, string userName)
+
         {
-            return _contractRepository.ToggleContractDeletion(contractID, isDeleted);
+            return _contractRepository.ToggleContractDeletion(contractID, isDeleted ,userId,userName);
         }
 
     }

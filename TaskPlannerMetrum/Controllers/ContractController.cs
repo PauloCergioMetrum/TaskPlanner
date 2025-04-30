@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using TaskPlannerMetrum.Business;
+using TaskPlannerMetrum.DTO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.Contracts;
@@ -48,22 +49,21 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);  
             }
         }
-
-        [HttpPatch("ToggleContractDeletion/{contractID}")]
+        [HttpPatch("ToggleContractDeletion")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult ToggleContractDeletion(int contractID, [FromQuery] bool isDeleted)
+        public IActionResult ToggleContractDeletion([FromBody] ToggleContractDeletionDTO dto)
         {
             try
             {
-                var result = _contractBusiness.ToggleContractDeletion(contractID, isDeleted);
+                var result = _contractBusiness.ToggleContractDeletion(dto.ContractID, dto.IsDeleted, dto.UserId, dto.UserName);
 
                 if (!result)
-                    return NotFound($"Contrato com ID {contractID} não encontrado.");
+                    return NotFound($"Contrato com ID {dto.ContractID} não encontrado.");
 
-                string action = isDeleted ? "excluído logicamente" : "restaurado";
-                return Ok($"Contrato com ID {contractID} {action} com sucesso.");
+                string action = dto.IsDeleted ? "excluído logicamente" : "restaurado";
+                return Ok($"Contrato com ID {dto.ContractID} {action} com sucesso.");
             }
             catch (Exception ex)
             {
@@ -71,6 +71,8 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
 
 
         [HttpPut("UpdateContract")]
