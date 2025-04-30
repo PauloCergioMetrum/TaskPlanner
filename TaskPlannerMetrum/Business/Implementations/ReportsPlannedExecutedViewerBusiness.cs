@@ -264,6 +264,47 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             return contractsResult;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public async Task<List<MonthlyContractDto>> GetContractsByMonthAsync(DateTime startDate, DateTime endDate, string internalCode)
+     => await _repository.GetContractsByMonthAsync(startDate, endDate, internalCode);
+
+        public async Task<List<ContractStatusSummaryDto>> GetContractStatusSummaryAsync(DateTime startDate, DateTime endDate, string internalCode)
+             => await _repository.GetContractStatusSummaryAsync(startDate, endDate, internalCode);
+
+        public async Task<List<ProjectStatusTimelineDto>> GetProjectStatusTimelineAsync(DateTime startDate, DateTime endDate, int? statusId, string internalCode)
+             => await _repository.GetProjectStatusTimelineAsync(startDate, endDate, statusId, internalCode);
+
+        public async Task<List<ExecutiveProjectReportDto>> GetExecutiveProjectReportAsync(string businessUnit, string projectManager, string techLeader, string projectStatus, DateTime? startDate, DateTime? endDate, string internalCode)
+             => await _repository.GetExecutiveProjectReportAsync(businessUnit, projectManager, techLeader, projectStatus, startDate, endDate, internalCode);
+
+
+
+
+
+
     }
 }
 

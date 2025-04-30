@@ -22,7 +22,21 @@ namespace TaskPlannerMetrum.Model.Context
         public MSSQLContext(DbContextOptions<MSSQLContext> options) : base(options) { }
 
 
-      
+
+
+
+        public DbSet<MonthlyContractDto> MonthlyContractDto { get; set; }
+        public DbSet<ContractStatusSummaryDto> ContractStatusSummaryDto { get; set; }
+        public DbSet<ProjectStatusTimelineDto> ProjectStatusTimelineDto { get; set; }
+        public DbSet<ExecutiveProjectReportDto> ExecutiveProjectReportDto { get; set; }
+
+
+
+
+
+
+
+
 
 
 

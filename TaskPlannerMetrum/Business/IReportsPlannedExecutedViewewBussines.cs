@@ -16,5 +16,14 @@ namespace TaskPlannerMetrum.Business
         Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode);
         Task<List<ContractGraphic>> GetContractsByRequestAsync(ContractGraphicRequest request);
 
+
+
+
+
+        Task<List<MonthlyContractDto>> GetContractsByMonthAsync(DateTime startDate, DateTime endDate, string internalCode);
+        Task<List<ContractStatusSummaryDto>> GetContractStatusSummaryAsync(DateTime startDate, DateTime endDate, string internalCode);
+        Task<List<ProjectStatusTimelineDto>> GetProjectStatusTimelineAsync(DateTime startDate, DateTime endDate, int? statusId, string internalCode);
+        Task<List<ExecutiveProjectReportDto>> GetExecutiveProjectReportAsync(string businessUnit, string projectManager, string techLeader, string projectStatus, DateTime? startDate, DateTime? endDate, string internalCode);
+
     }
 }

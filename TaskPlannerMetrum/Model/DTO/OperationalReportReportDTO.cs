@@ -1,13 +1,14 @@
 ﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 
 namespace TaskPlannerMetrum.Model.DTO
 {
     public class OperationalReportReportDTO
     {
-
+        [Key]
         public string StartPeriod { get; set; }
         public string EndPeriod { get; set; }
         public List<int> ContractIDs { get; set; }

@@ -122,6 +122,41 @@ namespace TaskPlannerMetrum.Controllers
             var contractsResult = await _reportsPlannedExecutedViewerBusiness.GetContractsByRequestAsync(request);
             return contractsResult.Any() ? Ok(contractsResult) : NoContent();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+        [HttpPost("GetOperationalProjectReport")]
+        public async Task<ActionResult<ProjectOperationalDto>> GetOperationalProjectReport([FromBody] OperationalReportFilterDto dto)
+        {
+            var result = new ProjectOperationalDto
+            {
+                ContractsByMonth = await _reportsPlannedExecutedViewerBusiness.GetContractsByMonthAsync(dto.StartDate, dto.EndDate, dto.InternalCode),
+
+
+                ContractStatusSummary = await _reportsPlannedExecutedViewerBusiness.GetContractStatusSummaryAsync(dto.StartDate, dto.EndDate, dto.InternalCode),
+
+                ProjectStatusTimeline = await _reportsPlannedExecutedViewerBusiness.GetProjectStatusTimelineAsync(dto.StartDate, dto.EndDate, dto.FiltroStatusID, dto.InternalCode),
+
+
+                ExecutiveProjectReport = await _reportsPlannedExecutedViewerBusiness.GetExecutiveProjectReportAsync(
+                    dto.BusinessUnit, dto.ProjectManager, dto.TechLeader, dto.ProjectStatus, dto.StartDate, dto.EndDate, dto.InternalCode)
+            };
+
+            return Ok(result);
+        }
+
+
+
+
     }
 
 
