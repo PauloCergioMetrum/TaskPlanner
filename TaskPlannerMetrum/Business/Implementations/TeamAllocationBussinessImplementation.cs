@@ -29,7 +29,7 @@ namespace TaskPlannerMetrum.Business
             return new TeamAllocationResultDTO
             {
                 ExecutorHoursTable = _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate, functionName, departmentName),
-                TaskExecutionMetrics = _teamAllocationRepository.GetTaskExecutionMetrics(startDate, endDate),
+                TaskExecutionMetrics = _teamAllocationRepository.GetTaskExecutionMetrics(startDate, endDate,functionName ),
                 FunctionEmployeeCountTable = _teamAllocationRepository.GetFunctionEmployeeCount(startDate, endDate, functionName),
                 AvailableHoursByFunctionTable = _teamAllocationRepository.GetAvailableHoursByFunction(startDate, endDate, functionName),
                 GetPlannedAndExecutedByFunction = _teamAllocationRepository.GetPlannedAndExecutedByFunction(startDate, endDate, functionName),

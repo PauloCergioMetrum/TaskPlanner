@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Math;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Model.DTO;
 
@@ -8,11 +10,12 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
     {
     
         List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate, string functionName = null, string departmentName = null);
-        TaskExecutionMetricsDTO GetTaskExecutionMetrics(DateTime startDate, DateTime endDate);
+        TaskExecutionMetricsDTO GetTaskExecutionMetrics(DateTime startDate, DateTime endDate ,string functionName);
         List<FunctionEmployeeCountTableDTO> GetFunctionEmployeeCount(DateTime startDate, DateTime endDate, string functionName = null);
         List<AvailableHoursByFunctionTableDTO> GetAvailableHoursByFunction(DateTime startDate, DateTime endDate, string functionName = null);
         List<GetPlannedAndExecutedByFunctionDTO> GetPlannedAndExecutedByFunction(DateTime startDate, DateTime endDate, string functionName = null);
-
-
     }
 }
+
+
+
