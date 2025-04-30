@@ -43,7 +43,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         List<GetContractsByMonthDto> GetContractsByMonth(DateTime startDate, DateTime endDate, string InternalCode);
         List<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO(DateTime startDate, DateTime endDate, string InternalCode);
 
-        List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID);
+        List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID, string InternalCode);
 
         public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(
          string InternalCode,

@@ -396,15 +396,16 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
-        public List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID)
+        public List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID, string InternalCode)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
             var FiltroStatusIDParam = new SqlParameter("@FiltroStatusID", FiltroStatusID);
+            var InternalCodeParam = new SqlParameter("@InternalCode", (object?)InternalCode ?? DBNull.Value);
 
             return _context.GetProjectStatusPeriodDTO.FromSqlRaw(
-                "EXEC dbo.GetProjectStatusPeriod @StartDate, @EndDate, @FiltroStatusID",
-                startParam, endParam, FiltroStatusIDParam
+                "EXEC dbo.GetProjectStatusPeriod @StartDate, @EndDate, @FiltroStatusID, @InternalCode",
+                startParam, endParam, FiltroStatusIDParam, InternalCodeParam
             ).ToList();
         }
 
