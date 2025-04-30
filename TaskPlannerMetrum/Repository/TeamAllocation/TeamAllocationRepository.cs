@@ -17,15 +17,19 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
             _context = context;
         }
 
-        public List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate)
+        public List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate, string functionName = null, string departmentName = null)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
+            var functionParam = new SqlParameter("@FunctionName", (object?)functionName ?? DBNull.Value);
+            var departmentParam = new SqlParameter("@DepartmentName", (object?)departmentName ?? DBNull.Value);
 
             return _context.Set<ExecutorHoursTableDTO>()
-                .FromSqlRaw("EXEC GetExecutorHoursTable @StartDate, @EndDate", startParam, endParam)
+                .FromSqlRaw("EXEC GetExecutorHoursTable @StartDate, @EndDate, @FunctionName, @DepartmentName",
+                            startParam, endParam, functionParam, departmentParam)
                 .ToList();
         }
+
 
         public TaskExecutionMetricsDTO GetTaskExecutionMetrics(DateTime startDate, DateTime endDate)
         {

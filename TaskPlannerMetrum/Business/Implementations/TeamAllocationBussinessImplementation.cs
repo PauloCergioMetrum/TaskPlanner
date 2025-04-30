@@ -14,24 +14,28 @@ namespace TaskPlannerMetrum.Business
             _teamAllocationRepository = teamAllocationRepository;
         }
 
-        public List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate)
+        public List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate, string functionName = null, string departmentName = null)
         {
-            return _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate);
+            return _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate, functionName, departmentName);
         }
 
-        public TeamAllocationResultDTO GetTeamAllocationReport(DateTime startDate, DateTime endDate, string functionName = null)
+
+        public TeamAllocationResultDTO GetTeamAllocationReport(
+    DateTime startDate,
+    DateTime endDate,
+    string functionName = null,
+    string departmentName = null) 
         {
             return new TeamAllocationResultDTO
             {
-                ExecutorHoursTable = _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate),
+                ExecutorHoursTable = _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate, functionName, departmentName),
                 TaskExecutionMetrics = _teamAllocationRepository.GetTaskExecutionMetrics(startDate, endDate),
                 FunctionEmployeeCountTable = _teamAllocationRepository.GetFunctionEmployeeCount(startDate, endDate, functionName),
                 AvailableHoursByFunctionTable = _teamAllocationRepository.GetAvailableHoursByFunction(startDate, endDate, functionName),
-                GetPlannedAndExecutedByFunction =_teamAllocationRepository.GetPlannedAndExecutedByFunction(startDate, endDate, functionName),
-
-
+                GetPlannedAndExecutedByFunction = _teamAllocationRepository.GetPlannedAndExecutedByFunction(startDate, endDate, functionName),
             };
         }
+
 
     }
 }
