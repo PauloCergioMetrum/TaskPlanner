@@ -2,6 +2,8 @@
 {
     public class GetContractsStatusByMonthDTO
     {
+
+        public string InternalCode { get; set; }
         public string Periodo { get; set; }               // yyyy-MM
         public string BusinessUnit { get; set; }          // Nome da unidade de negócio
         public int QuantidadeAbertos { get; set; }        // Total de contratos abertos no mês

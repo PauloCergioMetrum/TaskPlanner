@@ -383,8 +383,9 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
-        public List<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO(DateTime startDate, DateTime endDate)
+        public List<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO(DateTime startDate, DateTime endDate, string InternalCode)
         {
+            var InternalCodeParam = new SqlParameter("@InternalCode", (object?)InternalCode ?? DBNull.Value);
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
 
@@ -393,6 +394,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 startParam, endParam
             ).ToList();
         }
+
 
         public List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID)
         {
@@ -451,8 +453,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             ).ToList();
         }
 
-
-
+ 
     }
 
 }
