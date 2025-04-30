@@ -23,8 +23,9 @@ namespace TaskPlannerMetrum.Repository.Contracts
         public dynamic GetAllContracts()
         {
             return _context.vContractList
+                .Where(s => s.IsDeleted == false || s.IsDeleted == null) 
                 .Select(s => new
-                {  
+                {
                     s.ContractID,
                     s.EnableProject,
                     s.PaymentMethod,
@@ -44,12 +45,13 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     s.StatusGuarantee,
                     s.PaymentCondition,
                     s.WorkSpaceID,
-                    s.WorkspaceName,
-                    s.IsDeleted // <-- Aqui adiciona o status de deletado para controle
+                    s.WorkspaceName
                 })
                 .OrderBy(s => s.StartDate)
                 .ToList();
         }
+
+
 
 
 
