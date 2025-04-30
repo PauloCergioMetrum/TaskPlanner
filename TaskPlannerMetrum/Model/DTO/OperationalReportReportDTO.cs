@@ -42,7 +42,7 @@ namespace TaskPlannerMetrum.Model.DTO
 
        
 
-        public int InternalCode { get; set; }
+        public string InternalCode { get; set; }
         public string ProjectManager { get; set; } 
         public string TechLeader { get; set; } 
         public string ProjectStatus { get; set; } 

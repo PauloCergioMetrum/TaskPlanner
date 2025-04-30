@@ -368,14 +368,17 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
-        public List<GetContractsByMonthDto> GetContractsByMonth(DateTime startDate, DateTime endDate)
+        public List<GetContractsByMonthDto> GetContractsByMonth(DateTime startDate, DateTime endDate, string InternalCode)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
+            var internalCodeParam = string.IsNullOrEmpty(InternalCode)
+        ? new SqlParameter("@InternalCode", DBNull.Value)
+        : new SqlParameter("@InternalCode", InternalCode);
 
             return _context.GetContractsByMonthDto.FromSqlRaw(
-                "EXEC dbo.GetContractsByMonth @StartDate, @EndDate",
-                startParam, endParam
+                "EXEC dbo.GetContractsByMonth @StartDate, @EndDate, @InternalCode",
+                startParam, endParam, internalCodeParam
             ).ToList();
         }
 
@@ -410,7 +413,8 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
 
-        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(int InternalCode,
+        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(
+      string InternalCode,
       string BusinessUnit,
       string ProjectManager,
       string TechLeader,

@@ -165,7 +165,11 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-            List<GetContractsByMonthDto> ContractsByMonth = _repository.GetContractsByMonth(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate);
+            List<GetContractsByMonthDto> ContractsByMonth = _repository.GetContractsByMonth(
+                OperationalReportReportDTO.StartDate, 
+                OperationalReportReportDTO.EndDate,
+                OperationalReportReportDTO.InternalCode
+                );
 
             List<GetContractsStatusByMonthDTO> ContractsStatusByMonth = _repository.GetContractsStatusByMonthDTO(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate);
 
