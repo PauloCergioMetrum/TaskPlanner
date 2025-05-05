@@ -137,19 +137,20 @@ namespace TaskPlannerMetrum.Controllers
         [HttpPost("GetOperationalProjectReport")]
         public async Task<ActionResult<ProjectOperationalDto>> GetOperationalProjectReport([FromBody] OperationalReportFilterDto dto)
         {
+            var internalCodesCsv = string.Join(",", dto.InternalCodes ?? new List<string>());
+            var businessUnitsCsv = string.Join(",", dto.BusinessUnits ?? new List<string>());
+            var projectManagersCsv = string.Join(",", dto.ProjectManagers ?? new List<string>());
+            var techLeadersCsv = string.Join(",", dto.TechLeaders ?? new List<string>());
+
             var result = new ProjectOperationalDto
             {
-                ContractsByMonth = await _reportsPlannedExecutedViewerBusiness.GetContractsByMonthAsync(dto.StartDate, dto.EndDate, dto.InternalCode),
-
-
-                ContractStatusSummary = await _reportsPlannedExecutedViewerBusiness.GetContractStatusSummaryAsync(dto.StartDate, dto.EndDate, dto.InternalCode),
-
-                ProjectStatusTimeline = await _reportsPlannedExecutedViewerBusiness.GetProjectStatusTimelineAsync(dto.StartDate, dto.EndDate, dto.FiltroStatusID, dto.InternalCode),
-
-
+                ContractsByMonth = await _reportsPlannedExecutedViewerBusiness.GetContractsByMonthAsync(dto.StartDate, dto.EndDate, internalCodesCsv),
+                ContractStatusSummary = await _reportsPlannedExecutedViewerBusiness.GetContractStatusSummaryAsync(dto.StartDate, dto.EndDate, internalCodesCsv),
+                ProjectStatusTimeline = await _reportsPlannedExecutedViewerBusiness.GetProjectStatusTimelineAsync(dto.StartDate, dto.EndDate, dto.FiltroStatusID, internalCodesCsv),
                 ExecutiveProjectReport = await _reportsPlannedExecutedViewerBusiness.GetExecutiveProjectReportAsync(
-                    dto.BusinessUnit, dto.ProjectManager, dto.TechLeader, dto.ProjectStatus, dto.StartDate, dto.EndDate, dto.InternalCode)
+                    businessUnitsCsv, projectManagersCsv, techLeadersCsv, dto.ProjectStatus, dto.StartDate, dto.EndDate, internalCodesCsv)
             };
+
 
             return Ok(result);
         }
