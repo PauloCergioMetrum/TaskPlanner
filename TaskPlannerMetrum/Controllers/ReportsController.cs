@@ -131,26 +131,44 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
-
+        private static string ToCsv(List<string> values)
+        {
+            return values != null && values.Any()
+                ? string.Join(",", values.Where(v => !string.IsNullOrWhiteSpace(v)).Select(v => v.Trim()))
+                : null;
+        }
 
 
         [HttpPost("GetOperationalProjectReport")]
         public async Task<ActionResult<ProjectOperationalDto>> GetOperationalProjectReport([FromBody] OperationalReportFilterDto dto)
         {
-            var internalCodesCsv = string.Join(",", dto.InternalCodes ?? new List<string>());
-            var businessUnitsCsv = string.Join(",", dto.BusinessUnits ?? new List<string>());
-            var projectManagersCsv = string.Join(",", dto.ProjectManagers ?? new List<string>());
-            var techLeadersCsv = string.Join(",", dto.TechLeaders ?? new List<string>());
+            var internalCodesCsv = ToCsv(dto.InternalCodes);
+            var businessUnitsCsv = ToCsv(dto.BusinessUnits);
+            var projectManagersCsv = ToCsv(dto.ProjectManagers);
+            var techLeadersCsv = ToCsv(dto.TechLeaders);
 
             var result = new ProjectOperationalDto
             {
-                ContractsByMonth = await _reportsPlannedExecutedViewerBusiness.GetContractsByMonthAsync(dto.StartDate, dto.EndDate, internalCodesCsv),
-                ContractStatusSummary = await _reportsPlannedExecutedViewerBusiness.GetContractStatusSummaryAsync(dto.StartDate, dto.EndDate, internalCodesCsv),
-                ProjectStatusTimeline = await _reportsPlannedExecutedViewerBusiness.GetProjectStatusTimelineAsync(dto.StartDate, dto.EndDate, dto.FiltroStatusID, internalCodesCsv),
-                ExecutiveProjectReport = await _reportsPlannedExecutedViewerBusiness.GetExecutiveProjectReportAsync(
-                    businessUnitsCsv, projectManagersCsv, techLeadersCsv, dto.ProjectStatus, dto.StartDate, dto.EndDate, internalCodesCsv)
-            };
+                ContractsByMonth = await _reportsPlannedExecutedViewerBusiness
+                    .GetContractsByMonthAsync(dto.StartDate, dto.EndDate, internalCodesCsv),
 
+                ContractStatusSummary = await _reportsPlannedExecutedViewerBusiness
+                    .GetContractStatusSummaryAsync(dto.StartDate, dto.EndDate, internalCodesCsv),
+
+                ProjectStatusTimeline = await _reportsPlannedExecutedViewerBusiness
+                    .GetProjectStatusTimelineAsync(dto.StartDate, dto.EndDate, dto.FiltroStatusID, internalCodesCsv),
+
+                ExecutiveProjectReport = await _reportsPlannedExecutedViewerBusiness
+                    .GetExecutiveProjectReportAsync(
+                        businessUnitsCsv,
+                        projectManagersCsv,
+                        techLeadersCsv,
+                        dto.ProjectStatus, // já em CSV
+                        dto.StartDate,
+                        dto.EndDate,
+                        internalCodesCsv
+                    )
+            };
 
             return Ok(result);
         }
