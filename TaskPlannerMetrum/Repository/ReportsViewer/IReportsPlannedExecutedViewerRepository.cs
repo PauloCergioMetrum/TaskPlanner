@@ -40,13 +40,13 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         Task<IEnumerable<ContractGraphic>> GetAllContractsGraphicAsync(int? contractID, string internalCode);
 
-        List<GetContractsByMonthDto> GetContractsByMonth(DateTime startDate, DateTime endDate);
-        List<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO(DateTime startDate, DateTime endDate);
+        List<GetContractsByMonthDto> GetContractsByMonth(DateTime startDate, DateTime endDate, string InternalCode);
+        List<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO(DateTime startDate, DateTime endDate, string InternalCode);
 
-        List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID);
+        List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID, string InternalCode);
 
         public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(
-            int InternalCode,
+         string InternalCode,
          string BusinessUnit,
          string ProjectManager,
          string TechLeader,
@@ -58,5 +58,24 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         List<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO(DateTime startDate, DateTime endDate);
 
 
-    } 
+
+
+
+
+
+
+
+
+
+        Task<List<MonthlyContractDto>> GetContractsByMonthAsync(DateTime startDate, DateTime endDate, string internalCode);
+        Task<List<ContractStatusSummaryDto>> GetContractStatusSummaryAsync(DateTime startDate, DateTime endDate, string internalCode);
+        Task<List<ProjectStatusTimelineDto>> GetProjectStatusTimelineAsync(DateTime startDate, DateTime endDate, int? statusId, string internalCode);
+        Task<List<ExecutiveProjectReportDto>> GetExecutiveProjectReportAsync(string businessUnit, string projectManager, string techLeader, string projectStatus, DateTime? start, DateTime? end, string internalCode);
+
+
+
+
+
+
+    }
 }

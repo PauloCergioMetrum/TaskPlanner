@@ -12,7 +12,8 @@ namespace TaskPlannerMetrum.Repository.Contracts
     {
 
         public dynamic GetAllContracts();
-        public bool ToggleContractDeletion(int contractID, bool isDeleted);
+        public bool ToggleContractDeletion(int contractID, bool isDeleted, int userId, string userName);
+
         public bool UpdateContract(Model.Contracts contract);
 
         public List<Model.User> GetFiscGest();

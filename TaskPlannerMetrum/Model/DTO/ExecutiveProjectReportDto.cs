@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-
 namespace TaskPlannerMetrum.Model.DTO
 {
-    public class GetTableProjectExecutiveReportDTO
+    public class ExecutiveProjectReportDto
     {
         [Key]
-        public string InternalCode { get; set; }
         public int ContractID { get; set; }
         public string TechLeaderName { get; set; }
         public string InspectorName { get; set; }
@@ -15,5 +13,6 @@ namespace TaskPlannerMetrum.Model.DTO
         public string BusinessUnit { get; set; }
         public int? Status { get; set; }
         public string ClientName { get; set; }
+        public string InternalCode { get; set; }
     }
 }

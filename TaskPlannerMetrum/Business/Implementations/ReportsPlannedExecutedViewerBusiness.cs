@@ -165,11 +165,21 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-            List<GetContractsByMonthDto> ContractsByMonth = _repository.GetContractsByMonth(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate);
+            List<GetContractsByMonthDto> ContractsByMonth = _repository.GetContractsByMonth(
+                OperationalReportReportDTO.StartDate, 
+                OperationalReportReportDTO.EndDate,
+                OperationalReportReportDTO.InternalCode
+                );
 
-            List<GetContractsStatusByMonthDTO> ContractsStatusByMonth = _repository.GetContractsStatusByMonthDTO(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate);
+            List<GetContractsStatusByMonthDTO> ContractsStatusByMonth = _repository.GetContractsStatusByMonthDTO(OperationalReportReportDTO.StartDate,
+                OperationalReportReportDTO.EndDate,
+                OperationalReportReportDTO.InternalCode
+                );
 
-            List<GetProjectStatusPeriodDTO> ProjectStatusPeriod = _repository.GetProjectStatusPeriodDTO(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate, OperationalReportReportDTO.FiltroStatusID);
+            List<GetProjectStatusPeriodDTO> ProjectStatusPeriod = _repository.GetProjectStatusPeriodDTO(OperationalReportReportDTO.StartDate,
+                OperationalReportReportDTO.EndDate,
+                OperationalReportReportDTO.FiltroStatusID,
+                OperationalReportReportDTO.InternalCode);
 
 
             List<GetTableProjectExecutiveReportDTO> TableProjectExecutiveReport = _repository.GetTableProjectExecutiveReportDTO(
@@ -254,6 +264,47 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             return contractsResult;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public async Task<List<MonthlyContractDto>> GetContractsByMonthAsync(DateTime startDate, DateTime endDate, string internalCode)
+     => await _repository.GetContractsByMonthAsync(startDate, endDate, internalCode);
+
+        public async Task<List<ContractStatusSummaryDto>> GetContractStatusSummaryAsync(DateTime startDate, DateTime endDate, string internalCode)
+             => await _repository.GetContractStatusSummaryAsync(startDate, endDate, internalCode);
+
+        public async Task<List<ProjectStatusTimelineDto>> GetProjectStatusTimelineAsync(DateTime startDate, DateTime endDate, int? statusId, string internalCode)
+             => await _repository.GetProjectStatusTimelineAsync(startDate, endDate, statusId, internalCode);
+
+        public async Task<List<ExecutiveProjectReportDto>> GetExecutiveProjectReportAsync(string businessUnit, string projectManager, string techLeader, string projectStatus, DateTime? startDate, DateTime? endDate, string internalCode)
+             => await _repository.GetExecutiveProjectReportAsync(businessUnit, projectManager, techLeader, projectStatus, startDate, endDate, internalCode);
+
+
+
+
+
+
     }
 }
 

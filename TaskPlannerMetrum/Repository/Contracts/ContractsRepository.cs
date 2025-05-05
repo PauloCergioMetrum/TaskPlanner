@@ -23,8 +23,9 @@ namespace TaskPlannerMetrum.Repository.Contracts
         public dynamic GetAllContracts()
         {
             return _context.vContractList
+                .Where(s => s.IsDeleted == false || s.IsDeleted == null) 
                 .Select(s => new
-                {  
+                {
                     s.ContractID,
                     s.EnableProject,
                     s.PaymentMethod,
@@ -44,12 +45,13 @@ namespace TaskPlannerMetrum.Repository.Contracts
                     s.StatusGuarantee,
                     s.PaymentCondition,
                     s.WorkSpaceID,
-                    s.WorkspaceName,
-                    s.IsDeleted // <-- Aqui adiciona o status de deletado para controle
+                    s.WorkspaceName
                 })
                 .OrderBy(s => s.StartDate)
                 .ToList();
         }
+
+
 
 
 
@@ -410,19 +412,36 @@ namespace TaskPlannerMetrum.Repository.Contracts
             return true;
         }
 
-        public bool ToggleContractDeletion(int contractID, bool isDeleted)
+        public bool ToggleContractDeletion(int contractID, bool isDeleted, int userId, string userName)
         {
-            var contract = _context.Contracts.FirstOrDefault(c => c.id == contractID
-);
+            var contract = _context.Contracts.FirstOrDefault(c => c.id == contractID);
 
             if (contract == null)
-                return false; // Contrato não encontrado
+                return false;
 
             contract.IsDeleted = isDeleted;
             _context.SaveChanges();
 
+            // Registro de log
+            var log = new Model.Log
+            {
+                UserId = userId,
+                UserName = userName,
+                Action = isDeleted ? "Delete" : "Restore",
+                Description = $"Pedido de Venda {(isDeleted ? "Excluído" : "Restaurado")} por {userName}.",
+
+                CreatedAt = DateTime.UtcNow,
+                Status = "OK",
+                SeverityLevel = "Info",
+                ErrorDetails = null
+            };
+
+            _context.Log.Add(log);
+            _context.SaveChanges(); // salva também o log
+
             return true;
         }
+
 
     }
 

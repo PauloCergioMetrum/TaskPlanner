@@ -12,7 +12,8 @@ namespace TaskPlannerMetrum.Business
         dynamic GetAllContracts();
  
         public bool UpdateContract(Model.Contracts contract);
-        bool ToggleContractDeletion(int contractID, bool isDeleted);
+        bool ToggleContractDeletion(int contractID, bool isDeleted, int userId, string userName);
+
         dynamic GetFiscGest();
 
         dynamic GetSeller();

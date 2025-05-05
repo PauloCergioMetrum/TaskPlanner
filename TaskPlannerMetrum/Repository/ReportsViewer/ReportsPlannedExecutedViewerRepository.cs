@@ -368,20 +368,24 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
-        public List<GetContractsByMonthDto> GetContractsByMonth(DateTime startDate, DateTime endDate)
+        public List<GetContractsByMonthDto> GetContractsByMonth(DateTime startDate, DateTime endDate, string InternalCode)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
+            var internalCodeParam = string.IsNullOrEmpty(InternalCode)
+        ? new SqlParameter("@InternalCode", DBNull.Value)
+        : new SqlParameter("@InternalCode", InternalCode);
 
             return _context.GetContractsByMonthDto.FromSqlRaw(
-                "EXEC dbo.GetContractsByMonth @StartDate, @EndDate",
-                startParam, endParam
+                "EXEC dbo.GetContractsByMonth @StartDate, @EndDate, @InternalCode",
+                startParam, endParam, internalCodeParam
             ).ToList();
         }
 
 
-        public List<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO(DateTime startDate, DateTime endDate)
+        public List<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO(DateTime startDate, DateTime endDate, string InternalCode)
         {
+            var InternalCodeParam = new SqlParameter("@InternalCode", (object?)InternalCode ?? DBNull.Value);
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
 
@@ -391,15 +395,17 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             ).ToList();
         }
 
-        public List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID)
+
+        public List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID, string InternalCode)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
             var FiltroStatusIDParam = new SqlParameter("@FiltroStatusID", FiltroStatusID);
+            var InternalCodeParam = new SqlParameter("@InternalCode", (object?)InternalCode ?? DBNull.Value);
 
             return _context.GetProjectStatusPeriodDTO.FromSqlRaw(
-                "EXEC dbo.GetProjectStatusPeriod @StartDate, @EndDate, @FiltroStatusID",
-                startParam, endParam, FiltroStatusIDParam
+                "EXEC dbo.GetProjectStatusPeriod @StartDate, @EndDate, @FiltroStatusID, @InternalCode",
+                startParam, endParam, FiltroStatusIDParam, InternalCodeParam
             ).ToList();
         }
 
@@ -410,7 +416,8 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
 
-        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(int InternalCode,
+        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(
+      string InternalCode,
       string BusinessUnit,
       string ProjectManager,
       string TechLeader,
@@ -446,6 +453,80 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 startParam, endParam
             ).ToList();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // 1. Contratos por mês (MonthlyContractDto)
+        public async Task<List<MonthlyContractDto>> GetContractsByMonthAsync(DateTime startDate, DateTime endDate, string internalCode)
+        {
+            return await _context.MonthlyContractDto
+                .FromSqlRaw("EXEC [dbo].[GetContractsByMonth] @StartDate, @EndDate, @InternalCode",
+                    new SqlParameter("@StartDate", startDate),
+                    new SqlParameter("@EndDate", endDate),
+                    new SqlParameter("@InternalCode", (object)internalCode ?? DBNull.Value))
+                .ToListAsync();
+        }
+
+        // 2. Resumo de status dos contratos (ContractStatusSummaryDto)
+        public async Task<List<ContractStatusSummaryDto>> GetContractStatusSummaryAsync(DateTime startDate, DateTime endDate, string internalCode)
+        {
+            return await _context.ContractStatusSummaryDto
+                .FromSqlRaw("EXEC [dbo].[GetContractsStatusByMonth] @StartDate, @EndDate, @InternalCode",
+                    new SqlParameter("@StartDate", startDate),
+                    new SqlParameter("@EndDate", endDate),
+                    new SqlParameter("@InternalCode", (object)internalCode ?? DBNull.Value))
+                .ToListAsync();
+        }
+
+        // 3. Timeline de status de projeto (ProjectStatusTimelineDto)
+        public async Task<List<ProjectStatusTimelineDto>> GetProjectStatusTimelineAsync(DateTime startDate, DateTime endDate, int? statusId, string internalCode)
+        {
+            return await _context.ProjectStatusTimelineDto
+                .FromSqlRaw("EXEC [dbo].[GetProjectStatusPeriod] @StartDate, @EndDate, @FiltroStatusID, @InternalCode",
+                    new SqlParameter("@StartDate", startDate),
+                    new SqlParameter("@EndDate", endDate),
+                    new SqlParameter("@FiltroStatusID", (object)statusId ?? DBNull.Value),
+                    new SqlParameter("@InternalCode", (object)internalCode ?? DBNull.Value))
+                .ToListAsync();
+        }
+
+        // 4. Relatório executivo (ExecutiveProjectReportDto)
+        public async Task<List<ExecutiveProjectReportDto>> GetExecutiveProjectReportAsync(string businessUnit, string projectManager, string techLeader, string projectStatus, DateTime? startDateFilter, DateTime? endDateFilter, string internalCode)
+        {
+            return await _context.ExecutiveProjectReportDto
+                .FromSqlRaw("EXEC [dbo].[GetTableProjectExecutiveReport] @BusinessUnit, @ProjectManager, @TechLeader, @ProjectStatus, @StartDateFilter, @EndDateFilter, @InternalCode",
+                    new SqlParameter("@BusinessUnit", (object)businessUnit ?? DBNull.Value),
+                    new SqlParameter("@ProjectManager", (object)projectManager ?? DBNull.Value),
+                    new SqlParameter("@TechLeader", (object)techLeader ?? DBNull.Value),
+                    new SqlParameter("@ProjectStatus", (object)projectStatus ?? DBNull.Value),
+                    new SqlParameter("@StartDateFilter", (object)startDateFilter ?? DBNull.Value),
+                    new SqlParameter("@EndDateFilter", (object)endDateFilter ?? DBNull.Value),
+                    new SqlParameter("@InternalCode", (object)internalCode ?? DBNull.Value))
+                .ToListAsync();
+        }
+
+
+
 
 
 

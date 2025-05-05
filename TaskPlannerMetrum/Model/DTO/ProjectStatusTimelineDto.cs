@@ -2,14 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 namespace TaskPlannerMetrum.Model.DTO
 {
-    public class GetProjectStatusPeriodDTO
+    public class ProjectStatusTimelineDto
     {
         [Key]
-
-        public string InternalCode { get; set; }
         public string BusinessUnit { get; set; }
+        public string InternalCode { get; set; }
         public int QuantidadeProjetos { get; set; }
-
-
     }
 }
