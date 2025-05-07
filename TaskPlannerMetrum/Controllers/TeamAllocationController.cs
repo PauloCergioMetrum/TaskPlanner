@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using TaskPlannerMetrum.Business;
+using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Controllers
 {
-    [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [Authorize(Roles = "4,1")]
     public class TeamAllocationController : ControllerBase
     {
         private readonly ITeamAllocationBusiness _teamAllocationBusiness;
@@ -16,28 +18,34 @@ namespace TaskPlannerMetrum.Controllers
             _teamAllocationBusiness = teamAllocationBusiness;
         }
 
-        [HttpGet("GetExecutorHoursTable")]
-        public IActionResult GetExecutorHoursTable(
-            [FromQuery] DateTime startDate,
-            [FromQuery] DateTime endDate,
-            [FromQuery] string functionName = null,
-            [FromQuery] string departmentName = null)
-        {
-            var result = _teamAllocationBusiness.GetExecutorHoursTable(startDate, endDate, functionName, departmentName);
-            return result == null || result.Count == 0 ? NoContent() : Ok(result);
-        }
-
         [HttpGet("GetTeamAllocationReport")]
+        [ProducesResponseType(typeof(TeamAllocationResultDTO), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult GetTeamAllocationReport(
             [FromQuery] DateTime startDate,
             [FromQuery] DateTime endDate,
             [FromQuery] string functionName = null,
             [FromQuery] string departmentName = null)
         {
-            var result = _teamAllocationBusiness.GetTeamAllocationReport(startDate, endDate, functionName, departmentName);
-            return result == null || result.ExecutorHoursTable == null || result.ExecutorHoursTable.Count == 0
-                ? NoContent()
-                : Ok(result);
+            try
+            {
+                var result = _teamAllocationBusiness.GetTeamAllocationReport(startDate, endDate, functionName, departmentName);
+
+                if (result == null || result.TaskExecutionMetrics == null)
+                    return NoContent();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    message = "Erro ao buscar relatório de alocação de equipe.",
+                    error = ex.Message
+                });
+            }
         }
     }
 }

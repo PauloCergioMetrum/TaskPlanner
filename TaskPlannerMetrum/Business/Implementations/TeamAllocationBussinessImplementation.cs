@@ -14,27 +14,23 @@ namespace TaskPlannerMetrum.Business
             _teamAllocationRepository = teamAllocationRepository;
         }
 
-        public List<ExecutorHoursTableDTO> GetExecutorHoursTable(DateTime startDate, DateTime endDate, string functionName = null, string departmentName = null)
-        {
-            return _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate, functionName, departmentName);
-        }
 
 
-        public TeamAllocationResultDTO GetTeamAllocationReport(
-    DateTime startDate,
-    DateTime endDate,
-    string functionName = null,
-    string departmentName = null) 
+
+        public TeamAllocationResultDTO GetTeamAllocationReport(DateTime startDate, DateTime endDate, string functionName = null, string departmentName = null)
         {
             return new TeamAllocationResultDTO
             {
+                TaskExecutionMetrics = _teamAllocationRepository.GetTaskExecutionMetrics(startDate, endDate, functionName, departmentName),
                 ExecutorHoursTable = _teamAllocationRepository.GetExecutorHoursTable(startDate, endDate, functionName, departmentName),
-                TaskExecutionMetrics = _teamAllocationRepository.GetTaskExecutionMetrics(startDate, endDate,functionName ),
-                FunctionEmployeeCountTable = _teamAllocationRepository.GetFunctionEmployeeCount(startDate, endDate, functionName),
-                AvailableHoursByFunctionTable = _teamAllocationRepository.GetAvailableHoursByFunction(startDate, endDate, functionName),
-                GetPlannedAndExecutedByFunction = _teamAllocationRepository.GetPlannedAndExecutedByFunction(startDate, endDate, functionName),
+                GetPlannedAndExecutedByFunction = _teamAllocationRepository.GetPlannedAndExecutedByFunction(startDate, endDate, functionName, departmentName),
+                AvailableHoursByFunctionTable = _teamAllocationRepository.GetAvailableHoursByFunction(startDate, endDate, functionName, departmentName),
+                FunctionEmployeeCountTable = _teamAllocationRepository.GetFunctionEmployeeCount(startDate, endDate, functionName, departmentName)
             };
         }
+
+
+
 
 
     }
