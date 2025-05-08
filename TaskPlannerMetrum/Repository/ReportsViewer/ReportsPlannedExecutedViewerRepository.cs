@@ -476,7 +476,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
 
-        // 1. Contratos por mês (MonthlyContractDto)
+        //Grafico PROJETO POR UNIDADE DE NEGOCIO
         public async Task<List<MonthlyContractDto>> GetContractsByMonthAsync(DateTime startDate, DateTime endDate, string internalCode)
         {
             return await _context.MonthlyContractDto
@@ -487,7 +487,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 .ToListAsync();
         }
 
-        // 2. Resumo de status dos contratos (ContractStatusSummaryDto)
+        // Gráfico Aberto e fechado 
         public async Task<List<ContractStatusSummaryDto>> GetContractStatusSummaryAsync(DateTime startDate, DateTime endDate, string internalCode)
         {
             return await _context.ContractStatusSummaryDto
@@ -498,7 +498,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 .ToListAsync();
         }
 
-        // 3. Timeline de status de projeto (ProjectStatusTimelineDto)
+        // Projeto por unidade de Negocio
         public async Task<List<ProjectStatusTimelineDto>> GetProjectStatusTimelineAsync(DateTime startDate, DateTime endDate, int? statusId, string internalCode)
         {
             return await _context.ProjectStatusTimelineDto
@@ -510,8 +510,10 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 .ToListAsync();
         }
 
-        // 4. Relatório executivo (ExecutiveProjectReportDto)
-        public async Task<List<ExecutiveProjectReportDto>> GetExecutiveProjectReportAsync(string businessUnit, string projectManager, string techLeader, string projectStatus, DateTime? startDateFilter, DateTime? endDateFilter, string internalCode)
+        // Tabela Relatório  Executivo  de projetos
+        public async Task<List<ExecutiveProjectReportDto>> GetExecutiveProjectReportAsync(
+        string businessUnit, string projectManager, string techLeader,
+        string projectStatus, DateTime? startDate, DateTime? endDate, string internalCode)
         {
             return await _context.ExecutiveProjectReportDto
                 .FromSqlRaw("EXEC [dbo].[GetTableProjectExecutiveReport] @BusinessUnit, @ProjectManager, @TechLeader, @ProjectStatus, @StartDateFilter, @EndDateFilter, @InternalCode",
@@ -519,8 +521,8 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                     new SqlParameter("@ProjectManager", (object)projectManager ?? DBNull.Value),
                     new SqlParameter("@TechLeader", (object)techLeader ?? DBNull.Value),
                     new SqlParameter("@ProjectStatus", (object)projectStatus ?? DBNull.Value),
-                    new SqlParameter("@StartDateFilter", (object)startDateFilter ?? DBNull.Value),
-                    new SqlParameter("@EndDateFilter", (object)endDateFilter ?? DBNull.Value),
+                    new SqlParameter("@StartDateFilter", (object)startDate ?? DBNull.Value),
+                    new SqlParameter("@EndDateFilter", (object)endDate ?? DBNull.Value),
                     new SqlParameter("@InternalCode", (object)internalCode ?? DBNull.Value))
                 .ToListAsync();
         }

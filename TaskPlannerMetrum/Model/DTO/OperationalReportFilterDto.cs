@@ -1,17 +1,15 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-namespace TaskPlannerMetrum.Model.DTO
+using System.Collections.Generic;
+
+public class OperationalReportFilterDto
 {
-    public class OperationalReportFilterDto
-    {
-         [Key]
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public int? FiltroStatusID { get; set; }
-        public string InternalCode { get; set; }
-        public string BusinessUnit { get; set; }
-        public string ProjectManager { get; set; }
-        public string TechLeader { get; set; }
-        public string ProjectStatus { get; set; }
-    }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public List<string> InternalCodes { get; set; }
+    public List<string> BusinessUnits { get; set; }
+    public List<string> ProjectManagers { get; set; }
+    public List<string> TechLeaders { get; set; }
+    public string ProjectStatus { get; set; } // Pode vir em CSV já, ou ser convertido
+    public int? FiltroStatusID { get; set; }
 }
+

@@ -207,7 +207,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 ContractsStatusByMonth = ContractsStatusByMonth, // grafico PROJETOS ABERTOS E FECHADOS
                 ProjectStatusPeriod = ProjectStatusPeriod, // (Projeto por unidade de Negocio)
                 TableProjectExecutiveReport = TableProjectExecutiveReport, // (Tabela Relatório  Executivo  de projetos)
-                TaskExecutionMetrics = TaskExecutionMetrics // (Métricas de execução de tarefas)
+
             };
         }
 
