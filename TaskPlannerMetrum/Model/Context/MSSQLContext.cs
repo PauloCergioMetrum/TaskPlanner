@@ -24,17 +24,15 @@ namespace TaskPlannerMetrum.Model.Context
 
 
 
+        //Relatorio - Relatório Executivo de Projetos 
 
-        public DbSet<MonthlyContractDto> MonthlyContractDto { get; set; }
+        //public DbSet<GetProjectExecutiveStatusDto> GetProjectExecutiveStatusDto { get; set; }
+
+        public DbSet<GetProjectExecutiveStatusResultDto> GetProjectExecutiveStatusResultDto { get; set; }
+
         public DbSet<ContractStatusSummaryDto> ContractStatusSummaryDto { get; set; }
         public DbSet<ProjectStatusTimelineDto> ProjectStatusTimelineDto { get; set; }
         public DbSet<ExecutiveProjectReportDto> ExecutiveProjectReportDto { get; set; }
-
-
-
-
-
-
 
 
 
@@ -201,6 +199,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<FunctionEmployeeCountTableDTO>().HasNoKey();
             modelBuilder.Entity<GetAvailableHoursByFunctionDTO>().HasNoKey();
             modelBuilder.Entity<GetPlannedAndExecutedByFunctionDTO>().HasNoKey();
+            modelBuilder.Entity<GetProjectExecutiveStatusResultDto>().HasNoKey();
 
 
 
