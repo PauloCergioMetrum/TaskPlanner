@@ -409,28 +409,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             ).ToList();
         }
        
-      public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(
-      string InternalCode,
-      string BusinessUnit,
-      string ProjectManager,
-      string TechLeader,
-      string ProjectStatus,
-      DateTime? StartDateFilter,
-      DateTime? EndDateFilter)
-        {
-            var InternalCodeParam = new SqlParameter("@InternalCode", (object?)InternalCode ?? DBNull.Value);
-            var businessUnitParam = new SqlParameter("@BusinessUnit", (object?)BusinessUnit ?? DBNull.Value);
-            var projectManagerParam = new SqlParameter("@ProjectManager", (object?)ProjectManager ?? DBNull.Value);
-            var techLeaderParam = new SqlParameter("@TechLeader", (object?)TechLeader ?? DBNull.Value);
-            var projectStatusParam = new SqlParameter("@ProjectStatus", (object?)ProjectStatus ?? DBNull.Value);
-            var startDateFilterParam = new SqlParameter("@StartDateFilter", StartDateFilter.HasValue ? (object)StartDateFilter.Value : DBNull.Value);
-            var endDateFilterParam = new SqlParameter("@EndDateFilter", EndDateFilter.HasValue ? (object)EndDateFilter.Value : DBNull.Value);
-
-            return _context.GetTableProjectExecutiveReportDTO.FromSqlRaw(
-                "EXEC dbo.GetTableProjectExecutiveReport @BusinessUnit, @ProjectManager, @TechLeader, @ProjectStatus, @StartDateFilter, @EndDateFilter",
-               InternalCodeParam, businessUnitParam, projectManagerParam, techLeaderParam, projectStatusParam, startDateFilterParam, endDateFilterParam
-            ).ToList();
-        }
+    
         public List<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO(DateTime startDate, DateTime endDate)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
@@ -486,9 +465,47 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
+        public async Task<List<GetTableProjectExecutiveReportDto>> GetTableProjectExecutiveReportAsync(GetProjectExecutiveStatusDto dto)
+        {
+            var startParam = new SqlParameter("@StartDate", (object?)dto.StartDate ?? DBNull.Value);
+            var endParam = new SqlParameter("@EndDate", (object?)dto.EndDate ?? DBNull.Value);
+
+            var internalCodeParam = new SqlParameter("@InternalCode",
+                (object?)(dto.InternalCode == null || dto.InternalCode.Count == 0 ? null : string.Join(",", dto.InternalCode)) ?? DBNull.Value);
+
+            var businessUnitParam = new SqlParameter("@BusinessUnit",
+                (object?)(dto.BusinessUnit == null || dto.BusinessUnit.Count == 0 ? null : string.Join(",", dto.BusinessUnit)) ?? DBNull.Value);
+
+            var projectManagerParam = new SqlParameter("@ProjectManager",
+                (object?)(dto.InspectorName == null || dto.InspectorName.Count == 0 ? null : string.Join(",", dto.InspectorName)) ?? DBNull.Value);
+
+            var techLeaderParam = new SqlParameter("@TechLeader",
+                (object?)(dto.TechLeaderName == null || dto.TechLeaderName.Count == 0 ? null : string.Join(",", dto.TechLeaderName)) ?? DBNull.Value);
+
+            var statusParam = new SqlParameter("@ProjectStatus",
+                (object?)(dto.Status == null || dto.Status.Count == 0 ? null : string.Join(",", dto.Status)) ?? DBNull.Value);
+
+            return await _context.GetTableProjectExecutiveReportDto
+                .FromSqlRaw(@"EXEC dbo.GetTableProjectExecutiveReport 
+                @BusinessUnit,
+                @ProjectManager,
+                @TechLeader,
+                @ProjectStatus,
+                @StartDate,
+                @EndDate,
+                @InternalCode",
+                    businessUnitParam, projectManagerParam, techLeaderParam,
+                    statusParam, startParam, endParam, internalCodeParam
+                )
+                .ToListAsync();
+        }
     }
 
+
+
 }
+
+
 
 
 

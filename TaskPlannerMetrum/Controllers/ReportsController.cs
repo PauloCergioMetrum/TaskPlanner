@@ -132,40 +132,33 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult ProjectExecutiveReport(GetProjectExecutiveStatusDto dto)
+        public async Task<IActionResult> ProjectExecutiveReport([FromBody] GetProjectExecutiveStatusDto dto)
         {
             try
             {
-                var result = _reportsPlannedExecutedViewerBusiness.GetProjectExecutiveStatusAsync(dto).Result;
+                var result = await _reportsPlannedExecutedViewerBusiness.GetProjectExecutiveCombinedReportAsync(dto);
 
-                if (result == null || !result.Any())
+                if ((result?.GetProjectExecutiveStatus == null || !result.GetProjectExecutiveStatus.Any()) &&
+                    (result?.GetTableProjectExecutiveReport == null || !result.GetTableProjectExecutiveReport.Any()))
+                {
                     return NoContent();
+                }
 
                 return Ok(result);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Logger.Log(ex.Message, ELoggerType.Debug);
                 return BadRequest(ex.Message);
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
-
-
 }
+
+
+
+
 
 
 

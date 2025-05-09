@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TaskPlannerMetrum.Model.DTO
 {
-    public class GetTableProjectExecutiveReportDTO
+    public class GetTableProjectExecutiveReportDto
     {
         [Key]
         public string InternalCode { get; set; }

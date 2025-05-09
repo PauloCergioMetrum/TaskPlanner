@@ -45,14 +45,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID, string InternalCode);
 
-        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(
-         string InternalCode,
-         string BusinessUnit,
-         string ProjectManager,
-         string TechLeader,
-         string ProjectStatus,
-         DateTime? StartDateFilter,
-         DateTime? EndDateFilter);
+
 
 
         List<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO(DateTime startDate, DateTime endDate);
@@ -60,6 +53,9 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         //Relatorio - Relatório Executivo de Projetos 
         Task<List<GetProjectExecutiveStatusResultDto>> GetProjectExecutiveStatusAsync(GetProjectExecutiveStatusDto dto);
+
+        Task<List<GetTableProjectExecutiveReportDto>> GetTableProjectExecutiveReportAsync(GetProjectExecutiveStatusDto dto);
+
 
 
 

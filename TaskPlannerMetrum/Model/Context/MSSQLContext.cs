@@ -30,6 +30,12 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<GetProjectExecutiveStatusResultDto> GetProjectExecutiveStatusResultDto { get; set; }
 
+
+   
+        public DbSet<GetTableProjectExecutiveReportDto> GetTableProjectExecutiveReportDto { get; set; }
+
+
+
         public DbSet<ContractStatusSummaryDto> ContractStatusSummaryDto { get; set; }
         public DbSet<ProjectStatusTimelineDto> ProjectStatusTimelineDto { get; set; }
         public DbSet<ExecutiveProjectReportDto> ExecutiveProjectReportDto { get; set; }
@@ -190,7 +196,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetContractsByMonthDto>().HasNoKey();
             modelBuilder.Entity<GetContractsStatusByMonthDTO>().HasNoKey();
             modelBuilder.Entity<GetProjectStatusPeriodDTO>().HasNoKey();
-            modelBuilder.Entity<GetTableProjectExecutiveReportDTO>().HasNoKey();
+            modelBuilder.Entity<GetTableProjectExecutiveReportDto>().HasNoKey();
             modelBuilder.Entity<GetTaskExecutionMetricsDTO>().HasNoKey();
 
  
@@ -222,7 +228,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<GetContractsByMonthDto> GetContractsByMonthDto { get; set; }
         public DbSet<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO { get; set; }
         public DbSet<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO { get; set; }
-        public DbSet<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO { get; set; }
+
 
         public DbSet<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO { get; set; }
 

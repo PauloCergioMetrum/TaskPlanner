@@ -128,15 +128,15 @@ namespace TaskPlannerMetrum.Business.Implementations
                 OperationalReportReportDTO.InternalCode);
 
 
-            List<GetTableProjectExecutiveReportDTO> TableProjectExecutiveReport = _repository.GetTableProjectExecutiveReportDTO(
-                OperationalReportReportDTO.InternalCode,
-                OperationalReportReportDTO.BusinessUnit,
-                OperationalReportReportDTO.ProjectManager, 
-                OperationalReportReportDTO.TechLeaderName,
-                OperationalReportReportDTO.ProjectStatus, 
-                OperationalReportReportDTO.StartDateFilter,
-                OperationalReportReportDTO.EndDateFilter
-            );
+            //List<GetTableProjectExecutiveReportDTO> TableProjectExecutiveReport = _repository.GetTableProjectExecutiveReportDTO(
+            //    OperationalReportReportDTO.InternalCode,
+            //    OperationalReportReportDTO.BusinessUnit,
+            //    OperationalReportReportDTO.ProjectManager, 
+            //    OperationalReportReportDTO.TechLeaderName,
+            //    OperationalReportReportDTO.ProjectStatus, 
+            //    OperationalReportReportDTO.StartDateFilter,
+            //    OperationalReportReportDTO.EndDateFilter
+            //);
 
 
             List<GetTaskExecutionMetricsDTO> TaskExecutionMetrics = _repository.GetTaskExecutionMetricsDTO(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate);
@@ -152,7 +152,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 ContractsByMonth = ContractsByMonth,  // grafico STATUS POR UNIDADE DE NEGÓCIO
                 ContractsStatusByMonth = ContractsStatusByMonth, // grafico PROJETOS ABERTOS E FECHADOS
                 ProjectStatusPeriod = ProjectStatusPeriod, // (Projeto por unidade de Negocio)
-                TableProjectExecutiveReport = TableProjectExecutiveReport, // (Tabela Relatório  Executivo  de projetos)
+                //TableProjectExecutiveReport = TableProjectExecutiveReport, // (Tabela Relatório  Executivo  de projetos)
 
             };
         }
@@ -218,6 +218,23 @@ namespace TaskPlannerMetrum.Business.Implementations
         public async Task<List<GetProjectExecutiveStatusResultDto>> GetProjectExecutiveStatusAsync(GetProjectExecutiveStatusDto dto)
         {
             return await _repository.GetProjectExecutiveStatusAsync(dto);
+        }
+
+        public async Task<List<GetTableProjectExecutiveReportDto>> GetTableProjectExecutiveReportAsync(GetProjectExecutiveStatusDto dto)
+        {
+            return await _repository.GetTableProjectExecutiveReportAsync(dto);
+        }
+
+        public async Task<ProjectExecutiveReportDto> GetProjectExecutiveCombinedReportAsync(GetProjectExecutiveStatusDto dto)
+        {
+            var status = await _repository.GetProjectExecutiveStatusAsync(dto);
+            var table = await _repository.GetTableProjectExecutiveReportAsync(dto);
+
+            return new ProjectExecutiveReportDto
+            {
+                GetProjectExecutiveStatus = status,
+                GetTableProjectExecutiveReport = table
+            };
         }
 
 
