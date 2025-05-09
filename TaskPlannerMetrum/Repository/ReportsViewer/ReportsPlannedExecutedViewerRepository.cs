@@ -444,70 +444,46 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
         //Relatorio - Relatório Executivo de Projetos 
-
-
-
         public async Task<List<GetProjectExecutiveStatusResultDto>> GetProjectExecutiveStatusAsync(GetProjectExecutiveStatusDto dto)
         {
             var startParam = new SqlParameter("@StartDate", dto.StartDate);
             var endParam = new SqlParameter("@EndDate", dto.EndDate);
 
             var internalCodeParam = new SqlParameter("@InternalCode",
-                (object?)(dto.InternalCode == null || dto.InternalCode.Count == 0 || dto.InternalCode.All(x => string.IsNullOrWhiteSpace(x) || x == "string")
-                    ? null
-                    : string.Join(",", dto.InternalCode)) ?? DBNull.Value);
+                (object?)(dto.InternalCode == null || dto.InternalCode.Count == 0 ? null : string.Join(",", dto.InternalCode)) ?? DBNull.Value);
 
             var businessUnitParam = new SqlParameter("@BusinessUnit",
-                (object?)(dto.BusinessUnit == null || dto.BusinessUnit.Count == 0 || dto.BusinessUnit.All(x => string.IsNullOrWhiteSpace(x) || x == "string")
-                    ? null
-                    : string.Join(",", dto.BusinessUnit)) ?? DBNull.Value);
+                (object?)(dto.BusinessUnit == null || dto.BusinessUnit.Count == 0 ? null : string.Join(",", dto.BusinessUnit)) ?? DBNull.Value);
 
             var inspectorNameParam = new SqlParameter("@InspectorName",
-                (object?)(dto.InspectorName == null || dto.InspectorName.Count == 0 || dto.InspectorName.All(x => string.IsNullOrWhiteSpace(x) || x == "string")
-                    ? null
-                    : string.Join(",", dto.InspectorName)) ?? DBNull.Value);
+                (object?)(dto.InspectorName == null || dto.InspectorName.Count == 0 ? null : string.Join(",", dto.InspectorName)) ?? DBNull.Value);
 
             var contractInspectorParam = new SqlParameter("@ContractInspector",
-                (object?)(dto.ContractInspector == null || dto.ContractInspector.Count == 0 || dto.ContractInspector.All(x => string.IsNullOrWhiteSpace(x) || x == "string")
-                    ? null
-                    : string.Join(",", dto.ContractInspector)) ?? DBNull.Value);
+                (object?)(dto.ContractInspector == null || dto.ContractInspector.Count == 0 ? null : string.Join(",", dto.ContractInspector)) ?? DBNull.Value);
+
+            var statusParam = new SqlParameter("@Status",
+                (object?)(dto.Status == null || dto.Status.Count == 0 ? null : string.Join(",", dto.Status)) ?? DBNull.Value);
+
+            var techLeaderNameParam = new SqlParameter("@TechLeaderName",
+                (object?)(dto.TechLeaderName == null || dto.TechLeaderName.Count == 0 ? null : string.Join(",", dto.TechLeaderName)) ?? DBNull.Value);
+
+
 
             return await _context.GetProjectExecutiveStatusResultDto
                 .FromSqlRaw(
-                    "EXEC dbo.GetProjectExecutiveStatus @StartDate, @EndDate, @InternalCode, @BusinessUnit, @InspectorName, @ContractInspector",
-                    startParam, endParam, internalCodeParam, businessUnitParam, inspectorNameParam, contractInspectorParam
+                    @"EXEC dbo.GetProjectExecutiveStatus 
+                @StartDate, 
+                @EndDate, 
+                @InternalCode, 
+                @BusinessUnit, 
+                @InspectorName, 
+                @ContractInspector, 
+                @Status,
+                @TechLeaderName",
+                    startParam, endParam, internalCodeParam, businessUnitParam, inspectorNameParam, contractInspectorParam, statusParam, techLeaderNameParam
                 )
                 .ToListAsync();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

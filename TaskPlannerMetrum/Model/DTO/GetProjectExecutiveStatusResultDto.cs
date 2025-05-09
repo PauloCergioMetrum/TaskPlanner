@@ -7,7 +7,8 @@
         public string? InternalCode { get; set; }
         public string? InspectorName { get; set; }
         public string? TechLeaderName { get; set; }
-        public int? EsteveAberto { get; set; }
-        public int? EsteveFechado { get; set; }
-    }
+        public int ?Status { get; set; }
+
+
+}
 }
