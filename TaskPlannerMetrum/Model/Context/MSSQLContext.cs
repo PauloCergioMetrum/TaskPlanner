@@ -28,11 +28,12 @@ namespace TaskPlannerMetrum.Model.Context
 
         //public DbSet<GetProjectExecutiveStatusDto> GetProjectExecutiveStatusDto { get; set; }
 
-        public DbSet<GetProjectExecutiveStatusResultDto> GetProjectExecutiveStatusResultDto { get; set; }
-
-
-   
+        public DbSet<GetProjectExecutiveStatusResultDto> GetProjectExecutiveStatusResultDto { get; set; }   
         public DbSet<GetTableProjectExecutiveReportDto> GetTableProjectExecutiveReportDto { get; set; }
+        public DbSet<GetExecutiveProjecStatusBusinnesUnitDto> GetExecutiveProjecStatusBusinnesUnitDto { get; set; }
+
+
+
 
 
 

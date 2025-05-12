@@ -499,6 +499,24 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 )
                 .ToListAsync();
         }
+
+        public async Task<List<GetExecutiveProjecStatusBusinnesUnitDto>> GetExecutiveProjecStatusBusinnesUnitAsync(GetProjectExecutiveStatusDto dto)
+        {
+            var startParam = new SqlParameter("@StartDate", (object?)dto.StartDate ?? DBNull.Value);
+            var endParam = new SqlParameter("@EndDate", (object?)dto.EndDate ?? DBNull.Value);
+            var internalCodeParam = new SqlParameter("@InternalCode", (object?)(dto.InternalCode == null || dto.InternalCode.Count == 0 ? null : string.Join(",", dto.InternalCode)) ?? DBNull.Value);
+            var businessUnitParam = new SqlParameter("@BusinessUnit", (object?)(dto.BusinessUnit == null || dto.BusinessUnit.Count == 0 ? null : string.Join(",", dto.BusinessUnit)) ?? DBNull.Value);
+            var inspectorNameParam = new SqlParameter("@InspectorName", (object?)(dto.InspectorName == null || dto.InspectorName.Count == 0 ? null : string.Join(",", dto.InspectorName)) ?? DBNull.Value);
+            var techLeaderParam = new SqlParameter("@TechLeaderName", (object?)(dto.TechLeaderName == null || dto.TechLeaderName.Count == 0 ? null : string.Join(",", dto.TechLeaderName)) ?? DBNull.Value);
+
+            return await _context.GetExecutiveProjecStatusBusinnesUnitDto
+                .FromSqlRaw(@"EXEC dbo.GetExecutiveProjecStatusBusinnesUnit 
+            @StartDate, @EndDate, @InternalCode, @BusinessUnit, @InspectorName, @TechLeaderName",
+                    startParam, endParam, internalCodeParam, businessUnitParam, inspectorNameParam, techLeaderParam
+                )
+                .ToListAsync();
+        }
+
     }
 
 

@@ -53,8 +53,11 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         //Relatorio - Relatório Executivo de Projetos 
         Task<List<GetProjectExecutiveStatusResultDto>> GetProjectExecutiveStatusAsync(GetProjectExecutiveStatusDto dto);
-
         Task<List<GetTableProjectExecutiveReportDto>> GetTableProjectExecutiveReportAsync(GetProjectExecutiveStatusDto dto);
+       Task<List<GetExecutiveProjecStatusBusinnesUnitDto>> GetExecutiveProjecStatusBusinnesUnitAsync(GetProjectExecutiveStatusDto dto);
+
+
+
 
 
 

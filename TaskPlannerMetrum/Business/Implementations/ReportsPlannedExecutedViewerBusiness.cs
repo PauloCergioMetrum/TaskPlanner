@@ -214,7 +214,6 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
         //Relatorio - Relatório Executivo de Projetos 
-
         public async Task<List<GetProjectExecutiveStatusResultDto>> GetProjectExecutiveStatusAsync(GetProjectExecutiveStatusDto dto)
         {
             return await _repository.GetProjectExecutiveStatusAsync(dto);
@@ -229,13 +228,16 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             var status = await _repository.GetProjectExecutiveStatusAsync(dto);
             var table = await _repository.GetTableProjectExecutiveReportAsync(dto);
+            var businessUnitStatus = await _repository.GetExecutiveProjecStatusBusinnesUnitAsync(dto);
 
             return new ProjectExecutiveReportDto
             {
                 GetProjectExecutiveStatus = status,
-                GetTableProjectExecutiveReport = table
+                GetTableProjectExecutiveReport = table,
+                GetExecutiveProjecStatusBusinnesUnit = businessUnitStatus
             };
         }
+
 
 
 

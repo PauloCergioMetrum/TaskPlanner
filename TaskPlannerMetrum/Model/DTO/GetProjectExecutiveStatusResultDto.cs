@@ -1,7 +1,10 @@
-﻿namespace TaskPlannerMetrum.Model.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TaskPlannerMetrum.Model.DTO
 {
     public class GetProjectExecutiveStatusResultDto
     {
+        [Key]
         public int? ContractID { get; set; }
         public string? BusinessUnit { get; set; }
         public string? InternalCode { get; set; }
