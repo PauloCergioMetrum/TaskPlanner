@@ -139,7 +139,8 @@ namespace TaskPlannerMetrum.Controllers
                 var result = await _reportsPlannedExecutedViewerBusiness.GetProjectExecutiveCombinedReportAsync(dto);
 
                 if ((result?.GetProjectExecutiveStatus == null || !result.GetProjectExecutiveStatus.Any()) &&
-                    (result?.GetTableProjectExecutiveReport == null || !result.GetTableProjectExecutiveReport.Any()))
+                    (result?.GetTableProjectExecutiveReport == null || !result.GetTableProjectExecutiveReport.Any() &&
+                    result?.GetExecutiveProjectStatusPeriod == null || !result.GetExecutiveProjectStatusPeriod.Any()))
                 {
                     return NoContent();
                 }

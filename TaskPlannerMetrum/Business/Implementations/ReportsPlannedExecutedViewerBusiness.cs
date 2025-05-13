@@ -122,7 +122,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 OperationalReportReportDTO.InternalCode
                 );
 
-            List<GetProjectStatusPeriodDTO> ProjectStatusPeriod = _repository.GetProjectStatusPeriodDTO(OperationalReportReportDTO.StartDate,
+            List<GetExecutiveProjectStatusPeriodDto> ProjectStatusPeriod = _repository.GetProjectStatusPeriodDTO(OperationalReportReportDTO.StartDate,
                 OperationalReportReportDTO.EndDate,
                 OperationalReportReportDTO.FiltroStatusID,
                 OperationalReportReportDTO.InternalCode);
@@ -224,17 +224,26 @@ namespace TaskPlannerMetrum.Business.Implementations
             return await _repository.GetTableProjectExecutiveReportAsync(dto);
         }
 
+
+
+        public async Task<List<GetExecutiveProjectStatusPeriodDto>> GetExecutiveProjectStatusPeriodAsync(GetProjectExecutiveStatusDto dto)
+        {
+            return await _repository.GetExecutiveProjectStatusPeriodAsync(dto);
+        }
+
         public async Task<ProjectExecutiveReportDto> GetProjectExecutiveCombinedReportAsync(GetProjectExecutiveStatusDto dto)
         {
             var status = await _repository.GetProjectExecutiveStatusAsync(dto);
             var table = await _repository.GetTableProjectExecutiveReportAsync(dto);
             var businessUnitStatus = await _repository.GetExecutiveProjecStatusBusinnesUnitAsync(dto);
+            var projectStatusPeriod = await _repository.GetExecutiveProjectStatusPeriodAsync(dto);
 
             return new ProjectExecutiveReportDto
             {
                 GetProjectExecutiveStatus = status,
                 GetTableProjectExecutiveReport = table,
-                GetExecutiveProjecStatusBusinnesUnit = businessUnitStatus
+                GetExecutiveProjecStatusBusinnesUnit = businessUnitStatus,
+                GetExecutiveProjectStatusPeriod = projectStatusPeriod
             };
         }
 

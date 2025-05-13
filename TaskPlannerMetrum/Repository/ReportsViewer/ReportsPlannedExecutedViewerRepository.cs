@@ -396,7 +396,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
-        public List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID, string InternalCode)
+        public List<GetExecutiveProjectStatusPeriodDto> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID, string InternalCode)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
@@ -538,6 +538,39 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         }
 
 
+
+        public async Task<List<GetExecutiveProjectStatusPeriodDto>> GetExecutiveProjectStatusPeriodAsync(GetProjectExecutiveStatusDto dto)
+        {
+            var startParam = new SqlParameter("@StartDate", (object?)dto.StartDate ?? DBNull.Value);
+            var endParam = new SqlParameter("@EndDate", (object?)dto.EndDate ?? DBNull.Value);
+
+            var statusParam = new SqlParameter("@FiltroStatusID",
+                (object?)(dto.Status == null || dto.Status.Count == 0 ? null : string.Join(",", dto.Status)) ?? DBNull.Value);
+
+            var internalCodeParam = new SqlParameter("@InternalCode",
+                (object?)(dto.InternalCode == null || dto.InternalCode.Count == 0
+                    ? null
+                    : string.Join(",", dto.InternalCode)) ?? DBNull.Value);
+
+            var businessUnitParam = new SqlParameter("@BusinessUnit",
+               (object?)(dto.BusinessUnit == null || dto.BusinessUnit.Count == 0
+                   ? null
+                   : string.Join(",", dto.BusinessUnit)) ?? DBNull.Value);
+
+
+
+            return await _context.GetExecutiveProjectStatusPeriodDto
+            .FromSqlRaw(@"EXEC dbo.GetProjectStatusPeriod 
+            @StartDate,
+            @EndDate,
+            @FiltroStatusID,
+            @InternalCode,
+            @BusinessUnit",
+           
+            
+            startParam, endParam, statusParam, internalCodeParam, businessUnitParam)
+            .ToListAsync();
+        }
     }
 
 
