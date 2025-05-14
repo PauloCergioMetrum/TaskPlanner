@@ -6,7 +6,7 @@ namespace TaskPlannerMetrum.Model.DTO
     public class ProjectOperationalDto
     {
         [Key]
-        public List<MonthlyContractDto> ContractsByMonth { get; set; } // grafico por unidade de negocio
+        public List<GetProjectExecutiveStatusDto> ContractsByMonth { get; set; } // grafico por unidade de negocio
         public List<ContractStatusSummaryDto> ContractStatusSummary { get; set; }
         public List<ProjectStatusTimelineDto> ProjectStatusTimeline { get; set; }
         public List<ExecutiveProjectReportDto> ExecutiveProjectReport { get; set; }

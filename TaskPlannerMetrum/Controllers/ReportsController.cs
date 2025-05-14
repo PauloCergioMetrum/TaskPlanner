@@ -3,6 +3,7 @@
 
 using Memt.Logger;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -125,62 +126,40 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
-
-
-
-
-
-
-        private static string ToCsv(List<string> values)
+        //Relatorio - Relatório Executivo de Projetos 
+        [HttpPost("ProjectExecutiveReport")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> ProjectExecutiveReport([FromBody] GetProjectExecutiveStatusDto dto)
         {
-            return values != null && values.Any()
-                ? string.Join(",", values.Where(v => !string.IsNullOrWhiteSpace(v)).Select(v => v.Trim()))
-                : null;
-        }
-
-
-        [HttpPost("GetOperationalProjectReport")]
-        public async Task<ActionResult<ProjectOperationalDto>> GetOperationalProjectReport([FromBody] OperationalReportFilterDto dto)
-        {
-            var internalCodesCsv = ToCsv(dto.InternalCodes);
-            var businessUnitsCsv = ToCsv(dto.BusinessUnits);
-            var projectManagersCsv = ToCsv(dto.ProjectManagers);
-            var techLeadersCsv = ToCsv(dto.TechLeaders);
-
-            var result = new ProjectOperationalDto
+            try
             {
-                ContractsByMonth = await _reportsPlannedExecutedViewerBusiness
-                    .GetContractsByMonthAsync(dto.StartDate, dto.EndDate, internalCodesCsv),
+                var result = await _reportsPlannedExecutedViewerBusiness.GetProjectExecutiveCombinedReportAsync(dto);
 
-                ContractStatusSummary = await _reportsPlannedExecutedViewerBusiness
-                    .GetContractStatusSummaryAsync(dto.StartDate, dto.EndDate, internalCodesCsv),
+                if ((result?.GetProjectExecutiveStatus == null || !result.GetProjectExecutiveStatus.Any()) &&
+                    (result?.GetTableProjectExecutiveReport == null || !result.GetTableProjectExecutiveReport.Any() &&
+                    result?.GetExecutiveProjectStatusPeriod == null || !result.GetExecutiveProjectStatusPeriod.Any()))
+                {
+                    return NoContent();
+                }
 
-                ProjectStatusTimeline = await _reportsPlannedExecutedViewerBusiness
-                    .GetProjectStatusTimelineAsync(dto.StartDate, dto.EndDate, dto.FiltroStatusID, internalCodesCsv),
-
-                ExecutiveProjectReport = await _reportsPlannedExecutedViewerBusiness
-                    .GetExecutiveProjectReportAsync(
-                        businessUnitsCsv,
-                        projectManagersCsv,
-                        techLeadersCsv,
-                        dto.ProjectStatus, // já em CSV
-                        dto.StartDate,
-                        dto.EndDate,
-                        internalCodesCsv
-                    )
-            };
-
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(ex.Message);
+            }
         }
-
-
-
-
     }
 
-
-
 }
+
+
+
+
 
 
 

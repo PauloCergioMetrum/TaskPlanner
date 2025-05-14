@@ -33,12 +33,11 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
         }
 
 
-        // Tabela 
         public List<ExecutorHoursTableDTO> GetExecutorHoursTable(
-         DateTime startDate,
-         DateTime endDate,
-         string functionName = null,
-         string departmentName = null)
+            DateTime startDate,
+            DateTime endDate,
+            string functionName = null,
+            string departmentName = null)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
@@ -47,9 +46,10 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
             return _context.Set<ExecutorHoursTableDTO>()
                 .FromSqlRaw("EXEC GetExecutorHoursTable @StartDate, @EndDate, @FunctionName, @DepartmentName",
-                            startParam, endParam, functionParam, departmentParam) 
+                            startParam, endParam, functionParam, departmentParam)
                 .ToList();
         }
+
 
 
         // Relatório de Horas Planejadas e Executadas por Função
@@ -98,5 +98,6 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
                             startParam, endParam, functionNameParam, departmentNameParam)
                 .ToList();
         }
+
     }
 }

@@ -64,27 +64,6 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        //public double HoursCostSearch(List<vReports_PlannedExecuted> reportPlannedExecuted)
-        //{
-        //    var startDate = reportPlannedExecuted.OrderBy(s => s.ScheduledDate).Select(s => s.ScheduledDate).First();
-        //    var endDate = reportPlannedExecuted.OrderBy(s => s.ScheduledDate).Select(s => s.ScheduledDate).Last();
-        //    var listExecutedID = reportPlannedExecuted.Select(e => e.ExecutorID).ToList();
-        //    var listContractID = reportPlannedExecuted.Select(e => e.ContractID).ToList();
-        //    var listHoursCost = _repository.GetHourCost(startDate, endDate).AsQueryable();
-
-        //    if (reportPlannedExecuted.Select(e => e.ExecutorID).ToList().Count != 0)
-        //    {
-        //        listHoursCost = listHoursCost.Where(l => listExecutedID.Any(u => u == l.UserID)).AsQueryable();
-        //    }
-
-        //    if (reportPlannedExecuted.Select(e => e.ContractID).ToList().Count != 0)
-        //    {
-        //        listHoursCost = listHoursCost.Where(l => listContractID.Any(u => u == l.ContractID)).AsQueryable();
-        //    }
-
-        //    return Math.Round(listHoursCost.Select(d => d.DayCost).Sum(), 2);
-        //}
-
 
         public ReportPlannedExecuted GetPlannedExecuted(ReportPlannedExecutedDTO reportPlannedExecuted)
         {
@@ -124,45 +103,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             return ExpectedHours;
         }
 
-        //public List<PreparetBalancePerProject> PreparetBalancePerProject(OperationalReportReportDTO OperationalReportReportDTO)
-        //{
-        //    List<BalancePerProject> allBalancePerProject = _repository.GetBalancePerProject(OperationalReportReportDTO);
-        //    var distinctBalanceProjects = allBalancePerProject.ToList().Distinct();
-        //    List<PreparetBalancePerProject> balanceDetailsFullList = new List<PreparetBalancePerProject>();
-
-        //    foreach (var businessUnit in distinctBalanceProjects)
-        //    {
-        //        if (balanceDetailsFullList.Where(b => b.BusinessUnit == businessUnit.BusinessUnit).Count() < 1)
-        //        {
-        //            balanceDetailsFullList.Add(new PreparetBalancePerProject
-        //            {
-        //                BusinessUnit = businessUnit.BusinessUnit,
-        //                Details = allBalancePerProject
-        //                        .Where(b => b.BusinessUnit == businessUnit.BusinessUnit)
-        //                        .Select(b => new BalancePerProject
-        //                        {
-        //                            BusinessUnit = b.BusinessUnit,
-        //                            Period = b.Period,
-        //                            AumontClose = b.AumontClose,
-        //                            AumontOpen = b.AumontOpen,
-        //                        })
-        //                        .Distinct()
-        //                        .ToList()
-        //            });
-        //        }
-        //    }
-
-        //    return balanceDetailsFullList;
-        //}
+      
 
 
         public ProjectOperational OperationalProjectReport(OperationalReportReportDTO OperationalReportReportDTO)
         {
-            //List<NumberOfContractsForBusinessUnit> ContractsForBusinessUnit = _repository.CountContractsPerBusinessUnit(OperationalReportReportDTO);
-            //List<OperationalRelationshipTable> OperationalRelationshipTable = _repository.GetContractDetails(OperationalReportReportDTO);
-            //List<StatusForPeriod> StatusForPeriod = _repository.getStatusPerPeriod(OperationalReportReportDTO);
-            //List<PreparetBalancePerProject> BalancePerProject = PreparetBalancePerProject(OperationalReportReportDTO);
-
+           
 
 
             List<GetContractsByMonthDto> ContractsByMonth = _repository.GetContractsByMonth(
@@ -176,21 +122,21 @@ namespace TaskPlannerMetrum.Business.Implementations
                 OperationalReportReportDTO.InternalCode
                 );
 
-            List<GetProjectStatusPeriodDTO> ProjectStatusPeriod = _repository.GetProjectStatusPeriodDTO(OperationalReportReportDTO.StartDate,
+            List<GetExecutiveProjectStatusPeriodDto> ProjectStatusPeriod = _repository.GetProjectStatusPeriodDTO(OperationalReportReportDTO.StartDate,
                 OperationalReportReportDTO.EndDate,
                 OperationalReportReportDTO.FiltroStatusID,
                 OperationalReportReportDTO.InternalCode);
 
 
-            List<GetTableProjectExecutiveReportDTO> TableProjectExecutiveReport = _repository.GetTableProjectExecutiveReportDTO(
-                OperationalReportReportDTO.InternalCode,
-                OperationalReportReportDTO.BusinessUnit,
-                OperationalReportReportDTO.ProjectManager, 
-                OperationalReportReportDTO.TechLeaderName,
-                OperationalReportReportDTO.ProjectStatus, 
-                OperationalReportReportDTO.StartDateFilter,
-                OperationalReportReportDTO.EndDateFilter
-            );
+            //List<GetTableProjectExecutiveReportDTO> TableProjectExecutiveReport = _repository.GetTableProjectExecutiveReportDTO(
+            //    OperationalReportReportDTO.InternalCode,
+            //    OperationalReportReportDTO.BusinessUnit,
+            //    OperationalReportReportDTO.ProjectManager, 
+            //    OperationalReportReportDTO.TechLeaderName,
+            //    OperationalReportReportDTO.ProjectStatus, 
+            //    OperationalReportReportDTO.StartDateFilter,
+            //    OperationalReportReportDTO.EndDateFilter
+            //);
 
 
             List<GetTaskExecutionMetricsDTO> TaskExecutionMetrics = _repository.GetTaskExecutionMetricsDTO(OperationalReportReportDTO.StartDate, OperationalReportReportDTO.EndDate);
@@ -206,7 +152,7 @@ namespace TaskPlannerMetrum.Business.Implementations
                 ContractsByMonth = ContractsByMonth,  // grafico STATUS POR UNIDADE DE NEGÓCIO
                 ContractsStatusByMonth = ContractsStatusByMonth, // grafico PROJETOS ABERTOS E FECHADOS
                 ProjectStatusPeriod = ProjectStatusPeriod, // (Projeto por unidade de Negocio)
-                TableProjectExecutiveReport = TableProjectExecutiveReport, // (Tabela Relatório  Executivo  de projetos)
+                //TableProjectExecutiveReport = TableProjectExecutiveReport, // (Tabela Relatório  Executivo  de projetos)
 
             };
         }
@@ -267,40 +213,39 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
+        //Relatorio - Relatório Executivo de Projetos 
+        public async Task<List<GetProjectExecutiveStatusResultDto>> GetProjectExecutiveStatusAsync(GetProjectExecutiveStatusDto dto)
+        {
+            return await _repository.GetProjectExecutiveStatusAsync(dto);
+        }
+
+        public async Task<List<GetTableProjectExecutiveReportDto>> GetTableProjectExecutiveReportAsync(GetProjectExecutiveStatusDto dto)
+        {
+            return await _repository.GetTableProjectExecutiveReportAsync(dto);
+        }
 
 
 
+        public async Task<List<GetExecutiveProjectStatusPeriodDto>> GetExecutiveProjectStatusPeriodAsync(GetProjectExecutiveStatusDto dto)
+        {
+            return await _repository.GetExecutiveProjectStatusPeriodAsync(dto);
+        }
 
+        public async Task<ProjectExecutiveReportDto> GetProjectExecutiveCombinedReportAsync(GetProjectExecutiveStatusDto dto)
+        {
+            var status = await _repository.GetProjectExecutiveStatusAsync(dto);
+            var table = await _repository.GetTableProjectExecutiveReportAsync(dto);
+            var businessUnitStatus = await _repository.GetExecutiveProjecStatusBusinnesUnitAsync(dto);
+            var projectStatusPeriod = await _repository.GetExecutiveProjectStatusPeriodAsync(dto);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public async Task<List<MonthlyContractDto>> GetContractsByMonthAsync(DateTime startDate, DateTime endDate, string internalCode)
-     => await _repository.GetContractsByMonthAsync(startDate, endDate, internalCode);
-
-        public async Task<List<ContractStatusSummaryDto>> GetContractStatusSummaryAsync(DateTime startDate, DateTime endDate, string internalCode)
-             => await _repository.GetContractStatusSummaryAsync(startDate, endDate, internalCode);
-
-        public async Task<List<ProjectStatusTimelineDto>> GetProjectStatusTimelineAsync(DateTime startDate, DateTime endDate, int? statusId, string internalCode)
-             => await _repository.GetProjectStatusTimelineAsync(startDate, endDate, statusId, internalCode);
-
-        public async Task<List<ExecutiveProjectReportDto>> GetExecutiveProjectReportAsync(string businessUnit, string projectManager, string techLeader, string projectStatus, DateTime? startDate, DateTime? endDate, string internalCode)
-             => await _repository.GetExecutiveProjectReportAsync(businessUnit, projectManager, techLeader, projectStatus, startDate, endDate, internalCode);
-
-
+            return new ProjectExecutiveReportDto
+            {
+                GetProjectExecutiveStatus = status,
+                GetTableProjectExecutiveReport = table,
+                GetExecutiveProjecStatusBusinnesUnit = businessUnitStatus,
+                GetExecutiveProjectStatusPeriod = projectStatusPeriod
+            };
+        }
 
 
 

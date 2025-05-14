@@ -43,21 +43,19 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         List<GetContractsByMonthDto> GetContractsByMonth(DateTime startDate, DateTime endDate, string InternalCode);
         List<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO(DateTime startDate, DateTime endDate, string InternalCode);
 
-        List<GetProjectStatusPeriodDTO> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID, string InternalCode);
+        List<GetExecutiveProjectStatusPeriodDto> GetProjectStatusPeriodDTO(DateTime startDate, DateTime endDate, int FiltroStatusID, string InternalCode);
 
-        public List<GetTableProjectExecutiveReportDTO> GetTableProjectExecutiveReportDTO(
-         string InternalCode,
-         string BusinessUnit,
-         string ProjectManager,
-         string TechLeader,
-         string ProjectStatus,
-         DateTime? StartDateFilter,
-         DateTime? EndDateFilter);
+
 
 
         List<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO(DateTime startDate, DateTime endDate);
 
 
+        //Relatorio - Relatório Executivo de Projetos 
+        Task<List<GetProjectExecutiveStatusResultDto>> GetProjectExecutiveStatusAsync(GetProjectExecutiveStatusDto dto);
+        Task<List<GetTableProjectExecutiveReportDto>> GetTableProjectExecutiveReportAsync(GetProjectExecutiveStatusDto dto);
+        Task<List<GetExecutiveProjecStatusBusinnesUnitDto>> GetExecutiveProjecStatusBusinnesUnitAsync(GetProjectExecutiveStatusDto dto);
+        Task<List<GetExecutiveProjectStatusPeriodDto>> GetExecutiveProjectStatusPeriodAsync(GetProjectExecutiveStatusDto dto);
 
 
 
@@ -67,10 +65,12 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
 
 
-        Task<List<MonthlyContractDto>> GetContractsByMonthAsync(DateTime startDate, DateTime endDate, string internalCode);
-        Task<List<ContractStatusSummaryDto>> GetContractStatusSummaryAsync(DateTime startDate, DateTime endDate, string internalCode);
-        Task<List<ProjectStatusTimelineDto>> GetProjectStatusTimelineAsync(DateTime startDate, DateTime endDate, int? statusId, string internalCode);
-        Task<List<ExecutiveProjectReportDto>> GetExecutiveProjectReportAsync(string businessUnit, string projectManager, string techLeader, string projectStatus, DateTime? start, DateTime? end, string internalCode);
+
+
+
+
+
+
 
 
 
