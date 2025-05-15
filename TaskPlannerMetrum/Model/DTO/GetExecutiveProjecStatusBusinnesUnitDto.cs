@@ -6,10 +6,10 @@ namespace TaskPlannerMetrum.Model.DTO
     {
         [System.ComponentModel.DataAnnotations.Key]
         public string Periodo { get; set; }
-        public string BusinessUnit { get; set; }
+        public int BusinessUnit { get; set; }
         public int QuantidadeEmAndamento { get; set; }
-        public string TechLeaders { get; set; }
-        public string Inspectors { get; set; }
-        public string Status { get; set; }
+        public int TechLeaders { get; set; }
+        public int Inspectors { get; set; }
+        public int Status { get; set; }
     }
 }
