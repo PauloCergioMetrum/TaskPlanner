@@ -1732,8 +1732,21 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             }
         }
 
-        
+
+
+
+
+
+        public CardsHHHours CardsHHHours(int contractId)
+        {
+            return _context.CardsHHHours
+                .AsNoTracking()
+                .FirstOrDefault(a => a.ContractID == contractId);
+        }
+
     }
 }
+
+
 
 

@@ -142,6 +142,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vMilestonesStatistics> vMilestonesStatistics(int contractID);
 
+        public CardsHHHours CardsHHHours(int contractId);
+
+
 
 
 

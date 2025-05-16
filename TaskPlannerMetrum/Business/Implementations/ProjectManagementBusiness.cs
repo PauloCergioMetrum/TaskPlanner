@@ -1062,7 +1062,12 @@ namespace TaskPlannerMetrum.Business.Implementations
             return MilestonesExpectedsAndNoExpeecteds;
         }
 
-       
+        public CardsHHHours CardsHHHours(int contractId)
+        {
+            return _projectmanagementRepository.CardsHHHours(contractId);
+        }
+
+
     }
 }
 

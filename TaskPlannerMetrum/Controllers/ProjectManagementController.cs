@@ -1479,6 +1479,31 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetCardsHHHours")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CardsHHHours(int contractID)
+        {
+            try
+            {
+                var result = _projectManagementBusiness.CardsHHHours(contractID);
+
+                if (result == null)
+                    return NoContent(); 
+
+                return Ok(result); 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
     }
 
 }

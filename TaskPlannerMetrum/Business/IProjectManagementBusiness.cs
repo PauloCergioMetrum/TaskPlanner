@@ -174,6 +174,9 @@ namespace TaskPlannerMetrum.Business
         public List<vMilestonesStatistics> vMilestonesStatistics(int contractID);
 
 
+        public CardsHHHours CardsHHHours(int contractId);
+
+
 
 
 
