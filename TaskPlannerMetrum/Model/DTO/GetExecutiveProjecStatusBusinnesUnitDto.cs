@@ -4,12 +4,18 @@ namespace TaskPlannerMetrum.Model.DTO
 {
     public class GetExecutiveProjecStatusBusinnesUnitDto
     {
-        [System.ComponentModel.DataAnnotations.Key]
+        [Key]
         public string Periodo { get; set; }
-        public string BusinessUnit { get; set; }
+        public int Status { get; set; }
+
+        public int BusinessUnit { get; set; }
+        public int TechLeaders { get; set; }
+        public int Inspectors { get; set; }
         public int QuantidadeEmAndamento { get; set; }
-        public string TechLeaders { get; set; }
-        public string Inspectors { get; set; }
-        public string Status { get; set; }
+
+        public string? ProjetosEmAndamento { get; set; }
+        public string? UnidadesNegocioRetornadas { get; set; }
+        public string? TechLeadersRetornados { get; set; }
+        public string? InspectorsRetornados { get; set; }
     }
 }
