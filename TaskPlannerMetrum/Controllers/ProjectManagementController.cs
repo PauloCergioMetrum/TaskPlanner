@@ -1502,6 +1502,25 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetHhCostChart")]
+        public async Task<IActionResult> GetHhCostChart(int contractId, DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                var result = await _projectManagementBusiness.GetHhCostChartAsync(contractId, startDate, endDate);
+                if (result == null || !result.Any())
+                    return NoContent();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao obter HH Cost Chart: {ex.Message}");
+            }
+        }
+
+
+
 
 
     }

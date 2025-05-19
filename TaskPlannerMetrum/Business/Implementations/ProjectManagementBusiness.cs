@@ -1067,7 +1067,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.CardsHHHours(contractId);
         }
 
-
+        public Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate)
+        {
+           return _projectmanagementRepository.GetHhCostChartAsync(contractId, startDate, endDate); 
+        }
     }
 }
 

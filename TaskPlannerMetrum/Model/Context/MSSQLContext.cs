@@ -158,6 +158,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vMilestonesStatistics> vMilestonesStatistics { get; set; }
 
         public DbSet<CardsHHHours> CardsHHHours { get; set; }
+        public DbSet<GetHhCostChart> GetHhCostChart { get; set; }
 
 
 

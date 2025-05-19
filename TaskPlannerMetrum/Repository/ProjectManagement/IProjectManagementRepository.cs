@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using TaskPlannerMetrum.Data.VO;
@@ -143,6 +144,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vMilestonesStatistics> vMilestonesStatistics(int contractID);
 
         public CardsHHHours CardsHHHours(int contractId);
+        Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate);
+
 
 
 

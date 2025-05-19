@@ -1744,6 +1744,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 .FirstOrDefault(a => a.ContractID == contractId);
         }
 
+        public Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate)
+        {
+          return _context.GetHhCostChart
+                .FromSqlRaw("EXEC GetHhCostChart @ContractID={0}, @StartDate={1}, @EndDate={2}", contractId, startDate, endDate)
+                .ToListAsync(); 
+        }
     }
 }
 

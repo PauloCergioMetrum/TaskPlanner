@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
@@ -175,6 +176,9 @@ namespace TaskPlannerMetrum.Business
 
 
         public CardsHHHours CardsHHHours(int contractId);
+        Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate);
+
+
 
 
 
