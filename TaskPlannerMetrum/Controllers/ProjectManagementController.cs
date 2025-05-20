@@ -1521,6 +1521,26 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
+        [HttpGet("GetMilestoneFullReportByContract")]
+        public async Task<IActionResult> GetMilestoneFullReportByContract(int contractId)
+        {
+            try
+            {
+                var result = await _projectManagementBusiness.GetMilestoneFullReportByContract(contractId);
+                if (result == null || !result.Any())
+                    return NoContent();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error ao buscar dados de GetMilestoneFullReportByContract: {ex.Message}");
+            }
+        }
+
+
+
+
 
 
     }

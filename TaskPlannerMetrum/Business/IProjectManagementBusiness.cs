@@ -179,6 +179,9 @@ namespace TaskPlannerMetrum.Business
         Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate);
 
 
+        Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId);
+
+
 
 
 

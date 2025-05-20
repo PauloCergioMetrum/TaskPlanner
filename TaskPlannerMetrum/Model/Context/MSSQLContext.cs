@@ -159,7 +159,10 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<CardsHHHours> CardsHHHours { get; set; }
         public DbSet<GetHhCostChart> GetHhCostChart { get; set; }
+        public DbSet<GetMilestoneFullReportByContract> GetMilestoneFullReportByContract { get; set; }
 
+
+        
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

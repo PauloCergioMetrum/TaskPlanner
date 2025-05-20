@@ -1071,6 +1071,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
            return _projectmanagementRepository.GetHhCostChartAsync(contractId, startDate, endDate); 
         }
+
+        public Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId)
+        {
+            return _projectmanagementRepository.GetMilestoneFullReportByContract(contractId);
+        }
     }
 }
 

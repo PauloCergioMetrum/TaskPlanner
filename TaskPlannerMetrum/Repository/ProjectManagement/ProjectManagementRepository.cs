@@ -1,6 +1,7 @@
 ﻿
 using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Math;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Memt.Logger;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -1750,6 +1751,15 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 .FromSqlRaw("EXEC GetHhCostChart @ContractID={0}, @StartDate={1}, @EndDate={2}", contractId, startDate, endDate)
                 .ToListAsync(); 
         }
+
+        public Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId)
+        {
+            return _context
+                .Set<GetMilestoneFullReportByContract>()
+                .FromSqlRaw("EXEC GetMilestoneFullReportByContract @ContractID = {0}", contractId)
+                .ToListAsync();
+        }
+
     }
 }
 
