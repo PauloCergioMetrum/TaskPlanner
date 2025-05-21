@@ -212,6 +212,8 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetAvailableHoursByFunctionDTO>().HasNoKey();
             modelBuilder.Entity<GetPlannedAndExecutedByFunctionDTO>().HasNoKey();
             modelBuilder.Entity<GetProjectExecutiveStatusResultDto>().HasNoKey();
+            modelBuilder.Entity<GetMilestoneFullReportByContract>().HasNoKey();
+            base.OnModelCreating(modelBuilder);
 
 
 
