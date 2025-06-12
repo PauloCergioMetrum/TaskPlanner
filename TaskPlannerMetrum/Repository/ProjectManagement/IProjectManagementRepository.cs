@@ -94,6 +94,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<DisplacementServices> GetAllDisplacementServices();
         public List<vPM_MilestoneType> GetAllPM_MilestonesType(string MilestonesValueID);
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
+
+
+        public List<vMilestoneStatusCalculation> GetMilestoneStatusCalculation(int ContractID);
+        string SetMilestoneFinalizedStatus(FinalizedStatusDto dto);
+
+
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
         //public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID);
 

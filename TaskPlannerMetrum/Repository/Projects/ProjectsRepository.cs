@@ -681,10 +681,10 @@ namespace TaskPlannerMetrum.Repository.Projects
             if (project == null)
                 return null;
 
-            //bool isBlocked = DetermineIfProjectIsBlocked(
-            //    project.Status ,
-            //    project.DateRetroactive ?? DateTime.MinValue
-            //);
+            bool isBlocked = DetermineIfProjectIsBlocked(
+                project.Status ,
+               project.DateRetroactive ?? DateTime.MinValue
+            );
 
             return new ProjectStatusInfo
             {
@@ -692,7 +692,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                 InternalCode = project.InternalCode,
                 Status = project.Status,
                 DateRetroactive = project.DateRetroactive,
-                //IsBlocked = isBlocked
+                IsBlocked = isBlocked
             };
         }
 

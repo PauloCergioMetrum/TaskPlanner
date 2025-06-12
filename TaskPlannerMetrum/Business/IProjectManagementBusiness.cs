@@ -52,7 +52,7 @@ namespace TaskPlannerMetrum.Business
         public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
 
         public List<vPM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
-
+        string SetMilestoneFinalizedStatus(FinalizedStatusDto dto);
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);
 
         public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade);
@@ -138,6 +138,9 @@ namespace TaskPlannerMetrum.Business
         //hh
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
+        public List<vMilestoneStatusCalculation> GetMilestoneStatusCalculation(int ContractID);
+      
+
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
         //public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID);
 

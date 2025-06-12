@@ -1202,6 +1202,51 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetMilestoneStatusCalculation")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetMilestoneStatusCalculation(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetMilestoneStatusCalculation(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpPost("SetMilestoneFinalizedStatus")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult SetMilestoneFinalizedStatus([FromBody] FinalizedStatusDto dto)
+        {
+            try
+            {
+                var result = _projectManagementBusiness.SetMilestoneFinalizedStatus(dto);
+
+                if (result == "Não é possível finalizar: existem tarefas não concluídas.")
+                    return BadRequest(new { error = result }); // 🔴 Retorna 400 com mensagem
+
+                return Ok(new { message = result }); // ✅ Retorna 200 com mensagem
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+
+
+
+
+
         [HttpPut("UpdateInfoProject")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]

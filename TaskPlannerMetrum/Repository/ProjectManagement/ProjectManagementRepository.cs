@@ -1,4 +1,5 @@
 ﻿
+using System.Linq;
 using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Math;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -17,6 +18,7 @@ using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+
 
 
 namespace TaskPlannerMetrum.Repository.ProjectManagement
@@ -1243,6 +1245,43 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                            .Where(a => a.ContractID == ContractID && a.MilestonesTypeID != 2)
                            .ToList();
         }
+
+        public List<vMilestoneStatusCalculation> GetMilestoneStatusCalculation(int ContractID)
+        {
+            return _context.vMilestoneStatusCalculation
+                 .AsNoTracking()
+                 .Where(a => a.ContractId == ContractID)
+                 .GroupBy(m => m.MilestoneId)
+                 .Select(g => g.First())
+                 .ToList();
+
+
+        }
+
+
+        public string SetMilestoneFinalizedStatus(FinalizedStatusDto dto)
+        {
+
+
+            if (dto.IsFinalized)
+            {
+                var hasOpenTasks = _context.ActivityPlan.Any(ap =>
+                    ap.ContractID == dto.ContractID &&
+                    ap.MilestonesID == dto.MilestoneID &&
+                    ap.Status != "1" && ap.Status != "9"
+                );
+
+                if (hasOpenTasks)
+                    return "Não é possível finalizar: existem tarefas não concluídas.";
+            }
+
+  
+
+            _context.SaveChanges();
+
+            return "Marco atualizado com sucesso.";
+        }
+
 
 
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope)

@@ -132,6 +132,9 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPM_Mam_Hours> vPM_Mam_Hours { get; set; }
         public DbSet<vPM_Mobilization_Combined> vPM_Mobilization_Combined { get; set; }
         public DbSet<vMileStonesValue> vMileStonesValue { get; set; }
+        public DbSet<vMilestoneStatusCalculation> vMilestoneStatusCalculation { get; set; }
+      
+
         public DbSet<vProjectList> vProjectList { get; set; }
         public DbSet<vUserList> vUserList { get; set; }
         public DbSet<vContractList> vContractList { get; set; }
@@ -160,9 +163,9 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<CardsHHHours> CardsHHHours { get; set; }
         public DbSet<GetHhCostChart> GetHhCostChart { get; set; }
         public DbSet<GetMilestoneFullReportByContract> GetMilestoneFullReportByContract { get; set; }
+        public DbSet<MilestoneStatusManual> MilestoneStatusManual { get; set; }
 
 
-        
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -213,8 +216,10 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetPlannedAndExecutedByFunctionDTO>().HasNoKey();
             modelBuilder.Entity<GetProjectExecutiveStatusResultDto>().HasNoKey();
             modelBuilder.Entity<GetMilestoneFullReportByContract>().HasNoKey();
+          
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<MilestoneStatusManual>()
+    .HasKey(m => new { m.ContractID, m.MilestoneID });
 
 
 
