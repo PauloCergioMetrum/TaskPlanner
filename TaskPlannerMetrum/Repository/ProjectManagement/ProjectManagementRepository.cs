@@ -27,7 +27,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
     {
         private readonly MSSQLContext _context;
         public IConfiguration Configuration { get; }
-        public ProjectManagementRepository(MSSQLContext context , IConfiguration configuration)
+        public ProjectManagementRepository(MSSQLContext context, IConfiguration configuration)
         {
             Configuration = configuration;
             _context = context;
@@ -862,7 +862,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
 
 
-  
+
 
 
         public bool CreateHH(PM_Man_Hours createHH)
@@ -1185,7 +1185,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 existingMilesType.DisplacementServicesID = dto.DisplacementServicesID;
                 existingMilesType.FunctionID = dto.FunctionID;
                 existingMilesType.ValueHour = dto.ValueHour;
-               
+
 
 
             }
@@ -1201,7 +1201,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     MilestonesValueID = dto.MilestonesValueID,
                     FunctionID = dto.FunctionID,
                     ValueHour = dto.ValueHour,
-                  
+
                 };
                 _context.PM_MilestonesType.Add(newMilesType);
             }
@@ -1261,10 +1261,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public string SetMilestoneFinalizedStatus(FinalizedStatusDto dto)
         {
-
+            var record = _context.MilestoneStatusManual
+                .FirstOrDefault(m => m.MilestoneID == dto.MilestoneID && m.ContractID == dto.ContractID);
 
             if (dto.IsFinalized)
             {
+
                 var hasOpenTasks = _context.ActivityPlan.Any(ap =>
                     ap.ContractID == dto.ContractID &&
                     ap.MilestonesID == dto.MilestoneID &&
@@ -1273,14 +1275,46 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
                 if (hasOpenTasks)
                     return "Não é possível finalizar: existem tarefas não concluídas.";
+
+                if (record == null)
+                {
+
+                    record = new MilestoneStatusManual
+                    {
+                        MilestoneID = dto.MilestoneID,
+                        ContractID = dto.ContractID,
+                        IsFinalized = true,
+                        FinalizedBy = dto.FinalizedBy,
+                        FinalizedDate = DateTime.Now
+                    };
+                    _context.MilestoneStatusManual.Add(record);
+                }
+                else
+                {
+
+                    record.IsFinalized = true;
+                    record.FinalizedBy = dto.FinalizedBy;
+                    record.FinalizedDate = DateTime.Now;
+                }
+
+                _context.SaveChanges();
+                return "Marco finalizado com sucesso.";
             }
+            else
+            {
 
-  
+                if (record != null)
+                {
+                    record.IsFinalized = false;
+                    record.FinalizedBy = null;
+                    record.FinalizedDate = null;
+                }
 
-            _context.SaveChanges();
-
-            return "Marco atualizado com sucesso.";
+                _context.SaveChanges();
+                return "Marco reaberto com sucesso.";
+            }
         }
+
 
 
 
@@ -1501,13 +1535,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 var infoTap = _context.PM_TAP_General_Info.Where(t => t.ContractID == contractId).FirstOrDefault();
                 if (infoTap != null)
                 {
-
                     infoTap.Local = infoContractTap.Local;
                     infoTap.RiskLevelID = infoContractTap.RiskLevelID;
                     infoTap.ConsultantID = infoContractTap.ConsultantID;
                     _context.Update(infoTap);
-
-
                 }
                 else
                 {
@@ -1645,7 +1676,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             return _context.vCombinedMilestonesData
                            .Where(a => a.ContractID == contractID)
-                           .ToList();   
+                           .ToList();
         }
 
         public List<vAcquisitionChart> GetStatusReportsGraph(int contractID)
@@ -1668,7 +1699,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             return _context.vMilestonesStatistics
                            .Where(a => a.ContractID == contractID)
-                           .ToList();   
+                           .ToList();
         }
 
 
@@ -1688,15 +1719,15 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
                 using (var conn = new SqlConnection(config))
                 {
-                    await conn.OpenAsync(); 
+                    await conn.OpenAsync();
                     using (var cmd = new SqlCommand("GetMilestoneNoExpected", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@MilestonesValueID", milestoneId);
 
-                        using (var reader = await cmd.ExecuteReaderAsync()) 
+                        using (var reader = await cmd.ExecuteReaderAsync())
                         {
-                            while (await reader.ReadAsync()) 
+                            while (await reader.ReadAsync())
                             {
                                 getMilestoneNoExpecteds.Add(new GetMilestonesExpected
                                 {
@@ -1720,7 +1751,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             catch (Exception ex)
             {
                 Console.WriteLine($"Erro: {ex.Message}");
-                return new List<GetMilestonesExpected>(); 
+                return new List<GetMilestonesExpected>();
             }
         }
 
@@ -1734,16 +1765,16 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
                 using (var conn = new SqlConnection(config))
                 {
-                    await conn.OpenAsync(); 
+                    await conn.OpenAsync();
 
                     using (var cmd = new SqlCommand("GetMilestonesExpected", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@MilestonesValueID", milestoneId);
 
-                        using (var reader = await cmd.ExecuteReaderAsync()) 
+                        using (var reader = await cmd.ExecuteReaderAsync())
                         {
-                            while (await reader.ReadAsync()) 
+                            while (await reader.ReadAsync())
                             {
                                 getMilestoneExpecteds.Add(new GetMilestonesExpected
                                 {
@@ -1768,7 +1799,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             catch (Exception ex)
             {
                 Console.WriteLine($"Erro: {ex.Message}");
-                return new List<GetMilestonesExpected>(); 
+                return new List<GetMilestonesExpected>();
             }
         }
 
@@ -1786,9 +1817,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate)
         {
-          return _context.GetHhCostChart
-                .FromSqlRaw("EXEC GetHhCostChart @ContractID={0}, @StartDate={1}, @EndDate={2}", contractId, startDate, endDate)
-                .ToListAsync(); 
+            return _context.GetHhCostChart
+                  .FromSqlRaw("EXEC GetHhCostChart @ContractID={0}, @StartDate={1}, @EndDate={2}", contractId, startDate, endDate)
+                  .ToListAsync();
         }
 
         public Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId)

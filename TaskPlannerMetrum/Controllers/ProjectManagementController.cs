@@ -1232,19 +1232,15 @@ namespace TaskPlannerMetrum.Controllers
                 var result = _projectManagementBusiness.SetMilestoneFinalizedStatus(dto);
 
                 if (result == "Não é possível finalizar: existem tarefas não concluídas.")
-                    return BadRequest(new { error = result }); // 🔴 Retorna 400 com mensagem
+                    return BadRequest(new { error = result }); 
 
-                return Ok(new { message = result }); // ✅ Retorna 200 com mensagem
+                return Ok(new { message = result }); 
             }
             catch (Exception ex)
             {
                 return BadRequest(new { error = ex.Message });
             }
         }
-
-
-
-
 
 
         [HttpPut("UpdateInfoProject")]

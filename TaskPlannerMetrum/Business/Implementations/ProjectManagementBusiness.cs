@@ -674,7 +674,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.SetMilestoneFinalizedStatus(dto);
         }
 
-
+        public List<vMilestoneStatusCalculation> GetMilestoneStatusCalculation(int ContractID)
+        {
+            return _projectmanagementRepository.GetMilestoneStatusCalculation(ContractID);
+        }
 
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID)
         {
@@ -1086,10 +1089,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetMilestoneFullReportByContract(contractId);
         }
 
-        public List<vMilestoneStatusCalculation> GetMilestoneStatusCalculation(int ContractID)
-        {
-            return _projectmanagementRepository.GetMilestoneStatusCalculation(ContractID);
-        }
+       
     }
 }
 
