@@ -49,6 +49,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Model\vMilestoneStatusCalculation.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Logger\Logger.csproj" />
   </ItemGroup>
 

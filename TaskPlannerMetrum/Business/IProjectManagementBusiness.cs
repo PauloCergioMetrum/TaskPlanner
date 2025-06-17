@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
@@ -51,7 +52,7 @@ namespace TaskPlannerMetrum.Business
         public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
 
         public List<vPM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
-
+   
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);
 
         public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade);
@@ -137,6 +138,10 @@ namespace TaskPlannerMetrum.Business
         //hh
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
+        public List<vMilestoneStatusCalculation> GetMilestoneStatusCalculation(int ContractID);
+        string SetMilestoneFinalizedStatus(FinalizedStatusDto dto);
+
+
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
         //public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID);
 
@@ -172,6 +177,15 @@ namespace TaskPlannerMetrum.Business
         public List<CombinedMilestonesData> vCombinedMilestonesData(int contractID);
 
         public List<vMilestonesStatistics> vMilestonesStatistics(int contractID);
+
+
+        public CardsHHHours CardsHHHours(int contractId);
+        Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate);
+
+
+        Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId);
+
+
 
 
 

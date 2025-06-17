@@ -494,17 +494,18 @@ namespace TaskPlannerMetrum.Repository.Projects
                 ClientName = p.ClientName,
                 status = p.StatusID,
                 percentage = SetPercentege(p.ContractID),
-                executedHourFull = taskDep.Where(t => t.ContractID == id).Select(e => e.ExecutedHour).Sum(),
-                plannedHourFull = taskDep.Where(t => t.ContractID == id).Select(e => e.PlannedHour).Sum(),
-                expectedHoursFull = taskDep.Where(t => t.ContractID == id).Select(e => e.ExpectedHour).Sum(),
+                executedHourFull = taskDep.Where(t => t.ContractID == id).Sum(e => e.ExecutedHour ?? 0),
+                plannedHourFull = taskDep.Where(t => t.ContractID == id).Sum(e => e.PlannedHour ?? 0),
+                expectedHoursFull = taskDep.Where(t => t.ContractID == id).Sum(e => e.ExpectedHour ?? 0),
                 ExpetedHours = taskDep.Where(t => t.ContractID == p.ContractID).Select(t => new
                 {
                     departamentName = t.DepartmentName,
                     tecLeader = t.TechLeader,
-                    expectedHours = t.ExpectedHour,
-                    plannedHour = t.PlannedHour,
-                    executedHour = t.ExecutedHour
+                    expectedHours = t.ExpectedHour ?? 0,
+                    plannedHour = t.PlannedHour ?? 0,
+                    executedHour = t.ExecutedHour ?? 0
                 }).ToList()
+
             }).FirstOrDefault();
         }
 
@@ -672,7 +673,6 @@ namespace TaskPlannerMetrum.Repository.Projects
 
 
         // BLOQUEAR BOTAO DE ATRIBUIR TAREFA 
-
         public ProjectStatusInfo GetProjectStatusById(int id, string internalCode)
         {
             var project = _context.vContractProject
@@ -681,8 +681,10 @@ namespace TaskPlannerMetrum.Repository.Projects
             if (project == null)
                 return null;
 
-     
-            bool isBlocked = DetermineIfProjectIsBlocked(project.Status, project.DateRetroactive);
+            bool isBlocked = DetermineIfProjectIsBlocked(
+                project.Status ,
+               project.DateRetroactive ?? DateTime.MinValue
+            );
 
             return new ProjectStatusInfo
             {
@@ -693,6 +695,7 @@ namespace TaskPlannerMetrum.Repository.Projects
                 IsBlocked = isBlocked
             };
         }
+
 
         private bool DetermineIfProjectIsBlocked(int status, DateTime? dateRetroactive)
         {

@@ -664,7 +664,20 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID)
         {
+
             return _projectmanagementRepository.GetAllMileStonesValue(ContractID);
+        }
+
+
+
+        public string SetMilestoneFinalizedStatus(FinalizedStatusDto dto)
+        {
+            return _projectmanagementRepository.SetMilestoneFinalizedStatus(dto);
+        }
+
+        public List<vMilestoneStatusCalculation> GetMilestoneStatusCalculation(int ContractID)
+        {
+            return _projectmanagementRepository.GetMilestoneStatusCalculation(ContractID);
         }
 
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID)
@@ -1060,6 +1073,21 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             }           
             return MilestonesExpectedsAndNoExpeecteds;
+        }
+
+        public CardsHHHours CardsHHHours(int contractId)
+        {
+            return _projectmanagementRepository.CardsHHHours(contractId);
+        }
+
+        public Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate)
+        {
+           return _projectmanagementRepository.GetHhCostChartAsync(contractId, startDate, endDate); 
+        }
+
+        public Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId)
+        {
+            return _projectmanagementRepository.GetMilestoneFullReportByContract(contractId);
         }
 
        

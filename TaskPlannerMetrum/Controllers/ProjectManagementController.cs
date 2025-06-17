@@ -1202,6 +1202,47 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetMilestoneStatusCalculation")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult GetMilestoneStatusCalculation(int ContractID)
+        {
+            try
+            {
+
+                return Ok(_projectManagementBusiness.GetMilestoneStatusCalculation(ContractID));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpPost("SetMilestoneFinalizedStatus")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult SetMilestoneFinalizedStatus([FromBody] FinalizedStatusDto dto)
+        {
+            try
+            {
+                var result = _projectManagementBusiness.SetMilestoneFinalizedStatus(dto);
+
+                if (result == "Não é possível finalizar: existem tarefas não concluídas.")
+                    return BadRequest(new { error = result }); 
+
+                return Ok(new { message = result }); 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+
         [HttpPut("UpdateInfoProject")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -1477,6 +1518,70 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpGet("GetCardsHHHours")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult CardsHHHours(int contractID)
+        {
+            try
+            {
+                var result = _projectManagementBusiness.CardsHHHours(contractID);
+
+                if (result == null)
+                    return NoContent(); 
+
+                return Ok(result); 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("GetHhCostChart")]
+        public async Task<IActionResult> GetHhCostChart(int contractId, DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                var result = await _projectManagementBusiness.GetHhCostChartAsync(contractId, startDate, endDate);
+                if (result == null || !result.Any())
+                    return NoContent();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao obter HH Cost Chart: {ex.Message}");
+            }
+        }
+
+
+
+        [HttpGet("GetMilestoneFullReportByContract")]
+        public async Task<IActionResult> GetMilestoneFullReportByContract(int contractId)
+        {
+            try
+            {
+                var result = await _projectManagementBusiness.GetMilestoneFullReportByContract(contractId);
+                if (result == null || !result.Any())
+                    return NoContent();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error ao buscar dados de GetMilestoneFullReportByContract: {ex.Message}");
+            }
+        }
+
+
+
+
 
 
     }

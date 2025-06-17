@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using TaskPlannerMetrum.Data.VO;
@@ -93,6 +94,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<DisplacementServices> GetAllDisplacementServices();
         public List<vPM_MilestoneType> GetAllPM_MilestonesType(string MilestonesValueID);
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID);
+
+
+        public List<vMilestoneStatusCalculation> GetMilestoneStatusCalculation(int ContractID);
+        string SetMilestoneFinalizedStatus(FinalizedStatusDto dto);
+
+
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
         //public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID);
 
@@ -142,16 +149,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public List<vMilestonesStatistics> vMilestonesStatistics(int contractID);
 
+        public CardsHHHours CardsHHHours(int contractId);
+        Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate);
 
 
-
-
-
-
-
-
-
-
+        Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId);
 
     }
 }

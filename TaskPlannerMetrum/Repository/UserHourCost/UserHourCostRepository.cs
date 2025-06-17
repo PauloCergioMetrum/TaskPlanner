@@ -111,29 +111,20 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
 
         public bool UpdateUserHourCost(UserHourCosts userHourCost)
         {
-            string triggerName = "trg_UpdateFunctionNameOnUserHourCosts";
-
             try
             {
-                // Desabilitar o trigger
-                _context.Database.ExecuteSqlRaw($"DISABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
-
-
                 var existingUserHourCost = _context.UserHourCosts
                     .FirstOrDefault(s => s.ID == userHourCost.ID);
 
                 if (existingUserHourCost == null)
                 {
-
                     return false;
                 }
-
 
                 existingUserHourCost.HourCost = userHourCost.HourCost;
                 existingUserHourCost.StartDate = userHourCost.StartDate;
                 existingUserHourCost.EndDate = userHourCost.EndDate;
                 existingUserHourCost.FunctionName = userHourCost.FunctionName;
-
 
                 _context.Entry(existingUserHourCost).State = EntityState.Modified;
                 _context.SaveChanges();
@@ -145,12 +136,8 @@ namespace TaskPlannerMetrum.Repository.UserHourCostRepository
                 Console.WriteLine($"Erro ao atualizar custo horário: {ex.Message}");
                 return false;
             }
-            finally
-            {
-                // Reativar o trigger
-                _context.Database.ExecuteSqlRaw($"ENABLE TRIGGER {triggerName} ON dbo.UserHourCosts;");
-            }
         }
+
 
 
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace TaskPlannerMetrum.Model.ModelViews
@@ -48,7 +49,10 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public int? EquipamentID { get; set; }
         //public int MilestonesID { get; set; }   
-        public string? MilestoneName {  get; set; }  
+        public int? IsFinalized { get; set; }
+
+
+
 
 
 
