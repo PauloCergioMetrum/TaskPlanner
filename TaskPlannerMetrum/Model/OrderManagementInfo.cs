@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TaskPlannerMetrum.Model
 {
@@ -7,6 +8,7 @@ namespace TaskPlannerMetrum.Model
 
         public class OrderManagementInfo
         {
+        [Key]
             public int ContractID { get; set; }
             public double? TotalCostHoursPlanned { get; set; }
             public double? TotalCostHoursExecuted { get; set; }

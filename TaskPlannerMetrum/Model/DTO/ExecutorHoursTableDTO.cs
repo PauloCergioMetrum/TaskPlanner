@@ -1,7 +1,10 @@
-﻿namespace TaskPlannerMetrum.Model.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TaskPlannerMetrum.Model.DTO
 {
     public class ExecutorHoursTableDTO
     {
+        [Key]
         public string? Executor { get; set; }
         public string? Department { get; set; }
         public double? PlannedHours { get; set; }

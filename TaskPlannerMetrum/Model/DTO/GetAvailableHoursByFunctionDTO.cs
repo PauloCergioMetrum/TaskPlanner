@@ -1,10 +1,12 @@
-﻿namespace TaskPlannerMetrum.Model.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TaskPlannerMetrum.Model.DTO
 {
    
     
         public class GetAvailableHoursByFunctionDTO
         {
-                          
+        [Key]  
             public int? DepartmentID { get; set; }              
             public string? DepartmentName { get; set; }         
             public string? Period { get; set; }                
