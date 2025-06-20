@@ -6,6 +6,7 @@ namespace TaskPlannerMetrum.Model.ModelViews
     public class vMileStonesValue
     {
 #nullable enable
+        [Key]
         public int ContractID { get; set; }
         public string? MilestonesName { get; set; }
         public int MilestonesID { get; set; }
