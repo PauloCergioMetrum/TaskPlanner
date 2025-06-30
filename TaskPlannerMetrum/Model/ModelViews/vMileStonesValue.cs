@@ -6,9 +6,11 @@ namespace TaskPlannerMetrum.Model.ModelViews
     public class vMileStonesValue
     {
 #nullable enable
-        [Key]
+        
         public int ContractID { get; set; }
         public string? MilestonesName { get; set; }
+
+        [Key]
         public int MilestonesID { get; set; }
         public DateTime ScheduledDate { get; set; }
         public DateTime RescheduledDate { get; set; }

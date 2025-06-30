@@ -681,34 +681,36 @@ namespace TaskPlannerMetrum.Repository.Projects
             if (project == null)
                 return null;
 
-            bool isBlocked = DetermineIfProjectIsBlocked(
-                project.Status ,
-               project.DateRetroactive ?? DateTime.MinValue
-            );
+            //bool isBlocked = DetermineIfProjectIsBlocked(
+            //    project.Status ,
+            //   project.DateRetroactive ?? DateTime.MinValue
+            //);
+
+            bool isBlocked = DetermineIfProjectIsBlocked(project.Status); // Removido DateRetroactive
 
             return new ProjectStatusInfo
             {
                 id = project.id,
                 InternalCode = project.InternalCode,
                 Status = project.Status,
-                DateRetroactive = project.DateRetroactive,
+                //DateRetroactive = project.DateRetroactive,
                 IsBlocked = isBlocked
             };
         }
 
 
-        private bool DetermineIfProjectIsBlocked(int status, DateTime? dateRetroactive)
+        private bool DetermineIfProjectIsBlocked(int status)
         {
             // Regra 1: status 2, 3 ou 5 bloqueia sempre
             if (status == 2 || status == 3 || status == 5)
                 return true;
 
             // Regra 3: se data é menor que hoje, bloqueia
-            DateTime today = DateTime.Today;
-            DateTime retroDate = dateRetroactive.Value.Date;
+            //DateTime today = DateTime.Today;
+            //DateTime retroDate = dateRetroactive.Value.Date;
 
-            if (retroDate < today)
-                return true;
+            //if (retroDate < today)
+            //    return true;
 
             // Regra 4: liberado em todos os outros casos
             return false;
