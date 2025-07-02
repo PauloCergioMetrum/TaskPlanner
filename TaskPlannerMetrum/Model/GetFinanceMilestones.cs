@@ -10,6 +10,7 @@ namespace TaskPlannerMetrum.Model
         public DateTime? ScheduledDate { get; set; }
         public DateTime? RescheduledDate { get; set; }
         public DateTime? ExecutedDate { get; set; }
+        public DateTime? StartDateMilestones { get; set; }
         public string? Description { get; set; }
         public int? MilestonesTypeID { get; set; }
         public int? Baseline { get; set; }

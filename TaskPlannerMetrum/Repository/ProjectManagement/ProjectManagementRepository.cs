@@ -533,6 +533,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             UpdateMilesStonesValue.ScheduledDate = milesTonesDTO.ScheduledDate;
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
             UpdateMilesStonesValue.RescheduledDate = milesTonesDTO.RescheduledDate;
+            UpdateMilesStonesValue.StartDateMilestones = milesTonesDTO.StartDateMilestones;
             UpdateMilesStonesValue.Description = milesTonesDTO.Description;
             UpdateMilesStonesValue.TechLeadID = milesTonesDTO.TechLeadID;
             UpdateMilesStonesValue.BusinessUnitID = milesTonesDTO.BusinessUnitID;
