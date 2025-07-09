@@ -1268,14 +1268,14 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             if (dto.IsFinalized)
             {
 
-                var hasOpenTasks = _context.ActivityPlan.Any(ap =>
-                    ap.ContractID == dto.ContractID &&
-                    ap.MilestonesID == dto.MilestoneID &&
-                    ap.Status != "1" && ap.Status != "9"
-                );
+                //var hasOpenTasks = _context.ActivityPlan.Any(ap =>
+                //    ap.ContractID == dto.ContractID &&
+                //    ap.MilestonesID == dto.MilestoneID &&
+                //    ap.Status != "1" && ap.Status != "9"
+                //);
 
-                if (hasOpenTasks)
-                    return "Não é possível finalizar: existem tarefas não concluídas.";
+                //if (hasOpenTasks)
+                //    return "Não é possível finalizar: existem tarefas não concluídas.";
 
                 if (record == null)
                 {
