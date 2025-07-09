@@ -26,6 +26,7 @@ namespace TaskPlannerMetrum.Model.DTO
         public string? BusinessUnit { get; set; }
         public int? EquipamentID { get; set; }   
         public string? EquipamentName { get;}
+        public int? MilestonesID { get; set; }
 
 
 
