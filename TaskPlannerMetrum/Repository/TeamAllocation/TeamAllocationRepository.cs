@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Data.SqlClient;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
+#nullable enable
 
 namespace TaskPlannerMetrum.Repository.TeamAllocation
 {
@@ -18,7 +19,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
         }
 
         // Relatórios de Alocação de Equipe - Cards
-        public TaskExecutionMetricsDTO GetTaskExecutionMetrics(DateTime startDate, DateTime endDate, string functionName = null, string departmentName = null)
+        public TaskExecutionMetricsDTO GetTaskExecutionMetrics(DateTime startDate, DateTime endDate, string? functionName = null, string? departmentName = null)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
@@ -36,8 +37,8 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
         public List<ExecutorHoursTableDTO> GetExecutorHoursTable(
             DateTime startDate,
             DateTime endDate,
-            string functionName = null,
-            string departmentName = null)
+            string? functionName = null,
+            string? departmentName = null)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
@@ -53,7 +54,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
 
         // Relatório de Horas Planejadas e Executadas por Função
-        public List<GetPlannedAndExecutedByFunctionDTO> GetPlannedAndExecutedByFunction(DateTime startDate, DateTime endDate, string functionName = null, string departmentName = null)
+        public List<GetPlannedAndExecutedByFunctionDTO> GetPlannedAndExecutedByFunction(DateTime startDate, DateTime endDate, string? functionName = null, string? departmentName = null)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
@@ -70,8 +71,8 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
         public List<GetAvailableHoursByFunctionDTO> GetAvailableHoursByFunction(
        DateTime startDate,
        DateTime endDate,
-       string functionName = null,
-       string departmentName = null)
+       string? functionName = null,
+       string? departmentName = null)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
@@ -86,7 +87,7 @@ namespace TaskPlannerMetrum.Repository.TeamAllocation
 
 
         // Quadro de Funções
-        public List<FunctionEmployeeCountTableDTO> GetFunctionEmployeeCount(DateTime startDate, DateTime endDate, string functionName = null, string departmentName = null)
+        public List<FunctionEmployeeCountTableDTO> GetFunctionEmployeeCount(DateTime startDate, DateTime endDate, string? functionName = null, string? departmentName = null)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
             var endParam = new SqlParameter("@EndDate", endDate);
