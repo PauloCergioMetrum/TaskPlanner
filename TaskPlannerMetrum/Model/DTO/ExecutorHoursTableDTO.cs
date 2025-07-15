@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+#nullable enable
 namespace TaskPlannerMetrum.Model.DTO
 {
     public class ExecutorHoursTableDTO

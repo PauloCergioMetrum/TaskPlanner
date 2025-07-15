@@ -15,6 +15,8 @@ using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+#nullable enable
+
 
 namespace TaskPlannerMetrum.Repository.ReportsViewer
 {
@@ -95,7 +97,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
 
         }
 
-        public List<vReports_PlannedExecuted> ReportsPlannedExecuted(DateTime startDate, DateTime endDate)
+        public List<vReports_PlannedExecuted>? ReportsPlannedExecuted(DateTime startDate, DateTime endDate)
         {
             try
             {
@@ -258,8 +260,8 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         public List<PredictedInvoiced> GetMaterialAndService(ReportInvoice parameters)
         {
 
-            string businessUnits = parameters.BusinessUnits.Any() ? string.Join(",", parameters.BusinessUnits) : null;
-            string inspectorIDs = parameters.InspectorIDs.Any() ? string.Join(",", parameters.InspectorIDs) : null;
+            string? businessUnits = parameters.BusinessUnits.Any() ? string.Join(",", parameters.BusinessUnits) : null;
+            string? inspectorIDs = parameters.InspectorIDs.Any() ? string.Join(",", parameters.InspectorIDs) : null;
             var sql = "EXEC [dbo].[GetPredictedInvoiced] " +
                       "@startDate, " +
                       "@endDate, " +
@@ -267,10 +269,10 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                       "@inspectorIDs";
             return _context.Set<PredictedInvoiced>()
                 .FromSqlRaw(sql,
-                    new SqlParameter("@startDate", (object)parameters.StartDate ?? DBNull.Value),
-                    new SqlParameter("@endDate", (object)parameters.EndDate ?? DBNull.Value),
-                    new SqlParameter("@businessUnits", (object)businessUnits ?? DBNull.Value),
-                    new SqlParameter("@inspectorIDs", (object)inspectorIDs ?? DBNull.Value))
+                    new SqlParameter("@startDate", (object?)parameters.StartDate ?? DBNull.Value),
+                    new SqlParameter("@endDate", (object?)parameters.EndDate ?? DBNull.Value),
+                    new SqlParameter("@businessUnits", (object?)businessUnits ?? DBNull.Value),
+                    new SqlParameter("@inspectorIDs", (object?)inspectorIDs ?? DBNull.Value))
                 .ToList();
         }
 
@@ -278,10 +280,10 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         public List<MaterialServices> GetPredictedInvoicedReport(ReportInvoice parameters)
         {
 
-            string businessUnits = parameters.BusinessUnits != null && parameters.BusinessUnits.Any()
+            string? businessUnits = parameters.BusinessUnits != null && parameters.BusinessUnits.Any()
                 ? string.Join(",", parameters.BusinessUnits)
                 : null;
-            string inspectorIDs = parameters.InspectorIDs != null && parameters.InspectorIDs.Any()
+            string? inspectorIDs = parameters.InspectorIDs != null && parameters.InspectorIDs.Any()
                 ? string.Join(",", parameters.InspectorIDs)
                 : null;
             var sql = "EXEC [dbo].[GetMaterialAndServiceCount] @startDate, @endDate, @BusinessUnits, @InspectorIDs";
@@ -305,10 +307,10 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             var sql = "EXEC [dbo].[BillingPerBusinessUnit] @startDate, @endDate, @BusinessUnits, @InspectorIDs";
             return _context.Set<BillingPerBusinessUnit>()
                 .FromSqlRaw(sql,
-                    new SqlParameter("@startDate", (object)filter.StartDate ?? DBNull.Value),
-                    new SqlParameter("@endDate", (object)filter.EndDate ?? DBNull.Value),
-                    new SqlParameter("@BusinessUnits", (object)businessUnits ?? DBNull.Value),
-                    new SqlParameter("@InspectorIDs", (object)inspectorIDs ?? DBNull.Value))
+                    new SqlParameter("@startDate", (object?)filter.StartDate ?? DBNull.Value),
+                    new SqlParameter("@endDate", (object?)filter.EndDate ?? DBNull.Value),
+                    new SqlParameter("@BusinessUnits", (object?)businessUnits ?? DBNull.Value),
+                    new SqlParameter("@InspectorIDs", (object?)inspectorIDs ?? DBNull.Value))
                .ToList();
         }
         public List<ReportDetailsTable> GetReportDetailsTable(ReportInvoice filter)
@@ -323,10 +325,10 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             var sql = "EXEC [dbo].[GetReportDetailsTable] @startDate, @endDate, @BusinessUnits, @InspectorIDs";
             return _context.Set<ReportDetailsTable>()
                 .FromSqlRaw(sql,
-                    new SqlParameter("@startDate", (object)filter.StartDate ?? DBNull.Value),
-                    new SqlParameter("@endDate", (object)filter.EndDate ?? DBNull.Value),
-                    new SqlParameter("@BusinessUnits", (object)businessUnits ?? DBNull.Value),
-                    new SqlParameter("@InspectorIDs", (object)inspectorIDs ?? DBNull.Value))
+                    new SqlParameter("@startDate", (object?)filter.StartDate ?? DBNull.Value),
+                    new SqlParameter("@endDate", (object?)filter.EndDate ?? DBNull.Value),
+                    new SqlParameter("@BusinessUnits", (object?)businessUnits ?? DBNull.Value),
+                    new SqlParameter("@InspectorIDs", (object?)inspectorIDs ?? DBNull.Value))
                 .ToList();
         }
 

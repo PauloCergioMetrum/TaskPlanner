@@ -1,8 +1,4 @@
 ﻿
-using System.Linq;
-using DocumentFormat.OpenXml.Bibliography;
-using DocumentFormat.OpenXml.Math;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Memt.Logger;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskPlannerMetrum.Data.VO;
@@ -18,9 +13,6 @@ using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
-
-
-
 namespace TaskPlannerMetrum.Repository.ProjectManagement
 {
     public class ProjectManagementRepository : IProjectManagementRepository
@@ -32,7 +24,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             Configuration = configuration;
             _context = context;
         }
-
         public bool CreateAcquisitionsItem(PMAcquisitionPlanned acquisitions)
         {
             var existAcquisitions = _context.PM_Acquisition_Planned.FirstOrDefault(n => n.TypeAcquisitionID == acquisitions.TypeAcquisitionID && n.ID == acquisitions.ID);
@@ -41,7 +32,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             {
                 _context.PM_Acquisition_Planned.Add(acquisitions);
                 _context.SaveChanges();
-
                 return true;
             }
             else
@@ -106,7 +96,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 _context.PM_Acquisition_Made.Add(acquisitionMade);
                 _context.SaveChanges();
                 return true;
-
             }
             else
             {

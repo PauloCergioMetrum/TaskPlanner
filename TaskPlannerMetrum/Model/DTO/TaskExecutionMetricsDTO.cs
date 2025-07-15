@@ -1,4 +1,6 @@
 ﻿namespace TaskPlannerMetrum.Model.DTO
+#nullable enable
+
 {
     public class TaskExecutionMetricsDTO
     {

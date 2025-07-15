@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+#nullable enable
+
 
 namespace TaskPlannerMetrum.Model.DTO
 {

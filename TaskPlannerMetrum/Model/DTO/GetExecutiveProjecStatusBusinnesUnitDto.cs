@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+#nullable enable
 
 namespace TaskPlannerMetrum.Model.DTO
 {
     public class GetExecutiveProjecStatusBusinnesUnitDto
     {
         [Key]
-        public string Periodo { get; set; }
+        public string? Periodo { get; set; }
         public int Status { get; set; }
 
         public int BusinessUnit { get; set; }

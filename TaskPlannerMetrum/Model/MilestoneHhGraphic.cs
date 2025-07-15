@@ -1,4 +1,5 @@
 ﻿using System;
+#nullable enable
 
 namespace TaskPlannerMetrum.Model
 {
@@ -7,9 +8,9 @@ namespace TaskPlannerMetrum.Model
 
         public string? DisplacementServiceName { get; set; }
         public double? TotalMilesStone { get; set; }
-        public string FunctionName { get; set; }
+        public string? FunctionName { get; set; }
         public int ContractID { get; set; }
-        public string MilestonesValueID { get; set; }
+        public string? MilestonesValueID { get; set; }
         public double? SomaTotalMilesStone { get; set; }
         public double? TotalExecutedManHour { get; set; }
         public double? CustoPlanejado { get; set; }
