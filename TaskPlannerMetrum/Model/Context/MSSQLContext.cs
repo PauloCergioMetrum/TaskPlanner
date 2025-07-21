@@ -156,7 +156,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<GetMilestoneNoExpected> GetMilestoneNoExpected { get; set; }
         public DbSet<GetMilestonesExpected> GetMilestonesExpected { get; set; }
 
-        public DbSet<CombinedMilestonesData> vCombinedMilestonesData { get; set; }
+        public DbSet<vContractExecutionHHCost> vContractExecutionHHCost { get; set; }
 
         public DbSet<vMilestonesStatistics> vMilestonesStatistics { get; set; }
 
@@ -225,11 +225,11 @@ namespace TaskPlannerMetrum.Model.Context
 
             base.OnModelCreating(modelBuilder);
             modelBuilder
-     .Entity<CombinedMilestonesData>(entity =>
+     .Entity<vContractExecutionHHCost>(entity =>
      {
          entity.HasNoKey();
       
-         entity.ToView("vCombinedMilestonesData");
+         entity.ToView("vContractExecutionHHCost");
       
      });
 

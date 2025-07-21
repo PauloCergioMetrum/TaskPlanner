@@ -1502,16 +1502,16 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
-        [HttpGet("GetCombinedMilestonesData")]
+        [HttpGet("GetContractExecutionHHCost")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult vCombinedMilestonesData(int contractID)
+        public IActionResult vContractExecutionHHCost(int contractID)
         {
             try
             {
-                return Ok(_projectManagementBusiness.vCombinedMilestonesData(contractID));
+                return Ok(_projectManagementBusiness.vContractExecutionHHCost(contractID));
             }
             catch (Exception ex)
             {

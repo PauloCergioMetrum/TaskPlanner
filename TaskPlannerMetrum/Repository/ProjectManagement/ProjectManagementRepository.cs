@@ -1662,9 +1662,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                            .ToList();
         }
 
-        public List<CombinedMilestonesData> vCombinedMilestonesData(int contractID)
+        public List<vContractExecutionHHCost> vContractExecutionHHCost(int contractID)
         {
-            return _context.vCombinedMilestonesData
+            return _context.vContractExecutionHHCost
                            .Where(a => a.ContractID == contractID)
                            .ToList();
         }
