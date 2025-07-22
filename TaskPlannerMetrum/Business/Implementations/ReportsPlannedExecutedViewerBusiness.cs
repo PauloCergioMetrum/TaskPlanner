@@ -8,6 +8,7 @@ using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Repository.ReportsViewer;
 
+
 namespace TaskPlannerMetrum.Business.Implementations
 {
     public class ReportsPlannedExecutedViewerBusiness : IReportsPlannedExecutedViewewBussines
@@ -69,21 +70,44 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             var listPlannedExecuted = SearchReport(reportPlannedExecuted);
 
+       
+            var expectedHoursByInternalCode = new Dictionary<string, double>();
+            foreach (var item in listPlannedExecuted)
+            {
+                if (!expectedHoursByInternalCode.ContainsKey(item.InternalCode))
+                {
+                    var matchingContracts = listPlannedExecuted
+                        .Where(x => x.InternalCode == item.InternalCode)
+                        .Select(x => x.ContractID)
+                        .Distinct()
+                        .ToList();
+
+                    if (matchingContracts.Count == 1 && matchingContracts[0] == item.ContractID)
+                    {
+                        // Se contractID e internalCode são consistentes, usa o valor direto
+                        expectedHoursByInternalCode[item.InternalCode] = item.TotalExpectedHours ?? 0.0;
+                    }
+                    else
+                    {
+                        // Se contractID e internalCode diferem, soma os totalExpectedHours para o mesmo internalCode
+                        expectedHoursByInternalCode[item.InternalCode] = listPlannedExecuted
+                            .Where(x => x.InternalCode == item.InternalCode)
+                            .Sum(x => x.TotalExpectedHours ?? 0.0);
+                    }
+                }
+            }
+
             var plannedExecuted = new ReportPlannedExecuted
             {
                 listPlannedExecuted = listPlannedExecuted,
-                totalPlanned = listPlannedExecuted.Sum(x => x.TotalPlanned ?? 0.0),  
+                totalPlanned = listPlannedExecuted.Sum(x => x.TotalPlanned ?? 0.0),
                 totalExecuted = listPlannedExecuted.Sum(x => x.TotalExecuted ?? 0.0),
-                totalCost = listPlannedExecuted.Sum(x => x.TotalExecutedCost ?? 0.0), 
-                totalExpectedHour = Math.Round(HoursExpetcted(
-                    reportPlannedExecuted.startDate ?? DateTime.MinValue,
-                    reportPlannedExecuted.endDate ?? DateTime.MaxValue,
-                    reportPlannedExecuted.lContractID), 2)
+                totalCost = listPlannedExecuted.Sum(x => x.TotalExecutedCost ?? 0.0),
+                totalExpectedHour = Math.Round(expectedHoursByInternalCode.Sum(x => x.Value), 2)
             };
 
             return plannedExecuted;
         }
-
 
 
 
@@ -247,9 +271,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             };
         }
 
-
-
-
+        public Task<PlannedVsExecutedVsExpectedHoursViewModel> GetPlannedVsExecutedVsExpectedHoursAsync(string InternalCode)
+        {
+            return _repository.GetPlannedVsExecutedVsExpectedHoursAsync(InternalCode);
+        }
     }
 }
 

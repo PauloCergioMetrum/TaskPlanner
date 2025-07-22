@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
+using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Repository.Generic;
 using TaskPlannerMetrum.Repository.ReportsViewer;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -88,7 +89,8 @@ namespace TaskPlannerMetrum.Controllers
             {
                 return Ok(_reportsPlannedExecutedViewerBusiness.OptionsListFilter());
             }
-            catch (Exception ex) { 
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
@@ -123,6 +125,21 @@ namespace TaskPlannerMetrum.Controllers
             var contractsResult = await _reportsPlannedExecutedViewerBusiness.GetContractsByRequestAsync(request);
             return contractsResult.Any() ? Ok(contractsResult) : NoContent();
         }
+
+
+        [HttpGet("PlannedExecutionSummary/{internalCode}")]
+        public async Task<IActionResult> GetPlannedExecutionSummaryController(string internalCode)
+        {
+            var result = await _reportsPlannedExecutedViewerBusiness.GetPlannedVsExecutedVsExpectedHoursAsync(internalCode);
+
+            if (result == null)
+                return NoContent();
+
+            return Ok(result);
+        }
+
+
+
 
 
 

@@ -992,7 +992,7 @@ namespace TaskPlannerMetrum.Business.Implementations
             var hhGraphicDetails = _projectmanagementRepository.GetHhGraphicDetail(contractID);
 
             return hhGraphicDetails
-                .GroupBy(detail => detail.ContractID)
+                .GroupBy(detail => detail.ContractID ?? 0)
                 .Select(group => new HhGraphicDetailsResult
                 {
                     ContractID = group.Key,
@@ -1000,21 +1000,20 @@ namespace TaskPlannerMetrum.Business.Implementations
                     {
                         MilestoneTypeID = detail.MilestoneTypeID,
                         MilestonesValueID = detail.MilestonesValueID,
-                        MilestonesID = detail.MilestonesID,
+                        MilestonesID = detail.MilestonesID ?? 0,
                         DisplacementServiceName = detail.DisplacementServiceName,
-                        DisplacementServicesID = detail.DisplacementServicesID,
-                        ValueHour = detail.ValueHour,
-                        HoursExpected = detail.HoursExpected,
-                        HoursPlanned = detail.HoursPlanned,
-                        HoursExecuted = detail.HoursExecuted,
-                        CostHoursExpected = detail.CostHoursExpected,
-                        CostHoursPlanned = detail.CostHoursPlanned,
-                        CostHoursExecuted = detail.CostHoursExecuted
+                        DisplacementServicesID = detail.DisplacementServicesID ?? 0,
+                        ValueHour = detail.ValueHour ?? 0,
+                        HoursExpected = detail.HoursExpected ?? 0,
+                        HoursPlanned = detail.HoursPlanned ?? 0,
+                        HoursExecuted = detail.HoursExecuted ?? 0,
+                        CostHoursExpected = detail.CostHoursExpected ?? 0,
+                        CostHoursPlanned = detail.CostHoursPlanned ?? 0,
+                        CostHoursExecuted = detail.CostHoursExecuted ?? 0
                     }).ToList()
                 })
                 .ToList();
         }
-
 
 
         public List<vMilestonesStatistics> vMilestonesStatistics(int contractID)
@@ -1037,9 +1036,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetMilestonesExpected(milestoneId);
         }
 
-        public List<CombinedMilestonesData> vCombinedMilestonesData(int contractID)
+        public List<vContractExecutionHHCost> vContractExecutionHHCost(int contractID)
         {
-           return _projectmanagementRepository.vCombinedMilestonesData(contractID);
+           return _projectmanagementRepository.vContractExecutionHHCost(contractID);
         }
 
         public async Task<List<GetMilestonesExpected>> GetCombinedMilestones(string milestoneId)

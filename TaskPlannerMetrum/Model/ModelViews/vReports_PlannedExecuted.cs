@@ -32,7 +32,10 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
 
         public double? TotalPlanned { get; set; }  
-        public double? TotalExecuted { get; set; } 
+        public double? TotalExecuted { get; set; }
+        public double? TotalExpectedHours { get; set; }
+
+  
         public double? TotalExecutedCost { get; set; } 
     }
 }
