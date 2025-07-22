@@ -8,16 +8,18 @@ namespace TaskPlannerMetrum.Model.ModelViews
     {
   
         [Key]
-        public string MilestonesValueID { get; set; }
-        public int ContractID { get; set; }
-        public string DisplacementServiceName { get; set; }
-        public decimal Hours { get; set; }
-        public decimal TotalPrevisto { get; set; }
-        public decimal TotalExecutado { get; set; }
-        public decimal TotalExecutedManHour { get; set; }
+    
+        public int?ContractID { get; set; }
+        public string? DisplacementServiceName { get; set; }
+       
         public int ExecutorTeamID { get; set; }
+        public double? Hours { get; set; }
+        public double? TotalPrevisto { get; set; }
+        public double? TotalExecutado { get; set; }
+        public double? TotalExecutedManHour { get; set; }
         public double? HourCost { get; set; }
-        public decimal SomaTotalExecutedManHour { get; set; }
-        public double CustoExecutadoTotal { get; set; }
+        public double? SomaTotalExecutedManHour { get; set; }
+        public double? CustoExecutadoTotal { get; set; }
+
     }
 }

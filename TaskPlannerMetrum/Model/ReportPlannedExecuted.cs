@@ -10,6 +10,6 @@ namespace TaskPlannerMetrum.Model
         public double totalExecuted { get; set; }
         public double totalCost { get; set; }
         public double totalExpectedHour { get; set; }
-        public double TotalExecutedCost { get; set; } 
+        public double totalExecutedCost { get; set; } 
     }
 }

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Repository.Generic;
+
 
 namespace TaskPlannerMetrum.Repository.ReportsViewer
 {
@@ -57,18 +59,7 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
         Task<List<GetExecutiveProjecStatusBusinnesUnitDto>> GetExecutiveProjecStatusBusinnesUnitAsync(GetProjectExecutiveStatusDto dto);
         Task<List<GetExecutiveProjectStatusPeriodDto>> GetExecutiveProjectStatusPeriodAsync(GetProjectExecutiveStatusDto dto);
 
-
-
-
-
-
-
-
-
-
-
-
-
+        Task<PlannedVsExecutedVsExpectedHoursViewModel> GetPlannedVsExecutedVsExpectedHoursAsync(string InternalCode);
 
 
 

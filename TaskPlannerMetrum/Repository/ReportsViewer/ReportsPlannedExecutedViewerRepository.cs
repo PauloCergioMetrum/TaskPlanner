@@ -15,6 +15,7 @@ using TaskPlannerMetrum.Model.Context;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+
 #nullable enable
 
 
@@ -410,8 +411,8 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
                 startParam, endParam, FiltroStatusIDParam, InternalCodeParam
             ).ToList();
         }
-       
-    
+
+
         public List<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO(DateTime startDate, DateTime endDate)
         {
             var startParam = new SqlParameter("@StartDate", startDate);
@@ -568,13 +569,18 @@ namespace TaskPlannerMetrum.Repository.ReportsViewer
             @FiltroStatusID,
             @InternalCode,
             @BusinessUnit",
-           
-            
+
+
             startParam, endParam, statusParam, internalCodeParam, businessUnitParam)
             .ToListAsync();
         }
-    }
 
+        public Task<PlannedVsExecutedVsExpectedHoursViewModel> GetPlannedVsExecutedVsExpectedHoursAsync(string InternalCode)
+        {
+            return _context.vPlannedVsExecutedVsExpectedHours
+                .FirstOrDefaultAsync(x => x.InternalCode == InternalCode);
+        }
+    }
 
 
 }

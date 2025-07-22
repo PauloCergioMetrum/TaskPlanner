@@ -28,7 +28,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         //public DbSet<GetProjectExecutiveStatusDto> GetProjectExecutiveStatusDto { get; set; }
 
-        public DbSet<GetProjectExecutiveStatusResultDto> GetProjectExecutiveStatusResultDto { get; set; }   
+        public DbSet<GetProjectExecutiveStatusResultDto> GetProjectExecutiveStatusResultDto { get; set; }
         public DbSet<GetTableProjectExecutiveReportDto> GetTableProjectExecutiveReportDto { get; set; }
         public DbSet<GetExecutiveProjecStatusBusinnesUnitDto> GetExecutiveProjecStatusBusinnesUnitDto { get; set; }
         public DbSet<GetExecutiveProjectStatusPeriodDto> GetExecutiveProjectStatusPeriodDto { get; set; }
@@ -133,7 +133,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPM_Mobilization_Combined> vPM_Mobilization_Combined { get; set; }
         public DbSet<vMileStonesValue> vMileStonesValue { get; set; }
         public DbSet<vMilestoneStatusCalculation> vMilestoneStatusCalculation { get; set; }
-      
+
 
         public DbSet<vProjectList> vProjectList { get; set; }
         public DbSet<vUserList> vUserList { get; set; }
@@ -149,10 +149,19 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vRightCardValue> vRightCardValue { get; set; }
         public DbSet<vIndirectcostChart> vIndirectcostChart { get; set; }
         public DbSet<vAcquisitionChart> vAcquisitionChart { get; set; }
-    
+
+
+
+        public DbSet<PlannedVsExecutedVsExpectedHoursViewModel> vPlannedVsExecutedVsExpectedHours { get; set; }
+
+
+
+
+
+
 
         public DbSet<GetAllMilesStones> GetAllMilesStones { get; set; }
-   
+
         public DbSet<GetMilestoneNoExpected> GetMilestoneNoExpected { get; set; }
         public DbSet<GetMilestonesExpected> GetMilestonesExpected { get; set; }
 
@@ -164,6 +173,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<GetHhCostChart> GetHhCostChart { get; set; }
         public DbSet<GetMilestoneFullReportByContract> GetMilestoneFullReportByContract { get; set; }
         public DbSet<MilestoneStatusManual> MilestoneStatusManual { get; set; }
+
 
 
 
@@ -197,9 +207,9 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<ActivityPlanHHTable>().HasNoKey();
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey();
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
-      
+
             modelBuilder.Entity<OrderManagementInfo>().HasNoKey();
-        
+
             modelBuilder.Entity<GetMilestoneNoExpected>().HasNoKey();
             modelBuilder.Entity<GetMilestonesExpected>().HasNoKey();
             modelBuilder.Entity<GetContractsByMonthDto>().HasNoKey();
@@ -208,7 +218,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetTableProjectExecutiveReportDto>().HasNoKey();
             modelBuilder.Entity<GetTaskExecutionMetricsDTO>().HasNoKey();
 
- 
+
             modelBuilder.Entity<ExecutorHoursTableDTO>().HasNoKey();
             modelBuilder.Entity<TaskExecutionMetricsDTO>().HasNoKey();
             modelBuilder.Entity<FunctionEmployeeCountTableDTO>().HasNoKey();
@@ -216,22 +226,27 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetPlannedAndExecutedByFunctionDTO>().HasNoKey();
             modelBuilder.Entity<GetProjectExecutiveStatusResultDto>().HasNoKey();
             modelBuilder.Entity<GetMilestoneFullReportByContract>().HasNoKey();
-          
+
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MilestoneStatusManual>()
-    .HasKey(m => new { m.ContractID, m.MilestoneID });
+              .HasKey(m => new { m.ContractID, m.MilestoneID });
 
 
 
             base.OnModelCreating(modelBuilder);
             modelBuilder
-     .Entity<vContractExecutionHHCost>(entity =>
-     {
-         entity.HasNoKey();
-      
-         entity.ToView("vContractExecutionHHCost");
-      
-     });
+              .Entity<vContractExecutionHHCost>(entity => {
+                  entity.HasNoKey();
+
+                  entity.ToView("vContractExecutionHHCost");
+
+              });
+
+            modelBuilder.Entity<PlannedVsExecutedVsExpectedHoursViewModel>()
+              .HasNoKey()
+              .ToView("vPlannedVsExecutedVsExpectedHours");
+
+            base.OnModelCreating(modelBuilder);
 
 
 
@@ -248,7 +263,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)
         {
-            var query = $"EXECUTE [dbo].[GetActivityPlanByExecutorTeamIDAndPeriod] @ExecutorTeamIDs='{executorTeamIDs}', @StartDate='{startDate}', @EndDate='{endDate}', @HoraSchedule={horaSchedule.Replace(",", ".")}";
+            var query = $"EXECUTE [dbo].[GetActivityPlanByExecutorTeamIDAndPeriod] @ExecutorTeamIDs='{executorTeamIDs}', @StartDate='{startDate}', @EndDate='{endDate}', @HoraSchedule={horaSchedule.Replace(", ", ".")}";
 
             return this.Set<HoursExecutor>().FromSqlRaw(query).ToList();
         }
@@ -257,11 +272,11 @@ namespace TaskPlannerMetrum.Model.Context
         {
             var sql = "EXEC [dbo].[GetEquipamentAvaibilaity] @EquipamentID, @StartDate, @EndDate";
             return this.Set<GetEquipamentAvaibilaity>()
-                        .FromSqlRaw(sql,
-                            new SqlParameter("@EquipamentID", EquipamentID),
-                            new SqlParameter("@StartDate", StartDate),
-                            new SqlParameter("@EndDate", EndDate))
-                        .ToList();
+              .FromSqlRaw(sql,
+                new SqlParameter("@EquipamentID", EquipamentID),
+                new SqlParameter("@StartDate", StartDate),
+                new SqlParameter("@EndDate", EndDate))
+              .ToList();
         }
 
         //AVANÇO FISICO 
@@ -271,44 +286,44 @@ namespace TaskPlannerMetrum.Model.Context
             var sql = "EXEC [dbo].[GetFinanceMilestones] @ContractID";
 
             return this.Set<GetFinanceMilestones>()
-                      .FromSqlRaw(sql, new SqlParameter("@ContractID", ContractID))
-                      .ToList();
+              .FromSqlRaw(sql, new SqlParameter("@ContractID", ContractID))
+              .ToList();
         }
         public List<ActivePlansByExecutor> GetActivityPlanDetailsByExecutorID(int executorID)
         {
             var query = $"EXECUTE [dbo].[GetActivityPlanDetailsByExecutorID] @ExecutorID={executorID}";
             return this.Set<ActivePlansByExecutor>()
-                       .FromSqlRaw(query)
-                       .ToList();
+              .FromSqlRaw(query)
+              .ToList();
         }
         public List<GetMilestoneType_HH_Details> GetMilestoneType_HH_Details(string MilestonesValueID)
         {
             var query = $"EXECUTE [dbo].[GetMilestoneType_HH_Details] @MilestonesValueID='{MilestonesValueID}'";
             return this.Set<GetMilestoneType_HH_Details>()
-                       .FromSqlRaw(query)
-                       .ToList();
+              .FromSqlRaw(query)
+              .ToList();
         }
         public List<GetMilestones> GetMilestones(int contractID)
         {
             var sql = "EXEC [dbo].[GetMilestones] @ContractID";
 
             return this.Set<GetMilestones>()
-                       .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
-                       .ToList();
+              .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
+              .ToList();
         }
 
         public ProjectCharterDatails GetProjectCharterDatails(int contractID)
         {
             var sql = "[dbo].[GetProjectCharterDetails] @ContractID";
             return this.Set<ProjectCharterDatails>()
-                .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID)).ToList().FirstOrDefault();
+              .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID)).ToList().FirstOrDefault();
 
         }
         public List<TechLeaderDTO> GetTechLeaders(int contractID)
         {
             var sql = "[dbo].[GetTechLeadersByContract] @ContractID";
             return this.Set<TechLeaderDTO>()
-                .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID)).ToList();
+              .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID)).ToList();
 
         }
 
@@ -316,15 +331,15 @@ namespace TaskPlannerMetrum.Model.Context
         {
             var sql = "[dbo].[ActivityPlanHH] @ContractID";
             return this.Set<ActivityPlanHH>()
-                .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
-                .ToList();
+              .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
+              .ToList();
         }
         public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID)
         {
             var sql = "[dbo].[ActivityPlanHHTable] @ContractID";
             return this.Set<ActivityPlanHHTable>()
-                .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
-                .ToList();
+              .FromSqlRaw(sql, new SqlParameter("@ContractID", contractID))
+              .ToList();
         }
 
 

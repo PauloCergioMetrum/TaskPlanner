@@ -5,6 +5,7 @@ using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Model.ModelViews;
 
+
 namespace TaskPlannerMetrum.Business
 {
     public interface IReportsPlannedExecutedViewewBussines
@@ -22,6 +23,13 @@ namespace TaskPlannerMetrum.Business
         Task<ProjectExecutiveReportDto> GetProjectExecutiveCombinedReportAsync(GetProjectExecutiveStatusDto dto);
         Task<List<GetTableProjectExecutiveReportDto>> GetTableProjectExecutiveReportAsync(GetProjectExecutiveStatusDto dto); 
         Task<List<GetExecutiveProjectStatusPeriodDto>> GetExecutiveProjectStatusPeriodAsync(GetProjectExecutiveStatusDto dto);
+
+
+
+        Task<PlannedVsExecutedVsExpectedHoursViewModel> GetPlannedVsExecutedVsExpectedHoursAsync(string InternalCode);
+
+
+
 
 
 
