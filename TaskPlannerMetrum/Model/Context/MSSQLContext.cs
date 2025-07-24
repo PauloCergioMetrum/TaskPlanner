@@ -174,6 +174,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<GetMilestoneFullReportByContract> GetMilestoneFullReportByContract { get; set; }
         public DbSet<MilestoneStatusManual> MilestoneStatusManual { get; set; }
 
+        public DbSet<StatusReportGraphHH> StatusReportsGraphHH { get; set; }
 
 
 

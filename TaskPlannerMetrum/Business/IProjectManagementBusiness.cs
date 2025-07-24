@@ -186,7 +186,7 @@ namespace TaskPlannerMetrum.Business
         Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId);
 
 
-
+        Task<List<StatusReportGraphHH>> GetStatusReportGraphHH(int contractId);
 
 
 

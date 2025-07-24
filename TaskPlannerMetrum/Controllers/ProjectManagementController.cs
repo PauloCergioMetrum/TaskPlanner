@@ -1580,6 +1580,30 @@ namespace TaskPlannerMetrum.Controllers
         }
 
 
+        [HttpGet("GetStatusReportGraphHH")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> GetStatusReportGraphHH(int contractID)
+        {
+            try
+            {
+                var result = await _projectManagementBusiness.GetStatusReportGraphHH(contractID);
+
+                if (result == null || result.Count == 0)
+                    return NoContent();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
 
 
 
