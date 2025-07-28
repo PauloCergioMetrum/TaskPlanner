@@ -1820,6 +1820,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 .ToListAsync();
         }
 
+        public async Task<List<StatusReportGraphHH>> GetStatusReportGraphHH(int contractId)
+        {
+          return await _context.StatusReportsGraphHH.Where(r => r.ContractID == contractId).ToListAsync();  
+
+        }
     }
 }
 

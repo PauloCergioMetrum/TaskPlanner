@@ -435,13 +435,17 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public IActionResult GetEquipamentAvaibilaities(int EquipamentID, DateTime StartDate, DateTime EndDate)
+        public IActionResult GetEquipamentAvaibilaities([FromQuery] List<int> EquipamentID, DateTime StartDate, DateTime EndDate)
         {
             try
             {
-
-                return Ok(_activityPlanBusiness.GetEquipamentAvaibilaities(EquipamentID, StartDate, EndDate));
-
+                var result = new List<GetEquipamentAvaibilaity>();
+                foreach (var id in EquipamentID)
+                {
+                    var availability = _activityPlanBusiness.GetEquipamentAvaibilaities(id, StartDate, EndDate);
+                    result.AddRange(availability);
+                }
+                return Ok(result);
             }
             catch (Exception ex)
             {

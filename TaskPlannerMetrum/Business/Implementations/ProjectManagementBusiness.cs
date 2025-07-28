@@ -1089,7 +1089,10 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetMilestoneFullReportByContract(contractId);
         }
 
-       
+        public Task<List<StatusReportGraphHH>> GetStatusReportGraphHH(int contractId)
+        {
+            return _projectmanagementRepository.GetStatusReportGraphHH(contractId);
+        }
     }
 }
 
