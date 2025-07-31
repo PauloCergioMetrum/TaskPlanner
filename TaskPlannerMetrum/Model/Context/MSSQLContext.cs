@@ -20,33 +20,13 @@ namespace TaskPlannerMetrum.Model.Context
 
         }
         public MSSQLContext(DbContextOptions<MSSQLContext> options) : base(options) { }
-
-
-
-
-        //Relatorio - Relatório Executivo de Projetos 
-
-        //public DbSet<GetProjectExecutiveStatusDto> GetProjectExecutiveStatusDto { get; set; }
-
         public DbSet<GetProjectExecutiveStatusResultDto> GetProjectExecutiveStatusResultDto { get; set; }
         public DbSet<GetTableProjectExecutiveReportDto> GetTableProjectExecutiveReportDto { get; set; }
         public DbSet<GetExecutiveProjecStatusBusinnesUnitDto> GetExecutiveProjecStatusBusinnesUnitDto { get; set; }
         public DbSet<GetExecutiveProjectStatusPeriodDto> GetExecutiveProjectStatusPeriodDto { get; set; }
-
-
-
-
-
-
         public DbSet<ContractStatusSummaryDto> ContractStatusSummaryDto { get; set; }
         public DbSet<ProjectStatusTimelineDto> ProjectStatusTimelineDto { get; set; }
-        public DbSet<ExecutiveProjectReportDto> ExecutiveProjectReportDto { get; set; }
-
-
-
-
-
-        //TABELAS
+        public DbSet<ExecutiveProjectReportDto> ExecutiveProjectReportDto { get; set; } 
         public DbSet<RatingProject> RatingProject { get; set; }
         public DbSet<RatingDescription> RatingDescription { get; set; }
         public DbSet<Rating> Rating { get; set; }
@@ -103,13 +83,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<MilestoneEntity> MilestoneEntities { get; set; }
         public DbSet<ContractGraphic> ContractGraphics { get; set; }
         public DbSet<vhhGraphicDetail> vhhGraphicDetail { get; set; }
-        public DbSet<Log> Log { get; set; }
-
-
-
-
-
-        //VIEWS
+        public DbSet<Log> Log { get; set; }  
         public DbSet<vPmCostMade> vPmCostMade { get; set; }
         public DbSet<vCalendar> vCalendar { get; set; }
         public DbSet<vPlannedHours> VPlannedHours { get; set; }
@@ -133,8 +107,6 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vPM_Mobilization_Combined> vPM_Mobilization_Combined { get; set; }
         public DbSet<vMileStonesValue> vMileStonesValue { get; set; }
         public DbSet<vMilestoneStatusCalculation> vMilestoneStatusCalculation { get; set; }
-
-
         public DbSet<vProjectList> vProjectList { get; set; }
         public DbSet<vUserList> vUserList { get; set; }
         public DbSet<vContractList> vContractList { get; set; }
@@ -149,36 +121,22 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vRightCardValue> vRightCardValue { get; set; }
         public DbSet<vIndirectcostChart> vIndirectcostChart { get; set; }
         public DbSet<vAcquisitionChart> vAcquisitionChart { get; set; }
-
-
-
         public DbSet<PlannedVsExecutedVsExpectedHoursViewModel> vPlannedVsExecutedVsExpectedHours { get; set; }
-
-
-
-
-
-
-
         public DbSet<GetAllMilesStones> GetAllMilesStones { get; set; }
-
         public DbSet<GetMilestoneNoExpected> GetMilestoneNoExpected { get; set; }
         public DbSet<GetMilestonesExpected> GetMilestonesExpected { get; set; }
-
         public DbSet<vContractExecutionHHCost> vContractExecutionHHCost { get; set; }
-
         public DbSet<vMilestonesStatistics> vMilestonesStatistics { get; set; }
-
         public DbSet<CardsHHHours> CardsHHHours { get; set; }
         public DbSet<GetHhCostChart> GetHhCostChart { get; set; }
         public DbSet<GetMilestoneFullReportByContract> GetMilestoneFullReportByContract { get; set; }
         public DbSet<MilestoneStatusManual> MilestoneStatusManual { get; set; }
-
         public DbSet<StatusReportGraphHH> StatusReportsGraphHH { get; set; }
-
-
-
-
+        public DbSet<GetContractsByMonthDto> GetContractsByMonthDto { get; set; }
+        public DbSet<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO { get; set; }
+        public DbSet<GetExecutiveProjectStatusPeriodDto> GetProjectStatusPeriodDTO { get; set; }
+        public DbSet<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO { get; set; }
+        public DbSet<PasswordReset> PasswordReset { get; set; } 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<vRightCardValue>().HasNoKey();
@@ -208,9 +166,7 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<ActivityPlanHHTable>().HasNoKey();
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<MilestoneEntity>().HasNoKey();
             base.OnModelCreating(modelBuilder); modelBuilder.Entity<ContractGraphic>().HasNoKey();
-
             modelBuilder.Entity<OrderManagementInfo>().HasNoKey();
-
             modelBuilder.Entity<GetMilestoneNoExpected>().HasNoKey();
             modelBuilder.Entity<GetMilestonesExpected>().HasNoKey();
             modelBuilder.Entity<GetContractsByMonthDto>().HasNoKey();
@@ -218,8 +174,6 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetExecutiveProjectStatusPeriodDto>().HasNoKey();
             modelBuilder.Entity<GetTableProjectExecutiveReportDto>().HasNoKey();
             modelBuilder.Entity<GetTaskExecutionMetricsDTO>().HasNoKey();
-
-
             modelBuilder.Entity<ExecutorHoursTableDTO>().HasNoKey();
             modelBuilder.Entity<TaskExecutionMetricsDTO>().HasNoKey();
             modelBuilder.Entity<FunctionEmployeeCountTableDTO>().HasNoKey();
@@ -227,13 +181,9 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetPlannedAndExecutedByFunctionDTO>().HasNoKey();
             modelBuilder.Entity<GetProjectExecutiveStatusResultDto>().HasNoKey();
             modelBuilder.Entity<GetMilestoneFullReportByContract>().HasNoKey();
-
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MilestoneStatusManual>()
               .HasKey(m => new { m.ContractID, m.MilestoneID });
-
-
-
             base.OnModelCreating(modelBuilder);
             modelBuilder
               .Entity<vContractExecutionHHCost>(entity => {
@@ -242,26 +192,15 @@ namespace TaskPlannerMetrum.Model.Context
                   entity.ToView("vContractExecutionHHCost");
 
               });
-
             modelBuilder.Entity<PlannedVsExecutedVsExpectedHoursViewModel>()
               .HasNoKey()
               .ToView("vPlannedVsExecutedVsExpectedHours");
-
             base.OnModelCreating(modelBuilder);
 
 
 
 
         }
-
-        public DbSet<GetContractsByMonthDto> GetContractsByMonthDto { get; set; }
-        public DbSet<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO { get; set; }
-        public DbSet<GetExecutiveProjectStatusPeriodDto> GetProjectStatusPeriodDTO { get; set; }
-
-
-        public DbSet<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO { get; set; }
-
-
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)
         {
             var query = $"EXECUTE [dbo].[GetActivityPlanByExecutorTeamIDAndPeriod] @ExecutorTeamIDs='{executorTeamIDs}', @StartDate='{startDate}', @EndDate='{endDate}', @HoraSchedule={horaSchedule.Replace(", ", ".")}";
@@ -279,8 +218,6 @@ namespace TaskPlannerMetrum.Model.Context
                 new SqlParameter("@EndDate", EndDate))
               .ToList();
         }
-
-        //AVANÇO FISICO 
 
         public List<GetFinanceMilestones> GetFinanceMilestones(int ContractID)
         {

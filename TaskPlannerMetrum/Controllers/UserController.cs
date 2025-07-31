@@ -211,17 +211,35 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        [HttpPost("PasswordReset")]
+        public IActionResult LogPasswordChange([FromBody] PasswordReset request)
+        {
+            if (request == null)
+                return BadRequest("Requisição inválida.");
 
+            try
+            {
+                _userBusiness.LogPasswordChange(
+                    request.ChangedById,
+                    request.ChangedByFullName,
+                    request.ChangedByEmail,
+                    request.ChangedByPermissionId,
+                    request.TargetUserId,
+                    request.TargetUserFullName,
+                    request.TargetUserEmail,
+                    request.TargetUserPermissionId,
+                    request.NewPasswordReset
+                    
+                );
 
-
-        
-
-
-
-
-
-
-
-
+                return Ok("Senha Alterada com Sucesso");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao registrar log: {ex.Message}");
+            }
+        }
     }
+
 }
+

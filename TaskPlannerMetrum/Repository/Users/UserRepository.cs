@@ -1,18 +1,19 @@
-﻿using System.Linq;
-using System.Text;
+﻿using DocumentFormat.OpenXml.Math;
+using DocumentFormat.OpenXml.Spreadsheet;
+using OfficeOpenXml.Utils;
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Data;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using TaskPlannerMetrum.Data.VO;
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.Context;
-using System.Security.Cryptography;
-using System.Collections.Generic;
-using System.Data;
-using System.Collections.Immutable;
-using TaskPlannerMetrum.Model.ModelViews;
-using DocumentFormat.OpenXml.Spreadsheet;
-using OfficeOpenXml.Utils;
 using TaskPlannerMetrum.Model.DTO;
-using DocumentFormat.OpenXml.Math;
+using TaskPlannerMetrum.Model.ModelViews;
+using TaskPlannerMetrum.Repository.Generic;
 
 namespace TaskPlannerMetrum.Repository.Users
 {
@@ -210,13 +211,39 @@ namespace TaskPlannerMetrum.Repository.Users
 
             return users;
         }
+        public void LogPasswordChange(
+     int changedById, string changedByFullName, string changedByEmail, int changedByPermissionId,
+     int targetUserId, string targetUserFullName, string targetUserEmail, int targetUserPermissionId,
+     string NewPasswordReset)
+        {
+            var log = new PasswordReset
+            {
+                ChangedById = changedById,
+                ChangedByFullName = changedByFullName,
+                ChangedByEmail = changedByEmail,
+                ChangedByPermissionId = changedByPermissionId,
+                TargetUserId = targetUserId,
+                TargetUserFullName = targetUserFullName,
+                TargetUserEmail = targetUserEmail,
+                TargetUserPermissionId = targetUserPermissionId,
+                ChangedAt = DateTime.UtcNow,
+                NewPasswordReset = NewPasswordReset
+            };
 
+            var user = _context.Users.FirstOrDefault(u => u.Id == targetUserId);
+            if (user != null)
+            {
+                using var algorithm = SHA256.Create();
+                user.Password = ComputeHash(NewPasswordReset, algorithm); // usa a senha vinda do usuário
+                _context.Users.Update(user);
+            }
 
-
-
-
+            _context.PasswordReset.Add(log);
+            _context.SaveChanges();
+        }
 
 
 
     }
 }
+
