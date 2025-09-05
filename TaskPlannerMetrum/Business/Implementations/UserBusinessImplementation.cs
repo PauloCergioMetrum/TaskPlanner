@@ -122,5 +122,17 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _userRepository.GetAllUsers();
         }
+
+        public void LogPasswordChange(
+     int changedById, string changedByFullName, string changedByEmail, int changedByPermissionId,
+     int targetUserId, string targetUserFullName, string targetUserEmail, int targetUserPermissionId,
+     string NewPasswordReset)
+        {
+            _userRepository.LogPasswordChange(
+                changedById, changedByFullName, changedByEmail, changedByPermissionId,
+                targetUserId, targetUserFullName, targetUserEmail, targetUserPermissionId , NewPasswordReset
+            );
+        }
+
     }
 }

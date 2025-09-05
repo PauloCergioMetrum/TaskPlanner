@@ -7,16 +7,11 @@ namespace TaskPlannerMetrum.Model.ModelViews
     {
 
         [Key]
-        public string DisplacementServiceName { get; set; }
-        public double? TotalMilesStone { get; set; }
-        public string FunctionName { get; set; }
         public int ContractID { get; set; }
- 
-
-        public double? TotalExecutedManHour { get; set; }
-        public double? CustoPlanejado { get; set; }
-        public double? CustoExecutado { get; set; }
-        public double? CustoTotalPlanejado { get; set; }
+        public string ActivityType { get; set; }
+        public double TotalPlannedHours { get; set; }
+        public double TotalExecutedHours { get; set; }
+        public double TotalDeliveredHours { get; set; }
 
     }
 }

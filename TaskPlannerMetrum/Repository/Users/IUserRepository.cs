@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using TaskPlannerMetrum.Model.ModelViews;
 using TaskPlannerMetrum.Model.DTO;
+using System.Threading.Tasks;
 
 namespace TaskPlannerMetrum.Repository.Users
 {
@@ -16,14 +17,16 @@ namespace TaskPlannerMetrum.Repository.Users
         bool RevokeToken(string username);
         User RefreshUserInfo(User user);
         public List<UserViewDto> FindAll();
-        public  string sha256(string randomString);
+        public string sha256(string randomString);
         public int Create(User user);
-        public bool CreateTeam(Team id);   
+        public bool CreateTeam(Team id);
         public string ComputeHash(string input, HashAlgorithm algorithm);
         public bool isDarkMode(int id);
         public bool IsActiveDarkMode(int id);
         public dynamic GetAllUsers();
-
+        public void LogPasswordChange(
+    int changedById, string changedByFullName, string changedByEmail, int changedByPermissionId,
+    int targetUserId, string targetUserFullName, string targetUserEmail, int targetUserPermissionId , string NewPasswordReset   );
 
     }
 }

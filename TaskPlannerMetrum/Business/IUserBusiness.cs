@@ -16,14 +16,17 @@ namespace TaskPlannerMetrum.Business
         UserVO Update(UserVO person);
         void Delete(int id);
         bool ChangePassowrd(UserVO user);
-  
+
 
         public bool isDarkMode(int id);
 
         public bool IsActiveDarkMode(int id);
 
         public dynamic GetAllUsers();
-
+        public void LogPasswordChange(
+      int changedById, string changedByFullName, string changedByEmail, int changedByPermissionId,
+      int targetUserId, string targetUserFullName, string targetUserEmail, int targetUserPermissionId,
+      string NewPasswordReset);
 
     }
 }
