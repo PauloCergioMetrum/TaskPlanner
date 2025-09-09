@@ -1826,10 +1826,29 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         }
 
-        public async Task<MonitoringHoursCosts> GetByContractIdAsync(int contractId)
+        public async Task<MonitoringCardsDto?> GetCardsByContractIdAsync(int contractId)
         {
-            return await _context.vw_MonitoringHoursCosts.Where(r => r.ContractID == contractId).FirstOrDefaultAsync();    
+            return await _context.vw_MonitoringHoursCosts
+                .AsNoTracking()
+                .Where(r => r.ContractID == contractId)
+                .Select(r => new MonitoringCardsDto
+                {
+                    ContractID = r.ContractID,
+
+                    PrevistoHH = r.PrevistoHH,
+                    PlanejadoHH = r.PlanejadoHH,
+                    ExecutadoHH = r.ExecutadoHH,
+                    DiferencaHH = r.DiferencaHH,
+
+                    PrevistoRS = r.PrevistoRS,
+                    PlanejadoRS = r.PlanejadoRS,
+                    ExecutadoRS = r.ExecutadoRS,
+                    DiferencaRS = r.DiferencaRS
+                })
+                .FirstOrDefaultAsync();
         }
+
+
     }
 }
 

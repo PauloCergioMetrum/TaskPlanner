@@ -1232,9 +1232,9 @@ namespace TaskPlannerMetrum.Controllers
                 var result = _projectManagementBusiness.SetMilestoneFinalizedStatus(dto);
 
                 if (result == "Não é possível finalizar: existem tarefas não concluídas.")
-                    return BadRequest(new { error = result }); 
+                    return BadRequest(new { error = result });
 
-                return Ok(new { message = result }); 
+                return Ok(new { message = result });
             }
             catch (Exception ex)
             {
@@ -1532,9 +1532,9 @@ namespace TaskPlannerMetrum.Controllers
                 var result = _projectManagementBusiness.CardsHHHours(contractID);
 
                 if (result == null)
-                    return NoContent(); 
+                    return NoContent();
 
-                return Ok(result); 
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -1601,25 +1601,32 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
         [HttpGet("GetMonitoringHoursCosts")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(IEnumerable<object>), 200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public async Task<IActionResult> MonitoringHoursCosts([FromQuery] int contractID)
+        public async Task<IActionResult> GetMonitoringCards([FromQuery] int contractID)
         {
             try
             {
-                var result = await _projectManagementBusiness.GetByContractIdAsync(contractID);
-                if (result is null) return NoContent(); 
-                return Ok(result);                      
+                var result = await _projectManagementBusiness.GetCardsByContractIdAsync(contractID);
+                if (result is null) return NoContent();
+
+                var response = new object[]
+                {
+            new { cards = result }
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+
 
 
 
