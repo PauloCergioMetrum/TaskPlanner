@@ -1602,6 +1602,26 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
+        [HttpGet("GetMonitoringHoursCosts")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> MonitoringHoursCosts([FromQuery] int contractID)
+        {
+            try
+            {
+                var result = await _projectManagementBusiness.GetByContractIdAsync(contractID);
+                if (result is null) return NoContent(); 
+                return Ok(result);                      
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
 
 

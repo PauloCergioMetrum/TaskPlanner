@@ -158,6 +158,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         Task<List<StatusReportGraphHH>> GetStatusReportGraphHH(int contractId);
 
+        Task<MonitoringHoursCosts> GetByContractIdAsync(int contractId);
+
 
 
 

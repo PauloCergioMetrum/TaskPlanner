@@ -1825,6 +1825,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
           return await _context.StatusReportsGraphHH.Where(r => r.ContractID == contractId).ToListAsync();  
 
         }
+
+        public async Task<MonitoringHoursCosts> GetByContractIdAsync(int contractId)
+        {
+            return await _context.vw_MonitoringHoursCosts.Where(r => r.ContractID == contractId).FirstOrDefaultAsync();    
+        }
     }
 }
 

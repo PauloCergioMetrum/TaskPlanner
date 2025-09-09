@@ -1093,6 +1093,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetStatusReportGraphHH(contractId);
         }
+
+        public Task<MonitoringHoursCosts> GetByContractIdAsync(int contractId)
+        {
+            return _projectmanagementRepository.GetByContractIdAsync(contractId);   
+        }
     }
 }
 

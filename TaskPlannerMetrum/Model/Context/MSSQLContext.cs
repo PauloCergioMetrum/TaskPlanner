@@ -26,7 +26,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<GetExecutiveProjectStatusPeriodDto> GetExecutiveProjectStatusPeriodDto { get; set; }
         public DbSet<ContractStatusSummaryDto> ContractStatusSummaryDto { get; set; }
         public DbSet<ProjectStatusTimelineDto> ProjectStatusTimelineDto { get; set; }
-        public DbSet<ExecutiveProjectReportDto> ExecutiveProjectReportDto { get; set; } 
+        public DbSet<ExecutiveProjectReportDto> ExecutiveProjectReportDto { get; set; }
         public DbSet<RatingProject> RatingProject { get; set; }
         public DbSet<RatingDescription> RatingDescription { get; set; }
         public DbSet<Rating> Rating { get; set; }
@@ -83,7 +83,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<MilestoneEntity> MilestoneEntities { get; set; }
         public DbSet<ContractGraphic> ContractGraphics { get; set; }
         public DbSet<vhhGraphicDetail> vhhGraphicDetail { get; set; }
-        public DbSet<Log> Log { get; set; }  
+        public DbSet<Log> Log { get; set; }
         public DbSet<vPmCostMade> vPmCostMade { get; set; }
         public DbSet<vCalendar> vCalendar { get; set; }
         public DbSet<vPlannedHours> VPlannedHours { get; set; }
@@ -136,7 +136,8 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<GetContractsStatusByMonthDTO> GetContractsStatusByMonthDTO { get; set; }
         public DbSet<GetExecutiveProjectStatusPeriodDto> GetProjectStatusPeriodDTO { get; set; }
         public DbSet<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO { get; set; }
-        public DbSet<PasswordReset> PasswordReset { get; set; } 
+        public DbSet<PasswordReset> PasswordReset { get; set; }
+        public DbSet<MonitoringHoursCosts>vw_MonitoringHoursCosts{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<vRightCardValue>().HasNoKey();
@@ -180,13 +181,16 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetAvailableHoursByFunctionDTO>().HasNoKey();
             modelBuilder.Entity<GetPlannedAndExecutedByFunctionDTO>().HasNoKey();
             modelBuilder.Entity<GetProjectExecutiveStatusResultDto>().HasNoKey();
+
             modelBuilder.Entity<GetMilestoneFullReportByContract>().HasNoKey();
+
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MilestoneStatusManual>()
               .HasKey(m => new { m.ContractID, m.MilestoneID });
             base.OnModelCreating(modelBuilder);
             modelBuilder
-              .Entity<vContractExecutionHHCost>(entity => {
+              .Entity<vContractExecutionHHCost>(entity =>
+              {
                   entity.HasNoKey();
 
                   entity.ToView("vContractExecutionHHCost");
@@ -198,9 +202,22 @@ namespace TaskPlannerMetrum.Model.Context
             base.OnModelCreating(modelBuilder);
 
 
-
-
+            modelBuilder.Entity<MonitoringHoursCosts>(e =>
+            {
+                e.HasNoKey();                              
+                e.ToView("vw_MonitoringHoursCosts", "dbo");          
+                e.Property(p => p.PrevistoHH).HasColumnType("decimal(38,2)");
+                e.Property(p => p.PrevistoRS).HasColumnType("decimal(38,2)");
+                e.Property(p => p.PlanejadoRS).HasColumnType("decimal(38,2)");
+                e.Property(p => p.ExecutadoRS).HasColumnType("decimal(38,2)");
+                e.Property(p => p.DiferencaRS).HasColumnType("decimal(38,2)");
+               
+            });
         }
+
+
+
+        
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)
         {
             var query = $"EXECUTE [dbo].[GetActivityPlanByExecutorTeamIDAndPeriod] @ExecutorTeamIDs='{executorTeamIDs}', @StartDate='{startDate}', @EndDate='{endDate}', @HoraSchedule={horaSchedule.Replace(", ", ".")}";
