@@ -1615,8 +1615,9 @@ namespace TaskPlannerMetrum.Controllers
 
                 var response = new List<object>
         {
-            new { cards = result.Cards },
-            new { graficos = result.Graficos }
+            new { cards        = result.Cards },
+            new { graficos     = result.Graficos },
+            new { tabela = result.Tabela }
         };
 
                 return Ok(response);
@@ -1626,12 +1627,6 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
-
-
-
-
 
     }
 

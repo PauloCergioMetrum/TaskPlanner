@@ -1870,12 +1870,34 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 })
                 .ToListAsync();
 
+            var tabela = await _context.vw_MilestonesPerMilestoneDetail
+                .AsNoTracking()
+                .Where(r => r.ContractID == contractId)
+                .Select(r => new MilestoneBreakdownDto
+                {
+                    ContractID = r.ContractID,
+                    MilestonesID = r.MilestonesID,
+                    Marco = r.MilestonesName,
+                    HorasPrevistas = r.HorasPrevistas ?? 0,
+                    HorasPlanejadas = r.HorasPlanejadas ?? 0,
+                    HorasExecutadas = r.HorasExecutadas ?? 0,
+                    DiferencaHoras = r.DiferencaHoras ?? 0,
+                    CustoPrevisto = r.CustoPrevisto ?? 0,
+                    CustoPlanejado = r.CustoPlanejado ?? 0,
+                    CustoExecutado = r.CustoExecutado ?? 0,
+                    DiferencaCustos = r.DiferencaCustos ?? 0,
+                    Status = r.CalculatedMilestoneStatus
+                })
+                .ToListAsync();
+
             return new MonitoringResponseDto
             {
                 Cards = card,
-                Graficos = graficos
+                Graficos = graficos,
+                Tabela = tabela
             };
         }
+
 
 
 

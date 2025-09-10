@@ -137,8 +137,10 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<GetExecutiveProjectStatusPeriodDto> GetProjectStatusPeriodDTO { get; set; }
         public DbSet<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO { get; set; }
         public DbSet<PasswordReset> PasswordReset { get; set; }
-        public DbSet<MonitoringHoursCosts>vw_MonitoringHoursCosts{ get; set; }
+        public DbSet<MonitoringHoursCosts> vw_MonitoringHoursCosts { get; set; }
         public DbSet<VwMilestonesData> vw_MilestonesData { get; set; }
+        public DbSet<VwMilestonesPerMilestoneDetail> vw_MilestonesPerMilestoneDetail { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<vRightCardValue>().HasNoKey();
@@ -185,9 +187,16 @@ namespace TaskPlannerMetrum.Model.Context
 
             modelBuilder.Entity<GetMilestoneFullReportByContract>().HasNoKey();
 
+
+
             modelBuilder.Entity<VwMilestonesData>()
-      .HasNoKey()
-      .ToView("vw_MilestonesData");
+          .HasNoKey()
+          .ToView("vw_MilestonesData");
+
+            modelBuilder.Entity<VwMilestonesPerMilestoneDetail>()
+   .HasNoKey()
+   .ToView("vw_MilestonesPerMilestoneDetail");
+
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MilestoneStatusManual>()
@@ -209,20 +218,20 @@ namespace TaskPlannerMetrum.Model.Context
 
             modelBuilder.Entity<MonitoringHoursCosts>(e =>
             {
-                e.HasNoKey();                              
-                e.ToView("vw_MonitoringHoursCosts", "dbo");          
+                e.HasNoKey();
+                e.ToView("vw_MonitoringHoursCosts", "dbo");
                 e.Property(p => p.PrevistoHH).HasColumnType("decimal(38,2)");
                 e.Property(p => p.PrevistoRS).HasColumnType("decimal(38,2)");
                 e.Property(p => p.PlanejadoRS).HasColumnType("decimal(38,2)");
                 e.Property(p => p.ExecutadoRS).HasColumnType("decimal(38,2)");
                 e.Property(p => p.DiferencaRS).HasColumnType("decimal(38,2)");
-               
+
             });
         }
 
 
 
-        
+
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)
         {
             var query = $"EXECUTE [dbo].[GetActivityPlanByExecutorTeamIDAndPeriod] @ExecutorTeamIDs='{executorTeamIDs}', @StartDate='{startDate}', @EndDate='{endDate}', @HoraSchedule={horaSchedule.Replace(", ", ".")}";
