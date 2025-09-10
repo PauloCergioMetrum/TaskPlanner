@@ -562,7 +562,7 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        // ACOMPNHAMENTO DE ESCOPO 
+        // ACOMPNHAMENTO DE ESCOPO
         public bool CreatScopeTraking(PM_Scope_Traking pMScopeTraking)
         {
             return _projectmanagementRepository.CreatScopeTraking(pMScopeTraking);
@@ -585,7 +585,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
 
 
-        //  ACOMPANHAMENTO DE ESCOPO  Mudança de Escopo 
+        //  ACOMPANHAMENTO DE ESCOPO  Mudança de Escopo
         public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change)
         {
             return _projectmanagementRepository.CreateScopeChange(pM_Scope_Change);
@@ -775,23 +775,23 @@ namespace TaskPlannerMetrum.Business.Implementations
                     MilestoneName = milestones.Name,
                     Executers = activitPlanDetaisByContractID.ActivityPlanHHTable?
                         .Where(ex => ex.MilestoneName == milestones.Name)
-                        .Select(ex => new Executors
-                        {
-                            Executor = ex.ExecutorUserName ?? "Unknown",
-                            TotalHours = ex.TotalHours ?? 0,
-                            MilesTonesName = milestones.Name,
-                            Details = activitPlanDetaisByContractID.ActivityPlanHHTable?
+                .Select(ex => new Executors
+                {
+                    Executor = ex.ExecutorUserName ?? "Unknown",
+                    TotalHours = ex.TotalHours ?? 0,
+                    MilesTonesName = milestones.Name,
+                    Details = activitPlanDetaisByContractID.ActivityPlanHHTable?
                                 .Where(n => n.MilestoneName == milestones.Name)
-                                .Select(dt => new Model.Details
-                                {
-                                    BusinesUnit = dt.BusinessUnit ?? "N/A",
-                                    ExecutedManHour = dt.ExecutedManHour ?? 0,
-                                    ExecutorSeniorityLevel = dt.ExecutorSeniorityLevel ?? "Unknown",
-                                    MilesTonesName = dt.MilestoneName ?? "Unknown",
-                                    PlannedManHour = dt.PlannedManHour ?? 0,
-                                    SeniorLevel = dt.ExecutorSeniorityLevel ?? "Unknown"
-                                }).ToList()
+                        .Select(dt => new Model.Details
+                        {
+                            BusinesUnit = dt.BusinessUnit ?? "N/A",
+                            ExecutedManHour = dt.ExecutedManHour ?? 0,
+                            ExecutorSeniorityLevel = dt.ExecutorSeniorityLevel ?? "Unknown",
+                            MilesTonesName = dt.MilestoneName ?? "Unknown",
+                            PlannedManHour = dt.PlannedManHour ?? 0,
+                            SeniorLevel = dt.ExecutorSeniorityLevel ?? "Unknown"
                         }).ToList()
+                }).ToList()
                 };
                 milesTonesLsit.Add(milesTone);
             }
@@ -848,56 +848,56 @@ namespace TaskPlannerMetrum.Business.Implementations
             var indirectCosts = _projectmanagementRepository.GetIndirectCostChartsByContract(contractID);
 
             return indirectCosts
-                .GroupBy(chart => new
-                {
-                    chart.ContractID,
-                    chart.PlannedId,
-                    chart.TypeID,
-                    chart.TypeDescription,
-                    chart.TotalPlanned
-                })
-                .Select(group => new IndirectCostsResult
-                {
-                    ContractID = group.Key.ContractID,
-                    PlannedId = group.Key.PlannedId,
-                    TypeID = group.Key.TypeID,
-                    TypeDescription = group.Key.TypeDescription,
-                    PlannedTotal = group.Key.TotalPlanned ?? 0.0,
-                    MadeDetails = group.Select(x => new MadeDetailsResult
-                    {
-                        AcquisitionMadeDTO = x,
-                        MadeTotal = x.MadeTotal ?? 0.0
-                    }).ToList()
-                })
-                .ToList();
+              .GroupBy(chart => new
+              {
+                  chart.ContractID,
+                  chart.PlannedId,
+                  chart.TypeID,
+                  chart.TypeDescription,
+                  chart.TotalPlanned
+              })
+              .Select(group => new IndirectCostsResult
+              {
+                  ContractID = group.Key.ContractID,
+                  PlannedId = group.Key.PlannedId,
+                  TypeID = group.Key.TypeID,
+                  TypeDescription = group.Key.TypeDescription,
+                  PlannedTotal = group.Key.TotalPlanned ?? 0.0,
+                  MadeDetails = group.Select(x => new MadeDetailsResult
+                  {
+                      AcquisitionMadeDTO = x,
+                      MadeTotal = x.MadeTotal ?? 0.0
+                  }).ToList()
+              })
+              .ToList();
         }
         private List<MobilizationResult> GetMobilizationGrouped(int contractID)
         {
             var mobilizationData = _projectmanagementRepository.GetMobilization(contractID);
 
             return mobilizationData
-                .GroupBy(m => m.ContractID)
-                .Select(group => new MobilizationResult
-                {
-                    AccommodationPlanned = group.Sum(x => x.CountAccommodation),
-                    FoodPlanned = group.Sum(x => x.CountFood),
-                    AirTransportPlanned = group.Sum(x => x.CountAirTransport),
-                    GroundTransportPlanned = group.Sum(x => x.CountGroundTransport),
-                    OthersPlanned = group.Sum(x => x.CountOthers),
-                    MobilizationMade = mobilizationData
-                        .SelectMany(m => _projectmanagementRepository.GetMobilizationMade(m.ID.ToString()))
-                        .GroupBy(m => m.MobilizationPlannedID)
-                        .Select(madeGroup => new MobilizationMadeResult
-                        {
-                            AccommodationActual = madeGroup.Sum(x => x.CountAccommodation),
-                            FoodActual = madeGroup.Sum(x => x.CountFood),
-                            AirTransportActual = madeGroup.Sum(x => x.CountAirTransport),
-                            GroundTransportActual = madeGroup.Sum(x => x.CountGroundTransport),
-                            OthersActual = madeGroup.Sum(x => x.CountOthers)
-                        })
-                        .FirstOrDefault()
-                })
-                .ToList();
+              .GroupBy(m => m.ContractID)
+              .Select(group => new MobilizationResult
+              {
+                  AccommodationPlanned = group.Sum(x => x.CountAccommodation),
+                  FoodPlanned = group.Sum(x => x.CountFood),
+                  AirTransportPlanned = group.Sum(x => x.CountAirTransport),
+                  GroundTransportPlanned = group.Sum(x => x.CountGroundTransport),
+                  OthersPlanned = group.Sum(x => x.CountOthers),
+                  MobilizationMade = mobilizationData
+                    .SelectMany(m => _projectmanagementRepository.GetMobilizationMade(m.ID.ToString()))
+                    .GroupBy(m => m.MobilizationPlannedID)
+                    .Select(madeGroup => new MobilizationMadeResult
+                    {
+                        AccommodationActual = madeGroup.Sum(x => x.CountAccommodation),
+                        FoodActual = madeGroup.Sum(x => x.CountFood),
+                        AirTransportActual = madeGroup.Sum(x => x.CountAirTransport),
+                        GroundTransportActual = madeGroup.Sum(x => x.CountGroundTransport),
+                        OthersActual = madeGroup.Sum(x => x.CountOthers)
+                    })
+                    .FirstOrDefault()
+              })
+              .ToList();
         }
 
         private List<StatusReportsResult> GetStatusReportsGrouped(int contractID)
@@ -906,26 +906,26 @@ namespace TaskPlannerMetrum.Business.Implementations
 
             // Agrupamento dos relatórios
             var groupedResults = statusReports
-                .GroupBy(report => new
-                {
-                    report.ContractID,
-                    report.TypeAcquisitionID,
-                    report.TypeAcquisitionDescription
-                })
-                .Select(group => new StatusReportsResult
-                {
-                    TypeID = group.Key.TypeAcquisitionID,
-                    TypeDescription = group.Key.TypeAcquisitionDescription,
-                    PlannedTotal = group.Sum(x => (double?)x.PredictedTotal ?? 0.0),
-                    TotalPlanned = group.Sum(x => (double?)x.PredictedTotal ?? 0.0),
-                    TotalMade = group.Sum(x => (double?)x.TotalCost ?? 0.0),
-                    MadeDetails = group.Select(x => new MadeDetailsStatusResult
-                    {
-                        MadeId = x.TypeAcquisitionID,
-                        MadeTotal = x.TotalCost
-                    }).ToList()
-                })
-                .ToList();
+              .GroupBy(report => new
+              {
+                  report.ContractID,
+                  report.TypeAcquisitionID,
+                  report.TypeAcquisitionDescription
+              })
+              .Select(group => new StatusReportsResult
+              {
+                  TypeID = group.Key.TypeAcquisitionID,
+                  TypeDescription = group.Key.TypeAcquisitionDescription,
+                  PlannedTotal = group.Sum(x => (double?)x.PredictedTotal ?? 0.0),
+                  TotalPlanned = group.Sum(x => (double?)x.PredictedTotal ?? 0.0),
+                  TotalMade = group.Sum(x => (double?)x.TotalCost ?? 0.0),
+                  MadeDetails = group.Select(x => new MadeDetailsStatusResult
+                  {
+                      MadeId = x.TypeAcquisitionID,
+                      MadeTotal = x.TotalCost
+                  }).ToList()
+              })
+                      .ToList();
             var totalPlannedSum = groupedResults.Sum(result => result.TotalPlanned ?? 0.0);
             var totalMadeSum = groupedResults.Sum(result => result.TotalMade ?? 0.0);
             groupedResults.Add(new StatusReportsResult
@@ -946,16 +946,16 @@ namespace TaskPlannerMetrum.Business.Implementations
             var orderManagementData = _projectmanagementRepository.OrderManagementInfo(contractID);
 
             return orderManagementData
-                .GroupBy(info => info.ContractID)
-                .Select(group => new OrderManagementResult
-                {
-                    ContractID = group.Key,
-                    TotalDifferenceExpectedExecuted = (double)(group.Sum(x => x.TotalCostExpected ?? 0) - group.Sum(x => x.TotalCostExecuted ?? 0)),
-                    TotalCostExpected = (double)group.Sum(x => x.TotalCostExpected ?? 0),
-                    ManagementGrandTotal = (double)group.Sum(x => x.ManagementGrandTotal ?? 0),
-                    TotalCostHoursExecuted = (double)group.Sum(x => x.TotalCostHoursExecuted ?? 0)
-                })
-                .ToList();
+              .GroupBy(info => info.ContractID)
+              .Select(group => new OrderManagementResult
+              {
+                  ContractID = group.Key,
+                  TotalDifferenceExpectedExecuted = (double)(group.Sum(x => x.TotalCostExpected ?? 0) - group.Sum(x => x.TotalCostExecuted ?? 0)),
+                  TotalCostExpected = (double)group.Sum(x => x.TotalCostExpected ?? 0),
+                  ManagementGrandTotal = (double)group.Sum(x => x.ManagementGrandTotal ?? 0),
+                  TotalCostHoursExecuted = (double)group.Sum(x => x.TotalCostHoursExecuted ?? 0)
+              })
+              .ToList();
         }
 
 
@@ -965,26 +965,26 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             var outsourcedServices = _projectmanagementRepository.GetOutsourcedServicesCombined(contractID);
             return outsourcedServices
-                .GroupBy(service => service.ContractID)
-                .Select(group => new OutsourcedServicesResult
-                {
-                    ContractID = group.Key,
-                    TotalOutsourcedServicesPlannedSum = group.Sum(x => x.TotalOutsourcedServices_Planned),
-                    TotalOutsourcedServicesMadeSum = group.Sum(x => x.TotalOutsourcedServices_Made),
-                    Services = group.Select(x => new OutsourcedServiceDetailsResult
-                    {
-                        ID = x.ID,
-                        ValueUnit = x.ValueUnit,
-                        Amount = x.Amount,
-                        TypeID = x.TypeID,
-                        Description = x.Description,
-                        Subcontracting = x.Subcontracting.HasValue ? x.Subcontracting.Value.ToString() : null,
-                        TotalOutsourcedServices_Planned = x.TotalOutsourcedServices_Planned,
-                        TotalOutsourcedServices_Made = x.TotalOutsourcedServices_Made,
-                        Difference = x.Difference
-                    }).ToList()
-                })
-                .ToList();
+              .GroupBy(service => service.ContractID)
+              .Select(group => new OutsourcedServicesResult
+              {
+                  ContractID = group.Key,
+                  TotalOutsourcedServicesPlannedSum = group.Sum(x => x.TotalOutsourcedServices_Planned),
+                  TotalOutsourcedServicesMadeSum = group.Sum(x => x.TotalOutsourcedServices_Made),
+                  Services = group.Select(x => new OutsourcedServiceDetailsResult
+                  {
+                      ID = x.ID,
+                      ValueUnit = x.ValueUnit,
+                      Amount = x.Amount,
+                      TypeID = x.TypeID,
+                      Description = x.Description,
+                      Subcontracting = x.Subcontracting.HasValue ? x.Subcontracting.Value.ToString() : null,
+                      TotalOutsourcedServices_Planned = x.TotalOutsourcedServices_Planned,
+                      TotalOutsourcedServices_Made = x.TotalOutsourcedServices_Made,
+                      Difference = x.Difference
+                  }).ToList()
+              })
+              .ToList();
         }
 
         private List<HhGraphicDetailsResult> GetHhGraphicGrouped(int contractID)
@@ -992,38 +992,38 @@ namespace TaskPlannerMetrum.Business.Implementations
             var hhGraphicDetails = _projectmanagementRepository.GetHhGraphicDetail(contractID);
 
             return hhGraphicDetails
-                .GroupBy(detail => detail.ContractID ?? 0)
-                .Select(group => new HhGraphicDetailsResult
-                {
-                    ContractID = group.Key,
-                    Details = group.Select(detail => new HhGraphicDetailItemResult
-                    {
-                        MilestoneTypeID = detail.MilestoneTypeID,
-                        MilestonesValueID = detail.MilestonesValueID,
-                        MilestonesID = detail.MilestonesID ?? 0,
-                        DisplacementServiceName = detail.DisplacementServiceName,
-                        DisplacementServicesID = detail.DisplacementServicesID ?? 0,
-                        ValueHour = detail.ValueHour ?? 0,
-                        HoursExpected = detail.HoursExpected ?? 0,
-                        HoursPlanned = detail.HoursPlanned ?? 0,
-                        HoursExecuted = detail.HoursExecuted ?? 0,
-                        CostHoursExpected = detail.CostHoursExpected ?? 0,
-                        CostHoursPlanned = detail.CostHoursPlanned ?? 0,
-                        CostHoursExecuted = detail.CostHoursExecuted ?? 0
-                    }).ToList()
-                })
-                .ToList();
+              .GroupBy(detail => detail.ContractID ?? 0)
+              .Select(group => new HhGraphicDetailsResult
+              {
+                  ContractID = group.Key,
+                  Details = group.Select(detail => new HhGraphicDetailItemResult
+                  {
+                      MilestoneTypeID = detail.MilestoneTypeID,
+                      MilestonesValueID = detail.MilestonesValueID,
+                      MilestonesID = detail.MilestonesID ?? 0,
+                      DisplacementServiceName = detail.DisplacementServiceName,
+                      DisplacementServicesID = detail.DisplacementServicesID ?? 0,
+                      ValueHour = detail.ValueHour ?? 0,
+                      HoursExpected = detail.HoursExpected ?? 0,
+                      HoursPlanned = detail.HoursPlanned ?? 0,
+                      HoursExecuted = detail.HoursExecuted ?? 0,
+                      CostHoursExpected = detail.CostHoursExpected ?? 0,
+                      CostHoursPlanned = detail.CostHoursPlanned ?? 0,
+                      CostHoursExecuted = detail.CostHoursExecuted ?? 0
+                  }).ToList()
+              })
+              .ToList();
         }
 
 
         public List<vMilestonesStatistics> vMilestonesStatistics(int contractID)
         {
-          return _projectmanagementRepository.vMilestonesStatistics(contractID);
+            return _projectmanagementRepository.vMilestonesStatistics(contractID);
         }
 
         public Task<List<GetAllMilesStones>> GetMilestonesAsync(string milestoneId)
         {
-            return _projectmanagementRepository.GetMilestonesAsync(milestoneId);    
+            return _projectmanagementRepository.GetMilestonesAsync(milestoneId);
         }
 
         public Task<List<GetMilestonesExpected>> GetMilestoneNoExpected(string milestoneId)
@@ -1038,7 +1038,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public List<vContractExecutionHHCost> vContractExecutionHHCost(int contractID)
         {
-           return _projectmanagementRepository.vContractExecutionHHCost(contractID);
+            return _projectmanagementRepository.vContractExecutionHHCost(contractID);
         }
 
         public async Task<List<GetMilestonesExpected>> GetCombinedMilestones(string milestoneId)
@@ -1065,12 +1065,9 @@ namespace TaskPlannerMetrum.Business.Implementations
                     {
                         MilestonesExpectedsAndNoExpeecteds.Add(noExp);
                     }
-
-
-
                 }
 
-            }           
+            }
             return MilestonesExpectedsAndNoExpeecteds;
         }
 
@@ -1081,7 +1078,7 @@ namespace TaskPlannerMetrum.Business.Implementations
 
         public Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate)
         {
-           return _projectmanagementRepository.GetHhCostChartAsync(contractId, startDate, endDate); 
+            return _projectmanagementRepository.GetHhCostChartAsync(contractId, startDate, endDate);
         }
 
         public Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId)
@@ -1094,10 +1091,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _projectmanagementRepository.GetStatusReportGraphHH(contractId);
         }
 
-      
-        public Task<MonitoringCardsDto> GetCardsByContractIdAsync(int contractId)
+        Task<MonitoringResponseDto> IProjectManagementBusiness.GetCardsByContractIdAsync(int contractId)
         {
-          return _projectmanagementRepository.GetCardsByContractIdAsync(contractId);
+            return _projectmanagementRepository.GetCardsByContractIdAsync(contractId);
         }
     }
 }

@@ -1826,27 +1826,57 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         }
 
-        public async Task<MonitoringCardsDto?> GetCardsByContractIdAsync(int contractId)
+        public async Task<MonitoringResponseDto?> GetCardsByContractIdAsync(int contractId)
         {
-            return await _context.vw_MonitoringHoursCosts
+            var card = await _context.vw_MonitoringHoursCosts
                 .AsNoTracking()
                 .Where(r => r.ContractID == contractId)
                 .Select(r => new MonitoringCardsDto
                 {
                     ContractID = r.ContractID,
-
                     PrevistoHH = r.PrevistoHH,
                     PlanejadoHH = r.PlanejadoHH,
                     ExecutadoHH = r.ExecutadoHH,
                     DiferencaHH = r.DiferencaHH,
-
                     PrevistoRS = r.PrevistoRS,
                     PlanejadoRS = r.PlanejadoRS,
                     ExecutadoRS = r.ExecutadoRS,
                     DiferencaRS = r.DiferencaRS
                 })
                 .FirstOrDefaultAsync();
+
+            if (card == null) return null;
+
+            var graficos = await _context.vw_MilestonesData
+                .AsNoTracking()
+                .Where(r => r.ContractID == contractId)
+                .Select(r => new MilestoneChartDto
+                {
+                    ContractID = r.ContractID,
+                    Marco = r.MilestonesName,
+                    Status = r.CalculatedMilestoneStatus,
+                    Horas = new HoursDto
+                    {
+                        Previstas = r.HorasPrevistas,
+                        Planejadas = r.HorasPlanejadas,
+                        Executadas = r.HorasExecutadas
+                    },
+                    Custos = new costDto
+                    {
+                        Previsto = r.CustoPrevisto,
+                        Planejado = r.CustoPlanejado,
+                        Executado = r.CustoExecutado
+                    }
+                })
+                .ToListAsync();
+
+            return new MonitoringResponseDto
+            {
+                Cards = card,
+                Graficos = graficos
+            };
         }
+
 
 
     }

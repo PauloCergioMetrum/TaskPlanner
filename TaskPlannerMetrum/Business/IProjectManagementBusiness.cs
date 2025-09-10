@@ -114,7 +114,7 @@ namespace TaskPlannerMetrum.Business
 
         public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
 
-        //LISTA DE FUNÇÃO ,
+        //LISTA DE FUNÇÃO 
         public List<Functions> GetAllFunctions();
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto);
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID);
@@ -151,8 +151,6 @@ namespace TaskPlannerMetrum.Business
         public List<vRightCardValue> RightCardValues(int contractID);
 
         // STATUS REPORTS
-
-
         CombinedChartsResult GetCombinedCharts(int contractId);
 
         Task<List<GetAllMilesStones>> GetMilestonesAsync(string milestoneId);
@@ -171,11 +169,7 @@ namespace TaskPlannerMetrum.Business
         Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate);
         Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId);
         Task<List<StatusReportGraphHH>> GetStatusReportGraphHH(int contractId);
-
-        Task<MonitoringCardsDto> GetCardsByContractIdAsync(int contractId);
-
-
-
+        Task<MonitoringResponseDto?> GetCardsByContractIdAsync(int contractId);
 
     }
 

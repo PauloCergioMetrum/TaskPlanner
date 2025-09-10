@@ -1613,10 +1613,11 @@ namespace TaskPlannerMetrum.Controllers
                 var result = await _projectManagementBusiness.GetCardsByContractIdAsync(contractID);
                 if (result is null) return NoContent();
 
-                var response = new object[]
-                {
-            new { cards = result }
-                };
+                var response = new List<object>
+        {
+            new { cards = result.Cards },
+            new { graficos = result.Graficos }
+        };
 
                 return Ok(response);
             }
@@ -1625,9 +1626,6 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
-
 
 
 

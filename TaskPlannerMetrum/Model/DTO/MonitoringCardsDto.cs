@@ -1,4 +1,7 @@
-﻿public sealed class MonitoringCardsDto
+﻿using System.Collections.Generic;
+using TaskPlannerMetrum.Model;
+
+public sealed class MonitoringCardsDto
 {
     public int ContractID { get; init; }
 
@@ -13,4 +16,6 @@
     public decimal PlanejadoRS { get; init; }  // decimal(38,2)
     public decimal ExecutadoRS { get; init; }  // decimal(38,2)
     public decimal? DiferencaRS { get; init; } // decimal(38,2), null
+
+    public List<MilestoneChartDto> Graficos { get; set; } = new();
 }

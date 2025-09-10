@@ -138,6 +138,7 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<GetTaskExecutionMetricsDTO> GetTaskExecutionMetricsDTO { get; set; }
         public DbSet<PasswordReset> PasswordReset { get; set; }
         public DbSet<MonitoringHoursCosts>vw_MonitoringHoursCosts{ get; set; }
+        public DbSet<VwMilestonesData> vw_MilestonesData { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<vRightCardValue>().HasNoKey();
@@ -183,6 +184,10 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetProjectExecutiveStatusResultDto>().HasNoKey();
 
             modelBuilder.Entity<GetMilestoneFullReportByContract>().HasNoKey();
+
+            modelBuilder.Entity<VwMilestonesData>()
+      .HasNoKey()
+      .ToView("vw_MilestonesData");
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MilestoneStatusManual>()

@@ -9,7 +9,8 @@ using TaskPlannerMetrum.Model.ModelViews;
 
 namespace TaskPlannerMetrum.Repository.ProjectManagement
 {
-    public interface IProjectManagementRepository    {
+    public interface IProjectManagementRepository
+    {
 
 
         public bool CreateOrUpdatePredictedCost(PmCostPlanned pmCostPlanned);
@@ -26,10 +27,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreatScopeTraking(PM_Scope_Traking pMScopeTraking);
         public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change);
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto);
-        public bool CreatePM_MilestonesType(PM_MilestonesType dto);       
+        public bool CreatePM_MilestonesType(PM_MilestonesType dto);
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
 
-       
+
 
         // UPDATE Methods
         public bool UpdateForecast(Model.Contracts forecast);
@@ -51,7 +52,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool UpdateInfoContract(int contractId, ProjectManagementGeneralInfo infoContract);
         public bool UpdateInfoTap(int contractId, ProjectManagementGeneralInfo infoContractTap);
 
-        public bool UpdateInfoGenralClients(int contractId, List<PM_Information_General> contactClients );
+        public bool UpdateInfoGenralClients(int contractId, List<PM_Information_General> contactClients);
         public bool UpdateProjectScope(int ID, PM_TAP_Scope updatedScope);
         public bool UpdateResouces(int ContractID, PM_TAP_Resources UpdateResouces);
         public Model.Contracts GetForecastByID(int id);
@@ -70,7 +71,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool ExistAcquisition(string ID);
         public bool ExistAcquisitionMade(string ID);
         public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
-        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID); 
+        public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
         public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID);
         public List<vPmCostMade> GetPmCostMade(string Pm_Cost_PlannedID);
         public List<vContractProject> GetAllContractProjectByTechLeader(int? TechLeaderID, string InspectorName);
@@ -112,11 +113,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<ActivityPlanHHTable> ActivityPlanHHTable(int contractID);
         public ActivityPlanHHDetail GetActivityPlanDetails(int contractID);
         public List<MilestonesItem> GetAllMilestones();
-        public List<vRightCardValue>RightCardValues(int contractID);
+        public List<vRightCardValue> RightCardValues(int contractID);
         // STATUS REPORTS
         List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID);
         List<vAcquisitionChart> GetStatusReportsGraph(int contractID);
-        List<vhhGraphicDetail> GetHhGraphicDetail(int contractID);   
+        List<vhhGraphicDetail> GetHhGraphicDetail(int contractID);
 
         // DELETE Methods
 
@@ -158,7 +159,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         Task<List<StatusReportGraphHH>> GetStatusReportGraphHH(int contractId);
 
-        Task<MonitoringCardsDto> GetCardsByContractIdAsync(int contractId);
+        Task<MonitoringResponseDto?> GetCardsByContractIdAsync(int contractId);
 
 
 
