@@ -1890,13 +1890,50 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 })
                 .ToListAsync();
 
+            var tendenciaTemporal = await _context.TemporalTrend
+                .AsNoTracking()
+                .Where(r => r.ContractID == contractId)
+                .OrderBy(r => r.MonthYear)
+                .Select(r => new TemporalTrendDto
+                {
+                    ContractID = r.ContractID,
+                    MonthYear = r.MonthYear,
+                    TotalPlannedHours = r.TotalPlannedHours,
+                    TotalExecutedHours = r.TotalExecutedHours,
+                    TotalHourCost = r.TotalHourCost
+                })
+                .ToListAsync();
+
+   
+            var executado = tendenciaTemporal
+                .Select(r => new ExecutadoTrendDto
+                {
+                    MonthYear = r.MonthYear,
+                    ExecutadoHH = r.TotalExecutedHours ?? 0
+                })
+                .ToList();
+
+            var planejadoExecutado = tendenciaTemporal
+                .Select(r => new PlanejadoExecutadoTrendDto
+                {
+                    MonthYear = r.MonthYear,
+                    PlanejadoHH = r.TotalPlannedHours ?? 0,
+                 
+                })
+                .ToList();
+
             return new MonitoringResponseDto
             {
                 Cards = card,
                 Graficos = graficos,
-                Tabela = tabela
+                Tabela = tabela,
+                TendenciaTemporal = tendenciaTemporal,   
+                Executado = executado,
+                PlanejadoExecutado = planejadoExecutado
             };
         }
+
+
 
 
 

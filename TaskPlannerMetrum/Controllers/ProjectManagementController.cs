@@ -1615,9 +1615,17 @@ namespace TaskPlannerMetrum.Controllers
 
                 var response = new List<object>
         {
-            new { cards        = result.Cards },
-            new { graficos     = result.Graficos },
-            new { tabela = result.Tabela }
+            new { cards = result.Cards },
+            new { graficos = result.Graficos },
+            new { tabela = result.Tabela },
+            new
+            {
+                tendenciaTemporal = new
+                {
+                    executado = result.Executado,
+                    planejadoExecutado = result.PlanejadoExecutado
+                }
+            }
         };
 
                 return Ok(response);
@@ -1627,6 +1635,9 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+
 
     }
 
