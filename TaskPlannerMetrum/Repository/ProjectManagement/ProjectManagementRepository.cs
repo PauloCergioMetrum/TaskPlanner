@@ -1894,46 +1894,46 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 })
                 .ToListAsync();
 
-            //var tendenciaTemporal = await _context.TemporalTrend
-            //    .AsNoTracking()
-            //    .Where(r => r.ContractID == contractId)
-            //    .OrderBy(r => r.MonthYear)
-            //    .Select(r => new TemporalTrendDto
-            //    {
-            //        ContractID = r.ContractID,
-            //        MonthYear = r.MonthYear,
-            //        TotalPlannedHours = r.TotalPlannedHours,
-            //        TotalExecutedHours = r.TotalExecutedHours,
-            //        TotalHourCost = r.TotalHourCost
-            //    })
-            //    .ToListAsync();
+            var temporalTrend = await _context.TemporalTrend
+      .AsNoTracking()
+      .Where(r => r.ContractID == contractId)
+      .OrderBy(r => r.MonthYear)
+      .Select(r => new TemporalTrendDto
+      {
+          ContractID = r.ContractID,
+          MonthYear = r.MonthYear,
+          TotalPlannedHours = r.TotalPlannedHours,
+          TotalExecutedHours = r.TotalExecutedHours,
+          TotalHourCost = r.TotalHourCost,
+          //TotalForecastHours = r.TotalForecastHours   // se existir na view
+      })
+      .ToListAsync();
 
+            var executed = temporalTrend
+                .Select(r => new ExecutedTrendDto
+                {
+                    MonthYear = r.MonthYear,
+                    ExecutedHours = r.TotalExecutedHours ?? 0
+                })
+                .ToList();
 
-            //var executado = tendenciaTemporal
-            //    .Select(r => new ExecutadoTrendDto
-            //    {
-            //        MonthYear = r.MonthYear,
-            //        ExecutadoHH = r.TotalExecutedHours ?? 0
-            //    })
-            //    .ToList();
+            var plannedVsExecuted = temporalTrend
+                .Select(r => new PlannedVsExecutedTrendDto
+                {
+                    MonthYear = r.MonthYear,
+                    PlannedHours = r.TotalPlannedHours ?? 0
+                })
+                .ToList();
 
-            //var planejadoExecutado = tendenciaTemporal
-            //    .Select(r => new PlanejadoExecutadoTrendDto
-            //    {
-            //        MonthYear = r.MonthYear,
-            //        PlanejadoHH = r.TotalPlannedHours ?? 0,
-
-            //    })
-            //    .ToList();
 
             return new MonitoringResponseDto
             {
                 Cards = card,
                 //Graficos = graficos,
                 Table = table,
-                //TendenciaTemporal = tendenciaTemporal,
-                //Executado = executado,
-                //PlanejadoExecutado = planejadoExecutado
+                TemporalTrend = temporalTrend,
+                Executed = executed,
+                PlannedVsExecuted = plannedVsExecuted
             };
         }
 

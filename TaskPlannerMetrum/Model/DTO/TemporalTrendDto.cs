@@ -7,5 +7,6 @@
         public double? TotalPlannedHours { get; set; }
         public double? TotalExecutedHours { get; set; }
         public double? TotalHourCost { get; set; }
+        public double? TotalForecastHours { get; set; }
     }
 }

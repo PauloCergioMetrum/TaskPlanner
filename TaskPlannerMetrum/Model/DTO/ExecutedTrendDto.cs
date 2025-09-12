@@ -1,8 +1,8 @@
 ﻿namespace TaskPlannerMetrum.Model.DTO
 {
-    public class ExecutadoTrendDto
+    public class ExecutedTrendDto
     {
         public string MonthYear { get; set; } = string.Empty;
-        public double ExecutadoHH { get; set; }
+        public double ExecutedHours { get; set; }
     }
 }
