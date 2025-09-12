@@ -1895,19 +1895,20 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 .ToListAsync();
 
             var temporalTrend = await _context.TemporalTrend
-      .AsNoTracking()
-      .Where(r => r.ContractID == contractId)
-      .OrderBy(r => r.MonthYear)
-      .Select(r => new TemporalTrendDto
-      {
-          ContractID = r.ContractID,
-          MonthYear = r.MonthYear,
-          TotalPlannedHours = r.TotalPlannedHours,
-          TotalExecutedHours = r.TotalExecutedHours,
-          TotalHourCost = r.TotalHourCost,
-          //TotalForecastHours = r.TotalForecastHours   // se existir na view
-      })
-      .ToListAsync();
+       .AsNoTracking()
+       .Where(r => r.ContractID == contractId)
+       .OrderBy(r => r.MonthYear)
+       .Select(r => new TemporalTrendDto
+       {
+           ContractID = r.ContractID,
+           MonthYear = r.MonthYear,
+           TotalPlannedHours = r.TotalPlannedHours,
+           TotalExecutedHours = r.TotalExecutedHours,
+           TotalHourCost = r.TotalHourCost,
+           TotalForecastHours = r.TotalForecastHours
+       })
+       .ToListAsync();
+
 
             var executed = temporalTrend
                 .Select(r => new ExecutedTrendDto
@@ -1924,7 +1925,12 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     PlannedHours = r.TotalPlannedHours ?? 0
                 })
                 .ToList();
-
+            var totalForecast = await _context.TemporalTrend
+    .AsNoTracking()
+    .Where(r => r.ContractID == contractId && r.TotalForecastHours != null)
+    .OrderByDescending(r => r.MonthYear)          
+    .Select(r => r.TotalForecastHours)
+    .FirstOrDefaultAsync();
 
             return new MonitoringResponseDto
             {
@@ -1933,7 +1939,11 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 Table = table,
                 TemporalTrend = temporalTrend,
                 Executed = executed,
-                PlannedVsExecuted = plannedVsExecuted
+                PlannedVsExecuted = plannedVsExecuted,
+                 Forecast = new ForecastDto
+                 {
+                     TotalForecastHours = totalForecast
+                 }
             };
         }
 

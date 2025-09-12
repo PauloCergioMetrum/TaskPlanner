@@ -1618,16 +1618,17 @@ namespace TaskPlannerMetrum.Controllers
             new { cards = result.Cards },
             new { graficos = result.Graficos },
             new { table = result.Table },
-           new
-{
-    temporalTrend = new
-    {
-        executed = result.Executed,
-        plannedVsExecuted = result.PlannedVsExecuted
-    }
-            }
-        };
 
+             new
+            {
+                temporalTrend = new
+                {
+                    executed = result.Executed,
+                    plannedVsExecuted = result.PlannedVsExecuted
+                }
+            },
+            new { forecast = result.Forecast } 
+        };
                 return Ok(response);
             }
             catch (Exception ex)

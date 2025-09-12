@@ -11,6 +11,7 @@ namespace TaskPlannerMetrum.Model.DTO
 
         public List<ExecutedTrendDto> Executed { get; set; } = new();
         public List<PlannedVsExecutedTrendDto> PlannedVsExecuted { get; set; } = new();
+        public ForecastDto Forecast { get; set; } = new();
 
 
     }
