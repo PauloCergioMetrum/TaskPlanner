@@ -1822,7 +1822,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public async Task<List<StatusReportGraphHH>> GetStatusReportGraphHH(int contractId)
         {
-          return await _context.StatusReportsGraphHH.Where(r => r.ContractID == contractId).ToListAsync();  
+            return await _context.StatusReportsGraphHH.Where(r => r.ContractID == contractId).ToListAsync();
 
         }
 
@@ -1831,105 +1831,107 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             var card = await _context.vw_MonitoringHoursCosts
                 .AsNoTracking()
                 .Where(r => r.ContractID == contractId)
-                .Select(r => new MonitoringCardsDto
-                {
-                    ContractID = r.ContractID,
-                    PrevistoHH = r.PrevistoHH,
-                    PlanejadoHH = r.PlanejadoHH,
-                    ExecutadoHH = r.ExecutadoHH,
-                    DiferencaHH = r.DiferencaHH,
-                    PrevistoRS = r.PrevistoRS,
-                    PlanejadoRS = r.PlanejadoRS,
-                    ExecutadoRS = r.ExecutadoRS,
-                    DiferencaRS = r.DiferencaRS
-                })
-                .FirstOrDefaultAsync();
+             .Select(r => new MonitoringCardsDto
+             {
+                 ContractID = r.ContractID,
+                 ExpectedHours = r.ExpectedHours,
+                 PlannedHours = r.PlannedHours,
+                 ExecutedHours = r.ExecutedHours,
+                 HoursDifference = r.HoursDifference,
+
+                 ExpectedCost = r.ExpectedCost,
+                 PlannedCost = r.PlannedCost,
+                 ExecutedCost = r.ExecutedCost,
+                 CostDifference = r.CostDifference
+             })
+.FirstOrDefaultAsync();
+
 
             if (card == null) return null;
 
-            var graficos = await _context.vw_MilestonesData
-                .AsNoTracking()
-                .Where(r => r.ContractID == contractId)
-                .Select(r => new MilestoneChartDto
-                {
-                    ContractID = r.ContractID,
-                    Marco = r.MilestonesName,
-                    Status = r.CalculatedMilestoneStatus,
-                    Horas = new HoursDto
-                    {
-                        Previstas = r.HorasPrevistas,
-                        Planejadas = r.HorasPlanejadas,
-                        Executadas = r.HorasExecutadas
-                    },
-                    Custos = new costDto
-                    {
-                        Previsto = r.CustoPrevisto,
-                        Planejado = r.CustoPlanejado,
-                        Executado = r.CustoExecutado
-                    }
-                })
-                .ToListAsync();
+            //var graficos = await _context.vw_MilestonesData
+            //    .AsNoTracking()
+            //    .Where(r => r.ContractID == contractId)
+            //    .Select(r => new MilestoneChartDto
+            //    {
+            //        ContractID = r.ContractID,
+            //        Marco = r.MilestonesName,
+            //        Status = r.CalculatedMilestoneStatus,
+            //        Horas = new HoursDto
+            //        {
+            //            Previstas = r.HorasPrevistas,
+            //            Planejadas = r.HorasPlanejadas,
+            //            Executadas = r.HorasExecutadas
+            //        },
+            //        Custos = new costDto
+            //        {
+            //            Previsto = r.CustoPrevisto,
+            //            Planejado = r.CustoPlanejado,
+            //            Executado = r.CustoExecutado
+            //        }
+            //    })
+            //    .ToListAsync();
 
-            var tabela = await _context.vw_MilestonesPerMilestoneDetail
-                .AsNoTracking()
-                .Where(r => r.ContractID == contractId)
-                .Select(r => new MilestoneBreakdownDto
-                {
-                    ContractID = r.ContractID,
-                    MilestonesID = r.MilestonesID,
-                    Marco = r.MilestonesName,
-                    HorasPrevistas = r.HorasPrevistas ?? 0,
-                    HorasPlanejadas = r.HorasPlanejadas ?? 0,
-                    HorasExecutadas = r.HorasExecutadas ?? 0,
-                    DiferencaHoras = r.DiferencaHoras ?? 0,
-                    CustoPrevisto = r.CustoPrevisto ?? 0,
-                    CustoPlanejado = r.CustoPlanejado ?? 0,
-                    CustoExecutado = r.CustoExecutado ?? 0,
-                    DiferencaCustos = r.DiferencaCustos ?? 0,
-                    Status = r.CalculatedMilestoneStatus
-                })
-                .ToListAsync();
+            //var tabela = await _context.vw_MilestonesPerMilestoneDetail
+            //    .AsNoTracking()
+            //    .Where(r => r.ContractID == contractId)
+            //    .Select(r => new MilestoneBreakdownDto
+            //    {
+            //        ContractID = r.ContractID,
+            //        MilestonesID = r.MilestonesID,
+            //        Marco = r.MilestonesName,
+            //        HorasPrevistas = r.HorasPrevistas ?? 0,
+            //        HorasPlanejadas = r.HorasPlanejadas ?? 0,
+            //        HorasExecutadas = r.HorasExecutadas ?? 0,
+            //        DiferencaHoras = r.DiferencaHoras ?? 0,
+            //        CustoPrevisto = r.CustoPrevisto ?? 0,
+            //        CustoPlanejado = r.CustoPlanejado ?? 0,
+            //        CustoExecutado = r.CustoExecutado ?? 0,
+            //        DiferencaCustos = r.DiferencaCustos ?? 0,
+            //        Status = r.CalculatedMilestoneStatus
+            //    })
+            //    .ToListAsync();
 
-            var tendenciaTemporal = await _context.TemporalTrend
-                .AsNoTracking()
-                .Where(r => r.ContractID == contractId)
-                .OrderBy(r => r.MonthYear)
-                .Select(r => new TemporalTrendDto
-                {
-                    ContractID = r.ContractID,
-                    MonthYear = r.MonthYear,
-                    TotalPlannedHours = r.TotalPlannedHours,
-                    TotalExecutedHours = r.TotalExecutedHours,
-                    TotalHourCost = r.TotalHourCost
-                })
-                .ToListAsync();
+            //var tendenciaTemporal = await _context.TemporalTrend
+            //    .AsNoTracking()
+            //    .Where(r => r.ContractID == contractId)
+            //    .OrderBy(r => r.MonthYear)
+            //    .Select(r => new TemporalTrendDto
+            //    {
+            //        ContractID = r.ContractID,
+            //        MonthYear = r.MonthYear,
+            //        TotalPlannedHours = r.TotalPlannedHours,
+            //        TotalExecutedHours = r.TotalExecutedHours,
+            //        TotalHourCost = r.TotalHourCost
+            //    })
+            //    .ToListAsync();
 
-   
-            var executado = tendenciaTemporal
-                .Select(r => new ExecutadoTrendDto
-                {
-                    MonthYear = r.MonthYear,
-                    ExecutadoHH = r.TotalExecutedHours ?? 0
-                })
-                .ToList();
 
-            var planejadoExecutado = tendenciaTemporal
-                .Select(r => new PlanejadoExecutadoTrendDto
-                {
-                    MonthYear = r.MonthYear,
-                    PlanejadoHH = r.TotalPlannedHours ?? 0,
-                 
-                })
-                .ToList();
+            //var executado = tendenciaTemporal
+            //    .Select(r => new ExecutadoTrendDto
+            //    {
+            //        MonthYear = r.MonthYear,
+            //        ExecutadoHH = r.TotalExecutedHours ?? 0
+            //    })
+            //    .ToList();
+
+            //var planejadoExecutado = tendenciaTemporal
+            //    .Select(r => new PlanejadoExecutadoTrendDto
+            //    {
+            //        MonthYear = r.MonthYear,
+            //        PlanejadoHH = r.TotalPlannedHours ?? 0,
+
+            //    })
+            //    .ToList();
 
             return new MonitoringResponseDto
             {
                 Cards = card,
-                Graficos = graficos,
-                Tabela = tabela,
-                TendenciaTemporal = tendenciaTemporal,   
-                Executado = executado,
-                PlanejadoExecutado = planejadoExecutado
+                //Graficos = graficos,
+                //Tabela = tabela,
+                //TendenciaTemporal = tendenciaTemporal,
+                //Executado = executado,
+                //PlanejadoExecutado = planejadoExecutado
             };
         }
 

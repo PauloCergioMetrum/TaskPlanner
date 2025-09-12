@@ -222,14 +222,16 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<MonitoringHoursCosts>(e =>
             {
                 e.HasNoKey();
-                e.ToView("vw_MonitoringHoursCosts", "dbo");
-                e.Property(p => p.PrevistoHH).HasColumnType("decimal(38,2)");
-                e.Property(p => p.PrevistoRS).HasColumnType("decimal(38,2)");
-                e.Property(p => p.PlanejadoRS).HasColumnType("decimal(38,2)");
-                e.Property(p => p.ExecutadoRS).HasColumnType("decimal(38,2)");
-                e.Property(p => p.DiferencaRS).HasColumnType("decimal(38,2)");
+                e.ToView("vw_MonitoringHoursCosts", "dbo");            
+                e.Property(p => p.ExpectedHours).HasColumnType("decimal(38,2)");
+                e.Property(p => p.ExpectedCost).HasColumnType("decimal(38,2)");
+                e.Property(p => p.PlannedCost).HasColumnType("decimal(38,2)");
+                e.Property(p => p.ExecutedCost).HasColumnType("decimal(38,2)");
+                e.Property(p => p.CostDifference).HasColumnType("decimal(38,2)");
 
             });
+
+
         }
 
 
