@@ -189,17 +189,16 @@ namespace TaskPlannerMetrum.Model.Context
 
 
             modelBuilder.Entity<VwMilestonesData>()
-          .HasNoKey()
-          .ToView("vw_MilestonesData");
+                .HasNoKey()
+                .ToView("vw_MilestonesData");
 
             modelBuilder.Entity<VwMilestonesPerMilestoneDetail>()
-   .HasNoKey()
-   .ToView("vw_MilestonesPerMilestoneDetail");
+                .HasNoKey()
+                .ToView("vw_MilestonesPerMilestoneDetail");
 
             modelBuilder.Entity<TemporalTrend>()
-.HasNoKey()
-.ToView("TemporalTrend ");
-
+                .HasNoKey()
+                .ToView("TemporalTrend");
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MilestoneStatusManual>()
@@ -233,9 +232,6 @@ namespace TaskPlannerMetrum.Model.Context
 
 
         }
-
-
-
 
         public virtual List<HoursExecutor> GetActivityPlanByExecutorTeamIDAndPeriod(string executorTeamIDs, string startDate, string endDate, string horaSchedule)
         {

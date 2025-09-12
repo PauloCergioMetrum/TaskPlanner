@@ -1616,19 +1616,21 @@ namespace TaskPlannerMetrum.Controllers
                 var response = new List<object>
         {
             new { cards = result.Cards },
-            new { graficos = result.Graficos },
+            new { graphic = result.Graphic },
             new { table = result.Table },
-
-             new
+            new
             {
                 temporalTrend = new
                 {
                     executed = result.Executed,
-                    plannedVsExecuted = result.PlannedVsExecuted
-                }
+                    plannedVsExecuted = result.PlannedVsExecuted,
+                     forecast = result.Forecast
+                },
+                 
             },
-            new { forecast = result.Forecast } 
+          
         };
+
                 return Ok(response);
             }
             catch (Exception ex)
@@ -1636,8 +1638,6 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
 
 
     }
