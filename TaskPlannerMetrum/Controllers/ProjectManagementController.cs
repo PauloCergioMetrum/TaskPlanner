@@ -1617,7 +1617,7 @@ namespace TaskPlannerMetrum.Controllers
         {
             new { cards = result.Cards },
             new { graficos = result.Graficos },
-            new { tabela = result.Tabela },
+            new { table = result.Table },
             new
             {
                 tendenciaTemporal = new

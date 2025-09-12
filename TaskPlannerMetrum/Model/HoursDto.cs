@@ -2,8 +2,8 @@
 {
     public class HoursDto
     {
-        public double Previstas { get; set; }
-         public double Planejadas { get; set; }
-        public double Executadas { get; set; }
+        public double Expected { get; set; }
+        public double Planned { get; set; }
+        public double Executed { get; set; }
     }
 }

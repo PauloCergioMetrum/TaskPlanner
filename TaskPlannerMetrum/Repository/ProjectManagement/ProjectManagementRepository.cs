@@ -1872,25 +1872,27 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             //    })
             //    .ToListAsync();
 
-            //var tabela = await _context.vw_MilestonesPerMilestoneDetail
-            //    .AsNoTracking()
-            //    .Where(r => r.ContractID == contractId)
-            //    .Select(r => new MilestoneBreakdownDto
-            //    {
-            //        ContractID = r.ContractID,
-            //        MilestonesID = r.MilestonesID,
-            //        Marco = r.MilestonesName,
-            //        HorasPrevistas = r.HorasPrevistas ?? 0,
-            //        HorasPlanejadas = r.HorasPlanejadas ?? 0,
-            //        HorasExecutadas = r.HorasExecutadas ?? 0,
-            //        DiferencaHoras = r.DiferencaHoras ?? 0,
-            //        CustoPrevisto = r.CustoPrevisto ?? 0,
-            //        CustoPlanejado = r.CustoPlanejado ?? 0,
-            //        CustoExecutado = r.CustoExecutado ?? 0,
-            //        DiferencaCustos = r.DiferencaCustos ?? 0,
-            //        Status = r.CalculatedMilestoneStatus
-            //    })
-            //    .ToListAsync();
+            var table = await _context.vw_MilestonesPerMilestoneDetail
+                .AsNoTracking()
+                .Where(r => r.ContractID == contractId)
+                .Select(r => new MilestoneBreakdownDto
+                {
+                    ContractID = r.ContractID,
+                    MilestonesID = r.MilestonesID,
+                    MilestoneName = r.MilestonesName,
+
+                    ExpectedHours = r.ExpectedHours ?? 0,
+                    PlannedHours = r.PlannedHours ?? 0,
+                    ExecutedHours = r.ExecutedHours ?? 0,
+                    HoursDifference = r.HoursDifference ?? 0,
+
+                    ExpectedCost = r.ExpectedCost ?? 0,
+                    PlannedCost = r.PlannedCost ?? 0,
+                    ExecutedCost = r.ExecutedCost ?? 0,
+                    CostDifference = r.CostDifference ?? 0,
+                    Status = r.CalculatedMilestoneStatus
+                })
+                .ToListAsync();
 
             //var tendenciaTemporal = await _context.TemporalTrend
             //    .AsNoTracking()
@@ -1928,7 +1930,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             {
                 Cards = card,
                 //Graficos = graficos,
-                //Tabela = tabela,
+                Table = table,
                 //TendenciaTemporal = tendenciaTemporal,
                 //Executado = executado,
                 //PlanejadoExecutado = planejadoExecutado

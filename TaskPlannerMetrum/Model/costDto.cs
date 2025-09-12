@@ -2,8 +2,8 @@
 {
     public class costDto
     {
-        public double Previsto { get; set; }
-         public decimal Planejado { get; set; }
-        public decimal Executado { get; set; }
+        public double Expected { get; set; }
+        public decimal Planned { get; set; }
+        public decimal Executed { get; set; }
     }
 }
