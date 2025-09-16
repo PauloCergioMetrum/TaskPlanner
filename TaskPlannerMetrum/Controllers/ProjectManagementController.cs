@@ -1232,9 +1232,9 @@ namespace TaskPlannerMetrum.Controllers
                 var result = _projectManagementBusiness.SetMilestoneFinalizedStatus(dto);
 
                 if (result == "Não é possível finalizar: existem tarefas não concluídas.")
-                    return BadRequest(new { error = result }); 
+                    return BadRequest(new { error = result });
 
-                return Ok(new { message = result }); 
+                return Ok(new { message = result });
             }
             catch (Exception ex)
             {
@@ -1532,9 +1532,9 @@ namespace TaskPlannerMetrum.Controllers
                 var result = _projectManagementBusiness.CardsHHHours(contractID);
 
                 if (result == null)
-                    return NoContent(); 
+                    return NoContent();
 
-                return Ok(result); 
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -1601,11 +1601,43 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("GetMonitoringHoursCosts")]
+        [ProducesResponseType(typeof(IEnumerable<object>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> GetMonitoringCards([FromQuery] int contractID)
+        {
+            try
+            {
+                var result = await _projectManagementBusiness.GetCardsByContractIdAsync(contractID);
+                if (result is null) return NoContent();
 
+                var response = new List<object>
+        {
+            new { cards = result.Cards },
+            new { graphic = result.Graphic },
+            new { table = result.Table },
+            new
+            {
+                temporalTrend = new
+                {
+                    executed = result.Executed,
+                    plannedVsExecuted = result.PlannedVsExecuted,
+                     forecast = result.Forecast
+                },
+                 
+            },
+          
+        };
 
-
-
-
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
     }

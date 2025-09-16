@@ -1,4 +1,5 @@
 ﻿
+using DocumentFormat.OpenXml.Drawing;
 using Memt.Logger;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -1792,12 +1793,6 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return new List<GetMilestonesExpected>();
             }
         }
-
-
-
-
-
-
         public CardsHHHours CardsHHHours(int contractId)
         {
             return _context.CardsHHHours
@@ -1822,9 +1817,136 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public async Task<List<StatusReportGraphHH>> GetStatusReportGraphHH(int contractId)
         {
-          return await _context.StatusReportsGraphHH.Where(r => r.ContractID == contractId).ToListAsync();  
+            return await _context.StatusReportsGraphHH.Where(r => r.ContractID == contractId).ToListAsync();
 
         }
+
+   public async Task<MonitoringResponseDto?> GetCardsByContractIdAsync(int contractId)
+{
+    var card = await _context.vw_MonitoringHoursCosts
+        .AsNoTracking()
+        .Where(r => r.ContractID == contractId)
+        .Select(r => new MonitoringCardsDto
+        {
+            ContractID = r.ContractID,
+            ExpectedHours = r.ExpectedHours,
+            PlannedHours = r.PlannedHours,
+            ExecutedHours = r.ExecutedHours,
+            HoursDifference = r.HoursDifference,
+
+            ExpectedCost = r.ExpectedCost,
+            PlannedCost = r.PlannedCost,
+            ExecutedCost = r.ExecutedCost,
+            CostDifference = r.CostDifference
+        })
+        .FirstOrDefaultAsync();
+
+    if (card == null) return null;
+
+    var graphic = await _context.vw_MilestonesData
+        .AsNoTracking()
+        .Where(r => r.ContractID == contractId)
+        .Select(r => new MilestoneChartDto
+        {
+            ContractID = r.ContractID,
+            MilestoneName = r.MilestonesName,
+            Status = r.CalculatedMilestoneStatus,
+            Hours = new HoursDto
+            {
+                Expected = r.ExpectedHours,
+                Planned = r.PlannedHours,
+                Executed = r.ExecutedHours
+            },
+            Costs = new costDto
+            {
+                Expected = r.ExpectedCost,
+                Planned = r.PlannedCost,
+                Executed = r.ExecutedCost
+            }
+        })
+        .ToListAsync();
+
+    var table = await _context.vw_MilestonesPerMilestoneDetail
+        .AsNoTracking()
+        .Where(r => r.ContractID == contractId)
+        .Select(r => new MilestoneBreakdownDto
+        {
+            ContractID = r.ContractID,
+            MilestonesID = r.MilestonesID,
+            MilestoneName = r.MilestonesName,
+
+            ExpectedHours = r.ExpectedHours ?? 0,
+            PlannedHours = r.PlannedHours ?? 0,
+            ExecutedHours = r.ExecutedHours ?? 0,
+            HoursDifference = r.HoursDifference ?? 0,
+
+            ExpectedCost = r.ExpectedCost ?? 0,
+            PlannedCost = r.PlannedCost ?? 0,
+            ExecutedCost = r.ExecutedCost ?? 0,
+            CostDifference = r.CostDifference ?? 0,
+            Status = r.CalculatedMilestoneStatus
+        })
+        .ToListAsync();
+
+    var temporalTrend = await _context.TemporalTrend
+        .AsNoTracking()
+        .Where(r => r.ContractID == contractId)
+        .OrderBy(r => r.MonthYear)
+        .Select(r => new TemporalTrendDto
+        {
+            ContractID = r.ContractID,
+            MonthYear = r.MonthYear,
+            TotalPlannedHours = r.TotalPlannedHours,
+            TotalExecutedHours = r.TotalExecutedHours,
+            TotalHourCost = r.TotalHourCost,
+            TotalForecastHours = r.TotalForecastHours
+        })
+        .ToListAsync();
+
+    var executed = temporalTrend
+        .Select(r => new ExecutedTrendDto
+        {
+            MonthYear = r.MonthYear,
+            ExecutedHours = r.TotalExecutedHours ?? 0
+        })
+        .ToList();
+
+    var plannedVsExecuted = temporalTrend
+        .Select(r => new PlannedVsExecutedTrendDto
+        {
+            MonthYear = r.MonthYear,
+            PlannedHours = r.TotalPlannedHours ?? 0
+        })
+        .ToList();
+
+    var totalForecast = await _context.TemporalTrend
+        .AsNoTracking()
+        .Where(r => r.ContractID == contractId && r.TotalForecastHours != null)
+        .OrderByDescending(r => r.MonthYear)
+        .Select(r => r.TotalForecastHours)
+        .FirstOrDefaultAsync();
+
+    return new MonitoringResponseDto
+    {
+        Cards = card,
+        Graphic = graphic,
+        Table = table,
+        TemporalTrend = temporalTrend,
+        Executed = executed,
+        PlannedVsExecuted = plannedVsExecuted,
+        Forecast = new ForecastDto
+        {
+            TotalForecastHours = totalForecast
+        }
+    };
+}
+
+
+
+
+
+
+
     }
 }
 

@@ -18,7 +18,7 @@ namespace TaskPlannerMetrum.Business
 
         public List<GetMilestones> GetMilestonesNames(int contractID);
         public bool CreateMilesTones(MilesTonesDTO milesTones);
-  
+
         public bool UpdateMilesTones(MilesTonesDTO milesTonesDTO);
         public bool DeleteMilestones(string ID, int MilestonesID);
         public bool MilesTonesDelete(int ID);
@@ -31,7 +31,7 @@ namespace TaskPlannerMetrum.Business
         public bool UpdateAcquisitionMadeItem(AcquisitionMadeDTO acquisitionMade);
         public List<vPMAcquisitionCombined> GetAcquisitions(int ContractID);
         public List<vPMAcquisitionCost> GetAcquisitionsMade(string AquisitionPlannedID);
-        public bool DeleteTypeOfCost(int ID); 
+        public bool DeleteTypeOfCost(int ID);
         public bool DeletePredictedCost(string ID);
         public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID);
 
@@ -48,11 +48,11 @@ namespace TaskPlannerMetrum.Business
         public bool UpdateMilesValue(MilesTonesDTO milesTonesDTO, int ID);
 
 
-        //MOBILIZAÇÃO 
+        //MOBILIZAÇÃO
         public List<vPM_Mobilization_Combined> GetMobilization(int contractID);
 
         public List<vPM_Mobilization_Made> GetMobilizationMade(string mobilizationPlannedID);
-   
+
         public bool CreateMobilizationPlanned(PM_Mobilization_Planned mobilizationPlanned);
 
         public bool CreateMobilizationMade(PM_Mobilization_Made mobilizationMade);
@@ -95,7 +95,7 @@ namespace TaskPlannerMetrum.Business
         public List<vPM_Mam_Hours> GetpmHours(int ContractID);
 
 
-        // ACOMPANHAMENTO DE ESCOPO 
+        // ACOMPANHAMENTO DE ESCOPO
 
         public bool CreatScopeTraking(PM_Scope_Traking pMScopeTraking);
         public bool UpdatepMScopeTraking(PM_Scope_Traking pMScopeTraking);
@@ -105,21 +105,16 @@ namespace TaskPlannerMetrum.Business
         //public List<MilestoneType_HH_Details> ManagementSalesOrderDetailsHH(string MilestonesValueID);
 
 
-
-
-        //  ACOMPANHAMENTO DE ESCOPO  Mudança de Escopo 
-
+        //  ACOMPANHAMENTO DE ESCOPO  Mudança de Escopo
         public bool CreateScopeChange(PM_Scope_Change pM_Scope_Change);
         public bool UpdateScopeChange(PM_Scope_Change pM_Scope_Change);
 
         public bool DeleteScopeChange(string ID);
         public List<PM_Scope_Change> GetScopeChanges(int ContractID);
 
-
         public List<GetFinanceMilestones> GetAllMilestonesItem(int contractID);
 
-
-        //LISTA DE FUNÇÃO , 
+        //LISTA DE FUNÇÃO 
         public List<Functions> GetAllFunctions();
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto);
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID);
@@ -141,15 +136,9 @@ namespace TaskPlannerMetrum.Business
         public List<vMilestoneStatusCalculation> GetMilestoneStatusCalculation(int ContractID);
         string SetMilestoneFinalizedStatus(FinalizedStatusDto dto);
 
-
         public List<GetMilestoneType_HH_Details> GetHHByID(string MilestonesValueID);
         //public List<VgetMilestoneType_HH_Details> GetHHByIDTaskAsync(int ContractID);
-
-
-
-
         //TAP
-
         public bool UpdateInfoGeneral(ProjectInfoGeneralDTO request);
         public bool CreateTapScope(PM_TAP_Scope pM_TAP_Scope);
         public List<PM_TAP_RiskLevel> GetAllProjectCharter();
@@ -162,8 +151,6 @@ namespace TaskPlannerMetrum.Business
         public List<vRightCardValue> RightCardValues(int contractID);
 
         // STATUS REPORTS
-
-
         CombinedChartsResult GetCombinedCharts(int contractId);
 
         Task<List<GetAllMilesStones>> GetMilestonesAsync(string milestoneId);
@@ -178,18 +165,11 @@ namespace TaskPlannerMetrum.Business
 
         public List<vMilestonesStatistics> vMilestonesStatistics(int contractID);
 
-
         public CardsHHHours CardsHHHours(int contractId);
         Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate);
-
-
         Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId);
-
-
         Task<List<StatusReportGraphHH>> GetStatusReportGraphHH(int contractId);
-
-
-
+        Task<MonitoringResponseDto?> GetCardsByContractIdAsync(int contractId);
 
     }
 
