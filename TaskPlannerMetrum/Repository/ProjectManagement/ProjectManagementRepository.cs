@@ -192,7 +192,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             try
             {
                 var existingMilestones = _context.MilestonesItem
-                    .FirstOrDefault(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID);
+                  .FirstOrDefault(n => n.Name == milestones.Name && n.ContractID == milestones.ContractID);
 
                 if (existingMilestones == null)
                 {
@@ -334,8 +334,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
             {
 
                 List<Positions> positions = _context.Positions
-                    .OrderBy(i => i.PositionName)
-                    .ToList();
+                  .OrderBy(i => i.PositionName)
+                  .ToList();
 
                 return positions;
             }
@@ -379,7 +379,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 existingCost.ValueUnit = pmCostPlanned.ValueUnit;
                 existingCost.Description = pmCostPlanned.Description;
                 existingCost.ContractID = pmCostPlanned.ContractID;
-                //existingCost.TotalPlanned = pmCostPlanned.TotalPlanned;    
+                //existingCost.TotalPlanned = pmCostPlanned.TotalPlanned;
 
                 _context.SaveChanges();
                 return true;
@@ -407,20 +407,20 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vPm_Cost_Planned> GetPmCostPlanned(int ContractID)
         {
             var listPmCostPlanned = _context.vPm_Cost_Planned
-                .Where(i => i.ContractID == ContractID)
-                .Select(pm => new vPm_Cost_Planned
-                {
-                    Id = pm.Id,
-                    TypeID = pm.TypeID,
-                    Amount = pm.Amount,
-                    ValueUnit = pm.ValueUnit,
-                    Description = pm.Description,
-                    ContractID = pm.ContractID,
-                    Total = pm.Total ?? 0,
-                    TotalPlanned = pm.TotalPlanned,
-                    Difference = pm.Difference ?? 0
-                })
-                .ToList();
+              .Where(i => i.ContractID == ContractID)
+              .Select(pm => new vPm_Cost_Planned
+              {
+                  Id = pm.Id,
+                  TypeID = pm.TypeID,
+                  Amount = pm.Amount,
+                  ValueUnit = pm.ValueUnit,
+                  Description = pm.Description,
+                  ContractID = pm.ContractID,
+                  Total = pm.Total ?? 0,
+                  TotalPlanned = pm.TotalPlanned,
+                  Difference = pm.Difference ?? 0
+              })
+              .ToList();
 
             return listPmCostPlanned;
         }
@@ -608,7 +608,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 exixtMolizationMade.DateEnd = mobilizationMade.DateEnd;
                 exixtMolizationMade.Description = mobilizationMade.Description;
                 exixtMolizationMade.MobilizationPlannedID = mobilizationMade.MobilizationPlannedID;
-                //exixtMolizationMade.TotalValue = mobilizationMade.TotalValue;   
+                //exixtMolizationMade.TotalValue = mobilizationMade.TotalValue;
 
 
             }
@@ -679,15 +679,15 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 return false;
             }
         }
-        //  SERVIÇO TERCEIRIZADO 
+        //  SERVIÇO TERCEIRIZADO
 
         public List<Pm_Type_OutsourcedServicesDTO> GetAllOutsourcedServiceNames()
         {
             try
             {
                 var result = _context.PM_Type_OutsourcedServices
-                                     .Select(a => new Pm_Type_OutsourcedServicesDTO { Name = a.Name, ID = a.ID })
-                                     .ToList();
+                  .Select(a => new Pm_Type_OutsourcedServicesDTO { Name = a.Name, ID = a.ID })
+                  .ToList();
 
                 return result;
             }
@@ -1112,7 +1112,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public bool CreateFunctions_MilestoneType(PM_Functions_MilestoneType dto)
         {
             var existingFunction = _context.PM_Functions_MilestoneType
-                .FirstOrDefault(f => f.FunctionID == dto.FunctionID && f.MilesstoneTypeID == dto.MilesstoneTypeID);
+              .FirstOrDefault(f => f.FunctionID == dto.FunctionID && f.MilesstoneTypeID == dto.MilesstoneTypeID);
 
             if (existingFunction == null)
             {
@@ -1135,8 +1135,8 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vPM_Functions_MilestoneType> GetAllFunctionsMilesstoneType(string MilesstoneTypeID)
         {
             return _context.vPM_Functions_MilestoneType
-                           .Where(a => a.MilesstoneTypeID == MilesstoneTypeID)
-                           .ToList();
+              .Where(a => a.MilesstoneTypeID == MilesstoneTypeID)
+              .ToList();
         }
 
         public bool DeleteFunctionID(string ID)
@@ -1233,18 +1233,18 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vMileStonesValue> GetAllMileStonesValue(int ContractID)
         {
             return _context.vMileStonesValue
-                           .Where(a => a.ContractID == ContractID && a.MilestonesTypeID != 2)
-                           .ToList();
+              .Where(a => a.ContractID == ContractID && a.MilestonesTypeID != 2)
+              .ToList();
         }
 
         public List<vMilestoneStatusCalculation> GetMilestoneStatusCalculation(int ContractID)
         {
             return _context.vMilestoneStatusCalculation
-                 .AsNoTracking()
-                 .Where(a => a.ContractId == ContractID)
-                 .GroupBy(m => m.MilestoneId)
-                 .Select(g => g.First())
-                 .ToList();
+              .AsNoTracking()
+              .Where(a => a.ContractId == ContractID)
+              .GroupBy(m => m.MilestoneId)
+              .Select(g => g.First())
+              .ToList();
 
 
         }
@@ -1253,7 +1253,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public string SetMilestoneFinalizedStatus(FinalizedStatusDto dto)
         {
             var record = _context.MilestoneStatusManual
-                .FirstOrDefault(m => m.MilestoneID == dto.MilestoneID && m.ContractID == dto.ContractID);
+              .FirstOrDefault(m => m.MilestoneID == dto.MilestoneID && m.ContractID == dto.ContractID);
 
             if (dto.IsFinalized)
             {
@@ -1385,14 +1385,14 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
 
             var contractInfo = _context.Contracts
-                .Where(c => c.id == contractId)
-                .FirstOrDefault();
+              .Where(c => c.id == contractId)
+              .FirstOrDefault();
             var tapInfo = _context.PM_TAP_General_Info
-                .Where(t => t.ContractID == contractId)
-                .FirstOrDefault();
+              .Where(t => t.ContractID == contractId)
+              .FirstOrDefault();
             var contactClients = _context.PM_Information_General
-                .Where(c => c.ContractID == contractId)
-                .ToList();
+              .Where(c => c.ContractID == contractId)
+              .ToList();
             var projectInfo = new ProjectInfoGeneralDTO
             {
                 ContractID = contractId,
@@ -1584,24 +1584,24 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<BusinessUnitDto> GetAllBussinesUnit(int ContractID)
         {
             return _context.Finances
-                .Where(f => f.ContractID == ContractID)
-                .GroupBy(f => f.BusinessUnit)
-                .Select(g => new BusinessUnitDto
-                {
-                    ContractID = g.First().ContractID,
-                    ID = g.First().id,
-                    BusinessUnit = g.First().BusinessUnit
-                })
-                .ToList();
+              .Where(f => f.ContractID == ContractID)
+              .GroupBy(f => f.BusinessUnit)
+              .Select(g => new BusinessUnitDto
+              {
+                  ContractID = g.First().ContractID,
+                  ID = g.First().id,
+                  BusinessUnit = g.First().BusinessUnit
+              })
+              .ToList();
         }
 
         public List<MilestonesItem> GetMilestoneItem(int contractID)
         {
             return _context.MilestonesItem
-                .Where(a => a.ContractID == contractID &&
-                            a.Name != "REEMBOLSO" &&
-                            a.Name != "ADIANTAMENTO")
-                .ToList();
+              .Where(a => a.ContractID == contractID &&
+                a.Name != "REEMBOLSO" &&
+                a.Name != "ADIANTAMENTO")
+              .ToList();
         }
 
         public List<ActivityPlanHH> ActivityPlanHH(int contractID)
@@ -1659,22 +1659,22 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vIndirectcostChart> GetIndirectCostChartsByContract(int contractID)
         {
             return _context.vIndirectcostChart
-                           .Where(a => a.ContractID == contractID)
-                           .ToList();
+              .Where(a => a.ContractID == contractID)
+              .ToList();
         }
 
         public List<vContractExecutionHHCost> vContractExecutionHHCost(int contractID)
         {
             return _context.vContractExecutionHHCost
-                           .Where(a => a.ContractID == contractID)
-                           .ToList();
+              .Where(a => a.ContractID == contractID)
+              .ToList();
         }
 
         public List<vAcquisitionChart> GetStatusReportsGraph(int contractID)
         {
             return _context.vAcquisitionChart
-                           .Where(a => a.ContractID == contractID)
-                           .ToList();
+              .Where(a => a.ContractID == contractID)
+              .ToList();
         }
         public List<OrderManagementInfo> OrderManagementInfo(int contractID)
         {
@@ -1689,16 +1689,16 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public List<vMilestonesStatistics> vMilestonesStatistics(int contractID)
         {
             return _context.vMilestonesStatistics
-                           .Where(a => a.ContractID == contractID)
-                           .ToList();
+              .Where(a => a.ContractID == contractID)
+              .ToList();
         }
 
 
         public async Task<List<GetAllMilesStones>> GetMilestonesAsync(string milestoneId)
         {
             return await _context.GetAllMilesStones
-                .FromSqlRaw("EXEC GetAllMilesStones @MilestonesID={0}", milestoneId)
-                .ToListAsync();
+              .FromSqlRaw("EXEC GetAllMilesStones @MilestonesID={0}", milestoneId)
+              .ToListAsync();
         }
 
         public async Task<List<GetMilestonesExpected>> GetMilestoneNoExpected(string milestoneId)
@@ -1796,23 +1796,23 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         public CardsHHHours CardsHHHours(int contractId)
         {
             return _context.CardsHHHours
-                .AsNoTracking()
-                .FirstOrDefault(a => a.ContractID == contractId);
+              .AsNoTracking()
+              .FirstOrDefault(a => a.ContractID == contractId);
         }
 
         public Task<List<GetHhCostChart>> GetHhCostChartAsync(int contractId, DateTime startDate, DateTime endDate)
         {
             return _context.GetHhCostChart
-                  .FromSqlRaw("EXEC GetHhCostChart @ContractID={0}, @StartDate={1}, @EndDate={2}", contractId, startDate, endDate)
-                  .ToListAsync();
+              .FromSqlRaw("EXEC GetHhCostChart @ContractID={0}, @StartDate={1}, @EndDate={2}", contractId, startDate, endDate)
+              .ToListAsync();
         }
 
         public Task<List<GetMilestoneFullReportByContract>> GetMilestoneFullReportByContract(int contractId)
         {
             return _context
-                .Set<GetMilestoneFullReportByContract>()
-                .FromSqlRaw("EXEC GetMilestoneFullReportByContract @ContractID = {0}", contractId)
-                .ToListAsync();
+              .Set<GetMilestoneFullReportByContract>()
+              .FromSqlRaw("EXEC GetMilestoneFullReportByContract @ContractID = {0}", contractId)
+              .ToListAsync();
         }
 
         public async Task<List<StatusReportGraphHH>> GetStatusReportGraphHH(int contractId)
@@ -1821,125 +1821,106 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         }
 
-   public async Task<MonitoringResponseDto?> GetCardsByContractIdAsync(int contractId)
-{
-    var card = await _context.vw_MonitoringHoursCosts
-        .AsNoTracking()
-        .Where(r => r.ContractID == contractId)
-        .Select(r => new MonitoringCardsDto
+        public async Task<MonitoringResponseDto?> GetCardsByContractIdAsync(int contractId)
         {
-            ContractID = r.ContractID,
-            ExpectedHours = r.ExpectedHours,
-            PlannedHours = r.PlannedHours,
-            ExecutedHours = r.ExecutedHours,
-            HoursDifference = r.HoursDifference,
+            var card = await _context.vw_MonitoringHoursCosts
+              .AsNoTracking()
+              .Where(r => r.ContractID == contractId)
+              .Select(r => new MonitoringCardsDto
+              {
+                  ContractID = r.ContractID,
+                  ExpectedHours = r.ExpectedHours,
+                  PlannedHours = r.PlannedHours,
+                  ExecutedHours = r.ExecutedHours,
+                  HoursDifference = r.HoursDifference,
 
-            ExpectedCost = r.ExpectedCost,
-            PlannedCost = r.PlannedCost,
-            ExecutedCost = r.ExecutedCost,
-            CostDifference = r.CostDifference
-        })
-        .FirstOrDefaultAsync();
+                  ExpectedCost = r.ExpectedCost,
+                  PlannedCost = r.PlannedCost,
+                  ExecutedCost = r.ExecutedCost,
+                  CostDifference = r.CostDifference
+              })
+              .FirstOrDefaultAsync();
 
-    if (card == null) return null;
+            if (card == null) return null;
 
-    var graphic = await _context.vw_MilestonesData
-        .AsNoTracking()
-        .Where(r => r.ContractID == contractId)
-        .Select(r => new MilestoneChartDto
-        {
-            ContractID = r.ContractID,
-            MilestoneName = r.MilestonesName,
-            Status = r.CalculatedMilestoneStatus,
-            Hours = new HoursDto
+            var graphic = await _context.vw_MilestonesData
+              .AsNoTracking()
+              .Where(r => r.ContractID == contractId)
+              .Select(r => new MilestoneChartDto
+              {
+                  ContractID = r.ContractID,
+                  MilestoneName = r.MilestonesName,
+                  Status = r.CalculatedMilestoneStatus,
+                  Hours = new HoursDto
+                  {
+                      Expected = r.ExpectedHours,
+                      Planned = r.PlannedHours,
+                      Executed = r.ExecutedHours
+                  },
+                  Costs = new costDto
+                  {
+                      Expected = r.ExpectedCost,
+                      Planned = r.PlannedCost,
+                      Executed = r.ExecutedCost
+                  }
+              })
+                  .ToListAsync();
+
+            var table = await _context.vw_MilestonesPerMilestoneDetail
+              .AsNoTracking()
+              .Where(r => r.ContractID == contractId)
+              .Select(r => new MilestoneBreakdownDto
+              {
+                  ContractID = r.ContractID,
+                  MilestonesID = r.MilestonesID,
+                  MilestoneName = r.MilestonesName,
+
+                  ExpectedHours = r.ExpectedHours ?? 0,
+                  PlannedHours = r.PlannedHours ?? 0,
+                  ExecutedHours = r.ExecutedHours ?? 0,
+                  HoursDifference = r.HoursDifference ?? 0,
+
+                  ExpectedCost = r.ExpectedCost ?? 0,
+                  PlannedCost = r.PlannedCost ?? 0,
+                  ExecutedCost = r.ExecutedCost ?? 0,
+                  CostDifference = r.CostDifference ?? 0,
+                  Status = r.CalculatedMilestoneStatus
+              })
+              .ToListAsync();
+
+            var temporalTrend = await _context.vw_temporal_trend
+              .AsNoTracking()
+              .Where(r => r.ContractID == contractId)
+              .OrderBy(r => r.Period)
+              .Select(r => new vw_temporal_trend
+              {
+                  ContractID = r.ContractID,
+                  Period = r.Period,
+
+                  PlannedHoursBaseline = r.PlannedHoursBaseline,
+                  PlannedCostBaseline = r.PlannedCostBaseline,
+
+                  ScheduledHours = r.ScheduledHours,
+                  ScheduledCost = r.ScheduledCost,
+
+                  ActualHours = r.ActualHours,
+                  ActualCost = r.ActualCost,
+
+                  TotalBaselineHours = r.TotalBaselineHours,
+                  TotalBaselineCost = r.TotalBaselineCost
+              })
+              .ToListAsync();
+
+
+            return new MonitoringResponseDto
             {
-                Expected = r.ExpectedHours,
-                Planned = r.PlannedHours,
-                Executed = r.ExecutedHours
-            },
-            Costs = new costDto
-            {
-                Expected = r.ExpectedCost,
-                Planned = r.PlannedCost,
-                Executed = r.ExecutedCost
-            }
-        })
-        .ToListAsync();
+                Cards = card,
+                Graphic = graphic,
+                Table = table,
+                TemporalTrend = temporalTrend,
 
-    var table = await _context.vw_MilestonesPerMilestoneDetail
-        .AsNoTracking()
-        .Where(r => r.ContractID == contractId)
-        .Select(r => new MilestoneBreakdownDto
-        {
-            ContractID = r.ContractID,
-            MilestonesID = r.MilestonesID,
-            MilestoneName = r.MilestonesName,
-
-            ExpectedHours = r.ExpectedHours ?? 0,
-            PlannedHours = r.PlannedHours ?? 0,
-            ExecutedHours = r.ExecutedHours ?? 0,
-            HoursDifference = r.HoursDifference ?? 0,
-
-            ExpectedCost = r.ExpectedCost ?? 0,
-            PlannedCost = r.PlannedCost ?? 0,
-            ExecutedCost = r.ExecutedCost ?? 0,
-            CostDifference = r.CostDifference ?? 0,
-            Status = r.CalculatedMilestoneStatus
-        })
-        .ToListAsync();
-
-    var temporalTrend = await _context.TemporalTrend
-        .AsNoTracking()
-        .Where(r => r.ContractID == contractId)
-        .OrderBy(r => r.MonthYear)
-        .Select(r => new TemporalTrendDto
-        {
-            ContractID = r.ContractID,
-            MonthYear = r.MonthYear,
-            TotalPlannedHours = r.TotalPlannedHours,
-            TotalExecutedHours = r.TotalExecutedHours,
-            TotalHourCost = r.TotalHourCost,
-            TotalForecastHours = r.TotalForecastHours
-        })
-        .ToListAsync();
-
-    var executed = temporalTrend
-        .Select(r => new ExecutedTrendDto
-        {
-            MonthYear = r.MonthYear,
-            ExecutedHours = r.TotalExecutedHours ?? 0
-        })
-        .ToList();
-
-    var plannedVsExecuted = temporalTrend
-        .Select(r => new PlannedVsExecutedTrendDto
-        {
-            MonthYear = r.MonthYear,
-            PlannedHours = r.TotalPlannedHours ?? 0
-        })
-        .ToList();
-
-    var totalForecast = await _context.TemporalTrend
-        .AsNoTracking()
-        .Where(r => r.ContractID == contractId && r.TotalForecastHours != null)
-        .OrderByDescending(r => r.MonthYear)
-        .Select(r => r.TotalForecastHours)
-        .FirstOrDefaultAsync();
-
-    return new MonitoringResponseDto
-    {
-        Cards = card,
-        Graphic = graphic,
-        Table = table,
-        TemporalTrend = temporalTrend,
-        Executed = executed,
-        PlannedVsExecuted = plannedVsExecuted,
-        Forecast = new ForecastDto
-        {
-            TotalForecastHours = totalForecast
+            };
         }
-    };
-}
 
         public async Task<vw_FinancialProgressSCurve> GetFinancialProgressSCurveAsync(int contractId)
         {
