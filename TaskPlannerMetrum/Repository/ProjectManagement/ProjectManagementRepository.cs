@@ -1941,12 +1941,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
     };
 }
 
-
-
-
-
-
-
+        public async Task<vw_FinancialProgressSCurve> GetFinancialProgressSCurveAsync(int contractId)
+        {
+            return await _context.vw_FinancialProgressSCurve.FirstOrDefaultAsync(p => p.ContractID == contractId);
+        }
     }
 }
 

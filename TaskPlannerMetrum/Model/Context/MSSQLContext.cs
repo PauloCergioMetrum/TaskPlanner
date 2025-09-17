@@ -141,6 +141,8 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<VwMilestonesData> vw_MilestonesData { get; set; }
         public DbSet<VwMilestonesPerMilestoneDetail> vw_MilestonesPerMilestoneDetail { get; set; }
         public DbSet<TemporalTrend> TemporalTrend { get; set; }
+
+        public DbSet<vw_FinancialProgressSCurve> vw_FinancialProgressSCurve { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<vRightCardValue>().HasNoKey();

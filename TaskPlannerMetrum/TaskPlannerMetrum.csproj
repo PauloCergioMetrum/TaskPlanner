@@ -19,6 +19,7 @@
     <Compile Remove="Business\IUserHourCostsUserID.cs" />
     <Compile Remove="Controllers\GetContractsByMonthController.cs" />
     <Compile Remove="Model\DTO\GetContractsByMonthDto.cs" />
+    <Compile Remove="Model\FinancialProgressSCurve.cs" />
     <Compile Remove="Model\ModelViews\vPmCostPlanned.cs" />
   </ItemGroup>
 

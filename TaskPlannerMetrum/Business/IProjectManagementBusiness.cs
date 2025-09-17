@@ -171,6 +171,8 @@ namespace TaskPlannerMetrum.Business
         Task<List<StatusReportGraphHH>> GetStatusReportGraphHH(int contractId);
         Task<MonitoringResponseDto?> GetCardsByContractIdAsync(int contractId);
 
+        Task<vw_FinancialProgressSCurve?> GetFinancialProgressSCurveAsync(int contractId);
+
     }
 
 
