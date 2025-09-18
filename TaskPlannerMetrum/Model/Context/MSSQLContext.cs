@@ -140,7 +140,9 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<MonitoringHoursCosts> vw_MonitoringHoursCosts { get; set; }
         public DbSet<VwMilestonesData> vw_MilestonesData { get; set; }
         public DbSet<VwMilestonesPerMilestoneDetail> vw_MilestonesPerMilestoneDetail { get; set; }
-        public DbSet<TemporalTrend> TemporalTrend { get; set; }
+        public DbSet<vw_temporal_trend> vw_temporal_trend { get; set; }
+
+        public DbSet<vw_FinancialProgressSCurve> vw_FinancialProgressSCurve { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<vRightCardValue>().HasNoKey();
@@ -196,9 +198,9 @@ namespace TaskPlannerMetrum.Model.Context
                 .HasNoKey()
                 .ToView("vw_MilestonesPerMilestoneDetail");
 
-            modelBuilder.Entity<TemporalTrend>()
+            modelBuilder.Entity<vw_temporal_trend>()
                 .HasNoKey()
-                .ToView("TemporalTrend");
+                .ToView("vw_temporal_trend");
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<MilestoneStatusManual>()

@@ -162,6 +162,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         Task<MonitoringResponseDto?> GetCardsByContractIdAsync(int contractId);
 
 
+        Task<vw_FinancialProgressSCurve?> GetFinancialProgressSCurveAsync(int contractId);
+
+
+
 
 
 

@@ -1095,6 +1095,11 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetCardsByContractIdAsync(contractId);
         }
+
+        public Task<vw_FinancialProgressSCurve> GetFinancialProgressSCurveAsync(int contractId)
+        {
+            return _projectmanagementRepository.GetFinancialProgressSCurveAsync(contractId);
+        }
     }
 }
 

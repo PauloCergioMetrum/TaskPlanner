@@ -70,12 +70,6 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
-
-
-
-
-
-
         [HttpPut("UpdateMilesTones")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -95,10 +89,6 @@ namespace TaskPlannerMetrum.Controllers
             }
 
         }
-
-
-
-
         [HttpGet("GetMilestonesNames")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -1480,9 +1470,6 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-
-
-
         [HttpGet("GetCombinedMilestones")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -1579,7 +1566,6 @@ namespace TaskPlannerMetrum.Controllers
             }
         }
 
-
         [HttpGet("GetStatusReportGraphHH")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -1618,20 +1604,37 @@ namespace TaskPlannerMetrum.Controllers
             new { cards = result.Cards },
             new { graphic = result.Graphic },
             new { table = result.Table },
-            new
-            {
-                temporalTrend = new
-                {
-                    executed = result.Executed,
-                    plannedVsExecuted = result.PlannedVsExecuted,
-                     forecast = result.Forecast
-                },
-                 
-            },
-          
+              new { temporalTrend = result.TemporalTrend },
+
         };
 
                 return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+        [HttpGet("GetFinancialProgressSCurve")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> GetFinancialProgressSCurveAsync(int contractID)
+        {
+            try
+            {
+                var result = await _projectManagementBusiness.GetFinancialProgressSCurveAsync(contractID);
+
+
+                if (result is null) return NoContent();
+
+                return Ok(result);
+
+
             }
             catch (Exception ex)
             {
