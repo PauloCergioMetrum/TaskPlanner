@@ -1887,29 +1887,32 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                   Status = r.CalculatedMilestoneStatus
               })
               .ToListAsync();
-
             var temporalTrend = await _context.vw_temporal_trend
-              .AsNoTracking()
-              .Where(r => r.ContractID == contractId)
-              .OrderBy(r => r.Period)
-              .Select(r => new vw_temporal_trend
-              {
-                  ContractID = r.ContractID,
-                  Period = r.Period,
+                .AsNoTracking()
+                .Where(r => r.ContractID == contractId)
+                .ToListAsync();
 
-                  PlannedHoursBaseline = r.PlannedHoursBaseline,
-                  PlannedCostBaseline = r.PlannedCostBaseline,
+          
+            var groupedTrend = temporalTrend
+     .GroupBy(r => r.Period.Date)
+     .Select(g => new vw_temporal_trend
+     {
+         ContractID = g.First().ContractID,
+         Period = g.Key,
+         PlannedHoursBaseline = g.Max(x => x.PlannedHoursBaseline),
+         PlannedCostBaseline = g.Max(x => x.PlannedCostBaseline),
+         ScheduledHours = g.Sum(x => x.ScheduledHours),
+         ScheduledCost = g.Sum(x => x.ScheduledCost),
+         ActualHours = g.Sum(x => x.ActualHours),
+         ActualCost = g.Sum(x => x.ActualCost),
+         TotalBaselineHours = g.Max(x => x.TotalBaselineHours),
+         TotalBaselineCost = g.Max(x => x.TotalBaselineCost)
+     })
+     .OrderBy(r => r.Period)
+     .ToList();
 
-                  ScheduledHours = r.ScheduledHours,
-                  ScheduledCost = r.ScheduledCost,
 
-                  ActualHours = r.ActualHours,
-                  ActualCost = r.ActualCost,
 
-                  TotalBaselineHours = r.TotalBaselineHours,
-                  TotalBaselineCost = r.TotalBaselineCost
-              })
-              .ToListAsync();
 
 
             return new MonitoringResponseDto
