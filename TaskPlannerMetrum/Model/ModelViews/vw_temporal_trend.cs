@@ -1,9 +1,11 @@
-﻿namespace TaskPlannerMetrum.Model.ModelViews
+﻿using System;
+
+namespace TaskPlannerMetrum.Model.ModelViews
 {
     public class vw_temporal_trend
     {
         public int ContractID { get; set; }
-        public string Period { get; set; } = string.Empty;
+        public DateTime Period { get; set; }
 
         public double PlannedHoursBaseline { get; set; }
         public double PlannedCostBaseline { get; set; }
@@ -17,5 +19,8 @@
 
         public double TotalBaselineHours { get; set; }
         public double TotalBaselineCost { get; set; }
+
+
+        public string MonthYearPtBr { get; set; }
     }
 }

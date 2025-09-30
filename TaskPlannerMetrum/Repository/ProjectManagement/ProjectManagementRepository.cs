@@ -1,4 +1,5 @@
 ﻿
+using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Drawing;
 using Memt.Logger;
 using Microsoft.Data.SqlClient;
@@ -1887,29 +1888,43 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                   Status = r.CalculatedMilestoneStatus
               })
               .ToListAsync();
-
             var temporalTrend = await _context.vw_temporal_trend
-              .AsNoTracking()
-              .Where(r => r.ContractID == contractId)
-              .OrderBy(r => r.Period)
-              .Select(r => new vw_temporal_trend
-              {
-                  ContractID = r.ContractID,
-                  Period = r.Period,
+                .AsNoTracking()
+                .Where(r => r.ContractID == contractId)
+                .ToListAsync();
 
-                  PlannedHoursBaseline = r.PlannedHoursBaseline,
-                  PlannedCostBaseline = r.PlannedCostBaseline,
 
-                  ScheduledHours = r.ScheduledHours,
-                  ScheduledCost = r.ScheduledCost,
+            var groupedTrend = temporalTrend
+     .GroupBy(r => r.Period.Date)
+     .Select(g =>
+     {
+         var first = g.First(); 
+         return new vw_temporal_trend
+         {
+             ContractID = first.ContractID,
+             Period = g.Key,
 
-                  ActualHours = r.ActualHours,
-                  ActualCost = r.ActualCost,
+             PlannedHoursBaseline = g.Max(x => x.PlannedHoursBaseline),
+             PlannedCostBaseline = g.Max(x => x.PlannedCostBaseline),
 
-                  TotalBaselineHours = r.TotalBaselineHours,
-                  TotalBaselineCost = r.TotalBaselineCost
-              })
-              .ToListAsync();
+             ScheduledHours = g.Sum(x => x.ScheduledHours),
+             ScheduledCost = g.Sum(x => x.ScheduledCost),
+
+             ActualHours = g.Sum(x => x.ActualHours),
+             ActualCost = g.Sum(x => x.ActualCost),
+
+             TotalBaselineHours = g.Max(x => x.TotalBaselineHours),
+             TotalBaselineCost = g.Max(x => x.TotalBaselineCost),
+
+            
+             MonthYearPtBr = first.MonthYearPtBr
+         };
+     })
+     .OrderBy(r => r.Period)
+     .ToList();
+
+
+
 
 
             return new MonitoringResponseDto
