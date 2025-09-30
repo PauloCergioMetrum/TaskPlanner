@@ -1,4 +1,5 @@
 ﻿
+using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Drawing;
 using Memt.Logger;
 using Microsoft.Data.SqlClient;
@@ -1892,24 +1893,37 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 .Where(r => r.ContractID == contractId)
                 .ToListAsync();
 
-          
+
+
             var groupedTrend = temporalTrend
      .GroupBy(r => r.Period.Date)
-     .Select(g => new vw_temporal_trend
+     .Select(g =>
      {
-         ContractID = g.First().ContractID,
-         Period = g.Key,
-         PlannedHoursBaseline = g.Max(x => x.PlannedHoursBaseline),
-         PlannedCostBaseline = g.Max(x => x.PlannedCostBaseline),
-         ScheduledHours = g.Sum(x => x.ScheduledHours),
-         ScheduledCost = g.Sum(x => x.ScheduledCost),
-         ActualHours = g.Sum(x => x.ActualHours),
-         ActualCost = g.Sum(x => x.ActualCost),
-         TotalBaselineHours = g.Max(x => x.TotalBaselineHours),
-         TotalBaselineCost = g.Max(x => x.TotalBaselineCost)
+         var first = g.First(); 
+         return new vw_temporal_trend
+         {
+             ContractID = first.ContractID,
+             Period = g.Key,
+
+             PlannedHoursBaseline = g.Max(x => x.PlannedHoursBaseline),
+             PlannedCostBaseline = g.Max(x => x.PlannedCostBaseline),
+
+             ScheduledHours = g.Sum(x => x.ScheduledHours),
+             ScheduledCost = g.Sum(x => x.ScheduledCost),
+
+             ActualHours = g.Sum(x => x.ActualHours),
+             ActualCost = g.Sum(x => x.ActualCost),
+
+             TotalBaselineHours = g.Max(x => x.TotalBaselineHours),
+             TotalBaselineCost = g.Max(x => x.TotalBaselineCost),
+
+            
+             MonthYearPtBr = first.MonthYearPtBr
+         };
      })
      .OrderBy(r => r.Period)
      .ToList();
+
 
 
 

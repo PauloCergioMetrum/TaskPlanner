@@ -19,5 +19,8 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
         public double TotalBaselineHours { get; set; }
         public double TotalBaselineCost { get; set; }
+
+
+        public string MonthYearPtBr { get; set; }
     }
 }
