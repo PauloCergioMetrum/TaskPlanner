@@ -1894,6 +1894,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                 .ToListAsync();
 
 
+
             var groupedTrend = temporalTrend
      .GroupBy(r => r.Period.Date)
      .Select(g =>
@@ -1925,6 +1926,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
      })
      .OrderBy(r => r.Period)
      .ToList();
+
 
 
 
