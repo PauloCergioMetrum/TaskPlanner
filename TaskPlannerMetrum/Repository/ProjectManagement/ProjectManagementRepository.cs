@@ -1917,7 +1917,10 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
              TotalBaselineCost = g.Max(x => x.TotalBaselineCost),
 
             
-             MonthYearPtBr = first.MonthYearPtBr
+             MonthYearPtBr = first.MonthYearPtBr,
+             ScheduledHoursAccumulated = g.Max(x => x.ScheduledHoursAccumulated),
+             ScheduledCostAccumulated = g.Max(x => x.ScheduledCostAccumulated),
+
          };
      })
      .OrderBy(r => r.Period)

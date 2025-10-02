@@ -22,5 +22,8 @@ namespace TaskPlannerMetrum.Model.ModelViews
 
 
         public string MonthYearPtBr { get; set; }
+
+        public double ScheduledHoursAccumulated { get; set; }
+        public double ScheduledCostAccumulated { get; set; }
     }
 }
