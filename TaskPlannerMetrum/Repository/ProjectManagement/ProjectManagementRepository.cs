@@ -244,35 +244,42 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
 
         public bool DeleteMilestones(string ID, int MilestonesID)
         {
+            var value = _context.MilestonesValue.FirstOrDefault(m => m.ID == ID)
+                ?? throw new InvalidOperationException("Registro do marco não encontrado.");
 
-            var milestone = _context.MilestonesValue.FirstOrDefault(m => m.ID == ID);
+            var milestoneId = value.MilestonesID;
 
+            var contractId = _context.MilestonesItem
+                .Where(mi => mi.ID == milestoneId)
+                .Select(mi => mi.ContractID)
+                .FirstOrDefault();
 
-            if (milestone != null)
+            var hasTasks = (contractId != 0)
+                ? _context.ActivityPlan.Any(ap => ap.MilestonesID == milestoneId && ap.ContractID == contractId)
+                : _context.ActivityPlan.Any(ap => ap.MilestonesID == milestoneId);
+
+            if (hasTasks)
+                throw new InvalidOperationException("Não é possível excluir: existem tarefas vinculadas a este marco.");
+
+            _context.MilestonesValue.Remove(value);
+            _context.SaveChanges();
+
+            var stillHasValues = _context.MilestonesValue.Any(m => m.MilestonesID == milestoneId);
+            if (!stillHasValues)
             {
-
-                int milestoneId = milestone.MilestonesID;
-
-
-                _context.MilestonesValue.Remove(milestone);
-                _context.SaveChanges();
-
-
-                int remainingMilestonesCount = _context.MilestonesValue.Count(m => m.MilestonesID == milestoneId);
-
-
-                int milestonesItemCount = _context.MilestonesItem.Count(m => m.ID == MilestonesID);
-
-                if (remainingMilestonesCount > 0 || milestonesItemCount > 1)
-                {
-                    return true;
-                }
-
-                return MilesTonesDelete(MilestonesID);
+                var ok = MilesTonesDelete(milestoneId);
+                if (!ok)
+                    throw new InvalidOperationException("Milestone removido parcialmente: não foi possível remover o item.");
             }
 
-            return false;
+            return true;
         }
+
+
+
+
+
+
 
         public bool MilesTonesDelete(int ID)
         {
