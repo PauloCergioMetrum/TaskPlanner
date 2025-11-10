@@ -1,12 +1,13 @@
-﻿namespace TaskPlannerMetrum.Repository.Clients
+﻿using ClientEntity = TaskPlannerMetrum.Model.Clients;
+
+namespace TaskPlannerMetrum.Repository.Clients
 {
     public interface IClientsRepository
     {
-        bool CreateClients(Model.Clients clients);
-
-        bool ExistCnpj(Model.Clients clients);
-
-
-
+        bool CreateClients(ClientEntity clients);
+        bool UpdateClients(ClientEntity clients);
+        bool DeleteClients(int id);
+        ClientEntity GetById(int id);
+        bool ExistCnpj(ClientEntity clients);
     }
 }
