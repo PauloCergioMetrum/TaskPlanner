@@ -424,6 +424,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                   ValueUnit = pm.ValueUnit,
                   Description = pm.Description,
                   ContractID = pm.ContractID,
+                  DatePerformed = pm.DatePerformed,
                   Total = pm.Total ?? 0,
                   TotalPlanned = pm.TotalPlanned,
                   Difference = pm.Difference ?? 0
@@ -447,6 +448,7 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
                     existingCostMade.ValueUnit = pmCostMade.ValueUnit;
                     existingCostMade.Description = pmCostMade.Description;
                     existingCostMade.Pm_Cost_Planned_Id = pmCostMade.Pm_Cost_Planned_Id;
+                    existingCostMade.DatePerformed = pmCostMade.DatePerformed;
                     _context.SaveChanges();
                     return true;
                 }
