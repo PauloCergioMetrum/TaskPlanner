@@ -1100,6 +1100,12 @@ namespace TaskPlannerMetrum.Business.Implementations
         {
             return _projectmanagementRepository.GetFinancialProgressSCurveAsync(contractId);
         }
+
+
+        public Task<List<vw_ContractTimeline_DataValor>> GetContractTimeline_DataValor(int contractId)
+        {
+            return _projectmanagementRepository.GetContractTimeline_DataValor(contractId);
+        }
     }
 }
 

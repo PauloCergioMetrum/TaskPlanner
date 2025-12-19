@@ -1955,6 +1955,15 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         {
             return await _context.vw_FinancialProgressSCurve.FirstOrDefaultAsync(p => p.ContractID == contractId);
         }
+
+
+        public async Task<List<vw_ContractTimeline_DataValor>> GetContractTimeline_DataValor(int contractId)
+        {
+            return await _context.Set<vw_ContractTimeline_DataValor>()
+                .Where(x => x.ContractID == contractId)
+                .OrderBy(x => x.Data)
+                .ToListAsync();
+        }
     }
 }
 

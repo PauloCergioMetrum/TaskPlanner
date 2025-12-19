@@ -172,6 +172,7 @@ namespace TaskPlannerMetrum.Business
         Task<MonitoringResponseDto?> GetCardsByContractIdAsync(int contractId);
 
         Task<vw_FinancialProgressSCurve?> GetFinancialProgressSCurveAsync(int contractId);
+        Task<List<vw_ContractTimeline_DataValor>> GetContractTimeline_DataValor(int contractId);
 
     }
 

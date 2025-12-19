@@ -143,6 +143,11 @@ namespace TaskPlannerMetrum.Model.Context
         public DbSet<vw_temporal_trend> vw_temporal_trend { get; set; }
 
         public DbSet<vw_FinancialProgressSCurve> vw_FinancialProgressSCurve { get; set; }
+
+        public DbSet<vw_ContractTimeline_DataValor> vw_ContractTimeline_DataValor { get; set; }
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<vRightCardValue>().HasNoKey();
@@ -188,7 +193,14 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetProjectExecutiveStatusResultDto>().HasNoKey();
             modelBuilder.Entity<GetMilestoneFullReportByContract>().HasNoKey();
 
-
+            modelBuilder.Entity<vw_ContractTimeline_DataValor>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("vw_ContractTimeline_DataValor");
+                entity.Property(e => e.ContractID).HasColumnName("ContractID");
+                entity.Property(e => e.Data).HasColumnName("Data");
+                entity.Property(e => e.Valor).HasColumnName("Valor");
+            });
 
             modelBuilder.Entity<VwMilestonesData>()
                 .HasNoKey()
