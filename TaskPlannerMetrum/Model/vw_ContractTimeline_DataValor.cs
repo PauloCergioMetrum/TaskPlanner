@@ -2,7 +2,7 @@
 
 namespace TaskPlannerMetrum.Model
 {
-    public class vw_ContractTimeline_DataValor
+    public class vw_ContractTimelineDateValue
     {
 
         public int ContractID { get; set; }

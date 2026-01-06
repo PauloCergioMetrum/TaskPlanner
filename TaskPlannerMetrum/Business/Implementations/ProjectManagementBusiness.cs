@@ -1102,9 +1102,9 @@ namespace TaskPlannerMetrum.Business.Implementations
         }
 
 
-        public Task<List<vw_ContractTimeline_DataValor>> GetContractTimeline_DataValor(int contractId)
+        public Task<List<vw_ContractTimelineDateValue>> GetContractTimelineDateValue(int contractId)
         {
-            return _projectmanagementRepository.GetContractTimeline_DataValor(contractId);
+            return _projectmanagementRepository.GetContractTimelineDateValue(contractId);
         }
     }
 }

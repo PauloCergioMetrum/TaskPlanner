@@ -1957,9 +1957,9 @@ namespace TaskPlannerMetrum.Repository.ProjectManagement
         }
 
 
-        public async Task<List<vw_ContractTimeline_DataValor>> GetContractTimeline_DataValor(int contractId)
+        public async Task<List<vw_ContractTimelineDateValue>> GetContractTimelineDateValue(int contractId)
         {
-            return await _context.Set<vw_ContractTimeline_DataValor>()
+            return await _context.Set<vw_ContractTimelineDateValue>()
                 .Where(x => x.ContractID == contractId)
                 .OrderBy(x => x.Data)
                 .ToListAsync();

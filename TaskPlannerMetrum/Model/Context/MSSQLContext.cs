@@ -144,7 +144,7 @@ namespace TaskPlannerMetrum.Model.Context
 
         public DbSet<vw_FinancialProgressSCurve> vw_FinancialProgressSCurve { get; set; }
 
-        public DbSet<vw_ContractTimeline_DataValor> vw_ContractTimeline_DataValor { get; set; }
+        public DbSet<vw_ContractTimelineDateValue> vw_ContractTimelineDateValue { get; set; }
 
 
 
@@ -193,10 +193,10 @@ namespace TaskPlannerMetrum.Model.Context
             modelBuilder.Entity<GetProjectExecutiveStatusResultDto>().HasNoKey();
             modelBuilder.Entity<GetMilestoneFullReportByContract>().HasNoKey();
 
-            modelBuilder.Entity<vw_ContractTimeline_DataValor>(entity =>
+            modelBuilder.Entity<vw_ContractTimelineDateValue>(entity =>
             {
                 entity.HasNoKey();
-                entity.ToView("vw_ContractTimeline_DataValor");
+                entity.ToView("vw_ContractTimelineDateValue");
                 entity.Property(e => e.ContractID).HasColumnName("ContractID");
                 entity.Property(e => e.Data).HasColumnName("Data");
                 entity.Property(e => e.Valor).HasColumnName("Valor");

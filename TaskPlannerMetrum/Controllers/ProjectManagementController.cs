@@ -1644,15 +1644,15 @@ namespace TaskPlannerMetrum.Controllers
 
 
 
-        [HttpGet("GetContractTimeline_DataValor")]
+        [HttpGet("GetContractTimelineDateValue")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        public async Task<IActionResult> GetContractTimeline_DataValor(int contractID)
+        public async Task<IActionResult> GetContractTimelineDateValue(int contractID)
         {
             var result =
-                await _projectManagementBusiness.GetContractTimeline_DataValor(contractID);
+                await _projectManagementBusiness.GetContractTimelineDateValue(contractID);
 
             if (result == null || result.Count == 0)
                 return NoContent();
