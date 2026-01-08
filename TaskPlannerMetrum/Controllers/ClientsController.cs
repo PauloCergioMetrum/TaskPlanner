@@ -18,9 +18,6 @@ namespace TaskPlannerMetrum.Controllers
     {
         private readonly ILogger<ClientsController> _logger;
         private readonly IClientsBusiness _clientsBusiness;
-        //  Mensagens de usuário estão neste Controller por simplicidade.
-        // Em produção, o ideal seria centralizar no middleware 
-        //  Revisar e mover mensagens para uma camada própria quando possível.
 
         private class ApiResponse<T>
         {
