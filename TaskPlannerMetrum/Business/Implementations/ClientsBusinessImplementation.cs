@@ -1,54 +1,64 @@
 ﻿using System.Linq;
 using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.DTO;
 using TaskPlannerMetrum.Repository.Clients;
 using TaskPlannerMetrum.Repository.Generic;
-
 
 namespace TaskPlannerMetrum.Business.Implementations
 {
     public class ClientsBusinessImplementation : IClientsBusiness
     {
         private readonly IRepository<Clients> _repository;
-
         private readonly IClientsRepository _repositoryClients;
 
-        public ClientsBusinessImplementation(IRepository<Clients> repository , IClientsRepository repositoryClients )
+        public ClientsBusinessImplementation(IRepository<Clients> repository, IClientsRepository repositoryClients)
         {
             _repository = repository;
             _repositoryClients = repositoryClients;
         }
 
-
-
-
-
-
-       
-
-        public bool CreateClients(Clients clients)
-        {
-             return _repositoryClients.CreateClients(clients);
-
-
-         
-
-        }
-
-        public bool ExistCnpj(Clients clients)
-        {
-            return _repositoryClients.ExistCnpj(clients);
-
-        }
-
         public dynamic FindAll()
         {
-            var clients = _repository.FindAll().OrderBy(n => n.Name);
-            return clients;
+            return _repository
+                .FindAll()
+                .Where(c => c.SoftDelete == null || c.SoftDelete == false)
+                .OrderBy(c => c.Name);
         }
 
-        public object FindById(int id)
+        public string NormalizeCnpj(string value)
         {
-            throw new System.NotImplementedException();
+            return _repositoryClients.NormalizeCnpj(value);
+        }
+
+        public Clients GetByCnpjIncludingSoftDeleted(string cnpj)
+        {
+            var normalized = _repositoryClients.NormalizeCnpj(cnpj);
+            return _repositoryClients.GetByCnpjIncludingSoftDeleted(normalized);
+        }
+
+        public bool CreateClients(ClientCreateDto dto)
+        {
+            return _repositoryClients.CreateClients(dto);
+        }
+
+        public bool ReactivateClient(Clients existing, ClientCreateDto dto)
+        {
+            return _repositoryClients.ReactivateClient(existing, dto);
+        }
+
+        public bool ExistClientIdInContracts(int id)
+        {
+            return _repositoryClients.ExistClientIdInContracts(id);
+        }
+
+        public bool DeleteClientById(int id)
+        {
+            return _repositoryClients.DeleteClientById(id);
+        }
+
+        public bool UpdateClients(Clients clients)
+        {
+            return _repositoryClients.UpdateClients(clients);
         }
     }
 }

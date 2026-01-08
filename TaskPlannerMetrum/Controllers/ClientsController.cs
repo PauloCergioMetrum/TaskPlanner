@@ -4,96 +4,114 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Intrinsics.X86;
 using TaskPlannerMetrum.Business;
 using TaskPlannerMetrum.Model;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using TaskPlannerMetrum.Model.DTO;
 
 namespace TaskPlannerMetrum.Controllers
 {
-
     [ApiController]
+    [ApiVersion("1.0")]
     [Route("api/[controller]/v{version:apiVersion}")]
     [Authorize(Roles = "4,1,DEPCNT")]
     public class ClientsController : ControllerBase
     {
         private readonly ILogger<ClientsController> _logger;
-
-        // Declaration of the service used
-        private IClientsBusiness _clientsBusiness;
+        private readonly IClientsBusiness _clientsBusiness;
 
         public ClientsController(ILogger<ClientsController> logger, IClientsBusiness clientsBusiness)
         {
             _logger = logger;
             _clientsBusiness = clientsBusiness;
-
         }
 
-        // Maps GET requests to https://localhost:{port}/api/person
-        // Get no parameters for FindAll -> Search All
         [HttpGet]
         [ProducesResponseType((200), Type = typeof(List<Clients>))]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             try
             {
                 return Ok(_clientsBusiness.FindAll());
-
             }
             catch (Exception ex)
             {
                 Logger.Log(ex.Message, ELoggerType.Debug);
-
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
-
         [HttpPost]
         [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
-        //[TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult CreateClients(Model.Clients clients)
+        public IActionResult CreateClients([FromBody] ClientCreateDto dto)
         {
             try
             {
-                if (_clientsBusiness.ExistCnpj(clients))
+                if (dto == null || string.IsNullOrWhiteSpace(dto.Cnpj))
+                    return BadRequest(new { message = "Cnpj é obrigatório." });
+
+                var normalized = _clientsBusiness.NormalizeCnpj(dto.Cnpj);
+                var existing = _clientsBusiness.GetByCnpjIncludingSoftDeleted(normalized);
+
+                if (existing != null)
                 {
-                    return BadRequest("Cliente já cadastrado.");
-                }
-                else
-                {
-                    return Ok(_clientsBusiness.CreateClients(clients));
+                    var wasSoftDeleted = existing.SoftDelete == true;
+
+                    var okSave = _clientsBusiness.ReactivateClient(existing, dto);
+                    if (!okSave)
+                        return BadRequest(new { message = "Não foi possível salvar o cliente." });
+
+                    if (wasSoftDeleted)
+                        return Ok(new { message = "Cliente reativado com sucesso." });
+
+                    return Ok(new { message = "Cliente atualizado com sucesso." });
                 }
 
-            
+                var okCreate = _clientsBusiness.CreateClients(dto);
+                if (!okCreate)
+                    return BadRequest(new { message = "Não foi possível cadastrar o cliente." });
+
+                return Ok(new { message = "Cliente cadastrado com sucesso." });
             }
             catch (Exception ex)
             {
-                Logger.Log(ex.Message, ELoggerType.Debug);
-
-                return BadRequest(ex.Message);
+                var msg = ex.InnerException?.Message ?? ex.Message;
+                Logger.Log(msg, ELoggerType.Debug);
+                return BadRequest(new { message = msg });
             }
         }
 
 
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
+        public IActionResult DeleteClientById(int id)
+        {
+            try
+            {
+                if (id <= 0)
+                    return BadRequest(new { message = "Id é obrigatório." });
 
+                if (_clientsBusiness.ExistClientIdInContracts(id))
+                    return Conflict(new { message = "Não é possível remover o cliente: há pedidos de venda vinculados. Em Pedidos de Venda, troque o cliente  para outro e tente novamente." });
 
+                var ok = _clientsBusiness.DeleteClientById(id);
+                if (!ok)
+                    return NotFound(new { message = "Cliente não encontrado ou já foi excluído." });
 
-
-
-
-
-
-
-
+                return Ok(new { message = "Cliente excluído com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
-
-
 }

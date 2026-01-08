@@ -1,19 +1,25 @@
-﻿using TaskPlannerMetrum.Model;
-using Pomelo.EntityFrameworkCore.MySql.Metadata.Internal;
+﻿
+using TaskPlannerMetrum.Model;
+using TaskPlannerMetrum.Model.DTO;
+
 namespace TaskPlannerMetrum.Business
 {
     public interface IClientsBusiness
     {
-
-
-        
         dynamic FindAll();
-        object FindById(int id);
-        bool CreateClients(Model.Clients clients);
-      
-        bool ExistCnpj(Model.Clients clients);
 
+        Clients GetByCnpjIncludingSoftDeleted(string cnpj);
 
+        bool CreateClients(ClientCreateDto dto);
 
+        bool ReactivateClient(Clients existing, ClientCreateDto dto);
+
+        bool ExistClientIdInContracts(int id);
+
+        bool DeleteClientById(int id);
+
+        bool UpdateClients(Clients clients);
+
+        string NormalizeCnpj(string value);
     }
 }
