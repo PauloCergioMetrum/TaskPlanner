@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
 using TaskPlannerMetrum.Model.Context;
-using ClientEntity = TaskPlannerMetrum.Model.Clients;
+
+using TaskPlannerMetrum.Model.DTO;
+using ClientsModel = TaskPlannerMetrum.Model.Clients;
+
 
 namespace TaskPlannerMetrum.Repository.Clients
 {
@@ -14,48 +17,104 @@ namespace TaskPlannerMetrum.Repository.Clients
             _context = context;
         }
 
-        public bool CreateClients(ClientEntity clients)
+
+        public string NormalizeCnpj(string value)
         {
-            var duplicate = _context.Clients.FirstOrDefault(c => c.Cnpj == clients.Cnpj && c.Id != clients.Id);
-            if (duplicate != null) throw new InvalidOperationException("DUPLICATE_CNPJ");
-            _context.Clients.Add(clients);
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            return new string(value.Where(char.IsDigit).ToArray());
+        }
+
+        public ClientsModel GetByCnpjIncludingSoftDeleted(string normalizedCnpj)
+        {
+            return _context.Clients.FirstOrDefault(c => c.Cnpj == normalizedCnpj);
+        }
+
+        public bool CreateClients(ClientCreateDto dto)
+        {
+            if (dto == null) return false;
+
+            var entity = new ClientsModel
+            {
+                Cnpj = NormalizeCnpj(dto.Cnpj),
+                Name = dto.Name,
+                City = dto.City,
+                State = dto.State,
+                Country = dto.Country,
+                Address = dto.Address,
+                PMContactName = dto.PMContactName,
+                PMPhoneNumber = dto.PMPhoneNumber,
+                WorkspaceID = dto.WorkspaceID,
+                SoftDelete = false,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _context.Clients.Add(entity);
+            _context.SaveChanges();
+
+            return true;
+        }
+
+        public bool ReactivateClient(ClientsModel existing, ClientCreateDto dto)
+        {
+            if (existing == null || dto == null) return false;
+
+            existing.SoftDelete = false;
+            existing.UpdatedAt = DateTime.UtcNow;
+            existing.Cnpj = NormalizeCnpj(dto.Cnpj);
+            existing.Name = dto.Name;
+            existing.City = dto.City;
+            existing.State = dto.State;
+            existing.Country = dto.Country;
+            existing.Address = dto.Address;
+            existing.PMContactName = dto.PMContactName;
+            existing.PMPhoneNumber = dto.PMPhoneNumber;
+            existing.WorkspaceID = dto.WorkspaceID;
+
+            _context.SaveChanges();
+
+            return true;
+        }
+
+        public bool ExistClientIdInContracts(int id)
+        {
+            return _context.Contracts.Any(x => x.ClientID == id && (x.IsDeleted == null || x.IsDeleted == false));
+        }
+
+
+        public bool DeleteClientById(int id)
+        {
+            var client = _context.Clients.FirstOrDefault(c => c.Id == id && (c.SoftDelete == null || c.SoftDelete == false));
+            if (client == null) return false;
+            client.SoftDelete = true;
+            client.UpdatedAt = DateTime.UtcNow;
             _context.SaveChanges();
             return true;
         }
 
-        public bool UpdateClients(ClientEntity clients)
+
+        public bool UpdateClients(ClientsModel clients)
         {
-            var current = _context.Clients.FirstOrDefault(c => c.Id == clients.Id);
-            if (current == null) return false;
-            var duplicate = _context.Clients.FirstOrDefault(c => c.Cnpj == clients.Cnpj && c.Id != clients.Id);
-            if (duplicate != null) throw new InvalidOperationException("DUPLICATE_CNPJ");
-            _context.Entry(current).CurrentValues.SetValues(clients);
+            if (clients == null) return false;
+            if (clients.Id <= 0) return false;
+
+            var existing = _context.Clients.FirstOrDefault(c => c.Id == clients.Id);
+            if (existing == null) return false;
+            existing.Name = clients.Name;
+            existing.City = clients.City;
+            existing.State = clients.State;
+            existing.Country = clients.Country;
+            existing.Address = clients.Address;
+            existing.PMContactName = clients.PMContactName;
+            existing.PMPhoneNumber = clients.PMPhoneNumber;
+            existing.WorkspaceID = clients.WorkspaceID;
+            existing.UpdatedAt = DateTime.UtcNow;
+            if (!string.IsNullOrWhiteSpace(clients.Cnpj))
+                existing.Cnpj = NormalizeCnpj(clients.Cnpj);
+
             _context.SaveChanges();
+
             return true;
         }
 
-        public bool DeleteClients(int id)
-        {
-            var current = _context.Clients.FirstOrDefault(c => c.Id == id);
-            if (current == null) return false;
-
-
-            var hasContracts = _context.Contracts.Any(c => c.ClientID == id);
-
-            if (hasContracts)
-                throw new InvalidOperationException("HAS_CONTRACTS");
-
-            _context.Clients.Remove(current);
-            _context.SaveChanges();
-            return true;
-        }
-
-        public ClientEntity GetById(int id) => _context.Clients.FirstOrDefault(c => c.Id == id);
-
-        public bool ExistCnpj(ClientEntity clients)
-        {
-            var exist = _context.Clients.FirstOrDefault(c => c.Cnpj == clients.Cnpj && c.Id != clients.Id);
-            return exist != null;
-        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Text.Json.Serialization;
 using TaskPlannerMetrum.Model.Base;
 
 namespace TaskPlannerMetrum.Model
@@ -15,5 +16,7 @@ namespace TaskPlannerMetrum.Model
         public string PMContactName { get; set; }
         public string PMPhoneNumber { get; set; }
         public string Cnpj { get; set; }
+        public bool? SoftDelete { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }
