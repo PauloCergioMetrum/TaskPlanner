@@ -2,12 +2,10 @@
 using TaskPlannerMetrum.Model.DTO;
 using ClientsModel = TaskPlannerMetrum.Model.Clients;
 
-
 namespace TaskPlannerMetrum.Repository.Clients
 {
     public interface IClientsRepository
     {
-
         string NormalizeCnpj(string value);
         ClientsModel GetByCnpjIncludingSoftDeleted(string normalizedCnpj);
         bool CreateClients(ClientCreateDto dto);
@@ -16,5 +14,6 @@ namespace TaskPlannerMetrum.Repository.Clients
         bool DeleteClientById(int id);
         bool UpdateClients(ClientsModel clients);
 
+        string UpsertClientByCnpj(ClientCreateDto dto);
     }
 }

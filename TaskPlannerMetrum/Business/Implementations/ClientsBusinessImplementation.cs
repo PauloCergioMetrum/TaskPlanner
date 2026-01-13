@@ -1,8 +1,6 @@
 using System.Linq;
-
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
-
 using TaskPlannerMetrum.Repository.Clients;
 using TaskPlannerMetrum.Repository.Generic;
 
@@ -10,17 +8,14 @@ namespace TaskPlannerMetrum.Business.Implementations
 {
     public class ClientsBusinessImplementation : IClientsBusiness
     {
-
         private readonly IRepository<Clients> _repository;
         private readonly IClientsRepository _repositoryClients;
 
         public ClientsBusinessImplementation(IRepository<Clients> repository, IClientsRepository repositoryClients)
-
         {
             _repository = repository;
             _repositoryClients = repositoryClients;
         }
-
 
         public dynamic FindAll()
         {
@@ -66,5 +61,9 @@ namespace TaskPlannerMetrum.Business.Implementations
             return _repositoryClients.UpdateClients(clients);
         }
 
+        public string UpsertClientByCnpj(ClientCreateDto dto)
+        {
+            return _repositoryClients.UpsertClientByCnpj(dto);
+        }
     }
 }

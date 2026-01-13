@@ -1,16 +1,12 @@
 ﻿using Memt.Logger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using TaskPlannerMetrum.Business;
-
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
-
 
 namespace TaskPlannerMetrum.Controllers
 {
@@ -23,8 +19,6 @@ namespace TaskPlannerMetrum.Controllers
         private readonly ILogger<ClientsController> _logger;
         private readonly IClientsBusiness _clientsBusiness;
 
-
-
         public ClientsController(ILogger<ClientsController> logger, IClientsBusiness clientsBusiness)
         {
             _logger = logger;
@@ -32,7 +26,7 @@ namespace TaskPlannerMetrum.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<ClientEntity>))]
+        [ProducesResponseType((200), Type = typeof(List<Clients>))]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -40,20 +34,16 @@ namespace TaskPlannerMetrum.Controllers
         {
             try
             {
-
                 return Ok(_clientsBusiness.FindAll());
-
             }
             catch (Exception ex)
             {
                 Logger.Log(ex.Message, ELoggerType.Debug);
-
                 return BadRequest(new { message = ex.Message });
-
             }
         }
-        [HttpPost]
 
+        [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -64,26 +54,16 @@ namespace TaskPlannerMetrum.Controllers
                 if (dto == null || string.IsNullOrWhiteSpace(dto.Cnpj))
                     return BadRequest(new { message = "Cnpj é obrigatório." });
 
-                var normalized = _clientsBusiness.NormalizeCnpj(dto.Cnpj);
-                var existing = _clientsBusiness.GetByCnpjIncludingSoftDeleted(normalized);
+                var result = _clientsBusiness.UpsertClientByCnpj(dto);
 
-                if (existing != null)
-                {
-                    var wasSoftDeleted = existing.SoftDelete == true;
+                if (result == null)
+                    return BadRequest(new { message = "Não foi possível salvar o cliente." });
 
-                    var okSave = _clientsBusiness.ReactivateClient(existing, dto);
-                    if (!okSave)
-                        return BadRequest(new { message = "Não foi possível salvar o cliente." });
+                if (result == "reactivated")
+                    return Ok(new { message = "Cliente reativado com sucesso." });
 
-                    if (wasSoftDeleted)
-                        return Ok(new { message = "Cliente reativado com sucesso." });
-
+                if (result == "updated")
                     return Ok(new { message = "Cliente atualizado com sucesso." });
-                }
-
-                var okCreate = _clientsBusiness.CreateClients(dto);
-                if (!okCreate)
-                    return BadRequest(new { message = "Não foi possível cadastrar o cliente." });
 
                 return Ok(new { message = "Cliente cadastrado com sucesso." });
             }
@@ -92,22 +72,8 @@ namespace TaskPlannerMetrum.Controllers
                 var msg = ex.InnerException?.Message ?? ex.Message;
                 Logger.Log(msg, ELoggerType.Debug);
                 return BadRequest(new { message = msg });
-
             }
         }
-
-        [HttpPut("{id:int}")]
-        [ProducesResponseType(200, Type = typeof(ClientEntity))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(409)]
-        public IActionResult UpdateClients(int id, ClientEntity clients)
-        {
-            try
-            {
-                if (id != clients.Id) return BadRequestMsg("O Id do caminho difere do corpo.");
-
 
         [HttpDelete("{id:int}")]
         [ProducesResponseType(200)]
@@ -123,22 +89,58 @@ namespace TaskPlannerMetrum.Controllers
                     return BadRequest(new { message = "Id é obrigatório." });
 
                 if (_clientsBusiness.ExistClientIdInContracts(id))
-                    return Conflict(new { message = "Não é possível remover o cliente: há pedidos de venda vinculados. Em Pedidos de Venda, troque o cliente  para outro e tente novamente." });
+                    return Conflict(new
+                    {
+                        message = "Não é possível excluir este cliente porque existem pedidos de venda vinculados a ele. Para excluir, acesse a tela de Pedido de Venda, altere o cliente desses pedidos para outro cliente e, em seguida, tente excluir este cliente novamente."
+                    });
 
                 var ok = _clientsBusiness.DeleteClientById(id);
                 if (!ok)
                     return NotFound(new { message = "Cliente não encontrado ou já foi excluído." });
 
                 return Ok(new { message = "Cliente excluído com sucesso." });
-
             }
             catch (Exception ex)
             {
                 Logger.Log(ex.Message, ELoggerType.Debug);
-
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateClientById(int id, [FromBody] Clients clients)
+        {
+            try
+            {
+                if (id <= 0)
+                    return BadRequest(new { message = "Id é obrigatório." });
+
+                if (clients == null)
+                    return BadRequest(new { message = "Payload inválido." });
+
+                clients.Id = id;
+
+                if (!string.IsNullOrWhiteSpace(clients.Cnpj))
+                    clients.Cnpj = _clientsBusiness.NormalizeCnpj(clients.Cnpj);
+
+                var ok = _clientsBusiness.UpdateClients(clients);
+
+                if (!ok)
+                    return NotFound(new { message = "Cliente não encontrado." });
+
+                return Ok(new { message = "Cliente atualizado com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ELoggerType.Debug);
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
     }
 }
-

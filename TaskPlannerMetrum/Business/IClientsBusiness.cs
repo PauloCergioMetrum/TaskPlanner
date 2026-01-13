@@ -1,14 +1,11 @@
-
 using TaskPlannerMetrum.Model;
 using TaskPlannerMetrum.Model.DTO;
-
 
 namespace TaskPlannerMetrum.Business
 {
     public interface IClientsBusiness
     {
         dynamic FindAll();
-
 
         Clients GetByCnpjIncludingSoftDeleted(string cnpj);
         bool CreateClients(ClientCreateDto dto);
@@ -18,5 +15,6 @@ namespace TaskPlannerMetrum.Business
         bool UpdateClients(Clients clients);
         string NormalizeCnpj(string value);
 
+        string UpsertClientByCnpj(ClientCreateDto dto);
     }
 }
