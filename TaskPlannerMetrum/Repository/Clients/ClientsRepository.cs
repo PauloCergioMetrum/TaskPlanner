@@ -148,7 +148,7 @@ namespace TaskPlannerMetrum.Repository.Clients
         
             if (existing.SoftDelete == null || existing.SoftDelete == false)
             {
-                return "exists";
+                return "exuxt";
             }
 
             existing.SoftDelete = false;
