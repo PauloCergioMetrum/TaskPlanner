@@ -119,10 +119,8 @@ namespace TaskPlannerMetrum.Repository.Clients
 
             var normalized = NormalizeCnpj(dto.Cnpj);
             if (string.IsNullOrWhiteSpace(normalized)) return null;
-
             var existing = _context.Clients.FirstOrDefault(c => c.Cnpj == normalized);
-
-          
+      
             if (existing == null)
             {
                 var entity = new ClientsModel
@@ -144,14 +142,11 @@ namespace TaskPlannerMetrum.Repository.Clients
                 _context.SaveChanges();
                 return "created";
             }
-
-     
+          
             if (existing.SoftDelete == null || existing.SoftDelete == false)
             {
                 return "exists";
-            }
-
-         
+            }          
             existing.SoftDelete = false;
             existing.UpdatedAt = DateTime.UtcNow;
             existing.Cnpj = normalized;
@@ -167,6 +162,7 @@ namespace TaskPlannerMetrum.Repository.Clients
             _context.SaveChanges();
             return "reactivated";
         }
+
 
     }
 }
