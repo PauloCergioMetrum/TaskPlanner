@@ -150,6 +150,7 @@ namespace TaskPlannerMetrum.Repository.Clients
             {
                 return "exuxt";
             }
+            //apagar depois
 
             existing.SoftDelete = false;
             existing.UpdatedAt = DateTime.UtcNow;
