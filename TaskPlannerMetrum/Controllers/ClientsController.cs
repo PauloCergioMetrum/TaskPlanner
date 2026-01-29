@@ -47,6 +47,7 @@ namespace TaskPlannerMetrum.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
         public IActionResult CreateClients([FromBody] ClientCreateDto dto)
         {
             try
@@ -59,11 +60,11 @@ namespace TaskPlannerMetrum.Controllers
                 if (result == null)
                     return BadRequest(new { message = "Não foi possível salvar o cliente." });
 
+                if (result == "exists")
+                    return Conflict(new { message = "Cliente já cadastrado." });
+
                 if (result == "reactivated")
                     return Ok(new { message = "Cliente reativado com sucesso." });
-
-                if (result == "updated")
-                    return Ok(new { message = "Cliente atualizado com sucesso." });
 
                 return Ok(new { message = "Cliente cadastrado com sucesso." });
             }
@@ -74,6 +75,7 @@ namespace TaskPlannerMetrum.Controllers
                 return BadRequest(new { message = msg });
             }
         }
+
 
         [HttpDelete("{id:int}")]
         [ProducesResponseType(200)]

@@ -122,6 +122,7 @@ namespace TaskPlannerMetrum.Repository.Clients
 
             var existing = _context.Clients.FirstOrDefault(c => c.Cnpj == normalized);
 
+          
             if (existing == null)
             {
                 var entity = new ClientsModel
@@ -144,8 +145,13 @@ namespace TaskPlannerMetrum.Repository.Clients
                 return "created";
             }
 
-            var wasSoftDeleted = existing.SoftDelete == true;
+     
+            if (existing.SoftDelete == null || existing.SoftDelete == false)
+            {
+                return "exists";
+            }
 
+         
             existing.SoftDelete = false;
             existing.UpdatedAt = DateTime.UtcNow;
             existing.Cnpj = normalized;
@@ -159,8 +165,8 @@ namespace TaskPlannerMetrum.Repository.Clients
             existing.WorkspaceID = dto.WorkspaceID;
 
             _context.SaveChanges();
-
-            return wasSoftDeleted ? "reactivated" : "updated";
+            return "reactivated";
         }
+
     }
 }
